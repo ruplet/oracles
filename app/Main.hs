@@ -114,6 +114,7 @@ eval (EFunc (Composition fm fn m ns f gs hs) normalArgs safeArgs)
     || length normalArgs /= m
     || length safeArgs /= sum ns = throw $ InvalidArgumentNumber "Composition"
   | otherwise = do
+    -- trace ("evaluating composition" ++ show f ++ show gs ++ show hs) $ return ()
     -- apply every g_i to whole normalArgs
     let transf :: Func -> IM Expr
         transf g = do
@@ -144,13 +145,17 @@ eval (EFunc (Recursion m n g h0 h1 d0 d1) (timerExpr:normalArgs) safeArgs)
   | length normalArgs /= m = throw $ InvalidArgumentNumber "Recursion normalArgs"
   | length safeArgs /= n = throw $ InvalidArgumentNumber "Recursion safeArgs"
   | otherwise = do
+    -- trace ("evaluating recursion" ++ show timerExpr) $ return ()
     timer <- eval timerExpr
     if null timer
-      then eval $ EFunc g normalArgs safeArgs
+      then do
+        -- trace ("null timer " ++ show g) $ return ()
+        eval $ EFunc g normalArgs safeArgs
     else do
       let (h, d) = if head timer == Zero then (h0, d0) else (h1, d1)
       delta <- eval $ EFunc d (EVal (tail timer) : normalArgs) []
       let newNormal = EVal (drop (1 + length delta) timer) : normalArgs
+      -- trace ("new Normal: " ++ show newNormal) $ return ()
       recursive <- eval $ EFunc (Recursion m n g h0 h1 d0 d1) newNormal safeArgs
       eval $ EFunc h (EVal (tail timer) : normalArgs) [EVal recursive]
 
@@ -286,24 +291,46 @@ prop_headNormal :: Val -> Bool
 prop_headNormal [] = runTest headNormal [[]] [] == Right []
 prop_headNormal elt = runTest headNormal [elt] [] == Right [head elt]
 
-headSafe :: Func
-headSafe =
-  let h1 = Proj 0 1 1 in
-  let h2 = constOne 0 0 in
-  let h3 = 
-  Cond 
+-- this doesn't look implementable
+-- headSafe :: Func
+-- headSafe =
+--   let h1 = Proj 0 1 1 in
+--   let h2 = constOne 0 0 in
+--   let h3 = 
+--   Cond 
 
-prop_headSafe :: Val -> Bool
-prop_headSafe [] = runTest headSafe [] [[]] == Right []
-prop_headSafe elt = runTest headSafe [] [elt] == Right [head elt]
+-- prop_headSafe :: Val -> Bool
+-- prop_headSafe [] = runTest headSafe [] [[]] == Right []
+-- prop_headSafe elt = runTest headSafe [] [elt] == Right [head elt]
 
-selectBit :: Func
-selectBit =
-  -- use shiftR to shift right by n, then take the first bit
-  Composition 0 1 2 [0] headSafe [] [shiftR]
+-- selectBit :: Func
+-- selectBit =
+--   -- use shiftR to shift right by n, then take the first bit
+--   Composition 0 1 2 [0] headSafe [] [shiftR]
 
-prop_selectBit :: Val -> Val -> Bool
-prop_selectBit n m = runTest selectBit [n, m] [] == Right [m !! length n]
+-- prop_selectBit :: Val -> Val -> Bool
+-- prop_selectBit n m = runTest selectBit [n, m] [] == Right [m !! length n]
+
+-- cond przyjmuje dwa argumenty: funkcje f i g, obie arności (0, 1)
+cond :: Func -> Func -> Func
+cond fComp gComp =
+  let g = Proj 0 1 1 in
+  let d = Proj 1 0 1 in
+  -- h0 (_ : n) = g(n)
+  -- Composition M N m [ni] f [gi] [hi]
+  -- note: M, N could be implicitly deducted from the arity of f
+  -- same with m and ni
+  let h0 = Composition 0 1 1 [1] gComp [] [Proj 1 1 2] in
+  -- h1 (_ : n) = f(n)
+  let h1 = Composition 0 1 1 [1] fComp [] [Proj 1 1 2] in
+  Recursion 0 1 g h0 h1 d d
+
+prop_cond :: Val -> Val -> Bool
+prop_cond [] _ = True
+prop_cond m@(Zero : _) n =
+  runTest (cond (constOne 0 1) (constListZero 0 1)) [m] [n] == Right [Zero]
+prop_cond m@(One : _) n =
+  runTest (cond (constOne 0 1) (constListZero 0 1)) [m] [n] == Right [One]
 
 makeArgs :: [[Integer]] -> [[Integer]] -> ([Expr], [Expr])
 makeArgs normalArgs safeArgs = (map (EVal . map toBit) normalArgs, map (EVal . map toBit) safeArgs)
@@ -342,6 +369,7 @@ main = do
   quickCheck prop_constOne10
   quickCheck prop_constOne11
   quickCheck prop_headNormal
-  quickCheck prop_headSafe
+  -- quickCheck prop_headSafe
   -- quickCheck prop_selectBit
+  quickCheck prop_cond
 
