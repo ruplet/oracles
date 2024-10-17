@@ -1,6 +1,47 @@
 # oracles
 Proof of concept: Oracle-Oriented Programming
 
+https://web.archive.org/web/20240611105719/https://inicjatywadoskonalosci.uw.edu.pl/dzialania/iii-2-2/ios/
+
+# How to design a programming language?
+In the senior year of your Bachelor's studies in Computer Science at the University of Warsaw (MIMUW), you're asked to write an interpreter for a programming language (ideally invented by yourself). But you're never really taught how to actually design a programming language. Here I want to share with you the rabbit hole I have fallen into, trying to answer the question:
+
+what features are worth adding to a programming language?
+
+
+## Motywacja ZSM
+Temat projektu: Praktyczne języki programowania wyrażające klasy złożoności obliczeniowej
+O programie komputerowym mówimy że jest poprawny, gdy kończy się i zwraca poprawny wynik. Rzadko chcemy pisać programy, które nie terminują, a jeśli już – to zazwyczaj ich nieterminacja wynika z nieskończonej wielkości wejścia (np. serwer obsługujący w nieskończoność kolejne żądania klientów). Popularniejszym zadaniem jest konieczność wykazania, że dany program komputerowy faktycznie się kończy, a jeszcze popularniejszym – że kończy się ,,szybko’’, tj. jego czas wykonania jest jakąś funkcją wielkości wejścia. Dowody tego, że dany program ma konkretną złożoność obliczeniową, często są trudne nie tylko do wymyślenia, ale również do prześledzenia. W wielu przypadkach dowodzący może ułatwić czytelnikowi zadanie zapisując swój program w taki sposób, że ze składni wyraźniej widać złożoność. Przykładowo, często pierwszą rzeczą, na którą patrzymy w kodzie jest maksymalne zagnieżdżenie i zakresy pętli w programie. Jeśli są to dwie zagnieżdżone pętle od 1 do n, to często przyjmujemy wstępnie, że program wykonuje kwadratowo dużo operacji. Co jednak jeśli piszący program podstępnie modyfikuje zmienną n w ciele pętli? Albo nie zwiększa indeksu pętli o 1, a na przykład go podwaja? Problemem nie są tutaj piszący programy, a to że popularne języki programowania często pozwalają na ,,zbyt dużo’’.
+Celem badań będzie projektowanie takich języków programowania, w których przyzwoite ograniczenia górne na złożoność obliczeniową będą własnością syntaktyczną programu, a nie semantyczną. Poprzez szereg restrykcji nakładanych na programy akceptowane przez kompilator, język będzie tak ograniczać możliwości programisty, by niemożliwe było napisanie programu, który zużywa zbyt dużo zasobów – czasu procesora (przy ograniczaniu złożoności czasowej) lub pamięci operacyjnej (przy ograniczaniu złożoności pamięciowej). Główną trudnością projektu jest znalezienie takich konstrukcji językowych i sposobów iteracji, przy których język ciągle będzie użyteczny – w szczególności, chcemy by język działał na stosownym poziomie abstrakcji i mógł wykorzystywać przydatne struktury danych takie jak tablice, a nie tylko liczby naturalne.
+Projektowanie systemu typów będzie elementem pracy nad projektem, ale nie powinno stanowić jego głównego problemu. Możliwe że koncept złożoności obliczeniowej trzeba będzie zintegrować z systemem typów języka. Potencjalnym rozwiązaniem jest zaimplementowanie sposobów iteracji jako funkcje z efektami ubocznymi (np. zamiast pętli for i = 1 to n , funkcja map o efekcie ubocznym LINTIME oznaczającym że obliczenie wykona się w czasie liniowym) i zastosowanie takich technik jak monady lub efekty algebraiczne, by zaimplementować to w systemie typów. Możliwe jednak, że język będzie użyteczny i bez tego.
+Korzyścią jaką przyniesie projekt będzie to, że powszechnie znane programy o znanej złożoności wymagającej analizy, będzie można przedstawić w tym języku, uzyskując certyfikat na to, że dany kod istotnie spełnia zadane własności, bez konieczności ,,wierzenia’’ w osobno sporządzony dowód. Zadaniem autora, jak również bardzo silną metryką postępu w projekcie, będzie implementowanie w tym języku znanych algorytmów. Przykładem algorytmu, który autor będzie próbował w ten sposób zaimplementować, jest algorytm Knutha-Morrisa-Pratta, którego złożoność obliczeniowa zazwyczaj wymaga dłuższej argumentacji. Na potrzeby spełnienia tego celu będzie potrzebne zaprojektowanie języka, który wyraża klasę złożoności czasowej DTIME(n), oraz przerobienie znanych już implementacji tego algorytmu w taki sposób, by dało się je w nim zapisać.
+W grupie ,,znanych algorytmów’’, które warto będzie implementować jako programy testowe będą również, znane z teorii złożoności obliczeniowej, redukcje między problemami obliczeniowymi. Przykładowo, popularnym zadaniem dla studentów informatyki jest wskazanie tzw. ,,L-redukcji’’ między problemami, czyli programu, który pokazuje że jeden problem można rozwiązać znając rozwiązanie innego, a transformacja wejścia zajmuje tylko logarytmicznie dużo pamięci. Popularne języki programowania nie dostarczają metod iteracji, które pozwalają w ,,bezpieczny’’ sposób pisać takie programy – zazwyczaj potrzeby jest osobny dowód, że dany program nie przekroczy logarytmicznej pamięci. Częścią projektu będzie rozwiązanie tego problemu i zaprojektowanie języka programowania, który wyraża klasę L (LOGSPACE).
+Argumentem za sukcesem projektu jest to, że teoretyczne prace wprowadzające takie języki już istnieją. Dziedzina implicit complexity theory zajmuje się m.in. tymi zagadnieniami i dostarcza szereg narzędzi i gotowych rozwiązań, które prawdopodobnie będzie można wprost zaimplementować, by szybko dostarczyć prototypową wersję projektu. W szczególności, znane są autorowi prace, które bezpośrednio wskazują ograniczenia na język programowania C, które sprawiają że wtedy wyraża on klasy złożoności LOGSPACE lub LINSPACE.
+Wątpliwości może budzić np. trudność problemu znalezienia logiki wyrażającej PTIME. Jest to jeden z najważniejszych otwartych problemów w informatyce i mało prawdopodobnym jest, by badania autora uczyniły w nim postęp. Nie jest to jednak argumentem przeciwko szansie sukcesu projektu, ponieważ badania będą dotyczyć tylko obliczeń wykonywanych na komputerze – co oznacza, że dane do algorytmów będą ,,uporządkowane’’, a otwarty problem logiki dla PTIME dotyczy danych bez zadanego porządku.
+W ramach badań publikowany będzie na bieżąco kod źródłowy środowiska wykonawczego. Ponadto publikowane będą artykuły popularnonaukowe wprowadzające w temat i autorskie implementacje znanych algorytmów, a także podsumowania i demonstracje istniejących prac teoretycznych, które podają języki programowania lub logiki wyrażające klasy złożoności.
+
+
+# Introduction
+
+We say that a computer program is *correct* with respect to a specification if it terminates and returns the
+specified result. Specification of a computer program can range from a simple and (relatively) informal
+LeetCode problem description to the complex and detailed ISO C++ standard.
+However, the concept of termination is a more straightforward property:
+the program simply has to terminate for every input. While almost every major programming language
+features a variety of solutions (most importantly, type systems) to help programmers write code matching with
+the specification, little progress has been made on possible syntactic restrictions which could help
+us analyze the time required for a program to run. In this work, we will focus on a stronger notion
+of the time-complexity of a program which, roughly speaking, not only can tell us that
+a program terminates, but gives us specific bounds on how quickly will it terminate with
+respect to the size of the input. Brilliant algorithms often have to be accompanied
+by a separate formal proof that they indeed are contained in a particular complexity class.
+
+
+
+
+
+# The below is for archive purposes only
+
 Turing machines are too strong. We practically cannot reason about them in general, due to the implications of Rice's theorem.
 
 No perfect programming language exists - as no perfect natural language exists. Different tribes have short words for frequently used things.

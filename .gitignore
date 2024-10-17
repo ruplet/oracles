@@ -1,1 +1,6 @@
 .vscode
+dist-newstyle
+*.aux
+*.log
+*.pdf
+*.toc
