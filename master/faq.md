@@ -1,106 +1,86 @@
 - Does it make sense to consider a category of all NP-complete problems, with morphisms as poly-time reductions between different instances?
- > <https://cstheory.stackexchange.com/questions/3074/a-category-of-np-complete-problems>
+> https://cstheory.stackexchange.com/questions/3074/a-category-of-np-complete-problems
 
 - Term algebras are initial objects in the category of algebras over a given signature
-https://en.wikipedia.org/wiki/Term_algebra#:~:text=From%20a%20category%20theory%20perspective,all%20algebras%20in%20the%20category.
+> https://en.wikipedia.org/wiki/Term_algebra#:~:text=From%20a%20category%20theory%20perspective,all%20algebras%20in%20the%20category.
 
 - Under the Curry-Howard correspondence, natural deduction corresponds to simply typed lambda calculus
 
 - Any inductive type can be encoded in System F as polymorphic functions
 - Parametricity is anti-classical
-https://xavierleroy.org/CdF/2018-2019/6.pdf
-
+> https://xavierleroy.org/CdF/2018-2019/6.pdf
 
 - Numeric functions expressible in STLC = extended polynomials
+
 - Minimal logic + ex falso quodlibet = intuitionistic logic
 - Intuitionistic logic + excluded middle = classical logic
-https://xavierleroy.org/CdF/2018-2019/4.pdf
+> https://xavierleroy.org/CdF/2018-2019/4.pdf
 
-ex falso quodlibet is modeled by the exception monad?
-Glivenko, 1929: CL proves Phi iff IL proves ~~Phi
+- Is ex falso quodlibet modeled by the exception monad?
 
+- Glivenko, 1929: Classical logic proves Phi iff intuitionistic logic proves ~~Phi
 
+- Grädel's theorem: on the class of finite structures with a successor relation, the collection of polynomial-time decidable properties coincides with those expressible in the Horn-fragment of existential second-order logic
+> https://cstheory.stackexchange.com/questions/869/is-there-a-logic-without-induction-that-captures-much-of-p?rq=1
 
-Gradel's theorem
-https://cstheory.stackexchange.com/questions/869/is-there-a-logic-without-induction-that-captures-much-of-p?rq=1
+- Barrington's theorem: polynomial-size bounded-width branching programs have the same computation power as Boolean formulas
+> https://blog.computationalcomplexity.org/2008/11/barringtons-theorem.html
 
-Barrington's theorem
-https://blog.computationalcomplexity.org/2008/11/barringtons-theorem.html
+- Theory of species, derivative of a data structure, quantum field theory
+> http://lambda-the-ultimate.org/node/1957
 
-theory of species, derivative of data structure, quantum field theory
-http://lambda-the-ultimate.org/node/1957
-
-
-jak dodać axiom of dependent/countable choice do logiki klasycznej?
-https://ieeexplore.ieee.org/document/6280455
+- How to add axiom of dependent/countable choice to classical logic?
+> https://ieeexplore.ieee.org/document/6280455
 
 
+- How to add dependent types to classical logic?
+> Compiling with dependent types: https://www.williamjbowman.com/resources/wjb-dissertation.pdf
+> This chapter explicitly avoids control effects and dependent types to focus on type preservation. However, in general, we may want to combine the two. Herbelin (2005) shows that unrestricted use of call/cc and throw in a language with $\Sigma$ types and equality leads to an inconsistent system.  The inconsistency is caused by type dependency on terms involving control effects.  Herbelin (2012) solves the inconsistency by constraining types to depend only on negative-elimination-free (NEF) terms, which are free of effects. This restriction makes dependent types compatible with classical reasoning enabled by the control operators.
 
-https://www.williamjbowman.com/resources/wjb-dissertation.pdf
-control operators and dependent types This chapter explicitly avoids control effects and dependent types to focus on type preservation. However, in general, we may want to combine the two. Herbelin (2005) shows that unrestricted use of call/cc and throw in a language with $\Sigma$ types and equality leads to an inconsistent system.  The inconsistency is caused by type dependency on terms involving control effects.  Herbelin (2012) solves the inconsistency by constraining types to depend only on negative-elimination-free (NEF) terms, which are free of effects. This restriction makes dependent types compatible with classical reasoning enabled by the control operators.
+- Impredicativity of Set + excluded middle + axiom of unique choice is inconsistent
+> http://pauillac.inria.fr/~herbelin/talks/cic.pdf
 
+- continuations must be used linearly to avoid control effects, which are known to cause inconsistency with dependent types
+> https://www.williamjbowman.com/resources/wjb-dissertation.pdf
 
-Impredicativity of Set + excluded middle + axiom of unique choice is inconsistent
-http://pauillac.inria.fr/~herbelin/talks/cic.pdf
+- No Continuation-passing-style translation is possible along the same lines for small $\Sigma$-types and sum types with dependent case
+> https://dl.acm.org/doi/10.1145/509799.503043
 
+- Typed Exceptions and Continuations Cannot Macro-Express Each Other
+> https://link.springer.com/content/pdf/10.1007/3-540-48523-6_60.pdf
 
-continuations must be used linearly to avoid control
-effects, which are known to cause inconsistency with dependent types
-https://www.williamjbowman.com/resources/wjb-dissertation.pdf
-https://dl.acm.org/doi/10.1145/509799.503043
-
-
-continuations =/= exceptions
-https://link.springer.com/content/pdf/10.1007/3-540-48523-6_60.pdf
-
-
-sketches of the Isomorphism:
-https://ncatlab.org/nlab/show/type+theory
+- How type theory is the syntax of category theory
+> https://ncatlab.org/nlab/show/type+theory
 
 
-czym jest logika?
+- Physics, Topology, Logic and Computation: A Rosetta Stone
+- parallel execution = proofs carried out in parallel = disjoint union of cobordisms = tensor product of morphisms
+> https://arxiv.org/pdf/0903.0340.pdf
 
-Rosetta Stone:
-https://arxiv.org/pdf/0903.0340.pdf
-parallel execution = proofs carried out in parallel
-= disjoint union of cobordisms = tensor product of morphisms
+- Type theory is both a logic and a computation: this is the C-H isomorphism
+> https://math.stackexchange.com/a/2811256/876802
 
+- Homotopy Type Theory should eat itself (but so far, it’s too big to swallow); related to the limitations of the expressibility of the metalanguage:
+> https://homotopytypetheory.org/2014/03/03/hott-should-eat-itself/
 
-Type theory is both a logic and a computation: this is the C-H isomorphism
-https://math.stackexchange.com/a/2811256/876802
-
-related to the limitations of the metalanguage:
-https://homotopytypetheory.org/2014/03/03/hott-should-eat-itself/
-
-Complexity class: REG (https://mathoverflow.net/a/296879)
-wtf???
-(1. FO with arbitrary predicates = AC^0)
-(2. FO in a signature with only the order relation = star-free languages)
-(3. https://nguyentito.eu/2018-11-scalp.pdf - ELEMENTARY)
-(4. tak, to jest REG: https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.23.8845&rep=rep1&type=pdf)
-( 5. depends on the input/output representation!!! 
+- What is the expressibility of simply-typed lambda calculus, really?
+> Complexity class: REG (https://mathoverflow.net/a/296879)
+> wtf???
+> (1. FO with arbitrary predicates = AC^0)
+> (2. FO in a signature with only the order relation = star-free languages)
+> (3. https://nguyentito.eu/2018-11-scalp.pdf - ELEMENTARY)
+> (4. tak, to jest REG: https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.23.8845&rep=rep1&type=pdf)
+> (5. depends on the input/output representation!!! 
   https://cstheory.stackexchange.com/a/52102)
 
-Logic: minimal logic = simply typed lambda calculus
-  (positive, implicational fragment of intuitionistic logic)
-Category: Cartesian closed categories
-Type theory: finite products only so curry/uncurry enough,
+- logic, category and type theory connection:
+  * Logic: minimal logic = simply typed lambda calculus (positive, implicational fragment of intuitionistic logic)
+  * Category: Cartesian closed categories
+  * Type theory: finite products only so curry/uncurry enough,
   because we can construct finite products from binary products?
 
-
-Rosetta Stone:
-https://ncatlab.org/nlab/show/computational+trilogy
-
-
-REG = languages generated by Prefix grammars
-REG = MSO (Buchi-Elgot-Trakhtenbrot theorem)
-REG = DFA = NFA
-
-
-chcemy miec kompozycjonalnosc
-funkcja semantyczna musi byc homomorfizmem
-czyli jej input musi byc skonczonym, ukorzenionym DAGiem
-
+- Computational trilogy: programming languages, type theory and algebraic topology
+> https://ncatlab.org/nlab/show/computational+trilogy
 
 
 1. znaleźć programy dla aksjomatów
