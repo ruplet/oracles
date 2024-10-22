@@ -4,6 +4,11 @@ Current todo:
 - present the history of the problem
 - list all the papers I've read, including BibTeX references and mirrors
 
+fajna konferencja
+https://popl20.sigplan.org/track/POPL-2020-tutorialfest#program
+
+
+
 
 # About these files:
 - book.md: Pandoc-style Markdown file, containing all the theory behind the
