@@ -115,3 +115,13 @@ Być może formalizacja Cobhama nie będzie konieczna - być może istnieje inne
 zweryfikowane sformułowanie teorii wyrażającej dokładnie PTIME i pokazanie jej
 równoważności do prawdziwych maszyn turinga.
 
+
+
+## Computational models
+Church–Turing–Deutsch principle
+Church-Turing thesis
+proof of L subseteq P
+Malament-Hogarth spacetime
+
+A programming language is a syntax for a computational process
+Ideally, a programming language
