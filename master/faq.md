@@ -1,22 +1,21 @@
+- Does it make sense to consider a category of all NP-complete problems, with morphisms as poly-time reductions between different instances?
+ > <https://cstheory.stackexchange.com/questions/3074/a-category-of-np-complete-problems>
 
-https://cstheory.stackexchange.com/questions/3074/a-category-of-np-complete-problems
-
-term algebras are initial objects in cat of algs over a signature
+- Term algebras are initial objects in the category of algebras over a given signature
 https://en.wikipedia.org/wiki/Term_algebra#:~:text=From%20a%20category%20theory%20perspective,all%20algebras%20in%20the%20category.
 
+- Under the Curry-Howard correspondence, natural deduction corresponds to simply typed lambda calculus
 
-Curry-Howard correspondence:
-natural deduction = simply typed lambda calculus
-
+- Any inductive type can be encoded in System F as polymorphic functions
+- Parametricity is anti-classical
 https://xavierleroy.org/CdF/2018-2019/6.pdf
-any inductive type can be encoded in System F as polymorphic functions
-parametricity is anti-classical
 
-numeric functions expressible in STLC = extended polynomials
-minimal logic + ex falso quodlibet = intuitionistic logic
-intuitionistic logic + excluded middle = classical logic
 
+- Numeric functions expressible in STLC = extended polynomials
+- Minimal logic + ex falso quodlibet = intuitionistic logic
+- Intuitionistic logic + excluded middle = classical logic
 https://xavierleroy.org/CdF/2018-2019/4.pdf
+
 ex falso quodlibet is modeled by the exception monad?
 Glivenko, 1929: CL proves Phi iff IL proves ~~Phi
 
@@ -38,7 +37,7 @@ https://ieeexplore.ieee.org/document/6280455
 
 
 https://www.williamjbowman.com/resources/wjb-dissertation.pdf
-control operators and dependent types This chapter explicitly avoids control effects and dependent types to focus on type preservation. However, in general, we may want to combine the two. Herbelin (2005) shows that unrestricted use of call/cc and throw in a language with Σ types and equality leads to an inconsistent system.  The inconsistency is caused by type dependency on terms involving control effects.  Herbelin (2012) solves the inconsistency by constraining types to depend only on negative-elimination-free (NEF) terms, which are free of effects. This restriction makes dependent types compatible with classical reasoning enabled by the control operators.
+control operators and dependent types This chapter explicitly avoids control effects and dependent types to focus on type preservation. However, in general, we may want to combine the two. Herbelin (2005) shows that unrestricted use of call/cc and throw in a language with $\Sigma$ types and equality leads to an inconsistent system.  The inconsistency is caused by type dependency on terms involving control effects.  Herbelin (2012) solves the inconsistency by constraining types to depend only on negative-elimination-free (NEF) terms, which are free of effects. This restriction makes dependent types compatible with classical reasoning enabled by the control operators.
 
 
 Impredicativity of Set + excluded middle + axiom of unique choice is inconsistent
