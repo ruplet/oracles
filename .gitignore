@@ -1,3 +1,4 @@
+*.Identifier
 .vscode
 dist-newstyle
 *.aux
