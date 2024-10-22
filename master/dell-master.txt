@@ -1,0 +1,47 @@
+ebpf language limitations
+
+
+about BCe-:
+https://www-lipn.univ-paris13.fr/~baillot/GEOCAL06/SLIDES/Schoepp.pdf
+
+
+Isabel Oitavem, Logspace without Bounds (2010):
+
+
+these have explicit bounds in the recursion schemes:
+Cobham: FP, Thompson: PSPACE, Clote and Takeuti: NC, LOGSPACE
+
+
+
+chcemy napisać kompilator zdań logicznych do modeli obliczeniowych
+
+zdania logiczne zapewniają nam weryfikację - łatwo zapisać formaty
+wejścia i pożądanego wyjścia
+
+mamy kompilator MSO -> DFA dla problemów decyzyjnych
+
+
+język do definiowania modeli obliczeniowych?
+
+modele obliczeniowe:
+- turing machine
+- quantum computer
+- lambda calculus
+- real computer
+- Malament-Hogarth spacetime 
+
+
+
+dwie rzeczy:
+- relacja języka i metajęzyka (ncatlab?)
+- implementowanie kompilatora w Coq
+- czy innym theorem proverze?
+- software foundations
+- certified programming with dependent types
+- formalizing a computational model in the theorem prover
+- how to prove computational model equivalence?
+  + think on a higher level, i.e. that computational models
+    with programs represent *functions*? (or relations?)
+
+- is axiomatizability in one logic equivalent to definability
+  in a stronger logic?

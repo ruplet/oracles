@@ -1,0 +1,70 @@
+- Extending Type Theory with Forcing (INRIA, 2012)
+   autorzy implementują w Coq forcing jako transformację programu i pokazują pewien dowód negacji CH
+https://hal.science/hal-00685150/document
+
+- Krivine 2002: AC corresponds to a global clock in the CH correspondence
+https://www.irif.fr/~krivine/articles/quote.pdf
+
+- o sile wyrazu STLC: (na podstawie dyskusji pod https://cstheory.stackexchange.com/q/27824)
+   Hillebrand, Kanellakis 1996:
+   termy postaci {0, 1}* -> Bool w STLC wyrażaja dokładnie języki regularne
+   Theorem 3.4: https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.23.8845&rep=rep1&type=pdf
+
+- Paradoks Herbelina:
+   +  Herbelin, 2005: unrestricted use of `call/cc` and `throw` in a language with dependent sum types and equality leads to an inconsistent system.
+   + w pracy z 2012 roku Herbelin podaje ograniczenia typów które czynią typy zależne kompatybilne z wnioskowaniem klasycznym wniesionym przez call/cc
+   + więcej: strona 175: https://www.williamjbowman.com/resources/wjb-dissertation.pdf
+
+- Grohe 2012: (IFP + C: inflanationary FP + counting)
+   Let C be a class of graphs with at least one excluded minor. Then IFP+C captures PTIME on C.
+   bardzo fajna praca!
+https://dl.acm.org/doi/pdf/10.1145/2371656.2371662
+
+- ML with call/cc is unsound
+https://www.cis.upenn.edu/~bcpierce/types/archives/1991/msg00034.html
+
+- kontynuacje =/= wyjątki
+https://link.springer.com/content/pdf/10.1007/3-540-48523-6_60.pdf
+
+Przede wszystkim pragnę rzucić trochę światła na pytanie: ,,jakie feature'y jest sens dodawać do języka programowania'' poprzez sprowadzenie języków programowania do logiki i rozważanie różnych teorii typów, aksjomatów logicznych i tego jakim obliczeniom te aksjomaty odpowiadają. Mam też kilka bardzo konkretnych prac, które chciałbym wykonać
+- napisać wprowadzenie do moich badań, które będzie łatwe do zrozumienia przez laika - z konkretnymi przykładami dowodów, jakie możemy przeprowadzić w STLC i w innych logikach.
+- zaprezentować dowód klasycznego twierdzenia poprzez wykorzystanie kontynuacji lub wyjątków
+- zrozumieć programy wyrażające aksjomat wyboru lub hipotezę continuum
+- z tego co rozumiem, teoria typów jest logiką. jeśli dodamy do niej odpowiednik
+   typu niedeterministycznego, np. monady List, to dla logiki wyrażającej uprzednio
+   języki regularne, nic nie powinno się zmienić (DFA = NFA), ale dla logiki
+   wyrażającej języki bezkontekstowe, siła wyrazu powinna się zwiększyć (DPDA < PDA)
+- wniknąć głębiej w pojęcie ,,internal logic'' (https://ncatlab.org/nlab/show/internal+logic),
+   by zbadać jakie kategorie stanowią semantykę dla danych teorii (np. minimal logic = CCC).
+
+
+
+
+
+
+Szanowna Pani Profesor,
+
+chciałbym napisać idealny język programowania i idealny interpreter. I zaciąłem się na jednej rzeczy - czemu przyjmujemy to za oczywiste, że powinniśmy parsować słowo na wejściu kompilatora jako drzewo składni? Przychodzą mi tu na myśl dwie rzeczy:
+- kompozycjonalność logiki pierwszego rzędu - może chcemy żeby ten język programowania był ,,kompozycjonalny'' i z tego wynika konieczność drzewiastości?
+- drzewiastość dowodów w typowych logikach - w logice jednak dowód to praktycznie zawsze jest jakaś lista / drzewo kroków. Może tak fundamentalnie, ,,fizycznie'' obliczenie musi mieć prostą strukturę?
+- Geometria Interakcji - akurat nie wiem co to jest, ale natknąłem się na to w jakiejś pracy o językach programowania. Na Wikipedii jest takie zdanie:
+In proof theory, the Geometry of Interaction (GoI) was introduced by Jean-Yves Girard shortly after his work on linear logic. In linear logic, proofs can be seen as various kinds of networks as opposed to the flat tree structures of sequent calculus.
+
+czy to znaczy że GoI to krok w kierunku myślenia o obliczeniach jako bardziej skomplikowanych strukturach niż lista kroków? I czy jakby się trochę w tą GoI wdrożyć to można by rozważać język programowania, który się parsuje do faktycznie jakiegoś grafu a nie do drzewa składni?
+
+Dziękuję i przepraszam za zawracanie głowy!
+Paweł Balawender
+
+
+
+
+
+Szanowna Pani Profesor,
+
+odpowiadając na własne pytanie - przypadkowo udało mi się dowiedzieć o Cirquent calculus:
+Cirquent calculus is a proof calculus that manipulates graph-style constructs termed cirquents, as opposed to the traditional tree-style objects such as formulas or sequents.
+
+w którym dowody nie są drzewami (mogą współdzielić formuły, w taki sposób że ma to nietrywialne konsekwencje). Co więcej, faktycznie do czegoś się to przydało - G. Japaridze wymyślił ten formalizm żeby zaksjomatyzować swoją computability logic. Jeszcze nie jestem pewien jak się to ma do pisania interpretera dla języka programowania :)
+
+Pozdrawiam
+Paweł Balawender
