@@ -259,3 +259,117 @@ the parts and the whole
 - Existential types = Abstract Data Types (ADTs)?
 > https://www.ps.uni-saarland.de/courses/seminar-ws02/ExistentialTypes.slides.pdf  
 > Mitchell, Plotkin 1988: "Abstract types have existential type"
+
+- A beginner’s guide to forcing
+> https://arxiv.org/pdf/0712.1320
+
+- Forcing for dummies blogpost
+> https://timothychow.net/mathstuff/forcingdum.txt
+
+- Baker-Gill-Solovay theorem proof
+> Forcing as a method to prove that something can or cannot be done using an oracle  
+> https://cstheory.stackexchange.com/questions/14091/forcing-method-used-in-baker-gill-solovay-relativization-paper-and-cohens-proof  
+> https://math.stackexchange.com/questions/2616541/simple-applications-of-forcing-in-recursion-theory  
+> https://en.wikipedia.org/wiki/Forcing_(computability)
+
+- Digression:
+> Second-order logic is hard, because it requires processing very complicated sets. Maybe it'd be easier if these complicated sets were given by their "generators"?
+
+- Digression:
+> when data on input is in a convenient form, a reduction is in L, but if it the input is just represented as a natural number (because every countable sequence can be numbered), no efficient algorithm exists (try proving that the algorithm would probably have to 'unpack' the structure, i.e. construct the actual structure, which it is unable to because of the memory limit)
+
+- Simone Martini: On Implicit Computational Complexity
+> https://www.cs.unibo.it/~martini/BISS/martini-1.pdf  
+> https://www.cs.unibo.it/~martini/BISS/martini-2.pdf  
+> https://www.cs.unibo.it/~martini/BISS/martini-3.pdf  
+> https://www.cs.unibo.it/~martini/BISS/  
+
+- Simona Ronchi Della Rocca 2019: Logic and Implicit Computational Complexity
+> http://panhellenic-logic-symposium.org/12/slides/Day1_Ronchi.pdf  
+
+- Why P and L are important and robust complexity classes
+> The smallest class containing linear time and closed under subroutines is P. The smallest class containing log space and closed under subroutines is still log space. So P and L are the smallest robust classes for time and space respectively which is why they feel right for modeling efficient computation.  
+> https://cstheory.stackexchange.com/a/3448/71933
+
+- Neil D. Jones: Constant Time Factors Do Matter
+> NLIN-complete problem  
+> https://dl.acm.org/doi/pdf/10.1145/167088.167244
+
+- Gurevich, Shelah: Nearly linear time
+> couple problems with defining DTIME(n) (dependency on computational model)  
+> nearly-linear-time-complete problem under QL reductions  
+> https://link.springer.com/content/pdf/10.1007/3-540-51237-3_10.pdf
+
+- On Syntactic and Semantic Complexity Classes
+> Anuj Dawar  
+> University of Cambridge Computer Laboratory  
+> Spitalfields Day, Isaac Newton Institute, 9 January 2012  
+> https://www.newton.ac.uk/files/seminar/20120109163017301-152985.pdf  
+> e.g. NP = ESO (Fagin 1974), so NP is syntactical  
+> major open problem:  
+> Does P admit a syntactic characterisation?  
+> Can the class P be “built up from below” by finitely many operations?  
+> If a complexity class C has a complete problem L, it is a syntactic class.  
+> because we can enumerate all AC0 reductions  
+> Two Possible Worlds:
+> Either
+> - there is no effective syntax for inv-P
+> - there is no classification possible of polynomial-time graph problems
+> - there is an inexhaustible supply of efficient algorithmic techniques to be discovered
+> - P neq NP
+> Or,
+> - there is an effective syntax for inv-P
+> - there is a P-complete graph problem under FO-reductions
+> - all polynomial-time graph problems can be solved by easy variations of one algorithm.
+
+- Leivant article: Ramified Recurrence and Computational Complexity I: Word Recurrence and Poly-time
+> https://link.springer.com/chapter/10.1007/978-1-4612-2566-9_11#preview
+
+- A descriptive complexity approach to the linear hierarchy
+> https://hal.science/hal-01981070
+
+- About semantic and syntactic complexity classes
+> An interesting difference is that PR functions can be explicitly enumerated, whereas functions in R cannot be (since otherwise the halting problem would be decidable). In this sense, PR is a "syntactic" class whereas R is "semantic."  
+> https://complexityzoo.net/Complexity_Zoo:P#pr
+
+- Physical aspects of the foundational model
+> What is the physical nature of computation?  
+> Church-Turing thesis only relates to N->N functions.  
+> Turing machines operating on real numbers are hypercomputation  
+> Malament-Hogarth spacetime; relativistic Turing machines, that can
+> peek into the future
+> https://plato.stanford.edu/entries/computation-physicalsystems/
+
+- Digression:
+> conversion of MSO to NFA is non-elementary, but NFA to MSO is linear-time  
+> what are the best data representations?  
+> what about languages over the unary alphabet?  
+> are there np-hard languages over the unary alphabet?  
+> can the only data type in the language be {1^n: n in Nat}?  
+> it seems natural that the data type for computers is { {0,1}^n: n in Nat},  
+> but for set-theory based mathematics, it's Set = Empty | {Set},  
+> where {} stands for... a set. So like a list, but with no order and no duplicates
+
+- Computing aspects of set theory, Erwin Engeler ETH Zurich
+> https://people.math.ethz.ch/~engeler/computing_aspects.pdf
+
+- About the computational content of set theory
+https://terrytao.wordpress.com/2010/03/19/a-computational-perspective-on-set-theory/
+
+- Can a specific graph theory be a foundations of mathematics?
+> https://mathoverflow.net/q/397581
+
+- Comparing set theory, type theory and category theory as foundations
+> https://philosophy.stackexchange.com/questions/87027/set-theory-vs-type-theory-vs-category-theory
+
+- What do we want a foundation to be?
+> What do we want a foundation to do? Comparing set-theoretic, category-theoretic, and univalent approaches  
+> https://sites.socsci.uci.edu/~pjmaddy/bio/What%20do%20we%20want%20-%20final
+
+- About different theories for foundations of mathematics
+> https://mathoverflow.net/questions/364228/are-categories-special-foundationally  
+> https://mathoverflow.net/questions/8731/categorical-foundations-without-set-theory  
+> https://mathoverflow.net/questions/360578/category-theory-and-set-theory-just-a-different-language-or-different-foundati  
+> https://mathoverflow.net/questions/352298/could-groups-be-used-instead-of-sets-as-a-foundation-of-mathematics?noredirect=1&lq=1  
+> https://mathoverflow.net/questions/24773/why-do-categorical-foundationalists-want-to-escape-set-theory  
+> https://mathoverflow.net/questions/9269/category-of-categories-as-a-foundation-of-mathematics

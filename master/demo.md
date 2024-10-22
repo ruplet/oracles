@@ -10,6 +10,12 @@ date:
 
 ---
 
+- moj pomysl: coś jak OEIS, ale dla programów komputerowych
+zjawisko obserwowalne na LeetCode to powoływanie się na inne zadania po numerach
+indeks problemów z różnych stron z zadaniami algorytmicznymi
+tj. ze jest nieskonczenie wiele technik programistycznych
+
+
 # What's it about?
 - One year ago, I was tasked with implementing an interpreter for a programming language
 - I could define the programming language by myself
