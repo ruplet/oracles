@@ -27,6 +27,13 @@ write existing NP-reductions in my own language for LOGSPACE :)
    wyrażającej języki bezkontekstowe, siła wyrazu powinna się zwiększyć (DPDA < PDA)
 
 
+
+TODO jak na teraz:
+znaleźć istniejące formalizacje maszyn turinga w Coq i/lub innych weryfikatorach.
+Być może formalizacja Cobhama nie będzie konieczna - być może istnieje inne,
+zweryfikowane sformułowanie teorii wyrażającej dokładnie PTIME i pokazanie jej
+równoważności do prawdziwych maszyn turinga.
+
    
 - What is the most natural X-complete problem?
 > We consider weaker and weaker reductions, and check

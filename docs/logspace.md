@@ -68,3 +68,21 @@ by Bellantoni and Cook, we have been careful in making our proof fully contructi
 
 - Term rewriting characterisation of LOGSPACE for finite and infinite data
 > https://www.mimuw.edu.pl/~lukaszcz/logspace.pdf
+
+- Critique of Cobham's paper
+> there is nothing in this paper, really  
+> additionally, it's difficult to access:  
+> https://web.archive.org/web/20240121142633/https://www.cs.toronto.edu/~sacook/homepage/cobham_intrinsic.pdf  
+> here, you can see the review of the above, written by Cook  
+> https://www.cambridge.org/core/journals/journal-of-symbolic-logic/article/abs/alan-cobham-the-intrinsic-computational-difficulty-of-functions-logic-methodology-and-philosophy-of-science-proceedings-of-the-1964-international-congress-edited-by-yehoshua-barhillel-studies-in-logic-and-the-foundations-of-mathematics-northholland-publishing-company-amsterdam-1965-pp-2430/475D96633FB147B7C78B1FCCE3A7B053?utm_campaign=shareaholic&utm_medium=copy_link&utm_source=bookmark  
+> and in this review you can see that Cobham only hypothesises that his algebra expresses P  
+> his algebra is:  
+> L = PTIME = the least class of functions including the eleven functions s_i(x) = 10x + i, i=0,1,...,9 and x^{l(y)} (where l(y) is the decimal length of y), and closed under the operations of explicit transformation, composition, and limited recursion on notation (digit-by-digit recursion).  
+> And he doesn't have the proof that his L (it's not logspace) is really equal to P.  
+> Here is the proof of the above, though:  
+> https://web.archive.org/web/20240103230629/http://www.piergiorgioodifreddi.it/wp-content/uploads/2010/10/CRT2.pdf  
+> it's page 186 of the PDF (175 in internal numeration)  
+> also, in Tourlakis 2022 (accessible on libgen)  
+> George Tourlakis - Computability-Springer (2022).pdf  
+> on page 625 of the PDF (608 internally), there is a proof, but also a remark about  
+> this theorem, with a reference to Odifreddi's work

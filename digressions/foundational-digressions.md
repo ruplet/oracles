@@ -17,12 +17,11 @@ równoważne. Nieformalna ,,teza Churcha-Turinga'' mówi, że wszystkie
 sensowne formalizacje pojęcia algorytmu są równoważne maszynom
 Turinga czy $\lambda$-rachunkowi.
 
-
 Teza Churcha-Turinga to nieformalne stwierdzenie mówiąace, że do-
 wolna formalizacja intuicyjnego pojęcia algorytmicznej obliczalności
 jest równowazne maszynom Turinga i $\lambda$-rachunkowi. Teza ta jest
 współcześnie mocno ugruntowana faktem, że wszystkie matema-
-tyczne modele komputerów [3] i jęezyki programowania są – przy
+tyczne modele komputerów [3] i języki programowania są – przy
 nieograniczonych zasobach – równowazne maszynom Turinga. W
 szczególności, rózne warianty maszyn Turinga – wielotaśmowe,
 niedeterministyczne, z taśmą dwustronnie nieskończoną, z taśmą
@@ -31,6 +30,11 @@ dwuwymiarową, itd. – są sobie wszystkie równoważne.
 [3]: To dotyczy takze modeli korzystających z efektów kwantowych, które,
 choć trudne do zaimplementowania fizycznie, matematycznie są precyzyjnie
 opisane i badane.
+
+# How to design a programming language?
+In the senior year of your Bachelor's studies in Computer Science at the University of Warsaw (MIMUW), you're asked to write an interpreter for a programming language (ideally invented by yourself). But you're never really taught how to actually design a programming language. Here I want to share with you the rabbit hole I have fallen into, trying to answer the question:
+
+what features are worth adding to a programming language?
 
 
 At the Annual Meeting of the Association for Symbolic Logic in 2000, a panel was organized titled ,,THE PROSPECTS FOR MATHEMATICAL LOGIC IN THE
@@ -41,8 +45,6 @@ least clearly acceptable properties of computation that suffice to guarantee tha
 or logic)?
 - Find, and argue conclusively for, a formal definition of algorithm
 and the appropriate analog of the Church-Turing thesis.
-
-
 
 Kilka uwag do tego:
 1. matematyczna definicja algorytmu: [@10.1007/978-3-642-27660-6_3]

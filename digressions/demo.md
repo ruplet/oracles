@@ -9,13 +9,6 @@ date:
 - March 18, 2024
 
 ---
-
-- moj pomysl: coś jak OEIS, ale dla programów komputerowych
-zjawisko obserwowalne na LeetCode to powoływanie się na inne zadania po numerach
-indeks problemów z różnych stron z zadaniami algorytmicznymi
-tj. ze jest nieskonczenie wiele technik programistycznych
-
-
 # What's it about?
 - One year ago, I was tasked with implementing an interpreter for a programming language
 - I could define the programming language by myself
@@ -203,7 +196,6 @@ logic
 - Bonfante [@bonfante:inria-00105744] We propose two characterizations of complexity classes by means of programming languages. The first concerns Logspace while the second leads to Ptime.
 - Jones 1999 [@JONES1999151] PTIME, LOGSPACE by programming languages;
 LOGSPACE is proven identical with the decision problems solvable by read-only imperative programs on Lisp-like lists; and PTIME is proven identical with the problems solvable by recursive read-only programs
-
 
 # OI constraints 
 - an array of length r
