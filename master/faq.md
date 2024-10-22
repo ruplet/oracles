@@ -6,14 +6,14 @@
 
 - Under the Curry-Howard correspondence, natural deduction corresponds to simply typed lambda calculus
 
-- Any inductive type can be encoded in System F as polymorphic functions
-- Parametricity is anti-classical
+- Any inductive type can be encoded in System F as polymorphic functions  
+  Parametricity is anti-classical
 > https://xavierleroy.org/CdF/2018-2019/6.pdf
 
 - Numeric functions expressible in STLC = extended polynomials
 
-- Minimal logic + ex falso quodlibet = intuitionistic logic
-- Intuitionistic logic + excluded middle = classical logic
+- Minimal logic + ex falso quodlibet = intuitionistic logic  
+  Intuitionistic logic + excluded middle = classical logic
 > https://xavierleroy.org/CdF/2018-2019/4.pdf
 
 - Is ex falso quodlibet modeled by the exception monad?
@@ -32,9 +32,8 @@
 - How to add axiom of dependent/countable choice to classical logic?
 > https://ieeexplore.ieee.org/document/6280455
 
-
 - How to add dependent types to classical logic?
-> Compiling with dependent types: https://www.williamjbowman.com/resources/wjb-dissertation.pdf
+> Compiling with dependent types: https://www.williamjbowman.com/resources/wjb-dissertation.pdf  
 > This chapter explicitly avoids control effects and dependent types to focus on type preservation. However, in general, we may want to combine the two. Herbelin (2005) shows that unrestricted use of call/cc and throw in a language with $\Sigma$ types and equality leads to an inconsistent system.  The inconsistency is caused by type dependency on terms involving control effects.  Herbelin (2012) solves the inconsistency by constraining types to depend only on negative-elimination-free (NEF) terms, which are free of effects. This restriction makes dependent types compatible with classical reasoning enabled by the control operators.
 
 - Impredicativity of Set + excluded middle + axiom of unique choice is inconsistent
@@ -52,7 +51,7 @@
 - How type theory is the syntax of category theory
 > https://ncatlab.org/nlab/show/type+theory
 
-- Physics, Topology, Logic and Computation: A Rosetta Stone \\
+- Physics, Topology, Logic and Computation: A Rosetta Stone  
   parallel execution = proofs carried out in parallel = disjoint union of cobordisms = tensor product of morphisms
 > https://arxiv.org/pdf/0903.0340.pdf
 
