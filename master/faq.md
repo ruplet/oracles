@@ -40,7 +40,7 @@
 - Impredicativity of Set + excluded middle + axiom of unique choice is inconsistent
 > http://pauillac.inria.fr/~herbelin/talks/cic.pdf
 
-- continuations must be used linearly to avoid control effects, which are known to cause inconsistency with dependent types
+- Continuations must be used linearly to avoid control effects, which are known to cause inconsistency with dependent types
 > https://www.williamjbowman.com/resources/wjb-dissertation.pdf
 
 - No Continuation-passing-style translation is possible along the same lines for small $\Sigma$-types and sum types with dependent case
@@ -52,9 +52,8 @@
 - How type theory is the syntax of category theory
 > https://ncatlab.org/nlab/show/type+theory
 
-
-- Physics, Topology, Logic and Computation: A Rosetta Stone
-- parallel execution = proofs carried out in parallel = disjoint union of cobordisms = tensor product of morphisms
+- Physics, Topology, Logic and Computation: A Rosetta Stone \\
+  parallel execution = proofs carried out in parallel = disjoint union of cobordisms = tensor product of morphisms
 > https://arxiv.org/pdf/0903.0340.pdf
 
 - Type theory is both a logic and a computation: this is the C-H isomorphism
