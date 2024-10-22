@@ -266,18 +266,27 @@ prop_constOne11 norm safe =
 -- Proposition 1. Let m and n by numbers in binary. Right shift shiftR(m : n) of
 -- m by |n| and selection of bit |n| from m are definable in BCε.
 
--- this is a different version; shiftR [n, m] [] = drop n m
+-- shiftR(n : m) = m >> |n|
 shiftR :: Func
 shiftR =
-  let g = identity in
-  -- d takes two normal arguments and returns zero
-  let d = twoNormalToZero in
-  -- h(timer, arg : recursive) = tail(recursive)
-  let h = Composition 0 1 2 [1] Tail [] [Proj 2 1 3] in
-  Recursion 1 0 g h h d d
+  let g = Proj 0 1 1 in
+  let d = oneNormalToZero in
+  -- h(timer : recursive) = tail(recursive)
+  let h = Composition 0 1 1 [1] Tail [] [Proj 1 1 2] in
+  Recursion 0 1 g h h d d
 
 prop_shiftR :: Val -> Val -> Bool
-prop_shiftR shift arg = runTest shiftR [shift, arg] [] == Right (drop (length shift) arg)
+prop_shiftR shift arg = runTest shiftR [shift] [arg] == Right (drop (length shift) arg)
+
+-- selectWeak(n : m) = m[|n|]
+select :: Func
+select =
+  Composition 0 3 1 [1, 0, 0] Cond [] [shiftR, constOne 1 0, constListZero 1 0]
+
+prop_select :: Val -> Val -> Bool
+prop_select shift arg =
+  let expected = if length shift >= length arg then [Zero] else [arg !! length shift] in
+  runTest select [shift] [arg] == Right expected
 
 headNormal :: Func
 headNormal =
@@ -291,25 +300,37 @@ prop_headNormal :: Val -> Bool
 prop_headNormal [] = runTest headNormal [[]] [] == Right []
 prop_headNormal elt = runTest headNormal [elt] [] == Right [head elt]
 
--- this doesn't look implementable
--- headSafe :: Func
--- headSafe =
---   let h1 = Proj 0 1 1 in
---   let h2 = constOne 0 0 in
---   let h3 = 
---   Cond 
+headSafe :: Func
+headSafe =
+  Composition 1 1 0 [1] select [constZero 0 0] [Proj 0 1 1]
 
--- prop_headSafe :: Val -> Bool
--- prop_headSafe [] = runTest headSafe [] [[]] == Right []
--- prop_headSafe elt = runTest headSafe [] [elt] == Right [head elt]
+prop_headSafe :: Val -> Bool
+prop_headSafe [] = runTest headSafe [] [[]] == Right [Zero]
+prop_headSafe elt = runTest headSafe [] [elt] == Right [head elt]
 
--- selectBit :: Func
--- selectBit =
---   -- use shiftR to shift right by n, then take the first bit
---   Composition 0 1 2 [0] headSafe [] [shiftR]
 
--- prop_selectBit :: Val -> Val -> Bool
--- prop_selectBit n m = runTest selectBit [n, m] [] == Right [m !! length n]
+-- Proposition 2. Let b be either 0 or 1. The following function is representable
+-- in BCε:
+
+-- setb(m, n:) = set mth LSD of n to b
+-- setb(m, n:) = shiftR(n: m) -> empty? return n, else return 
+-- h(t, n: g(n))
+set :: Bit -> Func
+set b =
+  Composition fm 0 2 [] (f(x,y:) = x empty? y else ) [gs] []
+-- set b =
+--   let g = if b == Zero then AppendZero else AppendOne in
+--   -- h0(counter, n : recursive) = append0 to recursive
+--   let h0 = Composition 0 1 2 [1] AppendZero [] [Proj 2 1 3] in
+--   let h1 = Composition 0 1 2 [1] AppendOne [] [Proj 2 1 3] in
+--   let d = twoNormalToZero in
+--   Recursion 1 0 g h0 h1 d d
+
+prop_set :: Bit -> Val -> Val -> Bool
+prop_set bit shift arg =
+  let n = length arg in
+  let expected = if length shift >= n then arg else take n arg ++ [bit] ++ drop (n + 1) arg in
+  runTest (set bit) [shift, arg] [] == Right expected
 
 -- cond przyjmuje dwa argumenty: funkcje f i g, obie arności (0, 1)
 cond :: Func -> Func -> Func
@@ -358,6 +379,7 @@ main = do
   quickCheck prop_oneNormalToZero
   quickCheck prop_twoNormalToZero
   quickCheck prop_shiftR
+  quickCheck prop_select
   quickCheck prop_oneNormalToOne
   quickCheck prop_constZero00
   quickCheck prop_constZero01
@@ -369,7 +391,7 @@ main = do
   quickCheck prop_constOne10
   quickCheck prop_constOne11
   quickCheck prop_headNormal
-  -- quickCheck prop_headSafe
-  -- quickCheck prop_selectBit
+  quickCheck prop_headSafe
   quickCheck prop_cond
+  quickCheck prop_set
 
