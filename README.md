@@ -20,6 +20,14 @@ make language for L-reductions to consider NP-complete problems
 
 write existing NP-reductions in my own language for LOGSPACE :)
 
+
+- z tego co rozumiem, teoria typów jest logiką. jeśli dodamy do niej odpowiednik
+   typu niedeterministycznego, np. monady List, to dla logiki wyrażającej uprzednio
+   języki regularne, nic nie powinno się zmienić (DFA = NFA), ale dla logiki
+   wyrażającej języki bezkontekstowe, siła wyrazu powinna się zwiększyć (DPDA < PDA)
+
+
+   
 - What is the most natural X-complete problem?
 > We consider weaker and weaker reductions, and check
 > which problems can still be reduced to other in the class.  

@@ -373,3 +373,44 @@ https://terrytao.wordpress.com/2010/03/19/a-computational-perspective-on-set-the
 > https://mathoverflow.net/questions/352298/could-groups-be-used-instead-of-sets-as-a-foundation-of-mathematics?noredirect=1&lq=1  
 > https://mathoverflow.net/questions/24773/why-do-categorical-foundationalists-want-to-escape-set-theory  
 > https://mathoverflow.net/questions/9269/category-of-categories-as-a-foundation-of-mathematics
+
+- Extending Type Theory with Forcing (INRIA, 2012)
+> Implementation of forcing in Coq as a program transformation and show a proof of the negation of CH  
+> https://hal.science/hal-00685150/document
+
+- Krivine 2002: AC corresponds to a global clock in the CH correspondence
+> https://www.irif.fr/~krivine/articles/quote.pdf
+
+- About expression power of simply typed lambda calculus
+> Based on discussion under: https://cstheory.stackexchange.com/q/27824  
+> Hillebrand, Kanellakis 1996:  
+> terms of form {0, 1}* -> Bool in STLC express precisely regular languages  
+> Theorem 3.4: https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.23.8845&rep=rep1&type=pdf
+
+- Herbelin paradox:
+   +  Herbelin, 2005: unrestricted use of `call/cc` and `throw` in a language with dependent sum types and equality leads to an inconsistent system.
+   + In a paper from 2012, Herbelin gives restrictions on types that make dependent types compatible with classical reasoning introduced by call/cc
+   + Bowman 2018: Herbelin (2005) shows that unrestricted use of call/cc and throw in a language with Σ types and equality leads to an inconsistent system.  The inconsistency is caused by type dependency on terms involving control effects.  Herbelin (2012) solves the inconsistency by constraining types to depend only on negative-elimination-free (NEF) terms, which are free of effects. This restriction makes dependent types compatible with classical reasoning enabled by the control operators.
+   + page 175 here: https://www.williamjbowman.com/resources/wjb-dissertation.pdf
+
+- Grohe 2012: (IFP + C: inflanationary FP + counting) (very cool work!)
+> Let C be a class of graphs with at least one excluded minor. Then IFP+C captures PTIME on C.  
+> https://dl.acm.org/doi/pdf/10.1145/2371656.2371662  
+> IFP+C does not capture PTIME on the class of cubic graphs [Cai et al. 1992]
+
+- Digression: why do we assume that proofs have a tree structure?
+> Cirquent calculus is a proof calculus that manipulates graph-style constructs termed cirquents, as opposed to the traditional tree-style objects such as formulas or sequents.
+
+- One application of fixed point suffices to express any query expressible with several alternations of fixed point and negation.
+> https://www.sciencedirect.com/science/article/pii/S0019995886800298?via%3Dihub
+
+- About Grohe work on LFP and IFP + C
+> - Gurevichm Shelah 1986: LFP = IFP (inflanationary fixed-point)  
+> - Evenness is not definable in IFP (proof by Ehreneucht-Fraisse games)  
+> - Cai, Furer, Immerman, 1992: There are polynomial-time decidable properties of graphs that are not definable in IFP + C (IFP + counting)  
+> - Immerman and Lander 1989: IFP + C captures PTime on trees  
+> - Grohe and Marino 1999: IFP + C captures PTime on any class of graphs of bounded treewidth  
+> - Grohe 1998: IFP + C captures PTime on the class of planar graphs  
+> - Grohe 2008: IFP + C captures PTime on the class of graphs that exclude K5 as a minor  
+> Source: https://www.cl.cam.ac.uk/~ad260/talks/wollic-tutorial.pdf
+> (Descriptive complexity and polynomial time, tutorial by Anuj Dawar on WoLLIC, Edinburgh 2008)
