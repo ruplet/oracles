@@ -1,4 +1,4 @@
-- Cobham characterizes PTIME:
+- Cobham 1973: characterizes PTIME with explicit bounds
 > But his characterization sucks, it has an explicit bound  
 > https://www.cs.toronto.edu/~sacook/homepage/cobham_intrinsic.pdf
 
@@ -6,20 +6,34 @@
 > This paper sucks, requires explicit bound on output size (log-bounded recursion on notation)  
 > https://dl.acm.org/doi/pdf/10.1145/1008293.1008295
 
+- Murawski, Ong 2004: define BC- class
+> https://core.ac.uk/download/pdf/82378545.pdf
+
+- Schopp: historia LOGSPACE
+> https://ulrichschoepp.de/Docs/csl06.pdf
+
 - Lind characterizes FLOGSPACE (1974)
-> the paper sucks! log-bounded recursion!  
+> the paper sucks! log-bounded recursion!
 > https://dspace.mit.edu/handle/1721.1/148880
 
-- About BCe- algebra; Space-efficiency and the Geometry of Interaction, Ulrich Schopp
-> About programming languages capturing logarithmic space
-> https://www-lipn.univ-paris13.fr/~baillot/GEOCAL06/SLIDES/Schoepp.pdf
+- A programming language for PP
+> https://drops.dagstuhl.de/storage/00lipics/lipics-vol202-mfcs2021/LIPIcs.MFCS.2021.35/LIPIcs.MFCS.2021.35.pdf
 
 - Cloute, Takeuti: Recursion-theoretic characterization of complexity classes
-> AC0(2), AC0(6), Flogspace  
+> AC0(2), AC0(6), Flogspace - also with explicit bounds!
 > page 163 pdf: https://link.springer.com/chapter/10.1007/978-1-4612-2566-9_6
 
 - Niggl, Wunderlich 2010: Implicit characterizations of FPTIME and NC revisited
 > Cob = FPTIME
+> From a programming point of view, function algebras like Cob are not practically appealing because they cannot be used as
+a construction kit: Whenever a recursion is performed, one is prompted with a proof that the computed function is bounded
+by some function already constructed.
+Building on work of Simmons [25] and Leivant [15,16], Bellantoni and Cook [4] were the first to give a purely functional
+characterization of FPTIME that does away with the “explicit” reference to the growth rate of functions defined by (BRN) in
+Cobham’s class. In fact, this “explicit” reference can be made “implicit” by ensuring the following principle (P-BC): Computed
+values in recursions must not control other recursions (cf. [20,22]).
+That principle led to the well-known function algebra BC [4] which actually can be used as a construction kit, since all
+restrictions are of purely syntactical nature. 
 > https://www.sciencedirect.com/science/article/pii/S1567832609000113
 
 - Gaboardi 2010: An implicit characterization of PSPACE
@@ -69,6 +83,10 @@ by Bellantoni and Cook, we have been careful in making our proof fully contructi
 - Term rewriting characterisation of LOGSPACE for finite and infinite data
 > https://www.mimuw.edu.pl/~lukaszcz/logspace.pdf
 
+- single-valued aperiodic nondeterministic finite-state transducers = FO reductions
+> The Descriptive Complexity Approach to LOGCFL
+> https://arxiv.org/abs/cs/9809114
+
 - Critique of Cobham's paper
 > there is nothing in this paper, really  
 > additionally, it's difficult to access:  
@@ -86,3 +104,7 @@ by Bellantoni and Cook, we have been careful in making our proof fully contructi
 > George Tourlakis - Computability-Springer (2022).pdf  
 > on page 625 of the PDF (608 internally), there is a proof, but also a remark about  
 > this theorem, with a reference to Odifreddi's work
+
+- About BCe- algebra; Space-efficiency and the Geometry of Interaction, Ulrich Schopp
+> About programming languages capturing logarithmic space
+> https://www-lipn.univ-paris13.fr/~baillot/GEOCAL06/SLIDES/Schoepp.pdf

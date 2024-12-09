@@ -1,8 +1,48 @@
 # Oracle-oriented programming: a proof of concept
 
+
+extract OCaml to Javascript:
+https://melange.re/v4.0.0/
+this is how they did it here:
+(formalization of regex matching)
+https://arxiv.org/pdf/2403.11919
+
+znalazlem gdzie jest zdefiniowana ekstrakcja coqa.
+jest tutaj:
+https://github.com/coq/coq/blob/master/plugins/extraction/common.ml
+
+to sie nie wydaje bardzo duzym zadaniem zeby zamienic ekstrakcje ocamla na ekstrakcje jsa
+
+Najważniejsza rzecz:
+Heraud, Nowak sformalizowali algebrę BC ale na bitstringach i w Coq!
+https://inria.hal.science/hal-00654217/file/itp2011-arxiv.pdf
+
+
+
+
+open problem: an implicit characterization of parimonious reductions
+
+
+Damiano mazza:
+Simple Parsimonious Types and Logarithmic Space
+https://drops.dagstuhl.de/storage/00lipics/lipics-vol041-csl2015/LIPIcs.CSL.2015.24/LIPIcs.CSL.2015.24.pdf
+
+Najwazniejsi badacze:
+Isabel Oitavem
+Ugo Dal Lago
+
+kolejna characteryzacja FPTIME, NC:
+Implicit characterizations of FPTIME and NC revisited
+
+Two function algebras defining functions in NC^k
+ boolean circuits
+
 Current todo:
 - present the history of the problem
 - list all the papers I've read, including BibTeX references and mirrors
+
+do Tourlakis (dowod na to ze Cobham = PTIME):
+ H. E. Rose. Subrecursion: Functions and Hierarchies. Oxford University Press, 1984.
 
 
 mój plan: zapoczątkować program, a nie tylko zaliczyć pracę magisterską

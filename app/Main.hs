@@ -5,8 +5,9 @@ import Control.Exception.Base (throw)
 import Data.Functor.Identity (runIdentity)
 import Control.Monad.Except (runExceptT)
 import System.IO.Unsafe (unsafePerformIO)
-import Test.QuickCheck (quickCheck)
+import Test.QuickCheck (quickCheck, choose)
 import Test.QuickCheck.Arbitrary (Arbitrary, arbitrary)
+import qualified Control.Applicative
 
 trace string e = unsafePerformIO $ do
   putStrLn string
@@ -48,6 +49,24 @@ type IM = ExceptT Exc Identity
 
 -- LSB first!, i.e. s[0] = LSB, s[n-1] = MSB
 type Val = [Bit]
+data ValUnary = ValZeroU | ValSuccU ValUnary deriving (Eq, Show)
+data ValBinaryLE = ValZeroLE | ValWithSetMSB [Bit] deriving (Eq, Show)
+
+intToValUnary :: Int -> ValUnary
+intToValUnary 0 = ValZeroU
+intToValUnary n = ValSuccU $ intToValUnary (n - 1)
+
+instance Arbitrary ValUnary where
+  arbitrary = do
+    size <- choose (0, 100)
+    return $ intToValUnary size
+
+instance Arbitrary ValBinaryLE where
+  arbitrary = do
+    isZero <- arbitrary
+    if isZero
+      then return ValZeroLE
+      else ValWithSetMSB <$> arbitrary
 
 valToInt :: Val -> Int
 valToInt [] = 0
@@ -186,7 +205,7 @@ prop_oneSafeToZero :: Val-> Bool
 prop_oneSafeToZero elt = runTest oneSafeToZero [] [elt] == Right []
 
 oneNormalToZero :: Func
-oneNormalToZero = 
+oneNormalToZero =
   let g = ZeroFunc in
   let h = Proj 1 1 2 in
   let d = identity in
@@ -195,13 +214,13 @@ prop_oneNormalToZero :: Val -> Bool
 prop_oneNormalToZero elt = runTest oneNormalToZero [elt] [] == Right []
 
 oneNormalToOne :: Func
-oneNormalToOne = 
+oneNormalToOne =
   Composition 0 1 1 [0] AppendOne [] [oneNormalToZero]
 prop_oneNormalToOne :: Val -> Bool
 prop_oneNormalToOne elt = runTest oneNormalToOne [elt] [] == Right [One]
 
 twoNormalToZero :: Func
-twoNormalToZero = 
+twoNormalToZero =
   let g = oneNormalToZero in
   let h = Proj 2 1 3 in
   let d = Proj 2 0 1 in
@@ -240,9 +259,6 @@ prop_constZero11 norm safe =
 constOne :: Int -> Int -> Func
 constOne nNormal nSafe = Composition 0 1 nNormal [nSafe] AppendOne [] [constZero nNormal nSafe]
 
-constListZero :: Int -> Int -> Func
-constListZero nNormal nSafe = Composition 0 1 nNormal [nSafe] AppendZero [] [constZero nNormal nSafe]
-
 prop_constOne00 :: Bool
 prop_constOne00 = runTest (constOne 0 0) [] [] == Right [One]
 
@@ -257,6 +273,30 @@ prop_constOne10 normalArgs =
 prop_constOne11 :: Val -> Val -> Bool
 prop_constOne11 norm safe =
   runTest (constOne 1 1) [norm] [safe] == Right [One]
+
+constListZero :: Int -> Int -> Func
+constListZero nNormal nSafe = Composition 0 1 nNormal [nSafe] AppendZero [] [constZero nNormal nSafe]
+
+prop_constListZero00 :: Bool
+prop_constListZero00 = runTest (constListZero 0 0) [] [] == Right [Zero]
+
+prop_constListZero01 :: Val -> Bool
+prop_constListZero01 safeArgs =
+  runTest (constListZero 0 1) [] [safeArgs] == Right [Zero]
+
+prop_constListZero10 :: Val -> Bool
+prop_constListZero10 normalArgs =
+  runTest (constListZero 1 0) [normalArgs] [] == Right [Zero]
+
+prop_constListZero11 :: Val -> Val -> Bool
+prop_constListZero11 normalArgs safeArgs =
+  runTest (constListZero 1 1) [normalArgs] [safeArgs] == Right [Zero]
+
+constListZeroOne :: Int -> Int -> Func
+constListZeroOne nNormal nSafe = Composition 0 1 nNormal [nSafe] AppendZero [] [constOne nNormal nSafe]
+
+prop_constListZeroOne00 :: Bool
+prop_constListZeroOne00 = runTest (constListZeroOne 0 0) [] [] == Right [Zero, One]
 
 -- function which takes nNormal normal arguments, nSafe safe arguments, and returns empty list
 -- constantZero :: Int -> Int -> Func
@@ -292,7 +332,7 @@ headNormal :: Func
 headNormal =
   let g = ZeroFunc in
   let h0 = constListZero 1 1 in
-  let h1 = constOne 1 1 in 
+  let h1 = constOne 1 1 in
   let d = identity in
   Recursion 0 0 g h0 h1 d d
 
@@ -308,29 +348,105 @@ prop_headSafe :: Val -> Bool
 prop_headSafe [] = runTest headSafe [] [[]] == Right [Zero]
 prop_headSafe elt = runTest headSafe [] [elt] == Right [head elt]
 
+setFirstToZero =
+  Composition 0 1 0 [1] AppendZero [] [Tail]
+
+prop_setFirstToZero :: Val -> Bool
+prop_setFirstToZero [] = runTest setFirstToZero [] [[]] == Right [Zero]
+prop_setFirstToZero elt = runTest setFirstToZero [] [elt] == Right (Zero : tail elt)
 
 -- Proposition 2. Let b be either 0 or 1. The following function is representable
 -- in BCε:
 
--- setb(m, n:) = set mth LSD of n to b
--- setb(m, n:) = shiftR(n: m) -> empty? return n, else return 
--- h(t, n: g(n))
-set :: Bit -> Func
-set b =
-  Composition fm 0 2 [] (f(x,y:) = x empty? y else ) [gs] []
--- set b =
---   let g = if b == Zero then AppendZero else AppendOne in
---   -- h0(counter, n : recursive) = append0 to recursive
---   let h0 = Composition 0 1 2 [1] AppendZero [] [Proj 2 1 3] in
---   let h1 = Composition 0 1 2 [1] AppendOne [] [Proj 2 1 3] in
---   let d = twoNormalToZero in
---   Recursion 1 0 g h0 h1 d d
+-- this is the correct version from the paper, i.e.
+-- not changing the length of the output
+set :: Bit -> [Bit] -> [Bit] -> [Bit]
+set b [] [] = []
+set b [] (_ : tl) = b : tl
+set b (_ : tl) [] = []
+set b (_ : tl) [_] = [b]
+set b (_ : tl) (Zero : l) = Zero : set b tl l
+set b (_ : tl) (One : l) = One : set b tl l
 
 prop_set :: Bit -> Val -> Val -> Bool
-prop_set bit shift arg =
-  let n = length arg in
-  let expected = if length shift >= n then arg else take n arg ++ [bit] ++ drop (n + 1) arg in
-  runTest (set bit) [shift, arg] [] == Right expected
+prop_set bit indexUnary [] =
+  null (set bit indexUnary [])
+prop_set bit indexUnary arg@(_:_) =
+  let index = min (length indexUnary) (length arg - 1) in
+  let lower = take index arg in
+  let upper = drop (index + 1) arg in
+  let expected = lower ++ [bit] ++ upper in
+  set bit indexUnary arg == expected
+
+-- Proposition 3: for numbers in unary, the following are expressible:
+plus :: Val -> Val -> Val
+plus [] x = x
+plus (One:tl) x = One : plus tl x
+
+prop_plus :: Val -> Val -> Bool
+prop_plus x y = plus x y == x ++ y
+
+-- Proposition 4:
+-- (1) The function unary2bin : N1 -> N2 is representable
+unary2bin :: Val -> Val
+unary2bin [] = []
+unary2bin (One:tl) = plus [One] (unary2bin tl)
+
+prop_unary2bin :: Val -> Bool
+prop_unary2bin x = length x == valToInt (unary2bin x)
+
+-- (2) Let bin2unary(m,n:) be the unary representation of
+-- m provided that m <= n. Then bin2unary is representable.
+
+-- minus(n:m) = max(m-n, 0)
+-- mult(m,n:)= m*n
+-- div(m,n:)=floor(m/n) for n neq 0
+-- (* Subtraction *)
+-- val minus = DSrec( proj(0,1,1), 
+-- 		  ZERO, 
+-- 		  ZERO, 
+-- 		  scomp ( p, [], [proj (1,1,2)]),
+-- 		  ZERO)
+
+-- (* Division *)
+-- val pdiv = 
+--     scomp (p, 
+-- 	   [],
+-- 	   [ scomp (DDSrec ("div",
+-- 			    ZERO, 
+-- 			    ZERO, 
+-- 			    ZERO,
+-- 			    scomp (s1, [], [proj (2,1,3)]),
+-- 			    proj(2,0,2)),
+-- 		    [scomp (s1, [], [proj(2,0,1)]),
+-- 		     scomp (p, [], [proj (2,0,2)])],[])])
+
+isZero :: Func
+isZero =
+  let g = constOne 0 0 in
+  let h = Tail in
+  let d = identity in
+  Recursion 0 0 g h h d d
+
+prop_isZero :: Val -> Bool
+prop_isZero [] = runTest isZero [[]] [] == Right [One]
+prop_isZero elt = runTest isZero [elt] [] == Right []
+
+prop_isLessThan :: Bool
+prop_isLessThan = True
+
+-- isLessThan :: Func
+-- isLessThan = head( Tail( Tail( ...(m) Tail( 111...11 (n) ))))
+-- d = 0, h = Tail, g = identity 
+
+-- val plog = DDSrec ("log",
+-- 		   ZERO, 
+-- 		  ZERO, 
+-- 		  ZERO,
+-- 		  scomp (s1, [], [proj(1,1,2)]),
+-- 		  scomp (pdiv, 
+-- 			 [ proj(1,0,1), TWO ],
+-- 			 []))
 
 -- cond przyjmuje dwa argumenty: funkcje f i g, obie arności (0, 1)
 cond :: Func -> Func -> Func
@@ -390,8 +506,16 @@ main = do
   quickCheck prop_constOne01
   quickCheck prop_constOne10
   quickCheck prop_constOne11
+  quickCheck prop_constListZero00
+  quickCheck prop_constListZero01
+  quickCheck prop_constListZero10
+  quickCheck prop_constListZero11
+  quickCheck prop_constListZeroOne00
   quickCheck prop_headNormal
   quickCheck prop_headSafe
   quickCheck prop_cond
+  quickCheck prop_setFirstToZero
+  -- quickCheck prop_isZero
+  quickCheck prop_isLessThan
   quickCheck prop_set
 
