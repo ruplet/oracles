@@ -30,5 +30,7 @@
                 "pdflatex"
             ]
         }
-    ]
+    ],
+    "latex-workshop.formatting.latex": "latexindent",
+    "latex-workshop.linting.chktex.enabled": true,
 }

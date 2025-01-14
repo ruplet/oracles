@@ -1,11 +1,70 @@
 \documentclass[en]  {pracamgr}
+%include standalone forest, tikz figures
+\usepackage{standalone}
 \usepackage{biblatex}
 % recommended while using biblatex with babel
 \usepackage{csquotes}
 \usepackage{amsmath}
 % make references clickable, hide boxes around links
-\usepackage[hidelinks]{hyperref}
+\usepackage[hidelinks, pdfpagelabels]{hyperref}
 \addbibresource{references.bib}
+
+% https://tex.stackexchange.com/a/404990
+% https://mirror.aarnet.edu.au/pub/CTAN/macros/latex/contrib/hyperref/doc/hyperref-doc.html#x1-140004
+\addto\extrasenglish{%
+  \def\chapterautorefname{Chapter}%
+}
+\addto\extrasenglish{%
+  \def\chaptername{Chapter}%
+}
+
+\addto\extrasenglish{%
+  \def\sectionautorefname{Section}%
+}
+\addto\extrasenglish{%
+  \def\sectionname{Section}%
+}
+\usepackage{subcaption}
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  frame=single,
+  breaklines=true,
+  literate={ą}{{\k a}}1
+  	  {Ą}{{\k A}}1
+           {ż}{{\. z}}1
+           {Ż}{{\. Z}}1
+           {ź}{{\' z}}1
+           {Ź}{{\' Z}}1
+           {ć}{{\' c}}1
+           {Ć}{{\' C}}1
+           {ę}{{\k e}}1
+           {Ę}{{\k E}}1
+           {ó}{{\' o}}1
+           {Ó}{{\' O}}1
+           {ń}{{\' n}}1
+           {Ń}{{\' N}}1
+           {ś}{{\' s}}1
+           {Ś}{{\' S}}1
+           {ł}{{\l}}1
+           {Ł}{{\L}}1
+}
+\usepackage{url}
+\usepackage{xr}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{forest}
+\usepackage{tikz-qtree}
+% https://tex.stackexchange.com/a/18927
+
+
+\usepackage{pdflscape}
+
+\usepackage[titletoc]{appendix}
+\usepackage{amsthm}
+
 
 \autor{Paweł Balawender}{429141}
 
@@ -37,7 +96,7 @@
 % Instytut
 % ew. Wydział ew. Uczelnia (jeżeli nie MIM UW))
 \opiekun{dr hab. Paweł Parys, prof. UW\\
-  Instytut Informatyki UW\\
+  Institute of Informatics, University of Warsaw\\
   }
 
 % miesiąc i~rok:
@@ -48,7 +107,7 @@
 %11.0 Matematyka, Informatyka:\\ 
 %11.1 Matematyka\\ 
 %11.2 Statystyka\\ 
-11.3 Informatyka\\ 
+11.3 Computer Science\\ 
 %11.4 Sztuczna inteligencja\\ 
 %11.5 Nauki aktuarialne\\
 %11.9 Inne nauki matematyczne i informatyczne
@@ -63,19 +122,24 @@
 \keywords{Implicit Computational Complexity, Safe recursion, Logspace, Bellantoni and Cook}
 
 % Tu jest dobre miejsce na Twoje własne makra i~środowiska:
-\newtheorem{defi}{Definicja}[section]
+% \newtheorem{defi}{Definicja}[section]
+\newcommand{\bcem}{\ensuremath{\text{BC}_{\varepsilon}^-}}
+\newtheorem{thm}{Theorem}
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{prop}{Proposition}
 
 % koniec definicji
 
 \begin{document}
+\hypersetup{pageanchor=false}
 \maketitle
 
-%tu idzie streszczenie na strone poczatkowa
 \begin{abstract}
   In this work, I study what features does it make sense to add to a programming language
-  from the computational complexity perspective.
+  from the computational complexity perspective. Specifically, I focus on how these features can be used to capture various complexity classes, such as LOGSPACE, PTIME, and PSPACE. By analyzing the expressiveness and limitations of these features, I aim to provide insights into the design of programming languages that are both practical and theoretically sound.
 \end{abstract}
 
+\hypersetup{pageanchor=true}
 \tableofcontents
 %\listoffigures
 %\listoftables
@@ -92,49 +156,76 @@ of functions containing the initial functions i-v and closed under vi, vii:
   \item iv. (Predecessor) $p(: 0) = 0$, $p(: ai) = a$
   \item v. (Conditional) $C(: a, b, c) = b$ if $a \mod 2 = 1$, $c$ otherwise
   \item vi. (Safe affine recursion) Define the new function $f$ by, for $i \in \{0, 1\}$:
-    \begin{align*}
-      f(0, x: a) &= g(x:a) \\
-      f(yi, x: a) &= h_i(y, x: f(y, x : a))
-    \end{align*}
-    where $h_i, g$ are in BC$_N$.
+        \begin{align*}
+          f(0, x: a)  & = g(x:a)                 \\
+          f(yi, x: a) & = h_i(y, x: f(y, x : a))
+        \end{align*}
+        where $h_i, g$ are in BC$_N$.
   \item vii. (Safe composition) Define the new function $f$ by
-    \begin{align*}
-      f(x : a) = h(r_1(x:), r_2(x:), \dots : t_1(x : a_1), t_2(x : a_2), \dots)
-    \end{align*}
-    where $h, r_1, r_2, \dots, t_1, t_2, \dots$ are in BC$_N$, and $a_1, a_2, \dots$ are partitions of $a$.
+        \begin{align*}
+          f(x : a) = h(r_1(x:), r_2(x:), \dots : t_1(x : a_1), t_2(x : a_2), \dots)
+        \end{align*}
+        where $h, r_1, r_2, \dots, t_1, t_2, \dots$ are in BC$_N$, and $a_1, a_2, \dots$ are partitions of $a$.
 \end{enumerate}
 
-In his work from~2004~\cite{10.1007/978-3-540-30477-7_21}, Neergaard says:
-you can define this! Does it work?
+In his work from~2004~\cite{10.1007/978-3-540-30477-7_21}, Neergaard says that: 
+\begin{prop}
+  Let $m$ and $n$ be numbers in binary. Right shift $\text{shift}^R(m:n)$ of $m$ by $|n|$ and selection of bit $|n|$
+from m are definable in \bcem
+\end{prop}
 
+Before talking about the above proposition, let's consider another function, cond'.
 
+\includestandalone[mode=buildnew, width=\textwidth]{neergaard-ast}
 
+\begin{lemma}
+  Function $\text{cond'}(:x, y, z) = y$ if $x = \varepsilon$, $z$ otherwise, is not definable in \bcem
+\end{lemma}
+\begin{proof}
+  First, notice that a recursion node cannot occur anywhere in the syntax tree of function cond', because then it would need to take at least one normal argument, which it does not. So it has to be constructed from compositions of base functions and thus can be represented by a simple tree, like the function in the figure. The nodes x, y, z would be substituted by the representation of the actual argument, e.g. if we passed 0 as x to the function, we would have a O(:) node 
+  instead of x in the tree. Since we don't use recursion, the AST precisely represents the computation tree as well. Consider the path from every safe argument to the root of the tree (which is the result). Every safe argument will either at some point occur as the first argument of some C node (conditional), or not. \\
+  Towards obtaining a contradiction, assume that function cond' belongs to the class $\bcem$ and consider its AST.
+  Consider the path from the node representing argument x (so the argument we condition on in cond') to the root.
+If x at some point is the first argument of some C node, the AST determines the highest possible bit we can check in this node. So if, after taking the argument x, we immediately condition on it, the highest bit tested is bit 0, which we will only check if x is not empty. If before condition we have 2 p nodes, we will condition on bit 2, etc. This number is constant for the whole function and does not depend on values of arguments passed. So we modify a finite prefix of x, then condition on its least significant bit. It means that there exist $k$ such that $cond'(:x, y, z) = cond'(1(0^k)x, y, z$ -- the C node identifies all even numbers, so it cannot tell an empty string from a one with many least significant zeros, and then a one on MSB. But clearly this property of cond' is against its definition, as cond'(:0,y, z) = y, while cond'(:100000000..., y, z) = z.
+  Now assume that x never ends up as the first argument of any C node. Then either x gets 'destroyed' on its path, either not being selected by a pi node or by a C node, or it actually ends up in the result with a modified finite prefix of length K. Then clearly the result will not be correct for both $cond'(:1(0^k)x, y, z)$ and $cond'(:11(0^k)x, y, z)$ at the same time.
+\end{proof}
+
+and now:
+\begin{thm}
+  Let $m$ and $n$ be numbers in binary. Right shift $\text{shift}^R(m:n)$ of $m$ by $|n|$ is not definable in \bcem.
+\end{thm}
+\begin{proof}
+  By contradiction, assume it is definable. Then $\text{cond'}(:x, y, z) = C(: \text{shift}^R(1 : x), y, z)$, but cond' 
+  is not definable.
+\end{proof}
+
+This is important that
 
 \appendix
 
 \chapter{Przykładowe wyniki blabalizy
-    (ze~współczynnikami~$\sigma$-$\rho$)}
+  (ze~współczynnikami~$\sigma$-$\rho$)}
 
 \begin{center}
   \begin{tabular}{lrrrr}
-    & Współczynniki \\
-    & Głombaskiego & $\rho$ & $\sigma$ & $\sigma$-$\rho$\\
-    $\gamma_{0}$ & 1,331 & 2,01 & 13,42 & 0,01 \\
-    $\gamma_{1}$ & 1,331 & 113,01 & 13,42 & 0,01 \\
-    $\gamma_{2}$ & 1,332 & 0,01 & 13,42 & 0,01 \\
-    $\gamma_{3}$ & 1,331 & 51,01 & 13,42 & 0,01 \\
-    $\gamma_{4}$ & 1,332 & 3165,01 & 13,42 & 0,01 \\
-    $\gamma_{5}$ & 1,331 & 1,01 & 13,42 & 0,01 \\
-    $\gamma_{6}$ & 1,330 & 0,01 & 13,42 & 0,01 \\
-    $\gamma_{7}$ & 1,331 & 16435,01 & 13,42 & 0,01 \\
-    $\gamma_{8}$ & 1,332 & 865336,01 & 13,42 & 0,01 \\
-    $\gamma_{9}$ & 1,331 & 34,01 & 13,42 & 0,01 \\
-    $\gamma_{10}$ & 1,332 & 7891432,01 & 13,42 & 0,01 \\
-    $\gamma_{11}$ & 1,331 & 8913,01 & 13,42 & 0,01 \\
-    $\gamma_{12}$ & 1,331 & 13,01 & 13,42 & 0,01 \\
-    $\gamma_{13}$ & 1,334 & 789,01 & 13,42 & 0,01 \\
-    $\gamma_{14}$ & 1,331 & 4897453,01 & 13,42 & 0,01 \\
-    $\gamma_{15}$ & 1,329 & 783591,01 & 13,42 & 0,01 \\
+                  & Współczynniki                                           \\
+                  & Głombaskiego  & $\rho$     & $\sigma$ & $\sigma$-$\rho$ \\
+    $\gamma_{0}$  & 1,331         & 2,01       & 13,42    & 0,01            \\
+    $\gamma_{1}$  & 1,331         & 113,01     & 13,42    & 0,01            \\
+    $\gamma_{2}$  & 1,332         & 0,01       & 13,42    & 0,01            \\
+    $\gamma_{3}$  & 1,331         & 51,01      & 13,42    & 0,01            \\
+    $\gamma_{4}$  & 1,332         & 3165,01    & 13,42    & 0,01            \\
+    $\gamma_{5}$  & 1,331         & 1,01       & 13,42    & 0,01            \\
+    $\gamma_{6}$  & 1,330         & 0,01       & 13,42    & 0,01            \\
+    $\gamma_{7}$  & 1,331         & 16435,01   & 13,42    & 0,01            \\
+    $\gamma_{8}$  & 1,332         & 865336,01  & 13,42    & 0,01            \\
+    $\gamma_{9}$  & 1,331         & 34,01      & 13,42    & 0,01            \\
+    $\gamma_{10}$ & 1,332         & 7891432,01 & 13,42    & 0,01            \\
+    $\gamma_{11}$ & 1,331         & 8913,01    & 13,42    & 0,01            \\
+    $\gamma_{12}$ & 1,331         & 13,01      & 13,42    & 0,01            \\
+    $\gamma_{13}$ & 1,334         & 789,01     & 13,42    & 0,01            \\
+    $\gamma_{14}$ & 1,331         & 4897453,01 & 13,42    & 0,01            \\
+    $\gamma_{15}$ & 1,329         & 783591,01  & 13,42    & 0,01            \\
   \end{tabular}
 \end{center}
 
