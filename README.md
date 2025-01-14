@@ -1,6 +1,44 @@
 # Oracle-oriented programming: a proof of concept
 
 
+notatki z Neergaarda:
+lemat:
+jesli dla kazdej wartosci y, g(x:y) zwraca to samo,
+oraz dla kazdego y, f(b, x: y) zwraca to samo,
+to rekurencja f(n, x: y) dla kazdego y zwraca to samo.
+
+analogiczny lemat dla zlozenia funkcji
+
+jesli nie uzywamy cond(:y, ., .), to wynik ''nie wymaga
+rozpakowywania y''
+
+dla ustalonej funkcji f i argumentu x, ksztalt drzewa obliczen f(x : y)
+moze zalezec co najwyzej od jednego bitu y:
+jesli bedziemy testowac bit 0 y, to testujemy tylko parzystosc y
+jesli bedziemy testowac bit 1 y, to musimy najpierw uciąć na siłe bit 0,
+ zatem wynik dla [], [1], MSB[100]LSB, [101], [1001], [1000], [1100], [1101] beda takie same
+ oraz dla [10], [11], [110], [111], [1010], [1011], [1110], [1111]
+
+przechodzimy od argumentu y drzewo obliczen. na sciezce znajda sie jakies wierzcholki
+p, jakies pi, jakies s i jakies cond. po wierzcholku cond, bity y nie przezywaja,
+ale rezultat bedzie zalezec od jakiegos y_i, gdzie i to dokladnie liczba wierzcholkow p,
+ktore ''usmiercily'' ktorys bit y (tj. nie byly poprzedzone jakims S).
+
+drzewo obliczen: rozpatrujemy osobno wszystkie bity argumentow, zaczynamy od wierzcholkow
+$x_^{(1)}_1 x^{(1)}_2, ..., x^{(n)}_1, ..., y^{(m)}_k$
+
+na pozycjach bezpiecznych bedzie zawsze tylko podzbior oryginalnych y i stale.
+liczba tych stalych moze zalezec od argumentu normalnego.
+
+
+
+
+wazny paper w kwestii przegladu literatury:
+https://link.springer.com/article/10.1007/BF01202288#preview
+Function-algebraic characterizations of log and polylog parallel time
+
+
+
 extract OCaml to Javascript:
 https://melange.re/v4.0.0/
 this is how they did it here:
