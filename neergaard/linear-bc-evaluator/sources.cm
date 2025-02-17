@@ -1,0 +1,45 @@
+(* (Linear) BC evaluator.  
+    $Id: sources.cm,v 1.11 2004/06/03 20:17:22 turtle Exp $
+
+    Copyright 2003 Peter Møller Neergaard and Harry Mairson.
+
+    This file is part of BC Evaluator.
+
+    BC Evaluator is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    BC Evaluator is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with BC Evaluator; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*)
+
+(* This file contains the instructions on compiling the BC evaluator
+for SML/NJ compile manager *)
+
+Group is
+	Counter.sig	(* Counter module *)
+	Counter.sml
+	Debug.sig	(* Debugging flag *)
+	Debug.sml
+	Syntax.sig 	(* syntax tree abstraction *)
+	Syntax.sml
+	Types.sig	(* Types and type annotated syntax trees *)
+	Types.sml
+	Bit.sig		(* Bit utilities library *)
+	Bit.sml
+	Numbers.sig	(* Number utilities library *)
+	Numbers.sml
+	Evaluator-sig.sml	(* Signature for the evaluators *)
+	CBVEvaluator.sml	(* CBV standard evaluator *)
+	LogspaceEvaluator.sml	(* An evaluator using only logspace for BC- *)
+	LogspaceEvaluatorFunc.sml	(* A (more) functional version of the logspace BC-  evaluator *)
+
+	LogspaceEvaluatorFunctional.sml	(* A fully functional version of the logspace BC-  evaluator to please Danvy *)
+	Examples.sml	(* Examples *)

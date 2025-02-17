@@ -1,0 +1,34 @@
+# (Linear) BC evaluator.  
+# $Id: Dependencies,v 1.5 2003/12/23 06:55:32 turtle Exp $
+# 
+# Copyright 2003 Peter Møller Neergaard and Harry Mairson.
+# 
+# This file is part of BC Evaluator.
+# 
+# BC Evaluator is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# 
+# BC Evaluator is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with BC Evaluator; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# 
+# This files contains the dependencies definitions to make the files
+# compile under Moscow ML.
+
+Counter: %STRUCTURE
+Debug: Counter
+Syntax: %STRUCTURE 
+Numbers: %STRUCTURE
+Evaluator-sig: Syntax Numbers
+CBVEvaluator: Debug Numbers Syntax Evaluator-sig
+LogspaceEvaluator: Debug Numbers Syntax Evaluator-sig
+LogspaceEvaluatorFunc: Count Debug Numbers Syntax Evaluator-sig
+Examples: LogspaceEvaluator CBVEvaluator 
+
