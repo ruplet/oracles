@@ -1,7 +1,7 @@
 (* (Linear) BC evaluator: evaluator of Bellantoni-Cook's function algebra for PTIME.
     $Id: LogspaceEvaluatorFunctional.sml,v 1.3 2004/06/07 22:52:18 turtle Exp $
 
-    Copyright 2003,2004 Peter Møller Neergaard (e-mail: turtle@achilles.linearity.org)
+    Copyright 2003,2004 Peter Mï¿½ller Neergaard (e-mail: turtle@achilles.linearity.org)
     and Harry Mairson.
 
     This file is part of BC Evaluator.
@@ -23,9 +23,9 @@
 
 (* This file contains an evaluator for BC-_epsilon: the extended
 affine fragment of BC functions (as originally defined by Murawski and
-Ong and extended by Møller Neergaard).  The interpreter illustrates
+Ong and extended by Mï¿½ller Neergaard).  The interpreter illustrates
 that the extended linear fragment can be evaluated in logarithmic
-space as described by Møller Neergaard in ``A Functional Language for
+space as described by Mï¿½ller Neergaard in ``A Functional Language for
 Logspace''.
 
 The overall idea behind the evaluator is that we need only store a
@@ -219,7 +219,8 @@ fun compDesc (desc : string option)
 		    ( Debug.condPrint false ("comp " ^ desc_toString desc ^ "normal #"^ Int.toString (i + 1) ^ ", bt=" ^ Int.toString bt ^ "\n");
 		      (#eval g) normal empty bt)
 	    in 
-		Vector.mapi (input_normal normal) (gs, 0, NONE)
+		(* Vector.mapi (input_normal normal) (gs, 0, NONE) *)
+		Vector.mapi (input_normal normal) gs
 	    end
 	    
 	fun safe_usage normal i = 
@@ -236,11 +237,16 @@ fun compDesc (desc : string option)
 			end
 		(* Compute f's usage and the composition of f with h *)
 		val f_safe_recq = (#safe_usage f) (make_normal normal) i
-      		val comp_f_h_recq = Vector.mapi (fn (i,h)=> 
+      		(*val comp_f_h_recq = Vector.mapi (fn (i,h)=> 
 						    compose
 							(Vector.sub (f_safe_recq, i))
 							(#safe_usage (Vector.sub (hs, i))))
-						(f_safe_recq,0,NONE)
+						(f_safe_recq,0,NONE) *) 
+			val comp_f_h_recq = Vector.mapi (fn (i,h)=> 
+						    compose
+							(Vector.sub (f_safe_recq, i))
+							(#safe_usage (Vector.sub (hs, i))))
+						f_safe_recq
 	    in
 		(* Scan through the composed usaged to produce the usage vector *)
 		Vector.tabulate (nsafe',
@@ -264,7 +270,8 @@ fun compDesc (desc : string option)
 		fun input_safe (i, h:program) bt= 
 			       ( Debug.condPrint false ("comp " ^ desc_toString desc ^ "safe #"^ Int.toString (i + 1) ^ ", bt=" ^ Int.toString bt ^ "\n");
 				 (#eval h) normal safe bt)
-		val safe = Vector.mapi input_safe (hs, 0, NONE)
+		(*val safe = Vector.mapi input_safe (hs, 0, NONE)*)
+		val safe = Vector.mapi input_safe hs
 	    in
 		(#eval f) (make_normal normal) safe bt
 	    end
@@ -281,6 +288,15 @@ fun comp f gs hs nsafe = compDesc NONE f gs hs nsafe
    recursive calls needed to reach that depth.  We then loop over the 
    recursive depth each time going one recursive step shorter.
    *)
+(* Helper function to slice a vector *)
+fun vector_slice (vec, start, len_opt) =
+    let
+        val len = case len_opt of
+                      NONE => Vector.length vec - start
+                    | SOME l => l
+    in
+        Vector.tabulate (len, fn i => Vector.sub (vec, start + i))
+    end
 
 fun saferecDesc (debug: bool)
 		(desc : string option)
@@ -291,7 +307,7 @@ fun saferecDesc (debug: bool)
 		(d0 : program)
 		(h1 : program)
 		(d1 : program) =
-    (* Iteratively find the lenght of an argument by querying from right to left *) 		
+    (* Iteratively find the length of an argument by querying from right to left *) 		
     let fun find_length (z : int -> bit) = 
 	    let val _ = Debug.condPrint true ("saferec "^ desc_toString desc ^"(find_length): starting search\n")
 		fun search i = if Bit.is_none (z i) then i else search (i+1)
@@ -309,7 +325,7 @@ fun saferecDesc (debug: bool)
 	(* Return the vector corresponding to the normal arguments at a given recursive depth *)
 	fun make_normal normal depth =
 	    Vector.concat [Vector.fromList [input_rec_var normal depth], 
-			   Vector.extract (normal, 1, NONE)]
+			   vector_slice (normal, 1, NONE)]
         (* Find the bit request and depth for a given index; if idx is NONE, it finds the deepest bit depth;
 	 otherwise it stops at latest at the depth defined by idx*)
 	fun bit_depth topnormal topbit maxidx =
@@ -352,7 +368,7 @@ fun saferecDesc (debug: bool)
                safe arguments, otherwise none will be requested. *)
 	    case bit_depth normal i NONE of
 		{bt=bt, depth=dp,...} => 
-		let val g_recq = (#safe_usage g) (Vector.extract (normal, 1, NONE)) bt
+		let val g_recq = (#safe_usage g) (vector_slice (normal, 1, NONE)) bt
 		in
 		    (* We cheat a little for proof-of-concept; and always compute the recquest to g; 
 		       if we do not call g, we overwrite it afterwards *)
@@ -369,7 +385,7 @@ fun saferecDesc (debug: bool)
 		val {idx=idx,depth=depth,bt=bt} = bit_depth topnormal topbit NONE
 		val _ = Debug.condPrint debug ("saferec "^ desc_toString desc ^"(eval) (rec recursion #"^Int.toString recursion ^ "): max_depth= " ^ Int.toString max_depth ^ ", depth=" ^ Int.toString depth^"\n")
 		val (iterations, init) = if depth=max_depth 
-					 then (idx-1,(#eval g) (Vector.extract (topnormal, 1, NONE)) safe bt)
+					 then (idx-1,(#eval g) (vector_slice (topnormal, 1, NONE)) safe bt)
 					 else (idx, Bit.none)
 		fun loop (idx, cache : bit) =
 		    if idx>=0 

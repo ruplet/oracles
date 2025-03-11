@@ -7,9 +7,13 @@ This package contains an evaluator for the function algebra BC for
 PTIME introduced by Bellantoni and Cook [1].  It furthermore contains
 an evaluator running in logspace for the linear fragment BC- of BC as
 introduced by Ong and Murawski [2] and the linear fragment BC-_epsilon
-as introduced by Møller Neergaard [4].  The evaluator is described by
-Møller Neergaard and Mairson [3, 4].  It is intended to provide a proof
+as introduced by Mï¿½ller Neergaard [4].  The evaluator is described by
+Mï¿½ller Neergaard and Mairson [3, 4].  It is intended to provide a proof
 of concept on top of the proof given in [3,4].
+
+Just run sudo apt instal smlnj, will install newer version than 110.0.7,
+but still pretty old (from 2022). But it's probably good enough.
+Also, sudo apt install rlwrap and run smlnj as `rlwrap sml` to use arrows
 
 The evaluator is written in SML/NJ (Version 110.0.7) and has been
 tested under GNU/Linux.  The interpreter is provided in several source
@@ -17,7 +21,8 @@ files and are easiest compiled using the SML/NJ's Compilation Manager:
 Start the sml interpreter in the directory of the source files.  Then
 issue the command to run the compilation manager:
 
-    CM.make ();
+    CM.make "sources.cm";
+    Examples.test_suite CBVEvaluator.eval_bc ;
 
 
 The evaluator package consists of four evaluators which all adhere to
@@ -97,7 +102,7 @@ Due to the restrictions on SML/NJ int type the evaluator is limited to
 
 If you have any questions or comments, please contact 
 
-   Peter Møller Neergaard 
+   Peter Mï¿½ller Neergaard 
    Mitchom School of Computer Science
    Brandeis University
    Waltham, MA 02454
@@ -113,9 +118,9 @@ characterization of the polytime functions. Computational Complexity,
 in light logic? In 2nd International Workshop on Implicit
 Computational Complexity, June 2000.
 
-[3] P. Møller Neergaard and H. G. Mairson.  How Light is Safe
+[3] P. Mï¿½ller Neergaard and H. G. Mairson.  How Light is Safe
 Recursion?  Translations Between Logics of Polynomial Time.
 
-[4] P Møller Neergaard. BC-epsilon: A recursion-theoretic
+[4] P Mï¿½ller Neergaard. BC-epsilon: A recursion-theoretic
 characterization of logspace. Technical report, Brandeis University,
 March 2004. Preliminary version.

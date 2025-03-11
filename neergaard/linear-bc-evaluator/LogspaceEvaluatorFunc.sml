@@ -1,7 +1,7 @@
 (* (Linear) BC evaluator: evaluator of Bellantoni-Cook's function algebra for PTIME.
     $Id: LogspaceEvaluatorFunc.sml,v 1.4 2004/06/04 23:38:39 turtle Exp $
 
-    Copyright 2003 Peter Møller Neergaard (e-mail: turtle@achilles.linearity.org)
+    Copyright 2003 Peter Mï¿½ller Neergaard (e-mail: turtle@achilles.linearity.org)
     and Harry Mairson.
 
     This file is part of BC Evaluator.
@@ -23,9 +23,9 @@
 
 (* This file contains an evaluator for the extended affine fragment
 of BC functions (as originally defined by Murawski and Ong and
-extended by Møller Neergaard).  The interpreter illustrates that the
+extended by Mï¿½ller Neergaard).  The interpreter illustrates that the
 extended linear fragment can be evaluated in logarithmic space as
-described by Møller Neergaard. 
+described by Mï¿½ller Neergaard. 
 
 The evaluator works by querying one bit at a time.  In this we need
 only store a fixed number of bits for each operator along with a
@@ -133,8 +133,8 @@ fun compDesc (desc : string option)
 			   ^ "safe #"^ Int.toString (i + 1) 
 			   ^ ", bit=" ^ Int.toString bit ^ "\n");
 	      h normal safe bit)
-	val normal = Vector.mapi input_normal (gs, 0, NONE)
-	val safe = Vector.mapi  input_safe (hs, 0, NONE)
+	val normal = Vector.mapi input_normal gs
+	val safe = Vector.mapi  input_safe hs
     in
 	f normal safe bit : bit
     end
@@ -168,6 +168,16 @@ fun loop body = if body () then () else loop body
 (* The cache of results contain the depth and the bit value *)
 val NORESULT = { depth = ~1, res = Bit.none }
 
+(* Helper function to slice a vector *)
+fun vector_slice (vec, start, len_opt) =
+    let
+        val len = case len_opt of
+                      NONE => Vector.length vec - start
+                    | SOME l => l
+    in
+        Vector.tabulate (len, fn i => Vector.sub (vec, start + i))
+    end
+
 fun saferecDesc (debug: bool)
 		(desc : string option)
 		(g : program)
@@ -195,7 +205,7 @@ fun saferecDesc (debug: bool)
 			   ^ ", bit=" ^ Int.toString bit  ^"\n");
 			Vector.sub (normal,0) (1 + bit + #depth (!goal)))
 	val normal = Vector.concat [Vector.fromList [input_recVar], 
-				    Vector.extract (normal, 1, NONE)]
+				    vector_slice (normal, 1, NONE)]
 	fun recursiveCall (d : program) (bit : int) =
 	    (* Compute the displacement by querying the bits of the delta function *)
 	    let val _ = Debug.condPrint debug ("saferec: request for rec call ("
@@ -238,7 +248,7 @@ fun saferecDesc (debug: bool)
 						     ^ ", res=" ^ Bit.toString (#res (!result))
 						     ^ "; lsb=" ^ Bit.toString lsb ^"\n")
 				val res = case Bit.bool_option lsb of
-					      NONE => g (Vector.extract (normal, 1, NONE)) safe
+					      NONE => g (vector_slice (normal, 1, NONE)) safe
 							(#bit (!goal))
 					    | SOME b => 
 					      let val (h, d) = if b then (h1,d1) else (h0,d0)

@@ -310,7 +310,7 @@ fun eval_bit s n =
 
 fun eval s normal safe =
     let val exec_tree = build_exec_tree s
-        (* Iteratively evaluate the bit until there are no m ore bits. *)
+        (* Iteratively evaluate the bit until there are no more bits. *)
 	fun iter_eval_bit acc bit =
 	    case eval_bit exec_tree bit of
 		NONE => acc

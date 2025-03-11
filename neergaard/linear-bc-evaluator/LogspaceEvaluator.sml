@@ -1,7 +1,7 @@
 (* (Linear) BC evaluator: evaluator of Bellantoni-Cook's function algebra for PTIME.
     $Id: LogspaceEvaluator.sml,v 1.16 2004/06/04 23:38:39 turtle Exp $
 
-    Copyright 2003 Peter Møller Neergaard (e-mail: turtle@achilles.linearity.org)
+    Copyright 2003 Peter Mï¿½ller Neergaard (e-mail: turtle@achilles.linearity.org)
     and Harry Mairson.
 
     This file is part of BC Evaluator.
@@ -24,7 +24,7 @@
 (* This file contains an interpreter for the linear fragment of BC
 functions (as defined by Murawski and Ong).  The interpreter
 illustrates that the linear fragment can be evaluated in logarithmic
-space as described by Møller Neergaard and Mairson. The complexity
+space as described by Mï¿½ller Neergaard and Mairson. The complexity
 bound is realized by observing the following facts:
 
 - the only data structure used is an augmented syntax tree.  The
@@ -99,11 +99,14 @@ val n_window = ! o n_window_ref
 (* Auxiliary function to turn an array into a list. *)
 fun array_toList (arr : 'a Array.array) = Array.foldr (op ::) [] arr
 
-(* and an auxiliary function to create a subarray. *)
-fun subarray slice = 
-    let val vec = Array.extract slice
-    in Array.tabulate (Vector.length vec,
-		       fn i => Vector.sub (vec,i))
+(* Auxiliary function to create a subarray. *)
+fun subarray (arr, start, len_opt) =
+    let
+        val len = case len_opt of
+                      NONE => Array.length arr - start
+                    | SOME l => l
+    in
+        Array.tabulate (len, fn i => Array.sub (arr, start + i))
     end
 
 (* Shift a source right *)
@@ -316,7 +319,7 @@ fun lookup n ((src, s) : source) =
 					   ((shift 1 (Array.sub (e,0))) 
 					    :: Array.foldri (fn (_, e, l) => e::l)
 							    [( SRec (l, 1 + r), 0)]
-							    (e, 1, SOME ((Array.length e) - nsafe -1)) ))
+							    (subarray (e, 1, SOME ((Array.length e) - nsafe -1))) ))
 			| Top f => push lj (subarray (e, 0, NONE))			  
 			   (* The top node just passes the computation down one
 			    level *)

@@ -1,7 +1,7 @@
 (*  (Linear) BC evaluator: evaluator of Bellantoni-Cook's function algebra for PTIME
     $Id: Counter.sml,v 1.1 2003/12/23 06:55:32 turtle Exp $
 
-    Copyright 2003 Peter Møller Neergaard (e-mail: turtle@achilles.linearity.org)
+    Copyright 2003 Peter Mï¿½ller Neergaard (e-mail: turtle@achilles.linearity.org)
     and Harry Mairson.
 
     This file is part of BC Evaluator.

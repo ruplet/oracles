@@ -1,7 +1,7 @@
 (* (Linear) BC evaluator: evaluator of Bellantoni-Cook's function algebra for PTIME.
     $Id: CBVEvaluator.sml,v 1.18 2004/06/07 22:52:18 turtle Exp $
 
-    Copyright 2003 Peter Møller Neergaard (e-mail: turtle@achilles.linearity.org)
+    Copyright 2003 Peter Mï¿½ller Neergaard (e-mail: turtle@achilles.linearity.org)
     and Harry Mairson.
 
     This file is part of BC Evaluator.
@@ -66,6 +66,16 @@ fun arguments_toString arg_list =
     (( Syntax.map_comma_string argument_toString ) o vector_toList) arg_list
 fun empty () = Vector.fromList []
 
+(* Helper function to slice a vector *)
+fun vector_slice (vec, start, len_opt) =
+    let
+        val len = case len_opt of
+                      NONE => Vector.length vec - start
+                    | SOME l => l
+    in
+        Vector.tabulate (len, fn i => Vector.sub (vec, start + i))
+    end
+
 local open Syntax in
 local open Numbers in 
 val toBinary =  binary o fromInt			   
@@ -112,7 +122,7 @@ let fun evaluate'  ((args as (normal, safe)): 'a arguments) b =
 	      | (Syntax.Rec ((debug,desc), g, h0, d0, h1, d1,_) ) =>
 		let val n = nth normal 1
 		in if zero n
-		   then evaluate' ((Vector.extract (normal, 1, NONE)),safe) g
+		   then evaluate' ((vector_slice (normal, 1, NONE)),safe) g
 		   else
 		       let val n' = rshift 1 n
 			   val (h, delta) = if Bit.boolean ( bit_nth n 0)
@@ -120,14 +130,14 @@ let fun evaluate'  ((args as (normal, safe)): 'a arguments) b =
 		  			    else (h0, d0)
 			   val updated_normal = 
 		  	       Vector.concat [Vector.fromList [Value n'], 
-		  			      Vector.extract (normal, 1, 
+		  			      vector_slice (normal, 1, 
 		  					      SOME (Vector.length normal - 1))]
 			   val dVal = (evaluate' (updated_normal, empty ()) delta)
 			   val d = 1 + log dVal
 			   val recursive_normal = 
 		  	       Vector.concat [Vector.fromList 
 		  				  [Value (rshift d n')], 
-		  				  Vector.extract (normal, 1, 
+		  				  vector_slice (normal, 1, 
 		  						  SOME (Vector.length normal - 1))]
 			   val thunk_ref = ref ( Dummy )
 			   val _ = thunk_count := !thunk_count + 1
