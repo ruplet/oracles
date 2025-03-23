@@ -44,6 +44,7 @@ function renderNode(node) {
     nodeElement.textContent = node.type.toUpperCase();
     nodeElement.style.left = `${node.x}px`;
     nodeElement.style.top = `${node.y}px`;
+    nodeElement.style.opacity = 0.5;
 
     // Add event listeners
     nodeElement.addEventListener('mousedown', (e) => {
@@ -92,10 +93,28 @@ function removeEdge(sourceId, targetId) {
 function redrawEdges() {
     const svg = document.getElementById('edges');
     svg.innerHTML = ''; // Clear all edges
+
+    // Re-add arrowhead marker definition to the SVG
+    if (!document.getElementById('arrowhead')) {
+        const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+        const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+        marker.setAttribute('id', 'arrowhead');
+        marker.setAttribute('markerWidth', '10');
+        marker.setAttribute('markerHeight', '7');
+        marker.setAttribute('refX', '10');
+        marker.setAttribute('refY', '3.5');
+        marker.setAttribute('orient', 'auto');
+        const arrowPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        arrowPath.setAttribute('d', 'M0,0 L10,3.5 L0,7 Z');
+        arrowPath.setAttribute('fill', '#007bff');
+        marker.appendChild(arrowPath);
+        defs.appendChild(marker);
+        svg.appendChild(defs);
+    }
+
     connections.forEach(conn => drawEdge(conn.source, conn.target));
 }
 
-// Draw a permanent edge on the canvas
 function drawEdge(sourceId, targetId) {
     const svg = document.getElementById('edges');
     const sourceElement = document.getElementById(sourceId);
@@ -109,19 +128,138 @@ function drawEdge(sourceId, targetId) {
     const sourceRect = sourceElement.getBoundingClientRect();
     const targetRect = targetElement.getBoundingClientRect();
 
-    const sourceX = sourceElement.offsetLeft + sourceRect.width / 2;
-    const sourceY = sourceElement.offsetTop + sourceRect.height / 2;
-    const targetX = targetElement.offsetLeft + targetRect.width / 2;
-    const targetY = targetElement.offsetTop + targetRect.height / 2;
+    // Calculate the center points
+    const sourceCenterX = sourceElement.offsetLeft + sourceRect.width / 2;
+    const sourceCenterY = sourceElement.offsetTop + sourceRect.height / 2;
+    const targetCenterX = targetElement.offsetLeft + targetRect.width / 2;
+    const targetCenterY = targetElement.offsetTop + targetRect.height / 2;
+
+    const sourceBounds = {
+        left: sourceElement.offsetLeft,
+        top: sourceElement.offsetTop,
+        right: sourceElement.offsetLeft + sourceRect.width,
+        bottom: sourceElement.offsetTop + sourceRect.height
+    };
+
+    const targetBounds = {
+        left: targetElement.offsetLeft,
+        top: targetElement.offsetTop,
+        right: targetElement.offsetLeft + targetRect.width,
+        bottom: targetElement.offsetTop + targetRect.height
+    };
+
+    const intersectsSource = lineIntersectsRect(sourceCenterX, sourceCenterY, targetCenterX, targetCenterY, sourceBounds);
+    const intersectsTarget = lineIntersectsRect(sourceCenterX, sourceCenterY, targetCenterX, targetCenterY, targetBounds);
+
+    let startPoint = { x: sourceCenterX, y: sourceCenterY };
+    let endPoint = { x: targetCenterX, y: targetCenterY };
+
+    const sourceIntersection = getLineIntersectionWithRect(startPoint, endPoint, sourceBounds);
+    if (sourceIntersection) {
+        startPoint = sourceIntersection;
+    }
+
+    const targetIntersection = getLineIntersectionWithRect(endPoint, startPoint, targetBounds);
+    if (targetIntersection) {
+        endPoint = targetIntersection;
+    }
 
     const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    line.setAttribute('x1', sourceX);
-    line.setAttribute('y1', sourceY);
-    line.setAttribute('x2', targetX);
-    line.setAttribute('y2', targetY);
-    line.setAttribute('stroke', '#007bff');
+    line.setAttribute('x1', startPoint.x);
+    line.setAttribute('y1', startPoint.y);
+    line.setAttribute('x2', endPoint.x);
+    line.setAttribute('y2', endPoint.y);
     line.setAttribute('stroke-width', '2');
+    line.setAttribute('marker-end', 'url(#arrowhead)');
+
+    if (intersectsSource || intersectsTarget) {
+        line.setAttribute('stroke', 'red');
+    } else {
+        line.setAttribute('stroke', '#007bff');
+    }
+
+    line.addEventListener('mousedown', (e) => {
+        if (e.ctrlKey) {
+            removeEdge(sourceId, targetId);
+        }
+    });
     svg.appendChild(line);
+}
+
+function getLineIntersectionWithRect(lineStart, lineEnd, rect) {
+    const { left, top, right, bottom } = rect;
+    const { x: x1, y: y1 } = lineStart;
+    const { x: x2, y: y2 } = lineEnd;
+
+    const lines = [
+        { p1: { x: left, y: top }, p2: { x: right, y: top } },    // Top
+        { p1: { x: right, y: top }, p2: { x: right, y: bottom } }, // Right
+        { p1: { x: right, y: bottom }, p2: { x: left, y: bottom } }, // Bottom
+        { p1: { x: left, y: bottom }, p2: { x: left, y: top } }     // Left
+    ];
+
+    let closestIntersection = null;
+    let minDistanceSq = Infinity;
+
+    for (const side of lines) {
+        const intersection = getLineSegmentIntersection(lineStart, lineEnd, side.p1, side.p2);
+        if (intersection) {
+            const dx = intersection.x - lineStart.x;
+            const dy = intersection.y - lineStart.y;
+            const distanceSq = dx * dx + dy * dy;
+            if (distanceSq < minDistanceSq) {
+                minDistanceSq = distanceSq;
+                closestIntersection = intersection;
+            }
+        }
+    }
+
+    return closestIntersection;
+}
+
+function getLineSegmentIntersection(p1, p2, p3, p4) {
+    const det = (p2.x - p1.x) * (p4.y - p3.y) - (p2.y - p1.y) * (p4.x - p3.x);
+    if (Math.abs(det) < 1e-9) {
+        return null;
+    }
+
+    const t = ((p3.x - p1.x) * (p4.y - p3.y) - (p3.y - p1.y) * (p4.x - p3.x)) / det;
+    const u = -((p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x)) / det;
+
+    if (t >= 0 && t <= 1 && u >= 0 && u <= 1) {
+        return {
+            x: p1.x + t * (p2.x - p1.x),
+            y: p1.y + t * (p2.y - p1.y)
+        };
+    }
+
+    return null;
+}
+
+function lineIntersectsRect(x1, y1, x2, y2, rect) {
+    // (Same as the version with tolerance from before)
+    const tolerance = 1e-9;
+    if ((x1 < rect.left - tolerance && x2 < rect.left - tolerance) || (x1 > rect.right + tolerance && x2 > rect.right + tolerance) ||
+        (y1 < rect.top - tolerance && y2 < rect.top - tolerance) || (y1 > rect.bottom + tolerance && y2 > rect.bottom + tolerance)) {
+        return false;
+    }
+    return intersectsLine(x1, y1, x2, y2, rect.left, rect.top, rect.right, rect.top) ||
+           intersectsLine(x1, y1, x2, y2, rect.right, rect.top, rect.right, rect.bottom) ||
+           intersectsLine(x1, y1, x2, y2, rect.right, rect.bottom, rect.left, rect.bottom) ||
+           intersectsLine(x1, y1, x2, y2, rect.left, rect.bottom, rect.left, rect.top) ||
+           (x1 >= rect.left - tolerance && x1 <= rect.right + tolerance && y1 >= rect.top - tolerance && y1 <= rect.bottom + tolerance) ||
+           (x2 >= rect.left - tolerance && x2 <= rect.right + tolerance && y2 >= rect.top - tolerance && y2 <= rect.bottom + tolerance);
+}
+
+function intersectsLine(p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y) {
+    const det = (p2x - p1x) * (p4y - p3y) - (p2y - p1y) * (p4x - p3x);
+    const tolerance = 1e-9;
+    if (Math.abs(det) < tolerance) {
+        return false;
+    }
+    const t = ((p3x - p1x) * (p4y - p3y) - (p3y - p1y) * (p4x - p3x)) / det;
+    const u = -((p2x - p1x) * (p3y - p1y) - (p2y - p1y) * (p3x - p1x)) / det;
+    return t >= 0 - tolerance && t <= 1 + tolerance && u >= 0 - tolerance && u <= 1 + tolerance;
 }
 
 function createEdge(sourceId, targetId) {
@@ -168,7 +306,14 @@ function handleMouseDown(e) {
     if (e.ctrlKey) {
         // Ctrl + Click: Remove node or edge
         const node = findNodeAtPosition(e.clientX, e.clientY);
-        if (node) removeNode(node.id);
+        if (node) {
+            removeNode(node.id);
+        } else {
+            const edge = findEdgeAtPosition(e.clientX, e.clientY);
+            if (edge) {
+                removeEdge(edge.source, edge.target);
+            }
+        }
     } else if (e.shiftKey) {
         // Shift + Click: Start drawing an edge
         const node = findNodeAtPosition(e.clientX, e.clientY);
@@ -304,6 +449,7 @@ function startEdgeDrawing(node) {
     tempEdge.setAttribute('y1', sourceY);
     tempEdge.setAttribute('x2', sourceX);
     tempEdge.setAttribute('y2', sourceY);
+    tempEdge.setAttribute('marker-end', 'url(#arrowhead)'); // Add arrowhead to temporary edge
 }
 
 // Blink animation for new nodes
@@ -417,3 +563,55 @@ function resizeCanvas() {
 
 // Add event listener for window resize
 window.addEventListener('resize', resizeCanvas);
+
+function findEdgeAtPosition(x, y) {
+    const svg = document.getElementById('edges');
+    const rect = svg.getBoundingClientRect();
+
+    // Calculate the mouse position relative to the SVG (no scroll offset)
+    const mouseX = x - rect.left;
+    const mouseY = y - rect.top;
+
+    for (const conn of connections) {
+        const sourceElement = document.getElementById(conn.source);
+        const targetElement = document.getElementById(conn.target);
+
+        if (!sourceElement || !targetElement) continue;
+
+        const sourceRect = sourceElement.getBoundingClientRect();
+        const targetRect = targetElement.getBoundingClientRect();
+
+        const sourceX = sourceElement.offsetLeft + sourceRect.width / 2;
+        const sourceY = sourceElement.offsetTop + sourceRect.height / 2;
+        const targetX = targetElement.offsetLeft + targetRect.width / 2;
+        const targetY = targetElement.offsetTop + targetRect.height / 2;
+
+        // Check if the mouse is close to the line
+        const distance = Math.abs((targetY - sourceY) * mouseX - (targetX - sourceX) * mouseY + targetX * sourceY - targetY * sourceX) /
+            Math.sqrt((targetY - sourceY) ** 2 + (targetX - sourceX) ** 2);
+
+        if (distance < 5) { // Tolerance value in pixels
+            return conn;
+        }
+    }
+    return null;
+}
+
+// Add arrowhead marker definition to the SVG if it doesn't already exist
+const svg = document.getElementById('edges');
+if (!document.getElementById('arrowhead')) {
+    const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+    const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+    marker.setAttribute('id', 'arrowhead');
+    marker.setAttribute('markerWidth', '10');
+    marker.setAttribute('markerHeight', '7');
+    marker.setAttribute('refX', '10');
+    marker.setAttribute('refY', '3.5');
+    marker.setAttribute('orient', 'auto');
+    const arrowPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    arrowPath.setAttribute('d', 'M0,0 L10,3.5 L0,7 Z');
+    arrowPath.setAttribute('fill', '#007bff');
+    marker.appendChild(arrowPath);
+    defs.appendChild(marker);
+    svg.appendChild(defs);
+}
