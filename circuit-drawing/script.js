@@ -562,9 +562,15 @@ document.getElementById('add-not').addEventListener('click', () => createNode('n
 // Add event listener to the Import JSON button
 document.getElementById('import-json').addEventListener('click', importFromClipboard);
 
-// Export the circuit as JSON
+// Export the circuit
 document.getElementById('export-json').addEventListener('click', () => {
-    const circuit = {
+    showExportModal();
+});
+
+// Function to show the export modal with options - updated for better card styling
+function showExportModal() {
+    // Create the circuit data object (will be needed for JSON export)
+    const circuitData = {
         nodes: nodes.map(node => ({
             id: node.id,
             type: node.type,
@@ -576,12 +582,6 @@ document.getElementById('export-json').addEventListener('click', () => {
         connections: connections
     };
     
-    // Display the circuit data in a modal instead of updating the output element
-    exportToModal(circuit);
-});
-
-// Function to export circuit data using a modal dialog
-function exportToModal(circuitData) {
     // Create modal overlay
     const overlay = document.createElement('div');
     overlay.style.position = 'fixed';
@@ -598,60 +598,121 @@ function exportToModal(circuitData) {
     // Create modal dialog
     const modal = document.createElement('div');
     modal.style.backgroundColor = 'white';
-    modal.style.padding = '20px';
-    modal.style.borderRadius = '5px';
-    modal.style.width = '80%';
-    modal.style.maxWidth = '600px';
-    modal.style.maxHeight = '80%';
+    modal.style.padding = '25px';
+    modal.style.borderRadius = '8px';
+    modal.style.width = '90%';
+    modal.style.maxWidth = '800px';
+    modal.style.maxHeight = '90%';
+    modal.style.overflowY = 'auto';
     modal.style.display = 'flex';
     modal.style.flexDirection = 'column';
-    modal.style.gap = '10px';
+    modal.style.gap = '20px';
+    modal.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.2)';
     
     // Create title
     const title = document.createElement('h3');
-    title.textContent = 'Circuit Data (JSON)';
-    title.style.margin = '0 0 10px 0';
+    title.textContent = 'Export Circuit';
+    title.style.margin = '0 0 15px 0';
+    title.style.fontSize = '24px';
+    title.style.borderBottom = '1px solid #e9ecef';
+    title.style.paddingBottom = '10px';
     
-    // Create instructions
-    const instructions = document.createElement('p');
-    instructions.textContent = 'Copy this JSON to save your circuit:';
-    instructions.style.margin = '0';
+    // Create export options container
+    const optionsContainer = document.createElement('div');
+    optionsContainer.className = 'export-options';
     
-    // Create textarea with the circuit data
-    const textarea = document.createElement('textarea');
-    textarea.value = JSON.stringify(circuitData, null, 2);
-    textarea.style.width = '100%';
-    textarea.style.height = '200px';
-    textarea.style.padding = '10px';
-    textarea.style.boxSizing = 'border-box';
-    textarea.style.border = '1px solid #ccc';
-    textarea.style.borderRadius = '4px';
-    textarea.style.resize = 'vertical';
-    textarea.style.fontFamily = 'monospace';
-    textarea.readOnly = true; // Make it read-only
+    // Create export form container (will be populated based on selected option)
+    const formContainer = document.createElement('div');
+    formContainer.className = 'export-form';
+    formContainer.style.display = 'none';
+    
+    // Create export options - only JSON and LaTeX now
+    const options = [
+        {
+            id: 'json',
+            title: 'JSON',
+            description: 'Export as JSON data for sharing or importing later',
+            icon: '📄',
+            createForm: () => createJsonExportForm(circuitData)
+        },
+        {
+            id: 'latex',
+            title: 'LaTeX',
+            description: 'Export as LaTeX code for academic papers',
+            icon: '📝',
+            createForm: () => createLatexExportForm(circuitData)
+        }
+    ];
+    
+    // Current selected option
+    let selectedOption = null;
+    
+    // Create each export option card
+    options.forEach(option => {
+        const card = document.createElement('div');
+        card.className = 'export-card';
+        card.dataset.option = option.id;
+        
+        const cardContent = document.createElement('div');
+        cardContent.style.display = 'flex';
+        cardContent.style.alignItems = 'flex-start';
+        cardContent.style.gap = '10px';
+        
+        if (option.icon) {
+            const icon = document.createElement('span');
+            icon.textContent = option.icon;
+            icon.style.fontSize = '24px';
+            icon.style.marginRight = '10px';
+            cardContent.appendChild(icon);
+        }
+        
+        const textContent = document.createElement('div');
+        textContent.style.flex = '1';
+        
+        const heading = document.createElement('h4');
+        heading.textContent = option.title;
+        
+        const description = document.createElement('p');
+        description.textContent = option.description;
+        
+        textContent.appendChild(heading);
+        textContent.appendChild(description);
+        cardContent.appendChild(textContent);
+        card.appendChild(cardContent);
+        
+        card.addEventListener('click', () => {
+            // Clear active state from all cards
+            document.querySelectorAll('.export-card').forEach(c => c.classList.remove('active'));
+            
+            // Set this card as active
+            card.classList.add('active');
+            
+            // Update selected option
+            selectedOption = option;
+            
+            // Clear and hide the form container
+            formContainer.innerHTML = '';
+            
+            // Create and show the appropriate form
+            const form = option.createForm();
+            formContainer.appendChild(form);
+            formContainer.style.display = 'block';
+        });
+        
+        optionsContainer.appendChild(card);
+    });
     
     // Create button container
     const buttonContainer = document.createElement('div');
     buttonContainer.style.display = 'flex';
     buttonContainer.style.justifyContent = 'flex-end';
     buttonContainer.style.gap = '10px';
-    buttonContainer.style.marginTop = '10px';
-    
-    // Create "Copy to Clipboard" button
-    const copyButton = document.createElement('button');
-    copyButton.textContent = 'Copy to Clipboard';
-    copyButton.style.padding = '8px 16px';
-    copyButton.style.backgroundColor = '#28a745';
-    copyButton.style.color = 'white';
-    copyButton.style.border = 'none';
-    copyButton.style.borderRadius = '4px';
-    copyButton.style.cursor = 'pointer';
-    copyButton.style.marginRight = 'auto'; // Place on left side
+    buttonContainer.style.marginTop = '15px';
     
     // Create close button
     const closeButton = document.createElement('button');
     closeButton.textContent = 'Close';
-    closeButton.style.padding = '8px 16px';
+    closeButton.style.padding = '10px 20px';
     closeButton.style.backgroundColor = '#6c757d';
     closeButton.style.color = 'white';
     closeButton.style.border = 'none';
@@ -660,16 +721,16 @@ function exportToModal(circuitData) {
     
     // Status message for errors or success
     const statusMessage = document.createElement('div');
-    statusMessage.style.color = '#28a745';
     statusMessage.style.marginTop = '10px';
     statusMessage.style.display = 'none';
+    statusMessage.style.padding = '10px';
+    statusMessage.style.borderRadius = '4px';
     
     // Add elements to modal
     modal.appendChild(title);
-    modal.appendChild(instructions);
-    modal.appendChild(textarea);
+    modal.appendChild(optionsContainer);
+    modal.appendChild(formContainer);
     modal.appendChild(statusMessage);
-    buttonContainer.appendChild(copyButton);
     buttonContainer.appendChild(closeButton);
     modal.appendChild(buttonContainer);
     overlay.appendChild(modal);
@@ -677,33 +738,10 @@ function exportToModal(circuitData) {
     // Add to document
     document.body.appendChild(overlay);
     
-    // Focus and select the textarea content for easy copying
-    textarea.focus();
-    textarea.select();
+    // Select the first option by default
+    optionsContainer.querySelector('.export-card').click();
     
     // Add event listeners
-    copyButton.addEventListener('click', async () => {
-        try {
-            // Try to copy using the Clipboard API
-            await navigator.clipboard.writeText(textarea.value);
-            statusMessage.textContent = 'Copied to clipboard!';
-            statusMessage.style.color = '#28a745'; // green color
-            statusMessage.style.display = 'block';
-            
-            // Hide the message after 2 seconds
-            setTimeout(() => {
-                statusMessage.style.display = 'none';
-            }, 2000);
-        } catch (err) {
-            // Fallback: select the text again for manual copying
-            textarea.select();
-            
-            statusMessage.textContent = 'Please press Ctrl+C to copy';
-            statusMessage.style.color = '#ffc107'; // yellow warning color
-            statusMessage.style.display = 'block';
-        }
-    });
-    
     closeButton.addEventListener('click', () => {
         document.body.removeChild(overlay);
     });
@@ -722,13 +760,253 @@ function exportToModal(circuitData) {
             document.body.removeChild(overlay);
         }
     });
+    
+    // Helper function to show status messages
+    function showStatus(message, type = 'info') {
+        statusMessage.textContent = message;
+        statusMessage.style.display = 'block';
+        
+        if (type === 'success') {
+            statusMessage.style.color = '#155724';
+            statusMessage.style.backgroundColor = '#d4edda';
+            statusMessage.style.border = '1px solid #c3e6cb';
+        } else if (type === 'error') {
+            statusMessage.style.color = '#721c24';
+            statusMessage.style.backgroundColor = '#f8d7da';
+            statusMessage.style.border = '1px solid #f5c6cb';
+        } else {
+            statusMessage.style.color = '#004085';
+            statusMessage.style.backgroundColor = '#cce5ff';
+            statusMessage.style.border = '1px solid #b8daff';
+        }
+        
+        // Hide the message after 3 seconds
+        setTimeout(() => {
+            statusMessage.style.display = 'none';
+        }, 3000);
+    }
 }
 
-// Add global event listeners
-document.addEventListener('mousedown', handleMouseDown);
-document.addEventListener('mousemove', handleMouseMove);
-document.addEventListener('mouseup', handleMouseUp);
-document.addEventListener('keydown', handleKeyDown);
+// Create the form for JSON export
+function createJsonExportForm(circuitData) {
+    const form = document.createElement('div');
+    
+    const textarea = document.createElement('textarea');
+    textarea.value = JSON.stringify(circuitData, null, 2);
+    textarea.style.width = '100%';
+    textarea.style.height = '200px';
+    textarea.style.padding = '10px';
+    textarea.style.boxSizing = 'border-box';
+    textarea.style.border = '1px solid #ccc';
+    textarea.style.borderRadius = '4px';
+    textarea.style.resize = 'vertical';
+    textarea.style.fontFamily = 'monospace';
+    textarea.readOnly = true; // Make it read-only
+    
+    const copyButton = document.createElement('button');
+    copyButton.textContent = 'Copy to Clipboard';
+    copyButton.style.marginTop = '10px';
+    copyButton.style.padding = '8px 16px';
+    copyButton.style.backgroundColor = '#28a745';
+    copyButton.style.color = 'white';
+    copyButton.style.border = 'none';
+    copyButton.style.borderRadius = '4px';
+    copyButton.style.cursor = 'pointer';
+    
+    copyButton.addEventListener('click', async () => {
+        try {
+            await navigator.clipboard.writeText(textarea.value);
+            copyButton.textContent = 'Copied!';
+            setTimeout(() => {
+                copyButton.textContent = 'Copy to Clipboard';
+            }, 2000);
+        } catch (err) {
+            textarea.select();
+            copyButton.textContent = 'Please press Ctrl+C to copy';
+            setTimeout(() => {
+                copyButton.textContent = 'Copy to Clipboard';
+            }, 2000);
+        }
+    });
+    
+    form.appendChild(textarea);
+    form.appendChild(copyButton);
+    
+    return form;
+}
+
+// Create the form for LaTeX export with toggle for complete document
+function createLatexExportForm(circuitData) {
+    const form = document.createElement('div');
+    
+    // Toggle between TikZ only vs. complete document
+    const toggleContainer = document.createElement('div');
+    toggleContainer.style.display = 'flex';
+    toggleContainer.style.alignItems = 'center';
+    toggleContainer.style.marginBottom = '15px';
+    toggleContainer.style.backgroundColor = '#f8f9fa';
+    toggleContainer.style.padding = '10px';
+    toggleContainer.style.borderRadius = '4px';
+    
+    const toggleLabel = document.createElement('label');
+    toggleLabel.textContent = 'Include complete LaTeX document:';
+    toggleLabel.style.marginRight = '10px';
+    toggleLabel.setAttribute('for', 'complete-document-toggle');
+    
+    const toggleInput = document.createElement('input');
+    toggleInput.type = 'checkbox';
+    toggleInput.id = 'complete-document-toggle';
+    toggleInput.checked = false;
+    
+    toggleContainer.appendChild(toggleLabel);
+    toggleContainer.appendChild(toggleInput);
+    form.appendChild(toggleContainer);
+    
+    // Create textarea for LaTeX code
+    const textarea = document.createElement('textarea');
+    textarea.value = generateLatexCode(false); // Initial value, TikZ only
+    textarea.style.width = '100%';
+    textarea.style.height = '250px';
+    textarea.style.padding = '10px';
+    textarea.style.boxSizing = 'border-box';
+    textarea.style.border = '1px solid #ccc';
+    textarea.style.borderRadius = '4px';
+    textarea.style.resize = 'vertical';
+    textarea.style.fontFamily = 'monospace';
+    textarea.readOnly = true;
+    
+    // Update LaTeX code when toggle changes
+    toggleInput.addEventListener('change', () => {
+        textarea.value = generateLatexCode(toggleInput.checked);
+    });
+    
+    // Buttons container
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.style.display = 'flex';
+    buttonsContainer.style.gap = '10px';
+    buttonsContainer.style.marginTop = '10px';
+    
+    // Copy button
+    const copyButton = document.createElement('button');
+    copyButton.textContent = 'Copy to Clipboard';
+    copyButton.style.padding = '8px 16px';
+    copyButton.style.backgroundColor = '#28a745';
+    copyButton.style.color = 'white';
+    copyButton.style.border = 'none';
+    copyButton.style.borderRadius = '4px';
+    copyButton.style.cursor = 'pointer';
+    
+    copyButton.addEventListener('click', async () => {
+        try {
+            await navigator.clipboard.writeText(textarea.value);
+            copyButton.textContent = 'Copied!';
+            setTimeout(() => {
+                copyButton.textContent = 'Copy to Clipboard';
+            }, 2000);
+        } catch (err) {
+            textarea.select();
+            copyButton.textContent = 'Please press Ctrl+C to copy';
+            setTimeout(() => {
+                copyButton.textContent = 'Copy to Clipboard';
+            }, 2000);
+        }
+    });
+    
+    buttonsContainer.appendChild(copyButton);
+    
+    const note = document.createElement('p');
+    note.textContent = 'Uses the TikZ package. Toggle to switch between TikZ code only or a complete LaTeX document.';
+    note.style.fontSize = '0.9em';
+    note.style.color = '#666';
+    note.style.marginTop = '15px';
+    
+    form.appendChild(textarea);
+    form.appendChild(buttonsContainer);
+    form.appendChild(note);
+    
+    return form;
+}
+
+// Generate LaTeX code for the circuit with option for complete document
+function generateLatexCode(includeCompleteDocument = false) {
+    // Start with TikZ code
+    let tikzCode = `\\begin{tikzpicture}\n`;
+    
+    // Define node styles
+    tikzCode += `  % Node styles\n`;
+    tikzCode += `  \\tikzstyle{input} = [circle, draw, minimum size=0.7cm, fill=blue!20]\n`;
+    tikzCode += `  \\tikzstyle{output} = [circle, draw, minimum size=0.7cm, fill=red!20]\n`;
+    tikzCode += `  \\tikzstyle{and} = [rectangle, draw, minimum size=0.7cm, fill=green!20]\n`;
+    tikzCode += `  \\tikzstyle{or} = [rectangle, draw, minimum size=0.7cm, fill=yellow!20]\n`;
+    tikzCode += `  \\tikzstyle{not} = [rectangle, draw, minimum size=0.7cm, fill=purple!20]\n\n`;
+    
+    // Add nodes
+    tikzCode += `  % Nodes\n`;
+    const scale = 0.05; // Scale factor for converting px to cm
+    
+    nodes.forEach(node => {
+        // Convert pixel positions to cm
+        const x = (node.x * scale).toFixed(2);
+        const y = (-node.y * scale).toFixed(2); // Negate y for LaTeX coordinate system
+        
+        tikzCode += `  \\node[${node.type}] (${node.id}) at (${x}, ${y}) {${node.type.toUpperCase()}};\n`;
+    });
+    
+    // Add connections
+    tikzCode += `\n  % Connections\n`;
+    connections.forEach(conn => {
+        tikzCode += `  \\draw[->] (${conn.source}) -- (${conn.target});\n`;
+    });
+    
+    tikzCode += `\\end{tikzpicture}`;
+    
+    // If complete document is requested, wrap in a complete LaTeX document
+    if (includeCompleteDocument) {
+        return `\\documentclass{article}
+
+\\usepackage{tikz}
+\\usepackage[margin=1in]{geometry}
+
+\\title{Circuit Diagram}
+\\author{Circuit Drawer}
+\\date{\\today}
+
+\\begin{document}
+
+\\maketitle
+
+\\section{Circuit Diagram}
+
+% Circuit diagram generated by Circuit Drawer
+${tikzCode}
+
+\\end{document}`;
+    }
+    
+    return tikzCode;
+}
+
+// Helper function to get the appropriate export handler - simplified to just JSON and LaTeX
+function getExportHandler(optionId) {
+    switch(optionId) {
+        case 'json':
+            return function(formContainer, circuitData, statusMessage) {
+                // Copy to clipboard is handled by the form itself
+                statusMessage.textContent = 'Ready to export JSON';
+                statusMessage.style.color = '#28a745';
+                statusMessage.style.display = 'block';
+            };
+        case 'latex':
+            return function(formContainer, circuitData, statusMessage) {
+                // Copy to clipboard is handled by the form itself
+                statusMessage.textContent = 'Ready to export LaTeX';
+                statusMessage.style.color = '#28a745';
+                statusMessage.style.display = 'block';
+            };
+        default:
+            return null;
+    }
+}
 
 function adjustNodePosition(node, originalX, originalY, nodeWidth, nodeHeight, canvasWidth, canvasHeight) {
     const tolerance = 3; // Tolerance value in pixels
@@ -1102,6 +1380,12 @@ function importCircuit(circuitData) {
         connections.push({ source: conn.source, target: conn.target });
     });
     
+    // Update nodeCounter to avoid duplicated IDs
+    nodeCounter = nodes.reduce((max, node) => {
+        const idNum = parseInt(node.id.split('-')[1], 10);
+        return Math.max(max, idNum);
+    }, 0) + 1;
+    
     // Redraw all edges
     redrawEdges();
 }
@@ -1141,3 +1425,9 @@ function clearCircuit() {
         svg.appendChild(defs);
     }
 }
+
+// Add event listeners for mouse and keyboard to enable moving nodes
+canvas.addEventListener('mousedown', handleMouseDown);
+canvas.addEventListener('mousemove', handleMouseMove);
+document.addEventListener('mouseup', handleMouseUp);
+document.addEventListener('keydown', handleKeyDown);
