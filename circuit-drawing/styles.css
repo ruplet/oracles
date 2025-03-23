@@ -114,7 +114,7 @@ button:hover {
 }
 
 /* Disable text selection during interaction */
-body.no-select {
+.canvas {
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;

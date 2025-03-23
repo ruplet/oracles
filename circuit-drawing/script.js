@@ -152,9 +152,6 @@ function drawEdge(sourceId, targetId) {
         borderRadius: targetBorderRadius
     };
 
-    const intersectsSource = lineIntersectsRect(sourceCenterX, sourceCenterY, targetCenterX, targetCenterY, sourceBounds);
-    const intersectsTarget = lineIntersectsRect(sourceCenterX, sourceCenterY, targetCenterX, targetCenterY, targetBounds);
-
     let startPoint = { x: sourceCenterX, y: sourceCenterY };
     let endPoint = { x: targetCenterX, y: targetCenterY };
 
@@ -176,12 +173,6 @@ function drawEdge(sourceId, targetId) {
     line.setAttribute('stroke-width', '2');
     line.setAttribute('marker-end', 'url(#arrowhead)');
 
-    if (intersectsSource || intersectsTarget) {
-        line.setAttribute('stroke', 'red');
-    } else {
-        line.setAttribute('stroke', '#007bff');
-    }
-
     line.addEventListener('mousedown', (e) => {
         if (e.ctrlKey) {
             removeEdge(sourceId, targetId);
@@ -192,8 +183,6 @@ function drawEdge(sourceId, targetId) {
 
 function getLineIntersectionWithRoundedRect(lineStart, lineEnd, rect) {
     const { left, top, right, bottom, borderRadius } = rect;
-    const { x: x1, y: y1 } = lineStart;
-    const { x: x2, y: y2 } = lineEnd;
 
     let closestIntersection = null;
     let minDistanceSq = Infinity;
@@ -289,8 +278,6 @@ function lineSegmentIntersectsCircle(p1, p2, center, radius) {
 
 function getLineIntersectionWithRect(lineStart, lineEnd, rect) {
     const { left, top, right, bottom } = rect;
-    const { x: x1, y: y1 } = lineStart;
-    const { x: x2, y: y2 } = lineEnd;
 
     const lines = [
         { p1: { x: left, y: top }, p2: { x: right, y: top } },    // Top
@@ -397,13 +384,6 @@ function findNodeAtPosition(x, y) {
 
 // Handle mouse down
 function handleMouseDown(e) {
-    const canvas = document.getElementById('canvas');
-    const rect = canvas.getBoundingClientRect();
-
-    // Calculate the mouse position relative to the canvas (no scroll offset)
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
     if (e.ctrlKey) {
         // Ctrl + Click: Remove node or edge
         const node = findNodeAtPosition(e.clientX, e.clientY);
@@ -468,8 +448,16 @@ function handleMouseMove(e) {
         const rect = canvas.getBoundingClientRect();
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
+        
         tempEdge.setAttribute('x2', mouseX);
         tempEdge.setAttribute('y2', mouseY);
+        
+        // Only add arrowhead if the line has some length
+        if (tempEdge.getAttribute('x1') !== tempEdge.getAttribute('x2') || tempEdge.getAttribute('y1') !== tempEdge.getAttribute('y2')) {
+            tempEdge.setAttribute('marker-end', 'url(#arrowhead)');
+        } else {
+            tempEdge.removeAttribute('marker-end');
+        }
     }
 }
 
@@ -514,6 +502,10 @@ function handleKeyDown(e) {
         }
 
         selectedNode = null;
+    } else if (e.ctrlKey && e.key === 'v') {
+        // Ctrl+V: Import from clipboard
+        e.preventDefault();
+        importFromClipboard();
     }
 }
 
@@ -521,8 +513,6 @@ function handleKeyDown(e) {
 function startDragging(e, node) {
     const nodeElement = document.getElementById(node.id);
     const nodeRect = nodeElement.getBoundingClientRect();
-    const canvas = document.getElementById('canvas');
-    const rect = canvas.getBoundingClientRect();
 
     // Calculate the offset between the mouse position and the node's top-left corner
     offsetX = e.clientX - nodeRect.left;
@@ -550,7 +540,9 @@ function startEdgeDrawing(node) {
     tempEdge.setAttribute('y1', sourceY);
     tempEdge.setAttribute('x2', sourceX);
     tempEdge.setAttribute('y2', sourceY);
-    tempEdge.setAttribute('marker-end', 'url(#arrowhead)'); // Add arrowhead to temporary edge
+    // Don't add arrowhead marker until the line has some length
+    tempEdge.setAttribute('stroke', '#007bff');
+    tempEdge.setAttribute('stroke-width', '2');
 }
 
 // Blink animation for new nodes
@@ -715,4 +707,105 @@ if (!document.getElementById('arrowhead')) {
     marker.appendChild(arrowPath);
     defs.appendChild(marker);
     svg.appendChild(defs);
+}
+
+// Function to import graph from clipboard
+async function importFromClipboard() {
+    try {
+        // Check if clipboard API is available
+        if (!navigator.clipboard) {
+            alert('Clipboard access is not available in your browser.');
+            return;
+        }
+
+        // Ask user for confirmation
+        if (!confirm('Do you want to import circuit from clipboard?')) {
+            return;
+        }
+
+        // Get clipboard text
+        const text = await navigator.clipboard.readText();
+        
+        // Try to parse JSON
+        const circuitData = JSON.parse(text);
+        
+        // Validate the circuit data structure
+        if (!circuitData.nodes || !Array.isArray(circuitData.nodes) || 
+            !circuitData.connections || !Array.isArray(circuitData.connections)) {
+            throw new Error('Invalid circuit data format');
+        }
+        
+        // Import the circuit
+        importCircuit(circuitData);
+        
+    } catch (error) {
+        console.error('Import failed:', error);
+        alert(`Import failed: ${error.message || 'Invalid JSON format'}`);
+    }
+}
+
+// Function to import the circuit data
+function importCircuit(circuitData) {
+    // Clear existing circuit
+    clearCircuit();
+    
+    // Create new nodes
+    circuitData.nodes.forEach(node => {
+        const newNode = {
+            id: node.id,
+            type: node.type,
+            x: node.x,
+            y: node.y,
+            inputs: node.inputs || [],
+            outputs: node.outputs || []
+        };
+        nodes.push(newNode);
+        renderNode(newNode);
+    });
+    
+    // Create connections
+    circuitData.connections.forEach(conn => {
+        connections.push({ source: conn.source, target: conn.target });
+    });
+    
+    // Redraw all edges
+    redrawEdges();
+    
+    alert('Circuit imported successfully!');
+}
+
+// Function to clear the current circuit
+function clearCircuit() {
+    // Remove all nodes from DOM
+    nodes.forEach(node => {
+        const nodeElement = document.getElementById(node.id);
+        if (nodeElement) nodeElement.remove();
+    });
+    
+    // Clear arrays
+    nodes = [];
+    connections = [];
+    nodeCounter = 0;
+    
+    // Clear SVG edges
+    const svg = document.getElementById('edges');
+    svg.innerHTML = '';
+    
+    // Re-add arrowhead marker definition
+    if (!document.getElementById('arrowhead')) {
+        const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+        const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+        marker.setAttribute('id', 'arrowhead');
+        marker.setAttribute('markerWidth', '10');
+        marker.setAttribute('markerHeight', '7');
+        marker.setAttribute('refX', '10');
+        marker.setAttribute('refY', '3.5');
+        marker.setAttribute('orient', 'auto');
+        const arrowPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        arrowPath.setAttribute('d', 'M0,0 L10,3.5 L0,7 Z');
+        arrowPath.setAttribute('fill', '#007bff');
+        marker.appendChild(arrowPath);
+        defs.appendChild(marker);
+        svg.appendChild(defs);
+    }
 }
