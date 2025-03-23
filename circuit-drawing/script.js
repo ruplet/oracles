@@ -617,14 +617,13 @@ function showExportModal() {
     title.style.borderBottom = '1px solid #e9ecef';
     title.style.paddingBottom = '10px';
     
-    // Create export options container
+    // Create export options container with horizontal layout like VSCode tabs
     const optionsContainer = document.createElement('div');
     optionsContainer.className = 'export-options';
-    
-    // Create export form container (will be populated based on selected option)
-    const formContainer = document.createElement('div');
-    formContainer.className = 'export-form';
-    formContainer.style.display = 'none';
+    optionsContainer.style.display = 'flex';
+    optionsContainer.style.flexDirection = 'row';
+    optionsContainer.style.overflowX = 'auto';
+    optionsContainer.style.gap = '10px';
     
     // Create export options - only JSON and LaTeX now
     const options = [
@@ -647,22 +646,40 @@ function showExportModal() {
     // Current selected option
     let selectedOption = null;
     
-    // Create each export option card
+    // Create each export option card with smaller tab styling
     options.forEach(option => {
         const card = document.createElement('div');
         card.className = 'export-card';
         card.dataset.option = option.id;
         
+        // VSCode-like tab styling: smaller height, reduced padding and border radius
+        card.style.border = "1px solid #ddd";
+        card.style.borderRadius = "4px";
+        card.style.boxShadow = "0 1px 2px rgba(0,0,0,0.1)";
+        card.style.padding = "5px 10px";
+        card.style.backgroundColor = "#fff";
+        card.style.cursor = "pointer";
+        card.style.transition = "transform 0.2s, box-shadow 0.2s";
+        
+        card.addEventListener('mouseover', () => {
+            card.style.transform = "scale(1.02)";
+            card.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
+        });
+        card.addEventListener('mouseout', () => {
+            card.style.transform = "scale(1)";
+            card.style.boxShadow = "0 1px 2px rgba(0,0,0,0.1)";
+        });
+        
         const cardContent = document.createElement('div');
         cardContent.style.display = 'flex';
-        cardContent.style.alignItems = 'flex-start';
-        cardContent.style.gap = '10px';
+        cardContent.style.alignItems = 'center';
+        cardContent.style.gap = '5px';
         
         if (option.icon) {
             const icon = document.createElement('span');
             icon.textContent = option.icon;
-            icon.style.fontSize = '24px';
-            icon.style.marginRight = '10px';
+            icon.style.fontSize = '18px';
+            icon.style.marginRight = '5px';
             cardContent.appendChild(icon);
         }
         
@@ -671,9 +688,13 @@ function showExportModal() {
         
         const heading = document.createElement('h4');
         heading.textContent = option.title;
+        heading.style.fontSize = '14px';
+        heading.style.margin = '0';
         
         const description = document.createElement('p');
         description.textContent = option.description;
+        description.style.fontSize = '12px';
+        description.style.margin = '0';
         
         textContent.appendChild(heading);
         textContent.appendChild(description);
@@ -701,6 +722,11 @@ function showExportModal() {
         
         optionsContainer.appendChild(card);
     });
+    
+    // Create export form container (will be populated based on selected option)
+    const formContainer = document.createElement('div');
+    formContainer.className = 'export-form';
+    formContainer.style.display = 'none';
     
     // Create button container
     const buttonContainer = document.createElement('div');
@@ -839,32 +865,31 @@ function createJsonExportForm(circuitData) {
 function createLatexExportForm(circuitData) {
     const form = document.createElement('div');
     
-    // Toggle between TikZ only vs. complete document
-    const toggleContainer = document.createElement('div');
-    toggleContainer.style.display = 'flex';
-    toggleContainer.style.alignItems = 'center';
-    toggleContainer.style.marginBottom = '15px';
-    toggleContainer.style.backgroundColor = '#f8f9fa';
-    toggleContainer.style.padding = '10px';
-    toggleContainer.style.borderRadius = '4px';
+    // Variable to hold export mode
+    let exportFullDocument = false;
     
-    const toggleLabel = document.createElement('label');
-    toggleLabel.textContent = 'Include complete LaTeX document:';
-    toggleLabel.style.marginRight = '10px';
-    toggleLabel.setAttribute('for', 'complete-document-toggle');
+    // Create toggle button for LaTeX export mode
+    const toggleButton = document.createElement('button');
+    toggleButton.textContent = 'Export: Figure Only';
+    toggleButton.style.padding = '8px 16px';
+    toggleButton.style.border = 'none';
+    toggleButton.style.borderRadius = '4px';
+    toggleButton.style.cursor = 'pointer';
+    toggleButton.style.backgroundColor = '#007bff';
+    toggleButton.style.color = 'white';
+    toggleButton.style.marginBottom = '15px';
     
-    const toggleInput = document.createElement('input');
-    toggleInput.type = 'checkbox';
-    toggleInput.id = 'complete-document-toggle';
-    toggleInput.checked = false;
+    toggleButton.addEventListener('click', () => {
+        exportFullDocument = !exportFullDocument;
+        toggleButton.textContent = exportFullDocument ? 'Export: Full Document' : 'Export: Figure Only';
+        textarea.value = generateLatexCode(exportFullDocument);
+    });
     
-    toggleContainer.appendChild(toggleLabel);
-    toggleContainer.appendChild(toggleInput);
-    form.appendChild(toggleContainer);
+    form.appendChild(toggleButton);
     
     // Create textarea for LaTeX code
     const textarea = document.createElement('textarea');
-    textarea.value = generateLatexCode(false); // Initial value, TikZ only
+    textarea.value = generateLatexCode(false); // Start with Figure Only
     textarea.style.width = '100%';
     textarea.style.height = '250px';
     textarea.style.padding = '10px';
@@ -874,11 +899,6 @@ function createLatexExportForm(circuitData) {
     textarea.style.resize = 'vertical';
     textarea.style.fontFamily = 'monospace';
     textarea.readOnly = true;
-    
-    // Update LaTeX code when toggle changes
-    toggleInput.addEventListener('change', () => {
-        textarea.value = generateLatexCode(toggleInput.checked);
-    });
     
     // Buttons container
     const buttonsContainer = document.createElement('div');
@@ -913,9 +933,8 @@ function createLatexExportForm(circuitData) {
     });
     
     buttonsContainer.appendChild(copyButton);
-    
     const note = document.createElement('p');
-    note.textContent = 'Uses the TikZ package. Toggle to switch between TikZ code only or a complete LaTeX document.';
+    note.textContent = 'Uses the TikZ package. Toggle the mode to switch between exporting just the figure or a complete LaTeX document.';
     note.style.fontSize = '0.9em';
     note.style.color = '#666';
     note.style.marginTop = '15px';
