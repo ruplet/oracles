@@ -120,3 +120,87 @@ button:hover {
   -webkit-user-select: none;
   -ms-user-select: none;
 }
+
+.export-form {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px; /* adjusted to prevent overlapping with export-options */
+  margin-bottom: 20px;
+}
+
+/* Export Modal Styles */
+.export-overlay {
+	/* Fullscreen overlay */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+}
+
+.export-modal {
+	background-color: white;
+	padding: 25px;
+	border-radius: 8px;
+	width: 90%;
+	max-width: 800px;
+	max-height: 90%;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.export-modal-title {
+	margin: 0 0 15px 0;
+	font-size: 24px;
+	border-bottom: 1px solid #e9ecef;
+	padding-bottom: 10px;
+}
+
+.export-options {
+	display: flex;
+	flex-direction: row;
+	overflow-x: auto;
+	gap: 10px;
+  /* font size of title is 18px */
+  min-height: 54px;
+}
+
+.export-card {
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+	padding: 5px 10px;
+	background-color: #fff;
+	cursor: pointer;
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+.export-card:hover {
+	transform: scale(1.02);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.export-button-container {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+	margin-top: 15px;
+}
+
+/* Use flex layout for export form container */
+.export-form {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+/* Optionally, control initial visibility */
+.export-form.hidden {
+	display: none;
+}

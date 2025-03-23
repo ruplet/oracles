@@ -585,46 +585,20 @@ function showExportModal() {
 
     // Create modal overlay
     const overlay = document.createElement('div');
-    overlay.style.position = 'fixed';
-    overlay.style.top = '0';
-    overlay.style.left = '0';
-    overlay.style.width = '100%';
-    overlay.style.height = '100%';
-    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-    overlay.style.display = 'flex';
-    overlay.style.justifyContent = 'center';
-    overlay.style.alignItems = 'center';
-    overlay.style.zIndex = '1000';
+    overlay.className = "export-overlay";
 
     // Create modal dialog
     const modal = document.createElement('div');
-    modal.style.backgroundColor = 'white';
-    modal.style.padding = '25px';
-    modal.style.borderRadius = '8px';
-    modal.style.width = '90%';
-    modal.style.maxWidth = '800px';
-    modal.style.maxHeight = '90%';
-    modal.style.overflowY = 'auto';
-    modal.style.display = 'flex';
-    modal.style.flexDirection = 'column';
-    modal.style.gap = '20px';
-    modal.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.2)';
+    modal.className = "export-modal";
 
     // Create title
     const title = document.createElement('h3');
     title.textContent = 'Export Circuit';
-    title.style.margin = '0 0 15px 0';
-    title.style.fontSize = '24px';
-    title.style.borderBottom = '1px solid #e9ecef';
-    title.style.paddingBottom = '10px';
+    title.className = "export-modal-title";
 
     // Create export options container with horizontal layout like VSCode tabs
     const optionsContainer = document.createElement('div');
     optionsContainer.className = 'export-options';
-    optionsContainer.style.display = 'flex';
-    optionsContainer.style.flexDirection = 'row';
-    optionsContainer.style.overflowX = 'auto';
-    optionsContainer.style.gap = '10px';
 
     // Create export options - only JSON and LaTeX now
     const options = [
@@ -731,14 +705,10 @@ function showExportModal() {
     // Create export form container (will be populated based on selected option)
     const formContainer = document.createElement('div');
     formContainer.className = 'export-form';
-    formContainer.style.display = 'none';
 
     // Create button container
     const buttonContainer = document.createElement('div');
-    buttonContainer.style.display = 'flex';
-    buttonContainer.style.justifyContent = 'flex-end';
-    buttonContainer.style.gap = '10px';
-    buttonContainer.style.marginTop = '15px';
+    buttonContainer.className = "export-button-container";
 
     // Create close button
     const closeButton = document.createElement('button');
