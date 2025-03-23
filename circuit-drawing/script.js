@@ -559,6 +559,9 @@ document.getElementById('add-and').addEventListener('click', () => createNode('a
 document.getElementById('add-or').addEventListener('click', () => createNode('or', 50));
 document.getElementById('add-not').addEventListener('click', () => createNode('not', 50));
 
+// Add event listener to the Import JSON button
+document.getElementById('import-json').addEventListener('click', importFromClipboard);
+
 // Export the circuit as JSON
 document.getElementById('export-json').addEventListener('click', () => {
     const circuit = {
@@ -572,8 +575,154 @@ document.getElementById('export-json').addEventListener('click', () => {
         })),
         connections: connections
     };
-    document.getElementById('output').textContent = JSON.stringify(circuit, null, 2);
+    
+    // Display the circuit data in a modal instead of updating the output element
+    exportToModal(circuit);
 });
+
+// Function to export circuit data using a modal dialog
+function exportToModal(circuitData) {
+    // Create modal overlay
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    overlay.style.display = 'flex';
+    overlay.style.justifyContent = 'center';
+    overlay.style.alignItems = 'center';
+    overlay.style.zIndex = '1000';
+    
+    // Create modal dialog
+    const modal = document.createElement('div');
+    modal.style.backgroundColor = 'white';
+    modal.style.padding = '20px';
+    modal.style.borderRadius = '5px';
+    modal.style.width = '80%';
+    modal.style.maxWidth = '600px';
+    modal.style.maxHeight = '80%';
+    modal.style.display = 'flex';
+    modal.style.flexDirection = 'column';
+    modal.style.gap = '10px';
+    
+    // Create title
+    const title = document.createElement('h3');
+    title.textContent = 'Circuit Data (JSON)';
+    title.style.margin = '0 0 10px 0';
+    
+    // Create instructions
+    const instructions = document.createElement('p');
+    instructions.textContent = 'Copy this JSON to save your circuit:';
+    instructions.style.margin = '0';
+    
+    // Create textarea with the circuit data
+    const textarea = document.createElement('textarea');
+    textarea.value = JSON.stringify(circuitData, null, 2);
+    textarea.style.width = '100%';
+    textarea.style.height = '200px';
+    textarea.style.padding = '10px';
+    textarea.style.boxSizing = 'border-box';
+    textarea.style.border = '1px solid #ccc';
+    textarea.style.borderRadius = '4px';
+    textarea.style.resize = 'vertical';
+    textarea.style.fontFamily = 'monospace';
+    textarea.readOnly = true; // Make it read-only
+    
+    // Create button container
+    const buttonContainer = document.createElement('div');
+    buttonContainer.style.display = 'flex';
+    buttonContainer.style.justifyContent = 'flex-end';
+    buttonContainer.style.gap = '10px';
+    buttonContainer.style.marginTop = '10px';
+    
+    // Create "Copy to Clipboard" button
+    const copyButton = document.createElement('button');
+    copyButton.textContent = 'Copy to Clipboard';
+    copyButton.style.padding = '8px 16px';
+    copyButton.style.backgroundColor = '#28a745';
+    copyButton.style.color = 'white';
+    copyButton.style.border = 'none';
+    copyButton.style.borderRadius = '4px';
+    copyButton.style.cursor = 'pointer';
+    copyButton.style.marginRight = 'auto'; // Place on left side
+    
+    // Create close button
+    const closeButton = document.createElement('button');
+    closeButton.textContent = 'Close';
+    closeButton.style.padding = '8px 16px';
+    closeButton.style.backgroundColor = '#6c757d';
+    closeButton.style.color = 'white';
+    closeButton.style.border = 'none';
+    closeButton.style.borderRadius = '4px';
+    closeButton.style.cursor = 'pointer';
+    
+    // Status message for errors or success
+    const statusMessage = document.createElement('div');
+    statusMessage.style.color = '#28a745';
+    statusMessage.style.marginTop = '10px';
+    statusMessage.style.display = 'none';
+    
+    // Add elements to modal
+    modal.appendChild(title);
+    modal.appendChild(instructions);
+    modal.appendChild(textarea);
+    modal.appendChild(statusMessage);
+    buttonContainer.appendChild(copyButton);
+    buttonContainer.appendChild(closeButton);
+    modal.appendChild(buttonContainer);
+    overlay.appendChild(modal);
+    
+    // Add to document
+    document.body.appendChild(overlay);
+    
+    // Focus and select the textarea content for easy copying
+    textarea.focus();
+    textarea.select();
+    
+    // Add event listeners
+    copyButton.addEventListener('click', async () => {
+        try {
+            // Try to copy using the Clipboard API
+            await navigator.clipboard.writeText(textarea.value);
+            statusMessage.textContent = 'Copied to clipboard!';
+            statusMessage.style.color = '#28a745'; // green color
+            statusMessage.style.display = 'block';
+            
+            // Hide the message after 2 seconds
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 2000);
+        } catch (err) {
+            // Fallback: select the text again for manual copying
+            textarea.select();
+            
+            statusMessage.textContent = 'Please press Ctrl+C to copy';
+            statusMessage.style.color = '#ffc107'; // yellow warning color
+            statusMessage.style.display = 'block';
+        }
+    });
+    
+    closeButton.addEventListener('click', () => {
+        document.body.removeChild(overlay);
+    });
+    
+    // Handle escape key to close
+    overlay.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            document.body.removeChild(overlay);
+        }
+        e.stopPropagation(); // Prevent document-level handlers
+    });
+    
+    // Prevent clicks on the overlay (but not the modal) from closing the modal
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            document.body.removeChild(overlay);
+        }
+    });
+}
 
 // Add global event listeners
 document.addEventListener('mousedown', handleMouseDown);
@@ -709,39 +858,224 @@ if (!document.getElementById('arrowhead')) {
     svg.appendChild(defs);
 }
 
-// Function to import graph from clipboard
-async function importFromClipboard() {
-    try {
-        // Check if clipboard API is available
-        if (!navigator.clipboard) {
-            alert('Clipboard access is not available in your browser.');
-            return;
+// Function to import graph - replace clipboard import with modal dialog
+function importFromClipboard() {
+    // Create modal overlay
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    overlay.style.display = 'flex';
+    overlay.style.justifyContent = 'center';
+    overlay.style.alignItems = 'center';
+    overlay.style.zIndex = '1000';
+    
+    // Create modal dialog
+    const modal = document.createElement('div');
+    modal.style.backgroundColor = 'white';
+    modal.style.padding = '20px';
+    modal.style.borderRadius = '5px';
+    modal.style.width = '80%';
+    modal.style.maxWidth = '600px';
+    modal.style.maxHeight = '80%';
+    modal.style.display = 'flex';
+    modal.style.flexDirection = 'column';
+    modal.style.gap = '10px';
+    
+    // Create title
+    const title = document.createElement('h3');
+    title.textContent = 'Import Circuit Data';
+    title.style.margin = '0 0 10px 0';
+    
+    // Create instructions
+    const instructions = document.createElement('p');
+    instructions.textContent = 'Paste your circuit JSON data below (right-click and select Paste, or use keyboard shortcut):';
+    instructions.style.margin = '0';
+    
+    // Create textarea
+    const textarea = document.createElement('textarea');
+    textarea.style.width = '100%';
+    textarea.style.height = '200px';
+    textarea.style.padding = '10px';
+    textarea.style.boxSizing = 'border-box';
+    textarea.style.border = '1px solid #ccc';
+    textarea.style.borderRadius = '4px';
+    textarea.style.resize = 'vertical';
+    
+    // Handle paste event directly to avoid browser's paste dialog
+    textarea.addEventListener('paste', function(e) {
+        // No need to do anything special, just let the default paste happen
+        // but make sure the event doesn't bubble up
+        e.stopPropagation();
+    });
+    
+    // Prevent Ctrl+V from reaching the document level
+    textarea.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'v') {
+            // Let the default paste behavior happen in the textarea
+            e.stopPropagation();
         }
+    });
+    
+    // Create button container
+    const buttonContainer = document.createElement('div');
+    buttonContainer.style.display = 'flex';
+    buttonContainer.style.justifyContent = 'flex-end';
+    buttonContainer.style.gap = '10px';
+    buttonContainer.style.marginTop = '10px';
+    
+    // Create "Paste from Clipboard" button (alternative paste method)
+    const pasteButton = document.createElement('button');
+    pasteButton.textContent = 'Paste from Clipboard';
+    pasteButton.style.padding = '8px 16px';
+    pasteButton.style.backgroundColor = '#6c757d';
+    pasteButton.style.color = 'white';
+    pasteButton.style.border = 'none';
+    pasteButton.style.borderRadius = '4px';
+    pasteButton.style.cursor = 'pointer';
+    pasteButton.style.marginRight = 'auto'; // Place on left side
+    
+    pasteButton.addEventListener('click', async () => {
+        try {
+            // Try to get clipboard text using the Clipboard API
+            const text = await navigator.clipboard.readText();
+            textarea.value = text;
+        } catch (err) {
+            console.error("Failed to read clipboard:", err);
+            statusMessage.textContent = "Couldn't access clipboard. Please paste manually.";
+            statusMessage.style.display = 'block';
+        }
+    });
+    
+    // Create import button
+    const importButton = document.createElement('button');
+    importButton.textContent = 'Import';
+    importButton.style.padding = '8px 16px';
+    importButton.style.backgroundColor = '#007bff';
+    importButton.style.color = 'white';
+    importButton.style.border = 'none';
+    importButton.style.borderRadius = '4px';
+    importButton.style.cursor = 'pointer';
+    
+    // Create cancel button
+    const cancelButton = document.createElement('button');
+    cancelButton.textContent = 'Cancel';
+    cancelButton.style.padding = '8px 16px';
+    cancelButton.style.backgroundColor = '#6c757d';
+    cancelButton.style.color = 'white';
+    cancelButton.style.border = 'none';
+    cancelButton.style.borderRadius = '4px';
+    cancelButton.style.cursor = 'pointer';
+    
+    // Status message for errors or success
+    const statusMessage = document.createElement('div');
+    statusMessage.style.color = 'red';
+    statusMessage.style.marginTop = '10px';
+    statusMessage.style.display = 'none';
+    
+    // Add elements to modal
+    modal.appendChild(title);
+    modal.appendChild(instructions);
+    modal.appendChild(textarea);
+    modal.appendChild(statusMessage);
+    buttonContainer.appendChild(pasteButton);
+    buttonContainer.appendChild(cancelButton);
+    buttonContainer.appendChild(importButton);
+    modal.appendChild(buttonContainer);
+    overlay.appendChild(modal);
+    
+    // Add to document
+    document.body.appendChild(overlay);
+    
+    // Focus the textarea
+    textarea.focus();
+    
+    // Add event listeners
+    cancelButton.addEventListener('click', () => {
+        document.body.removeChild(overlay);
+    });
+    
+    importButton.addEventListener('click', () => {
+        try {
+            const text = textarea.value.trim();
+            
+            if (!text) {
+                statusMessage.textContent = 'Please paste circuit data first.';
+                statusMessage.style.display = 'block';
+                return;
+            }
+            
+            // Try to parse JSON
+            const circuitData = JSON.parse(text);
+            
+            // Validate the circuit data structure
+            if (!circuitData.nodes || !Array.isArray(circuitData.nodes) || 
+                !circuitData.connections || !Array.isArray(circuitData.connections)) {
+                throw new Error('Invalid circuit data format. Must contain nodes and connections arrays.');
+            }
+            
+            // Import the circuit
+            importCircuit(circuitData);
+            
+            // Close the modal
+            document.body.removeChild(overlay);
+            
+            // Show success notification
+            showNotification('Circuit imported successfully!', 'success');
+            
+        } catch (error) {
+            console.error('Import failed:', error);
+            statusMessage.textContent = `Import failed: ${error.message || 'Invalid JSON format'}`;
+            statusMessage.style.display = 'block';
+        }
+    });
+    
+    // Handle escape key to close
+    overlay.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            document.body.removeChild(overlay);
+        }
+    });
 
-        // Ask user for confirmation
-        if (!confirm('Do you want to import circuit from clipboard?')) {
-            return;
-        }
+    // Prevent the main document's keydown handler from firing when typing in the modal
+    overlay.addEventListener('keydown', (e) => {
+        e.stopPropagation();
+    });
+}
 
-        // Get clipboard text
-        const text = await navigator.clipboard.readText();
-        
-        // Try to parse JSON
-        const circuitData = JSON.parse(text);
-        
-        // Validate the circuit data structure
-        if (!circuitData.nodes || !Array.isArray(circuitData.nodes) || 
-            !circuitData.connections || !Array.isArray(circuitData.connections)) {
-            throw new Error('Invalid circuit data format');
-        }
-        
-        // Import the circuit
-        importCircuit(circuitData);
-        
-    } catch (error) {
-        console.error('Import failed:', error);
-        alert(`Import failed: ${error.message || 'Invalid JSON format'}`);
+// Function to show notifications
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.textContent = message;
+    notification.style.position = 'fixed';
+    notification.style.bottom = '20px';
+    notification.style.right = '20px';
+    notification.style.padding = '10px 20px';
+    notification.style.borderRadius = '5px';
+    notification.style.zIndex = '1000';
+    notification.style.transition = 'opacity 0.5s';
+    
+    if (type === 'success') {
+        notification.style.backgroundColor = '#4CAF50';
+        notification.style.color = 'white';
+    } else if (type === 'error') {
+        notification.style.backgroundColor = '#f44336';
+        notification.style.color = 'white';
+    } else {
+        notification.style.backgroundColor = '#007bff';
+        notification.style.color = 'white';
     }
+    
+    document.body.appendChild(notification);
+    
+    // Remove notification after 3 seconds
+    setTimeout(() => {
+        notification.style.opacity = '0';
+        setTimeout(() => notification.remove(), 500);
+    }, 3000);
 }
 
 // Function to import the circuit data
@@ -770,8 +1104,6 @@ function importCircuit(circuitData) {
     
     // Redraw all edges
     redrawEdges();
-    
-    alert('Circuit imported successfully!');
 }
 
 // Function to clear the current circuit
