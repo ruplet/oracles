@@ -127,6 +127,8 @@ function drawEdge(sourceId, targetId) {
 
     const sourceRect = sourceElement.getBoundingClientRect();
     const targetRect = targetElement.getBoundingClientRect();
+    const sourceBorderRadius = parseFloat(window.getComputedStyle(sourceElement).borderRadius) || 0;
+    const targetBorderRadius = parseFloat(window.getComputedStyle(targetElement).borderRadius) || 0;
 
     // Calculate the center points
     const sourceCenterX = sourceElement.offsetLeft + sourceRect.width / 2;
@@ -138,14 +140,16 @@ function drawEdge(sourceId, targetId) {
         left: sourceElement.offsetLeft,
         top: sourceElement.offsetTop,
         right: sourceElement.offsetLeft + sourceRect.width,
-        bottom: sourceElement.offsetTop + sourceRect.height
+        bottom: sourceElement.offsetTop + sourceRect.height,
+        borderRadius: sourceBorderRadius
     };
 
     const targetBounds = {
         left: targetElement.offsetLeft,
         top: targetElement.offsetTop,
         right: targetElement.offsetLeft + targetRect.width,
-        bottom: targetElement.offsetTop + targetRect.height
+        bottom: targetElement.offsetTop + targetRect.height,
+        borderRadius: targetBorderRadius
     };
 
     const intersectsSource = lineIntersectsRect(sourceCenterX, sourceCenterY, targetCenterX, targetCenterY, sourceBounds);
@@ -154,12 +158,12 @@ function drawEdge(sourceId, targetId) {
     let startPoint = { x: sourceCenterX, y: sourceCenterY };
     let endPoint = { x: targetCenterX, y: targetCenterY };
 
-    const sourceIntersection = getLineIntersectionWithRect(startPoint, endPoint, sourceBounds);
+    const sourceIntersection = getLineIntersectionWithRoundedRect(startPoint, endPoint, sourceBounds);
     if (sourceIntersection) {
         startPoint = sourceIntersection;
     }
 
-    const targetIntersection = getLineIntersectionWithRect(endPoint, startPoint, targetBounds);
+    const targetIntersection = getLineIntersectionWithRoundedRect(endPoint, startPoint, targetBounds);
     if (targetIntersection) {
         endPoint = targetIntersection;
     }
@@ -184,6 +188,103 @@ function drawEdge(sourceId, targetId) {
         }
     });
     svg.appendChild(line);
+}
+
+function getLineIntersectionWithRoundedRect(lineStart, lineEnd, rect) {
+    const { left, top, right, bottom, borderRadius } = rect;
+    const { x: x1, y: y1 } = lineStart;
+    const { x: x2, y: y2 } = lineEnd;
+
+    let closestIntersection = null;
+    let minDistanceSq = Infinity;
+
+    // Check intersection with straight edges
+    const straightIntersection = getLineIntersectionWithRect(lineStart, lineEnd, { left, top, right, bottom });
+    if (straightIntersection) {
+        const dx = straightIntersection.x - lineStart.x;
+        const dy = straightIntersection.y - lineStart.y;
+        minDistanceSq = dx * dx + dy * dy;
+        closestIntersection = straightIntersection;
+    }
+
+    // Check intersection with corner circles
+    const corners = [
+        { center: { x: left + borderRadius, y: top + borderRadius }, radius: borderRadius },    // Top-left
+        { center: { x: right - borderRadius, y: top + borderRadius }, radius: borderRadius },   // Top-right
+        { center: { x: right - borderRadius, y: bottom - borderRadius }, radius: borderRadius }, // Bottom-right
+        { center: { x: left + borderRadius, y: bottom - borderRadius }, radius: borderRadius }  // Bottom-left
+    ];
+
+    for (const corner of corners) {
+        const intersection = lineSegmentIntersectsCircle(lineStart, lineEnd, corner.center, corner.radius);
+        if (intersection) {
+            const dx = intersection.x - lineStart.x;
+            const dy = intersection.y - lineStart.y;
+            const distanceSq = dx * dx + dy * dy;
+            if (distanceSq < minDistanceSq) {
+                minDistanceSq = distanceSq;
+                closestIntersection = intersection;
+            }
+        }
+    }
+
+    return closestIntersection;
+}
+
+function lineSegmentIntersectsCircle(p1, p2, center, radius) {
+    const { x: x1, y: y1 } = p1;
+    const { x: x2, y: y2 } = p2;
+    const { x: cx, y: cy } = center;
+
+    // Vector from center to p1
+    const dx1 = x1 - cx;
+    const dy1 = y1 - cy;
+
+    // Vector along the line segment
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+
+    const a = dx * dx + dy * dy;
+    const b = 2 * (dx1 * dx + dy1 * dy);
+    const c = dx1 * dx1 + dy1 * dy1 - radius * radius;
+
+    const discriminant = b * b - 4 * a * c;
+
+    if (discriminant < 0) {
+        return null; // No intersection
+    }
+
+    const t1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+    const t2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+
+    if ((t1 >= 0 && t1 <= 1) || (t2 >= 0 && t2 <= 1)) {
+        // At least one intersection point is on the segment
+        let intersectionPoint = null;
+        let minDistSq = -1;
+
+        if (t1 >= 0 && t1 <= 1) {
+            const ix = x1 + t1 * dx;
+            const iy = y1 + t1 * dy;
+            const distSq = Math.pow(ix - x1, 2) + Math.pow(iy - y1, 2);
+            if (distSq > minDistSq) {
+                minDistSq = distSq;
+                intersectionPoint = { x: ix, y: iy };
+            }
+        }
+
+        if (t2 >= 0 && t2 <= 1) {
+            const ix = x1 + t2 * dx;
+            const iy = y1 + t2 * dy;
+            const distSq = Math.pow(ix - x1, 2) + Math.pow(iy - y1, 2);
+            if (distSq > minDistSq) {
+                minDistSq = distSq;
+                intersectionPoint = { x: ix, y: iy };
+            }
+        }
+        return intersectionPoint;
+    }
+
+    return null; // Intersection(s) outside the segment
 }
 
 function getLineIntersectionWithRect(lineStart, lineEnd, rect) {
