@@ -27,12 +27,21 @@
       <button id="add-not">Add NOT Gate</button>
       <button id="import-json">Import JSON</button>
       <button id="export-json">Export</button>
+      <button id="load-examples">Examples</button>
     </div>
 </div>
     <div id="canvas" class="canvas">
       <svg id="edges" style="position: absolute; width: 100%; height: 100%; pointer-events: none;"></svg>
     </div>
     <pre id="output"></pre>
+    <div class="disclaimers">
+      <h2>Known Problems</h2>
+      <ul>
+        <li>Creating a graph on a large display then importing it on a smaller screen can look ugly.</li>
+        <li>SVG and LaTeX export are still in progress.</li>
+        <li>More AC0 / NC0 circuit examples will be added.</li>
+      </ul>
+    </div>
   </div>
   <script src="script.js"></script>
 </body>

@@ -44,7 +44,6 @@ function renderNode(node) {
     nodeElement.textContent = node.type.toUpperCase();
     nodeElement.style.left = `${node.x}px`;
     nodeElement.style.top = `${node.y}px`;
-    nodeElement.style.opacity = 0.5;
 
     // Add event listeners
     nodeElement.addEventListener('mousedown', (e) => {
@@ -332,11 +331,11 @@ function lineIntersectsRect(x1, y1, x2, y2, rect) {
         return false;
     }
     return intersectsLine(x1, y1, x2, y2, rect.left, rect.top, rect.right, rect.top) ||
-           intersectsLine(x1, y1, x2, y2, rect.right, rect.top, rect.right, rect.bottom) ||
-           intersectsLine(x1, y1, x2, y2, rect.right, rect.bottom, rect.left, rect.bottom) ||
-           intersectsLine(x1, y1, x2, y2, rect.left, rect.bottom, rect.left, rect.top) ||
-           (x1 >= rect.left - tolerance && x1 <= rect.right + tolerance && y1 >= rect.top - tolerance && y1 <= rect.bottom + tolerance) ||
-           (x2 >= rect.left - tolerance && x2 <= rect.right + tolerance && y2 >= rect.top - tolerance && y2 <= rect.bottom + tolerance);
+        intersectsLine(x1, y1, x2, y2, rect.right, rect.top, rect.right, rect.bottom) ||
+        intersectsLine(x1, y1, x2, y2, rect.right, rect.bottom, rect.left, rect.bottom) ||
+        intersectsLine(x1, y1, x2, y2, rect.left, rect.bottom, rect.left, rect.top) ||
+        (x1 >= rect.left - tolerance && x1 <= rect.right + tolerance && y1 >= rect.top - tolerance && y1 <= rect.bottom + tolerance) ||
+        (x2 >= rect.left - tolerance && x2 <= rect.right + tolerance && y2 >= rect.top - tolerance && y2 <= rect.bottom + tolerance);
 }
 
 function intersectsLine(p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y) {
@@ -448,10 +447,10 @@ function handleMouseMove(e) {
         const rect = canvas.getBoundingClientRect();
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
-        
+
         tempEdge.setAttribute('x2', mouseX);
         tempEdge.setAttribute('y2', mouseY);
-        
+
         // Only add arrowhead if the line has some length
         if (tempEdge.getAttribute('x1') !== tempEdge.getAttribute('x2') || tempEdge.getAttribute('y1') !== tempEdge.getAttribute('y2')) {
             tempEdge.setAttribute('marker-end', 'url(#arrowhead)');
@@ -569,7 +568,7 @@ document.getElementById('export-json').addEventListener('click', () => {
 
 // Function to show the export modal with options - updated for better card styling
 function showExportModal() {
-    // Create the circuit data object (will be needed for JSON export)
+    // Create the circuit data object and include canvas dimensions
     const circuitData = {
         nodes: nodes.map(node => ({
             id: node.id,
@@ -579,9 +578,11 @@ function showExportModal() {
             inputs: node.inputs,
             outputs: node.outputs
         })),
-        connections: connections
+        connections: connections,
+        width: canvas.clientWidth,
+        height: canvas.clientHeight
     };
-    
+
     // Create modal overlay
     const overlay = document.createElement('div');
     overlay.style.position = 'fixed';
@@ -594,7 +595,7 @@ function showExportModal() {
     overlay.style.justifyContent = 'center';
     overlay.style.alignItems = 'center';
     overlay.style.zIndex = '1000';
-    
+
     // Create modal dialog
     const modal = document.createElement('div');
     modal.style.backgroundColor = 'white';
@@ -608,7 +609,7 @@ function showExportModal() {
     modal.style.flexDirection = 'column';
     modal.style.gap = '20px';
     modal.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.2)';
-    
+
     // Create title
     const title = document.createElement('h3');
     title.textContent = 'Export Circuit';
@@ -616,7 +617,7 @@ function showExportModal() {
     title.style.fontSize = '24px';
     title.style.borderBottom = '1px solid #e9ecef';
     title.style.paddingBottom = '10px';
-    
+
     // Create export options container with horizontal layout like VSCode tabs
     const optionsContainer = document.createElement('div');
     optionsContainer.className = 'export-options';
@@ -624,7 +625,7 @@ function showExportModal() {
     optionsContainer.style.flexDirection = 'row';
     optionsContainer.style.overflowX = 'auto';
     optionsContainer.style.gap = '10px';
-    
+
     // Create export options - only JSON and LaTeX now
     const options = [
         {
@@ -640,18 +641,22 @@ function showExportModal() {
             description: 'Export as LaTeX code for academic papers',
             icon: '📝',
             createForm: () => createLatexExportForm(circuitData)
+        },
+        {
+            id: 'svg',
+            title: 'SVG',
+            description: 'Export as vector graphics for high quality output',
+            icon: '🖼️',
+            createForm: () => createSvgExportForm(circuitData)
         }
     ];
-    
-    // Current selected option
-    let selectedOption = null;
-    
+
     // Create each export option card with smaller tab styling
     options.forEach(option => {
         const card = document.createElement('div');
         card.className = 'export-card';
         card.dataset.option = option.id;
-        
+
         // VSCode-like tab styling: smaller height, reduced padding and border radius
         card.style.border = "1px solid #ddd";
         card.style.borderRadius = "4px";
@@ -660,7 +665,7 @@ function showExportModal() {
         card.style.backgroundColor = "#fff";
         card.style.cursor = "pointer";
         card.style.transition = "transform 0.2s, box-shadow 0.2s";
-        
+
         card.addEventListener('mouseover', () => {
             card.style.transform = "scale(1.02)";
             card.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
@@ -669,12 +674,12 @@ function showExportModal() {
             card.style.transform = "scale(1)";
             card.style.boxShadow = "0 1px 2px rgba(0,0,0,0.1)";
         });
-        
+
         const cardContent = document.createElement('div');
         cardContent.style.display = 'flex';
         cardContent.style.alignItems = 'center';
         cardContent.style.gap = '5px';
-        
+
         if (option.icon) {
             const icon = document.createElement('span');
             icon.textContent = option.icon;
@@ -682,59 +687,59 @@ function showExportModal() {
             icon.style.marginRight = '5px';
             cardContent.appendChild(icon);
         }
-        
+
         const textContent = document.createElement('div');
         textContent.style.flex = '1';
-        
+
         const heading = document.createElement('h4');
         heading.textContent = option.title;
         heading.style.fontSize = '14px';
         heading.style.margin = '0';
-        
+
         const description = document.createElement('p');
         description.textContent = option.description;
         description.style.fontSize = '12px';
         description.style.margin = '0';
-        
+
         textContent.appendChild(heading);
         textContent.appendChild(description);
         cardContent.appendChild(textContent);
         card.appendChild(cardContent);
-        
+
         card.addEventListener('click', () => {
             // Clear active state from all cards
             document.querySelectorAll('.export-card').forEach(c => c.classList.remove('active'));
-            
+
             // Set this card as active
             card.classList.add('active');
-            
+
             // Update selected option
             selectedOption = option;
-            
+
             // Clear and hide the form container
             formContainer.innerHTML = '';
-            
+
             // Create and show the appropriate form
             const form = option.createForm();
             formContainer.appendChild(form);
             formContainer.style.display = 'block';
         });
-        
+
         optionsContainer.appendChild(card);
     });
-    
+
     // Create export form container (will be populated based on selected option)
     const formContainer = document.createElement('div');
     formContainer.className = 'export-form';
     formContainer.style.display = 'none';
-    
+
     // Create button container
     const buttonContainer = document.createElement('div');
     buttonContainer.style.display = 'flex';
     buttonContainer.style.justifyContent = 'flex-end';
     buttonContainer.style.gap = '10px';
     buttonContainer.style.marginTop = '15px';
-    
+
     // Create close button
     const closeButton = document.createElement('button');
     closeButton.textContent = 'Close';
@@ -744,14 +749,14 @@ function showExportModal() {
     closeButton.style.border = 'none';
     closeButton.style.borderRadius = '4px';
     closeButton.style.cursor = 'pointer';
-    
+
     // Status message for errors or success
     const statusMessage = document.createElement('div');
     statusMessage.style.marginTop = '10px';
     statusMessage.style.display = 'none';
     statusMessage.style.padding = '10px';
     statusMessage.style.borderRadius = '4px';
-    
+
     // Add elements to modal
     modal.appendChild(title);
     modal.appendChild(optionsContainer);
@@ -760,18 +765,18 @@ function showExportModal() {
     buttonContainer.appendChild(closeButton);
     modal.appendChild(buttonContainer);
     overlay.appendChild(modal);
-    
+
     // Add to document
     document.body.appendChild(overlay);
-    
+
     // Select the first option by default
     optionsContainer.querySelector('.export-card').click();
-    
+
     // Add event listeners
     closeButton.addEventListener('click', () => {
         document.body.removeChild(overlay);
     });
-    
+
     // Handle escape key to close
     overlay.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
@@ -779,19 +784,19 @@ function showExportModal() {
         }
         e.stopPropagation(); // Prevent document-level handlers
     });
-    
+
     // Prevent clicks on the overlay (but not the modal) from closing the modal
     overlay.addEventListener('click', (e) => {
         if (e.target === overlay) {
             document.body.removeChild(overlay);
         }
     });
-    
+
     // Helper function to show status messages
     function showStatus(message, type = 'info') {
         statusMessage.textContent = message;
         statusMessage.style.display = 'block';
-        
+
         if (type === 'success') {
             statusMessage.style.color = '#155724';
             statusMessage.style.backgroundColor = '#d4edda';
@@ -805,7 +810,7 @@ function showExportModal() {
             statusMessage.style.backgroundColor = '#cce5ff';
             statusMessage.style.border = '1px solid #b8daff';
         }
-        
+
         // Hide the message after 3 seconds
         setTimeout(() => {
             statusMessage.style.display = 'none';
@@ -816,7 +821,7 @@ function showExportModal() {
 // Create the form for JSON export
 function createJsonExportForm(circuitData) {
     const form = document.createElement('div');
-    
+
     const textarea = document.createElement('textarea');
     textarea.value = JSON.stringify(circuitData, null, 2);
     textarea.style.width = '100%';
@@ -828,7 +833,7 @@ function createJsonExportForm(circuitData) {
     textarea.style.resize = 'vertical';
     textarea.style.fontFamily = 'monospace';
     textarea.readOnly = true; // Make it read-only
-    
+
     const copyButton = document.createElement('button');
     copyButton.textContent = 'Copy to Clipboard';
     copyButton.style.marginTop = '10px';
@@ -838,7 +843,7 @@ function createJsonExportForm(circuitData) {
     copyButton.style.border = 'none';
     copyButton.style.borderRadius = '4px';
     copyButton.style.cursor = 'pointer';
-    
+
     copyButton.addEventListener('click', async () => {
         try {
             await navigator.clipboard.writeText(textarea.value);
@@ -854,20 +859,20 @@ function createJsonExportForm(circuitData) {
             }, 2000);
         }
     });
-    
+
     form.appendChild(textarea);
     form.appendChild(copyButton);
-    
+
     return form;
 }
 
 // Create the form for LaTeX export with toggle for complete document
 function createLatexExportForm(circuitData) {
     const form = document.createElement('div');
-    
+
     // Variable to hold export mode
     let exportFullDocument = false;
-    
+
     // Create toggle button for LaTeX export mode
     const toggleButton = document.createElement('button');
     toggleButton.textContent = 'Export: Figure Only';
@@ -878,15 +883,15 @@ function createLatexExportForm(circuitData) {
     toggleButton.style.backgroundColor = '#007bff';
     toggleButton.style.color = 'white';
     toggleButton.style.marginBottom = '15px';
-    
+
     toggleButton.addEventListener('click', () => {
         exportFullDocument = !exportFullDocument;
         toggleButton.textContent = exportFullDocument ? 'Export: Full Document' : 'Export: Figure Only';
         textarea.value = generateLatexCode(exportFullDocument);
     });
-    
+
     form.appendChild(toggleButton);
-    
+
     // Create textarea for LaTeX code
     const textarea = document.createElement('textarea');
     textarea.value = generateLatexCode(false); // Start with Figure Only
@@ -899,13 +904,13 @@ function createLatexExportForm(circuitData) {
     textarea.style.resize = 'vertical';
     textarea.style.fontFamily = 'monospace';
     textarea.readOnly = true;
-    
+
     // Buttons container
     const buttonsContainer = document.createElement('div');
     buttonsContainer.style.display = 'flex';
     buttonsContainer.style.gap = '10px';
     buttonsContainer.style.marginTop = '10px';
-    
+
     // Copy button
     const copyButton = document.createElement('button');
     copyButton.textContent = 'Copy to Clipboard';
@@ -915,7 +920,7 @@ function createLatexExportForm(circuitData) {
     copyButton.style.border = 'none';
     copyButton.style.borderRadius = '4px';
     copyButton.style.cursor = 'pointer';
-    
+
     copyButton.addEventListener('click', async () => {
         try {
             await navigator.clipboard.writeText(textarea.value);
@@ -931,18 +936,18 @@ function createLatexExportForm(circuitData) {
             }, 2000);
         }
     });
-    
+
     buttonsContainer.appendChild(copyButton);
     const note = document.createElement('p');
     note.textContent = 'Uses the TikZ package. Toggle the mode to switch between exporting just the figure or a complete LaTeX document.';
     note.style.fontSize = '0.9em';
     note.style.color = '#666';
     note.style.marginTop = '15px';
-    
+
     form.appendChild(textarea);
     form.appendChild(buttonsContainer);
     form.appendChild(note);
-    
+
     return form;
 }
 
@@ -950,7 +955,7 @@ function createLatexExportForm(circuitData) {
 function generateLatexCode(includeCompleteDocument = false) {
     // Start with TikZ code
     let tikzCode = `\\begin{tikzpicture}\n`;
-    
+
     // Define node styles
     tikzCode += `  % Node styles\n`;
     tikzCode += `  \\tikzstyle{input} = [circle, draw, minimum size=0.7cm, fill=blue!20]\n`;
@@ -958,27 +963,27 @@ function generateLatexCode(includeCompleteDocument = false) {
     tikzCode += `  \\tikzstyle{and} = [rectangle, draw, minimum size=0.7cm, fill=green!20]\n`;
     tikzCode += `  \\tikzstyle{or} = [rectangle, draw, minimum size=0.7cm, fill=yellow!20]\n`;
     tikzCode += `  \\tikzstyle{not} = [rectangle, draw, minimum size=0.7cm, fill=purple!20]\n\n`;
-    
+
     // Add nodes
     tikzCode += `  % Nodes\n`;
     const scale = 0.05; // Scale factor for converting px to cm
-    
+
     nodes.forEach(node => {
         // Convert pixel positions to cm
         const x = (node.x * scale).toFixed(2);
         const y = (-node.y * scale).toFixed(2); // Negate y for LaTeX coordinate system
-        
+
         tikzCode += `  \\node[${node.type}] (${node.id}) at (${x}, ${y}) {${node.type.toUpperCase()}};\n`;
     });
-    
+
     // Add connections
     tikzCode += `\n  % Connections\n`;
     connections.forEach(conn => {
         tikzCode += `  \\draw[->] (${conn.source}) -- (${conn.target});\n`;
     });
-    
+
     tikzCode += `\\end{tikzpicture}`;
-    
+
     // If complete document is requested, wrap in a complete LaTeX document
     if (includeCompleteDocument) {
         return `\\documentclass{article}
@@ -1001,30 +1006,109 @@ ${tikzCode}
 
 \\end{document}`;
     }
-    
+
     return tikzCode;
 }
 
-// Helper function to get the appropriate export handler - simplified to just JSON and LaTeX
-function getExportHandler(optionId) {
-    switch(optionId) {
-        case 'json':
-            return function(formContainer, circuitData, statusMessage) {
-                // Copy to clipboard is handled by the form itself
-                statusMessage.textContent = 'Ready to export JSON';
-                statusMessage.style.color = '#28a745';
-                statusMessage.style.display = 'block';
-            };
-        case 'latex':
-            return function(formContainer, circuitData, statusMessage) {
-                // Copy to clipboard is handled by the form itself
-                statusMessage.textContent = 'Ready to export LaTeX';
-                statusMessage.style.color = '#28a745';
-                statusMessage.style.display = 'block';
-            };
-        default:
-            return null;
-    }
+// NEW: Generate an SVG snapshot based on current canvas rendering.
+function generateDisplaySvg() {
+    const parentRect = canvas.getBoundingClientRect();
+    let svgParts = [];
+    svgParts.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${parentRect.width}" height="${parentRect.height}">`);
+    // Include already drawn edges from the SVG element
+    const edgesElem = document.getElementById('edges');
+    svgParts.push(edgesElem.innerHTML);
+    // For each rendered node, capture its computed style and geometry
+    document.querySelectorAll('.node').forEach(nodeEl => {
+        const rect = nodeEl.getBoundingClientRect();
+        const x = rect.left - parentRect.left;
+        const y = rect.top - parentRect.top;
+        const width = rect.width;
+        const height = rect.height;
+        const comp = window.getComputedStyle(nodeEl);
+        const rx = comp.borderRadius.replace('px','') || 0;
+        const fill = comp.backgroundColor;
+        const stroke = comp.borderColor;
+        const text = nodeEl.textContent;
+        svgParts.push(`<rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${rx}" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`);
+        svgParts.push(`<text x="${x + width/2}" y="${y + height/2 + 5}" text-anchor="middle" fill="#333" font-size="14">${text}</text>`);
+    });
+    svgParts.push(`</svg>`);
+    return svgParts.join('\n');
+}
+
+// Modify the SVG export form to use the rendered output.
+function createSvgExportForm(circuitData) {
+    const form = document.createElement('div');
+    const textarea = document.createElement('textarea');
+    // Use generateDisplaySvg() to capture current look
+    textarea.value = generateDisplaySvg();
+    textarea.style.width = '100%';
+    textarea.style.height = '250px';
+    textarea.style.padding = '10px';
+    textarea.style.boxSizing = 'border-box';
+    textarea.style.border = '1px solid #ccc';
+    textarea.style.borderRadius = '4px';
+    textarea.style.resize = 'vertical';
+    textarea.style.fontFamily = 'monospace';
+    textarea.readOnly = true;
+    const copyButton = document.createElement('button');
+    copyButton.textContent = 'Copy to Clipboard';
+    copyButton.style.marginTop = '10px';
+    copyButton.style.padding = '8px 16px';
+    copyButton.style.backgroundColor = '#28a745';
+    copyButton.style.color = 'white';
+    copyButton.style.border = 'none';
+    copyButton.style.borderRadius = '4px';
+    copyButton.style.cursor = 'pointer';
+    copyButton.addEventListener('click', async () => {
+        try {
+            await navigator.clipboard.writeText(textarea.value);
+            copyButton.textContent = 'Copied!';
+            setTimeout(() => { copyButton.textContent = 'Copy to Clipboard'; }, 2000);
+        } catch (err) {
+            textarea.select();
+            copyButton.textContent = 'Please press Ctrl+C to copy';
+            setTimeout(() => { copyButton.textContent = 'Copy to Clipboard'; }, 2000);
+        }
+    });
+    form.appendChild(textarea);
+    form.appendChild(copyButton);
+    return form;
+}
+
+// Modify importCircuit to rescale nodes based on exported dimensions.
+function importCircuit(circuitData) {
+    clearCircuit();
+    // Set initial canvas dimensions to the imported ones.
+    initialCanvasWidth = circuitData.width || canvas.clientWidth;
+    initialCanvasHeight = circuitData.height || canvas.clientHeight;
+    
+    // Create new nodes without manual scaling.
+    circuitData.nodes.forEach(node => {
+        const newNode = {
+            id: node.id,
+            type: node.type,
+            x: node.x,
+            y: node.y,
+            inputs: node.inputs || [],
+            outputs: node.outputs || []
+        };
+        nodes.push(newNode);
+        renderNode(newNode);
+    });
+    
+    circuitData.connections.forEach(conn => {
+        connections.push({ source: conn.source, target: conn.target });
+    });
+    
+    nodeCounter = nodes.reduce((max, node) => {
+        const idNum = parseInt(node.id.split('-')[1], 10);
+        return Math.max(max, idNum);
+    }, 0) + 1;
+    
+    // Simulate a window resize to reflow the nodes into current canvas dimensions.
+    resizeCanvas();
 }
 
 function adjustNodePosition(node, originalX, originalY, nodeWidth, nodeHeight, canvasWidth, canvasHeight) {
@@ -1169,7 +1253,7 @@ function importFromClipboard() {
     overlay.style.justifyContent = 'center';
     overlay.style.alignItems = 'center';
     overlay.style.zIndex = '1000';
-    
+
     // Create modal dialog
     const modal = document.createElement('div');
     modal.style.backgroundColor = 'white';
@@ -1181,17 +1265,17 @@ function importFromClipboard() {
     modal.style.display = 'flex';
     modal.style.flexDirection = 'column';
     modal.style.gap = '10px';
-    
+
     // Create title
     const title = document.createElement('h3');
     title.textContent = 'Import Circuit Data';
     title.style.margin = '0 0 10px 0';
-    
+
     // Create instructions
     const instructions = document.createElement('p');
     instructions.textContent = 'Paste your circuit JSON data below (right-click and select Paste, or use keyboard shortcut):';
     instructions.style.margin = '0';
-    
+
     // Create textarea
     const textarea = document.createElement('textarea');
     textarea.style.width = '100%';
@@ -1201,29 +1285,29 @@ function importFromClipboard() {
     textarea.style.border = '1px solid #ccc';
     textarea.style.borderRadius = '4px';
     textarea.style.resize = 'vertical';
-    
+
     // Handle paste event directly to avoid browser's paste dialog
-    textarea.addEventListener('paste', function(e) {
+    textarea.addEventListener('paste', function (e) {
         // No need to do anything special, just let the default paste happen
         // but make sure the event doesn't bubble up
         e.stopPropagation();
     });
-    
+
     // Prevent Ctrl+V from reaching the document level
-    textarea.addEventListener('keydown', function(e) {
+    textarea.addEventListener('keydown', function (e) {
         if (e.ctrlKey && e.key === 'v') {
             // Let the default paste behavior happen in the textarea
             e.stopPropagation();
         }
     });
-    
+
     // Create button container
     const buttonContainer = document.createElement('div');
     buttonContainer.style.display = 'flex';
     buttonContainer.style.justifyContent = 'flex-end';
     buttonContainer.style.gap = '10px';
     buttonContainer.style.marginTop = '10px';
-    
+
     // Create "Paste from Clipboard" button (alternative paste method)
     const pasteButton = document.createElement('button');
     pasteButton.textContent = 'Paste from Clipboard';
@@ -1234,7 +1318,7 @@ function importFromClipboard() {
     pasteButton.style.borderRadius = '4px';
     pasteButton.style.cursor = 'pointer';
     pasteButton.style.marginRight = 'auto'; // Place on left side
-    
+
     pasteButton.addEventListener('click', async () => {
         try {
             // Try to get clipboard text using the Clipboard API
@@ -1246,7 +1330,7 @@ function importFromClipboard() {
             statusMessage.style.display = 'block';
         }
     });
-    
+
     // Create import button
     const importButton = document.createElement('button');
     importButton.textContent = 'Import';
@@ -1256,7 +1340,7 @@ function importFromClipboard() {
     importButton.style.border = 'none';
     importButton.style.borderRadius = '4px';
     importButton.style.cursor = 'pointer';
-    
+
     // Create cancel button
     const cancelButton = document.createElement('button');
     cancelButton.textContent = 'Cancel';
@@ -1266,13 +1350,13 @@ function importFromClipboard() {
     cancelButton.style.border = 'none';
     cancelButton.style.borderRadius = '4px';
     cancelButton.style.cursor = 'pointer';
-    
+
     // Status message for errors or success
     const statusMessage = document.createElement('div');
     statusMessage.style.color = 'red';
     statusMessage.style.marginTop = '10px';
     statusMessage.style.display = 'none';
-    
+
     // Add elements to modal
     modal.appendChild(title);
     modal.appendChild(instructions);
@@ -1283,53 +1367,53 @@ function importFromClipboard() {
     buttonContainer.appendChild(importButton);
     modal.appendChild(buttonContainer);
     overlay.appendChild(modal);
-    
+
     // Add to document
     document.body.appendChild(overlay);
-    
+
     // Focus the textarea
     textarea.focus();
-    
+
     // Add event listeners
     cancelButton.addEventListener('click', () => {
         document.body.removeChild(overlay);
     });
-    
+
     importButton.addEventListener('click', () => {
         try {
             const text = textarea.value.trim();
-            
+
             if (!text) {
                 statusMessage.textContent = 'Please paste circuit data first.';
                 statusMessage.style.display = 'block';
                 return;
             }
-            
+
             // Try to parse JSON
             const circuitData = JSON.parse(text);
-            
+
             // Validate the circuit data structure
-            if (!circuitData.nodes || !Array.isArray(circuitData.nodes) || 
+            if (!circuitData.nodes || !Array.isArray(circuitData.nodes) ||
                 !circuitData.connections || !Array.isArray(circuitData.connections)) {
                 throw new Error('Invalid circuit data format. Must contain nodes and connections arrays.');
             }
-            
+
             // Import the circuit
             importCircuit(circuitData);
-            
+
             // Close the modal
             document.body.removeChild(overlay);
-            
+
             // Show success notification
             showNotification('Circuit imported successfully!', 'success');
-            
+
         } catch (error) {
             console.error('Import failed:', error);
             statusMessage.textContent = `Import failed: ${error.message || 'Invalid JSON format'}`;
             statusMessage.style.display = 'block';
         }
     });
-    
+
     // Handle escape key to close
     overlay.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
@@ -1354,7 +1438,7 @@ function showNotification(message, type = 'info') {
     notification.style.borderRadius = '5px';
     notification.style.zIndex = '1000';
     notification.style.transition = 'opacity 0.5s';
-    
+
     if (type === 'success') {
         notification.style.backgroundColor = '#4CAF50';
         notification.style.color = 'white';
@@ -1365,9 +1449,9 @@ function showNotification(message, type = 'info') {
         notification.style.backgroundColor = '#007bff';
         notification.style.color = 'white';
     }
-    
+
     document.body.appendChild(notification);
-    
+
     // Remove notification after 3 seconds
     setTimeout(() => {
         notification.style.opacity = '0';
@@ -1377,35 +1461,32 @@ function showNotification(message, type = 'info') {
 
 // Function to import the circuit data
 function importCircuit(circuitData) {
-    // Clear existing circuit
     clearCircuit();
-    
-    // Create new nodes
+    const exportedWidth = circuitData.width;
+    const exportedHeight = circuitData.height;
+    const currentWidth = canvas.clientWidth;
+    const currentHeight = canvas.clientHeight;
+    // If exported dimensions are available, compute scale factor
+    const scale = (exportedWidth && exportedHeight) ? Math.min(currentWidth / exportedWidth, currentHeight / exportedHeight) : 1;
     circuitData.nodes.forEach(node => {
         const newNode = {
             id: node.id,
             type: node.type,
-            x: node.x,
-            y: node.y,
+            x: node.x * scale,
+            y: node.y * scale,
             inputs: node.inputs || [],
             outputs: node.outputs || []
         };
         nodes.push(newNode);
         renderNode(newNode);
     });
-    
-    // Create connections
     circuitData.connections.forEach(conn => {
         connections.push({ source: conn.source, target: conn.target });
     });
-    
-    // Update nodeCounter to avoid duplicated IDs
     nodeCounter = nodes.reduce((max, node) => {
         const idNum = parseInt(node.id.split('-')[1], 10);
         return Math.max(max, idNum);
     }, 0) + 1;
-    
-    // Redraw all edges
     redrawEdges();
 }
 
@@ -1416,16 +1497,16 @@ function clearCircuit() {
         const nodeElement = document.getElementById(node.id);
         if (nodeElement) nodeElement.remove();
     });
-    
+
     // Clear arrays
     nodes = [];
     connections = [];
     nodeCounter = 0;
-    
+
     // Clear SVG edges
     const svg = document.getElementById('edges');
     svg.innerHTML = '';
-    
+
     // Re-add arrowhead marker definition
     if (!document.getElementById('arrowhead')) {
         const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
@@ -1450,3 +1531,65 @@ canvas.addEventListener('mousedown', handleMouseDown);
 canvas.addEventListener('mousemove', handleMouseMove);
 document.addEventListener('mouseup', handleMouseUp);
 document.addEventListener('keydown', handleKeyDown);
+
+document.getElementById('load-examples').addEventListener('click', showExamplesModal);
+
+function showExamplesModal() {
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0,0,0,0.5)';
+    overlay.style.display = 'flex';
+    overlay.style.justifyContent = 'center';
+    overlay.style.alignItems = 'center';
+    overlay.style.zIndex = '1000';
+
+    const modal = document.createElement('div');
+    modal.style.backgroundColor = '#fff';
+    modal.style.padding = '20px';
+    modal.style.borderRadius = '8px';
+    modal.style.width = '80%';
+    modal.style.maxWidth = '400px';
+    modal.style.boxShadow = '0 10px 25px rgba(0,0,0,0.2)';
+
+    const title = document.createElement('h3');
+    title.textContent = 'Examples';
+    modal.appendChild(title);
+
+    const exampleItem = document.createElement('div');
+    exampleItem.textContent = 'Example Circuit';
+    exampleItem.style.border = '1px solid #ccc';
+    exampleItem.style.borderRadius = '5px';
+    exampleItem.style.padding = '10px';
+    exampleItem.style.marginTop = '10px';
+    exampleItem.style.cursor = 'pointer';
+
+    exampleItem.addEventListener('click', () => {
+        if (confirm('Do you want to import this example?')) {
+            fetch('example.json')
+                .then(res => res.json())
+                .then(data => {
+                    importCircuit(data);
+                    document.body.removeChild(overlay);
+                    showNotification('Example imported successfully!', 'success');
+                })
+                .catch(() => {
+                    showNotification('Failed to load example.', 'error');
+                });
+        }
+    });
+
+    modal.appendChild(exampleItem);
+    overlay.appendChild(modal);
+
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            document.body.removeChild(overlay);
+        }
+    });
+
+    document.body.appendChild(overlay);
+}
