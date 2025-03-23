@@ -1,3 +1,37 @@
+https://lipn.univ-paris13.fr/~moyen/walgo/papers/MS-Dice16.pdf
+czyli nie ma jezyka dla P?
+problem w reprezentacji:
+mozemy miec jezyk programowania dla P, ale odkladamy nierozstrzygalnos do problemu sprawdzenia czy mozna przetlumaczyc dana maszyne turinga na ten jezyk
+
+
+
+kolejny pomysl dla L neq P: 
+
+kmina o tym czy mozemy sprawdzac Sudoku 'od dolu', tj. generowac je poprzez
+jakies konstrukcje bazowe + transformacje
+jest bardzo zblizona do porowania problemow: sprawdz czy twierdzenie jest dowodliwe
+(sudoku rozwiazywalne) vs sprawdz czy dowod jest poprawny.
+jak otrzymujemy rozwiazane sudoku to mozemy latwo sprawdzic jego poprawnosc,
+    ale otrzymujac jego konstrukcje z czesci bazowych, mamy juz
+    podany dowod (konstrukcje).
+kolejna rzecz: jesli mielibysmy pełną taktyke dowodowa dla logiki,
+        ktorej zlozonosc to NP, to mielibysmy sposoby rozwiazywania Sudoku
+        a logika NP-zupelna to BCI-logic (Kanowicz 1994, Buszkowski 2008)
+  SK jest PSPACE-zupelna (Statman, 1979), a SK+Peirce, CO-NP-zupelna (Stalmarck, 1989)
+
+a z kolei, skoro BCI logic jest np-zupelna, to mozemy napisac w Coq complete taktyke,
+  ktora bedzie rozwiazywala kazdy goal z BCI poprzez odpalenie SAT solvera pod spodem.
+
+forcing zeby badac jezyki programowania: to jak oracles w computational complexity!
+https://cstheory.stackexchange.com/a/14093
+see here for oracle A such that NEXP^A = P^{NP^{A}}
+what it means in logic when you have P^A,B vs P^A^B?
+https://link.springer.com/article/10.1007/s00037-001-8190-2
+
+czy graph theory moze byc foundations of mathematics:
+NOTATKA:
+set hteory jaok graf laczy sie z moja kmina czy graph theory moze byc foundations of maths
+
 - Does it make sense to consider a category of all NP-complete problems, with morphisms as poly-time reductions between different instances?
 > https://cstheory.stackexchange.com/questions/3074/a-category-of-np-complete-problems
 
@@ -414,3 +448,7 @@ https://terrytao.wordpress.com/2010/03/19/a-computational-perspective-on-set-the
 > - Grohe 2008: IFP + C captures PTime on the class of graphs that exclude K5 as a minor  
 > Source: https://www.cl.cam.ac.uk/~ad260/talks/wollic-tutorial.pdf
 > (Descriptive complexity and polynomial time, tutorial by Anuj Dawar on WoLLIC, Edinburgh 2008)
+
+
+Safe recursion dalej:
+https://arxiv.org/pdf/1005.0522

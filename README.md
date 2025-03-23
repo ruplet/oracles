@@ -1,5 +1,7 @@
 # Oracle-oriented programming: a proof of concept
 
+fajna prezentacja o cbv vs cbn vs beta-reduction lambda calculus
+https://groups.seas.harvard.edu/courses/cs152/2021sp/lectures/sld07-lambdacalc.pdf
 
 notatki z Neergaarda:
 lemat:

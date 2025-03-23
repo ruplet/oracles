@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circuit Drawer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Circuit Drawer</h1>
+    <div class="documentation">
+      <h2>Keyboard Shortcuts</h2>
+      <ul>
+        <li><strong>Shift + Click</strong>: Draw an edge from the clicked node.</li>
+        <li><strong>Ctrl + Click</strong>: Remove the clicked node or edge.</li>
+        <li><strong>Click + Drag</strong>: Move a node.</li>
+        <li><strong>Escape</strong>: Exit drawing or dragging mode.</li>
+      </ul>
+    </div>
+    <div class="toolbar">
+      <div class="buttons-container">
+        <button id="add-input">Add Input</button>
+        <button id="add-output">Add Output</button>
+        <button id="add-and">Add AND Gate</button>
+        <button id="add-or">Add OR Gate</button>
+        <button id="add-not">Add NOT Gate</button>
+        <button id="export-json">Export as JSON</button>
+      </div>
+    </div>
+    <div id="canvas" class="canvas">
+      <svg id="edges" style="position: absolute; width: 100%; height: 100%; pointer-events: none;"></svg>
+    </div>
+    <pre id="output"></pre>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

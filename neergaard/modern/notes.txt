@@ -1,0 +1,8 @@
+Since Neergaard wrote his programs in SML, we will translate his code to
+a modern programming language from the ML family.
+
+We will use CakeML, as it is an interesting project:
+Jan 2024: At POPL 2024, our POPL 2014 paper CakeML:
+A verified implementation of ML received the Most Influential POPL
+Paper Award. We received a glass trophy each too. 
+

@@ -1,0 +1,6 @@
+https://smlfamily.github.io/Basis/array.html#SIG:ARRAY.foldri:VAL
+https://www.cs.princeton.edu/~appel/smlnj/basis/array.html
+https://www.cs.princeton.edu/~appel/smlnj/basis/aggregates-chapter.html#array-vector-slice
+https://smlfamily.github.io/Basis/vector.html#SIG:VECTOR.mapi:VAL
+https://github.com/spamegg1/unix-sml
+https://cakeml.org/
