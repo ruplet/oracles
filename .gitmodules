@@ -1,0 +1,3 @@
+[submodule "IntML"]
+	path = IntML
+	url = https://github.com/uelis/IntML.git

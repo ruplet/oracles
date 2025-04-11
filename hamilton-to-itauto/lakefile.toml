@@ -1,0 +1,14 @@
+name = "hamilton-to-itauto"
+version = "0.1.0"
+defaultTargets = ["hamilton-to-itauto"]
+
+[[lean_lib]]
+name = "HamiltonToItauto"
+
+[[lean_exe]]
+name = "hamilton-to-itauto"
+root = "Main"
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"

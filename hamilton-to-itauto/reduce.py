@@ -4,88 +4,70 @@ def get_ipc_formula_premises(adjacency_matrix):
 
     # Helper to return a vertex variable at a given step.
     def v(vertex, step):
-        # using 1-indexed vertex name for clarity
         return f"v_{vertex+1}_{step}"
+    
+    def v_not(vertex, step):
+        return f"v_{vertex+1}_not_{step}"
 
     # Helper for the additional variable for closing condition.
-    def v_prime(vertex):
-        return f"v_{vertex+1}_prime_1"
+    # def v_prime(vertex):
+    #     return f"v_{vertex+1}_prime_1"
 
-    # (a) For every vertex, add initial premise (vₖ₁ → 1) → 0.
+    # (a) Initial premise: (a_1 → b^1 → ... → z^1 → 1) → 0
     for a in range(n):
-        premises.append(f"({v(a,1)} → goal1) → goal0")
+        antecedents = [v_not(x, 1) for x in range(n) if a != x]
+        premise = f"({v(a, 1)} → " + " → ".join(antecedents) + f" → goal1) → goal0"
+        premises.append(premise)
 
     # (b) For each step i = 2,..., n, for each vertex a and for every incoming edge (b,a)
-    # add: vₐ₁ → ... → vₐᵢ₋₁ → v_bᵢ₋₁ → (vₐᵢ → (vₓᵢ for each x ≠ a, in order) → i) → i–1.
+    # add: a1 → ... → ai-1 → bi-1 → (ai → bi → ... → zi → i) → i-1
     for i in range(2, n+1):
         for a in range(n):
             for b in range(n):
                 if a != b and adjacency_matrix[b][a] == 1:
-                    antecedents = [v(a, j) for j in range(1, i)]  # vₐ₁, ..., vₐᵢ₋₁
-                    antecedents.append(v(b, i-1))                   # then v_b, at step i-1
-                    # For the consequent, list vₐᵢ and then all vₓᵢ for x ≠ a in increasing order.
+                    antecedents = [v_not(a, j) for j in range(1, i)]  # a1, ..., ai-1
+                    antecedents.append(v(b, i-1))                # then bi-1
+                    # For the consequent, list ai and then all bi, ..., zi for x ≠ a in increasing order.
                     consequent_vars = [v(a, i)]
-                    consequent_vars.extend(v(x, i) for x in range(n) if x != a)
+                    consequent_vars.extend(v_not(x, i) for x in range(n) if x != a)
                     consequent = "(" + " → ".join(consequent_vars) + f" → goal{i})"
                     premise = " → ".join(antecedents) + " → " + consequent + f" → goal{i-1}"
                     premises.append(premise)
 
-    # (c) For each edge (b,a) in E, add closing premise: v_bₙ → vₐ′₁ → n.
-    for a in range(n):
-        for b in range(n):
-            if a != b and adjacency_matrix[b][a] == 1:
-                premises.append(f"{v(b, n)} → {v_prime(a)} → goal{n}")
+    # (c) Closing premise: bn → a'1 → n for each edge (b,a) in E
+    # for a in range(n):
+    #     for b in range(n):
+    #         if a != b and adjacency_matrix[b][a] == 1:
+    #             premises.append(f"{v(b, n)} → {v_prime(a)} → goal{n}")
     return premises
 
 def get_ipc_formula(adjacency_matrix):
     n = len(adjacency_matrix)
-    premises = get_ipc_formula_premises(adjacency_matrix)
+    premises = map(lambda x: f'({x})', get_ipc_formula_premises(adjacency_matrix))
     # The overall IPC formula: n → (all premises) → 0.
-    formula = f"{n} → " + " → ".join(premises) + " → goal0"
+    formula = f"goal{n} → " + " → ".join(premises) + " → goal0"
     return formula
 
-def get_lean_file(formula, file_path, n):
-    # Build a mapping to replace isolated numeric tokens with constant names.
-    mapping = {"0": "zeroP"}
-    for i in range(1, n):
-        mapping[str(i)] = f"num{i}"
-    mapping[str(n)] = "nP"
-    # Replace tokens (splitting by ' → ')
-    tokens = formula.split(" → ")
-    new_tokens = []
-    for token in tokens:
-        if token in mapping:
-            new_tokens.append(mapping[token])
-        else:
-            new_tokens.append(token)
-    new_formula = " → ".join(new_tokens)
-    
+def get_lean_file(formula, file_path, n):    
     # Generate declarations for vertex variables using 'variable' syntax.
     decls = []
     for a in range(n):
         for step in range(1, n+1):
             decls.append(f"variable (v_{a+1}_{step} : Prop)")
+            decls.append(f"variable (v_{a+1}_not_{step} : Prop)")
         decls.append(f"variable (v_{a+1}_prime_1 : Prop)")
         decls.append(f"variable (goal{a} : Prop)")
     decls.append(f"variable (goal{n} : Prop)")
-    # Generate declarations for numeral constants using 'variable' syntax.
-    decls.append("variable (zeroP : Prop)")
-    for i in range(1, n):
-        decls.append(f"variable (num{i} : Prop)")
-    decls.append("variable (nP : Prop)")
     
     decl_block = "\n".join(decls)
     # Build the complete Lean file content with necessary imports.
-    lean_file = f"""import Mathlib.Tactic.ITauto
-
--- filepath: {file_path}
-
-/- Automatically generated Lean file for Hamilton cycle IPC formula -/
+    lean_file = f"""/- Automatically generated Lean file for Hamilton cycle IPC formula -/
+import Mathlib.Tactic.ITauto
 
 {decl_block}
 
 theorem ipc_formula : 
-  {new_formula} := 
+  {formula} := 
 by itauto
 
 #print ipc_formula
