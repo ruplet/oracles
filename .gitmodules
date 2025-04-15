@@ -4,3 +4,6 @@
 [submodule "neergaard-logspace-characterization"]
 	path = neergaard-logspace-characterization
 	url = https://github.com/eerio/neergaard-logspace-characterization.git
+[submodule "DafnyProjects"]
+	path = DafnyProjects
+	url = ./DafnyProjects/
