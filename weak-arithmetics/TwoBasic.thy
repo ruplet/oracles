@@ -30,10 +30,6 @@ consts
   length :: "str => num"         (* |X|, least upper bound of X *)
   (* Predicate symbols *)
   (* we have equality symbols in the multi-sorted FOL formalization *)
-  eq_num :: "num => num => o"
-  eq_str :: "str => str => o"
-  (* ex_num :: "(num => o) => o" *)
-  (* ex_str :: "(str => o) => o" *)
   leq :: "num => num => o"       (* <= *)
   mem :: "num => str => o"       (* element of or X(i) *)
 
@@ -47,13 +43,13 @@ notation mul ("_ * _")
 notation length ("|_|")
 (* notation  *)
 notation leq ("_ <= _")
-notation mem ("_(._)")
+(* notation mem ("_(._)") *)
 
 abbreviation less :: "num => num => o" ("_ < _") where
   "x < y == (x <= y) & ~(x = y)"
 
 (* ===== Axioms of 2-BASIC ===== *)
-axiomatization x :: num where
+axiomatization where
   (* Basic arithmetic axioms (B1-B8) *)
   (* B1. x + 1 != 0 *)
   B1: "~((x + 1) = 0)" and
@@ -120,4 +116,23 @@ proof
   then have "x = 0" using `x <= 0` `0 <= x` by blast
   with `x ~= 0` show False by contradiction
 qed
+
+
+(* Definition 4.14. at page 75 (86 of PDF)*)
+(* definition sigma_B0_formula where
+  "sigma_B0_formula == 
+    % phi . (
+      EX y . (
+        ALL z . (
+          (z < y) --> phi(z)
+        )
+      )
+    )"
+
+definition comprehension_axiom_scheme (y :: num) where
+  "comprehension_axiom_scheme == % phi . (EX X . (ALL z . ((z < y) --> (mem(z, X) <-> phi(z)))))"
+
+axiomatization where
+  (* Sigma^B_0 comprehension *)
+  Comp: "EX X. ((X <= y) & (ALL z. ((z < y) --> ((mem(z, X)) <-> phi(z)))))" *)
 end
