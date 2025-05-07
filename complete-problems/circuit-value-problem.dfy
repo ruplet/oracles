@@ -25,6 +25,7 @@ ghost predicate validCircuit(c: Circuit)
     && (forall v :: (v in c.graph.V && c.gateTypes[v] == OR ==> inDegree(c.graph, v) == 2))
 }
 
+// seq to set and back: https://stackoverflow.com/questions/62962130/how-to-prove-that-turning-a-set-into-a-sequence-and-back-is-an-identity-in-dafny
 method getCircuitInNodes(c: Circuit)
     returns (result: map<nat, set<nat>>)
     requires validCircuit(c)

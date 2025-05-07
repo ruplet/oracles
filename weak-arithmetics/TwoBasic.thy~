@@ -1,5 +1,5 @@
 theory TwoBasic
-  imports Main
+  imports FOL
 begin
 
 (* Two-sorted language L2A with number sort and string sort *)
@@ -118,7 +118,7 @@ proof
 qed
 
 
-(* datatype sigma_B0_formula *)
+datatype sigma_B0_formula
 
 (* Definition 4.13: X <= t stands for |X| <= t *)
 (* Definition 4.14. at page 75 (86 of PDF)*)

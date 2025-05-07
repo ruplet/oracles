@@ -1,0 +1,97 @@
+Hey, can you please compile me an Isabelle axiomatization of 2-BASIC theory, so that I can write a proof in Isabelle/2-BASIC in it, and use Isabelle's unification to make my life as a prover easier? I give you the definition! .1 Definition and Basic Properties of Vi
+
+The set 2-BASIC of axioms is given in Figure 5.1. Recall that t < u stands for
+
+(t ≤ u ∧ t 6 = u).
+
+Axioms B1, . . . , B8 are taken from the axioms in 1-BASIC for I∆0, and
+
+B9, . . . , B12 are theorems of I∆0 (see Examples 3.8 and 3.9). Axioms L1 and
+
+L2 characterize |X| to be one more than the largest element of X, or 0 if X is
+
+empty. Axiom SE (extensionality) specifies that sets X and Y are the same if
+
+they have the same elements. Note that the converse
+
+X = Y ⊃ (|X| = |Y | ∧ ∀i < |X|(X(i) ↔ Y (i)))
+
+85
+
+DRAFT86 CHAPTER 5. THE THEORY V0 AND AC0
+
+B1. x + 1 6 = 0 B7. (x ≤ y ∧ y ≤ x) ⊃ x = y
+
+B2. x + 1 = y + 1 ⊃ x = y B8. x ≤ x + y
+
+B3. x + 0 = x B9. 0 ≤ x
+
+B4. x + (y + 1) = (x + y) + 1 B10. x ≤ y ∨ y ≤ x
+
+B5. x · 0 = 0 B11. x ≤ y ↔ x < y + 1
+
+B6. x · (y + 1) = (x · y) + x B12. x 6 = 0 ⊃ ∃y ≤ x(y + 1 = x)
+
+L1. X(y) ⊃ y < |X| L2. y + 1 = |X| ⊃ X(y)
+
+SE. [|X| = |Y | ∧ ∀i < |X|(X(i) ↔ Y (i))] ⊃ X = Y
+
+Figure 5.1: 2-BASIC
+
+is valid because in every L2
+
+A-structure, =2 must be interpreted as true equality
+
+over the strings.
+
+Exercise 5.1. Using 2-BASIC, show that
+
+a) ¬x < 0.
+
+b) x < x + 1.
+
+c) 0 < x + 1.
+
+d) x < y ⊃ x + 1 ≤ y. (Use B10, B11, B7.)
+
+e) x < y ⊃ x + 1 < y + 1 
+
+
+Please don't import Main but only Pure.
+
+
+Please use the following definition of L2A formal language, so that we can you use it in axiomatization nicely, dont introduce your const 0:nat right ahead: In particular, for each n, m ∈ N, there is a set of (n, m)-ary number function
+
+symbols, a set of (n, m)-ary string function symbols, and a set of (n, m)-ary
+
+predicate symbols. An (0, 0)-ary function symbol is called a constant symbol,
+
+which can be either a number constant or a string constant.
+
+We use f, g, h, . . . as meta-symbols for number function symbols; F, G, H, . . .
+
+for string function symbols; and P, Q, R, . . . for predicate symbols.
+
+For example, consider the following two-sorted extension of LA (Defini-
+
+tion 2.3):
+
+Definition 4.4. L2
+
+A = [0, 1, +, ·, | | ; =1, =2, ≤, ∈].
+
+Here the symbols 0, 1, +, ·, =1 and ≤ are from LA; they are function and
+
+predicate symbols over the first sort (=1 corresponds to = of LA). The function
+
+|X| (the “length of X”) is a number-valued function and is intended to denote
+
+the least upper bound of the set X (roughly the length of the corresponding
+
+string). The binary predicate ∈ takes a number and a set as arguments, and
+
+is intended to denote set membership. Finally, =2 is the equality predicate for
+
+the second-sort objects. We will write = for both =1 and =2, its exact meaning
+
+will be clear from the context 
