@@ -1,6 +1,6 @@
 import V0Theory.TwoSortedModelTheory.Basic
+import V0Theory.TwoSortedModelTheory.Syntax
 
-variable (sorta )
 -- Step 1: Define the two sorts
 inductive Sorts
 | num : Sorts
@@ -55,3 +55,24 @@ def L2 : TwoSortedFirstOrder.Language Sorts :=
 { Functions := Functions,
   Relations := Relations
 }
+
+open TwoSortedFirstOrder
+open Language
+open OpenFormula
+
+def varIndT := String
+
+inductive DeltaB0 : Nat -> Type
+| openFormula {n} {f : OpenFormula Sorts L2 varIndT n} : DeltaB0 n
+| boundedNumAll {n} (f : DeltaB0 (n + 1)) : DeltaB0 n
+| boundedNumEx {n} (f : DeltaB0 (n + 1)) : DeltaB0 n
+
+mutual
+inductive SigmaB : Nat -> Nat -> Type
+| exPi {nFree : Nat} {lv : Nat} (f : PiB (nFree + 1) lv) (t: Term Sorts L2 varIndT Sorts.num) : SigmaB nFree (lv + 1)
+| exSigma {nFree : Nat} {lv : Nat} (f: SigmaB (nFree + 1) lv) (t: Term Sorts L2 varIndT Sorts.num): SigmaB nFree lv
+
+inductive PiB : Nat -> Nat -> Type
+| allSigma {nFree : Nat} {lv : Nat} (f : SigmaB (nFree + 1) lv) (t: Term Sorts L2 varIndT Sorts.num) : PiB nFree (lv + 1)
+| allPi {nFree : Nat} {lv : Nat} (f: PiB (nFree + 1) lv) (t: Term Sorts L2 varIndT Sorts.num): PiB nFree lv
+end

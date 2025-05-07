@@ -5,7 +5,7 @@ import Mathlib.Tactic.Common
 import Mathlib.Data.Fintype.Basic
 
 namespace TwoSortedFirstOrder
-universe u v -- u' v' w w'
+universe u v x -- u' v' w w'
 
 -- variable (sorta sortb : Type)
 
@@ -13,7 +13,7 @@ universe u v -- u' v' w w'
 -- | sorta
 -- | sortb
 
-variable (Sorts : Type) [Fintype Sorts]
+variable (Sorts : Type x) [Fintype Sorts]
 
 -- intended to be used with explicit universe parameters
 /-- A first-order language consists of a type of functions of every natural-number arity and a
