@@ -15,7 +15,7 @@ namespace Language
 universe u v x
 variable (Sorts: Type x) [Fintype Sorts]
 variable (L : Language.{u, v} Sorts) -- {L' : Language Sorts}
-variable (varIndT: Type u')
+variable (varIndT: Type u') (varIndT': Type v')
 
 open TwoSortedFirstOrder
 
@@ -34,6 +34,14 @@ inductive Term : (sort: Sorts) -> Type max u u' x
     Term sort
 
 -- export Term (var func)
+
+namespace Term
+-- @[simp]
+def relabel {s: Sorts} (g : varIndT → varIndT') : L.Term Sorts varIndT s → L.Term Sorts varIndT' s
+  | @var Sorts L varIndT s i => var s (g i)
+  | @func Sorts L _ s _ f ts => func s f fun {s' i} => (ts s' i).relabel g
+
+end Term
 
 -- variable {M : Type w} {α : Type u'} {β : Type v'} {γ : Type*}
 -- variable {a : Type u'}
@@ -55,9 +63,9 @@ inductive OpenFormula : ℕ → Type max u v u' x
       (s : Sorts) -> ((Fin (arities s)) → L.Term Sorts (varIndT ⊕ (Fin n)) s)
     )
     : OpenFormula n
-  | not {n} (A: OpenFormula n) : OpenFormula n
-  | and {n} {m} (A: OpenFormula n) (B: OpenFormula m) : OpenFormula (n + m)
-  | or {n} {m}  (A: OpenFormula n) (B: OpenFormula m) : OpenFormula (n + m)
+  | not {n} (A : OpenFormula n) : OpenFormula n
+  | and {n} (A B : OpenFormula n) : OpenFormula n
+  | or {n} (A B : OpenFormula n) : OpenFormula n
   -- | all {n} (f : OpenFormula (n + 1)) : OpenFormula n
   -- implication A -> B is defined as not A or B (classical logic!)
   -- | ex {n} (f : OpenFormula (n + 1)) : OpenFormula n
