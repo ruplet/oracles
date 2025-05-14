@@ -28,7 +28,20 @@ structure Language where
 
 namespace Language
 
+universe w
 variable (L : Language Sorts)
+variable (M : Sorts -> Type w)
+
+/-- A first-order structure on a type `M` consists of interpretations of all the symbols in a given
+  language. Each function of arity `n` is interpreted as a function sending tuples of length `n`
+  (modeled as `(Fin n → M)`) to `M`, and a relation of arity `n` is a function from tuples of length
+  `n` to `Prop`. -/
+-- @[ext]
+class Structure where
+  /-- Interpretation of the function symbols -/
+  funMap sort : ∀ {arities}, L.Functions arities sort → ((s : Sorts) -> (Fin (arities s)) → M s) → (M sort)
+  /-- Interpretation of the relation symbols -/
+  relMap : ∀ {arities}, L.Relations arities → ((s : Sorts) -> (Fin (arities s)) → M s) → Prop
 
 end Language
 end TwoSortedFirstOrder

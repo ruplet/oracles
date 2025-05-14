@@ -4,6 +4,8 @@ import Mathlib.Logic.Equiv.Fin.Basic
 import V0Theory.TwoSortedModelTheory.Basic
 -- import Mathlib.ModelTheory.LanguageMap
 import Mathlib.Algebra.Order.Group.Nat
+import Mathlib.Logic.Nonempty
+import Mathlib.Data.Multiset.Basic
 
 
 namespace TwoSortedFirstOrder
@@ -52,23 +54,107 @@ end Term
 -- definition II.2.2 CookNguyen
 /-- `OpenFormula α n` is the type of formulas with free variables indexed by `α` and up to `n`
   additional free variables. -/
-inductive OpenFormula : ℕ → Type max u v u' x
-  | falsum {n} : OpenFormula n
-  | truth {n} : OpenFormula n
+  -- - Formulas use a modified version of de Bruijn variables. Specifically, a `L.BoundedFormula α n`
+  -- is a formula with some variables indexed by a type `α`, which cannot be quantified over, and some
+  -- indexed by `Fin n`, which can. For any `φ : L.BoundedFormula α (n + 1)`, we define the formula
+  -- `∀' φ : L.BoundedFormula α n` by universally quantifying over the variable indexed by
+  -- `n : Fin (n + 1)`.
+  -- https://github.com/flypitch/flypitch/blob/d72904c17fbb874f01ffe168667ba12663a7b853/src/fol.lean#L502
+inductive OpenFormula : Type max u v u' x
+  | falsum : OpenFormula
   | rel
-    {n}
     {arities : Sorts -> Nat}
     (R : L.Relations arities)
     (ts :
-      (s : Sorts) -> ((Fin (arities s)) → L.Term Sorts (varIndT ⊕ (Fin n)) s)
+      (s : Sorts) -> ((Fin (arities s)) → L.Term Sorts (varIndT) s)
     )
-    : OpenFormula n
-  | not {n} (A : OpenFormula n) : OpenFormula n
-  | and {n} (A B : OpenFormula n) : OpenFormula n
-  | or {n} (A B : OpenFormula n) : OpenFormula n
-  -- | all {n} (f : OpenFormula (n + 1)) : OpenFormula n
-  -- implication A -> B is defined as not A or B (classical logic!)
-  -- | ex {n} (f : OpenFormula (n + 1)) : OpenFormula n
+    : OpenFormula
+  | imp (f1 f2 : OpenFormula) : OpenFormula
+-- | rel
+--   {n}
+--   {arities : Sorts -> Nat}
+--   (R : L.Relations arities)
+--   (ts :
+--     (s : Sorts) -> ((Fin (arities s)) → L.Term Sorts (varIndT ⊕ (Fin n)) s)
+--   )
+--   : OpenFormula n
+-- | not {n} (A : OpenFormula n) : OpenFormula n
+-- | and {n} (A B : OpenFormula n) : OpenFormula n
+-- | or {n} (A B : OpenFormula n) : OpenFormula n
+-- | truth {n} : OpenFormula n
+-- | all {n} (f : OpenFormula (n + 1)) : OpenFormula n
+-- implication A -> B is defined as not A or B (classical logic!)
+-- | ex {n} (f : OpenFormula (n + 1)) : OpenFormula n
+
+inductive Formula : Type max u v u' x
+| openf (A : OpenFormula Sorts L varIndT) : Formula
+| all (A : OpenFormula Sorts L varIndT) : Formula
+
+def notf {Sorts : Type x} {L : Language Sorts} {varIndT : Type u'} (A : OpenFormula Sorts L varIndT)
+  : OpenFormula Sorts L varIndT :=
+  OpenFormula.imp A OpenFormula.falsum
+
+def andf {Sorts} {varIndT} {L : Language Sorts} (A B : OpenFormula Sorts L varIndT)
+  : OpenFormula Sorts L varIndT :=
+  notf (OpenFormula.imp A (notf B))
+
+def orf {Sorts : Type x} {L : Language Sorts} (A B : OpenFormula Sorts L varIndT)
+  : OpenFormula Sorts L varIndT :=
+  OpenFormula.imp (notf A) B
+
+
+-- open Set
+
+-- Natural deduction: https://github.com/flypitch/flypitch/blob/master/src/fol.lean
+inductive prf : (Multiset (OpenFormula Sorts L varIndT)) -> (OpenFormula Sorts L varIndT) -> Type max u v u' x
+| axm     {Γ} {A} (h : A ∈ Γ) : prf Γ A
+| impI    {Γ} {A B} (h : prf (insert A Γ) B) : prf Γ (OpenFormula.imp A B)
+| impE    {Γ} (A) {B} (h₁ : prf Γ (OpenFormula.imp A B)) (h₂ : prf Γ A) : prf Γ B
+| falsumE {Γ} {A} (h : prf (insert (notf A) Γ) (OpenFormula.falsum)) : prf Γ A
+-- | allI    {Γ A} (h : prf (lift_formula1 '' Γ) A) : prf Γ (∀' A)
+-- | allE₂   {Γ} A t (h : prf Γ (∀' A)) : prf Γ (A[t // 0])
+-- | ref     (Γ t) : prf Γ (t ≃ t)
+-- | subst₂  {Γ} (s t f) (h₁ : prf Γ (s ≃ t)) (h₂ : prf Γ (f[s // 0])) : prf Γ (f[t // 0])
+-- | axm {Gamma} {goal} (h: goal ∈ Gamma) : Proof Gamma goal
+-- | impI {Gamma} {A} {B} (h: Proof (insert A Gamma) B) : Proof Gamma (OpenFormula.imp A B)
+-- | impE {Gamma}
+
+def provable (T : Multiset (OpenFormula Sorts L varIndT)) (f : OpenFormula Sorts L varIndT) := Nonempty (prf Sorts L varIndT T f)
+
+-- set_option diagnostics true
+
+def axm1 (Gamma : Multiset (OpenFormula Sorts L varIndT)) (f : OpenFormula Sorts L varIndT)
+  : provable Sorts L varIndT (insert f Gamma) f :=
+  by
+    apply Nonempty.intro
+    apply prf.axm
+    aesop
+
+def axm2 (Gamma : Multiset (OpenFormula Sorts L varIndT)) (A B : OpenFormula Sorts L varIndT)
+  : provable Sorts L varIndT (insert A (insert B Gamma)) B :=
+  by
+    apply Nonempty.intro
+    apply prf.axm
+    aesop
+
+def weakening {Gamma} {Delta} {f : OpenFormula Sorts L varIndT} (H1: Gamma ⊆ Delta) (H2 : prf Sorts L varIndT Gamma f)
+  : prf Sorts L varIndT Delta f :=
+  by
+    match H2 with
+    | prf.axm h =>
+      apply prf.axm
+      apply H1 h
+    | prf.impI h =>
+      apply prf.impI
+      sorry
+    | prf.impE h h1 h2 =>
+      sorry
+    | prf.falsumE falsumE =>
+      sorry
+
+open OpenFormula
+def deduction {Gamma} {A B : OpenFormula Sorts L varIndT} (H : provable Gamma (imp A B)) : provable (insert A Gamma) B :=
+
 
 end Language
 end TwoSortedFirstOrder
