@@ -105,6 +105,14 @@ def orf {Sorts : Type x} {L : Language Sorts} (A B : OpenFormula Sorts L varIndT
 
 -- open Set
 
+-- there should be a type Theory
+-- variable (L)
+-- @[reducible] def Theory := set $ sentence L
+-- variable {L}
+
+-- should Theory be set, multiset, list, finset, fintype, set finite?
+-- def Theory :=
+
 -- Natural deduction: https://github.com/flypitch/flypitch/blob/master/src/fol.lean
 inductive prf : (Multiset (OpenFormula Sorts L varIndT)) -> (OpenFormula Sorts L varIndT) -> Type max u v u' x
 | axm     {Γ} {A} (h : A ∈ Γ) : prf Γ A
@@ -119,41 +127,70 @@ inductive prf : (Multiset (OpenFormula Sorts L varIndT)) -> (OpenFormula Sorts L
 -- | impI {Gamma} {A} {B} (h: Proof (insert A Gamma) B) : Proof Gamma (OpenFormula.imp A B)
 -- | impE {Gamma}
 
-def provable (T : Multiset (OpenFormula Sorts L varIndT)) (f : OpenFormula Sorts L varIndT) := Nonempty (prf Sorts L varIndT T f)
+def provable (T : Multiset (OpenFormula Sorts L varIndT)) (f : OpenFormula Sorts L varIndT) := Inhabited (prf Sorts L varIndT T f)
 
 -- set_option diagnostics true
 
 def axm1 (Gamma : Multiset (OpenFormula Sorts L varIndT)) (f : OpenFormula Sorts L varIndT)
   : provable Sorts L varIndT (insert f Gamma) f :=
   by
-    apply Nonempty.intro
+    constructor
     apply prf.axm
-    aesop
+    simp
 
 def axm2 (Gamma : Multiset (OpenFormula Sorts L varIndT)) (A B : OpenFormula Sorts L varIndT)
   : provable Sorts L varIndT (insert A (insert B Gamma)) B :=
   by
-    apply Nonempty.intro
+    constructor
     apply prf.axm
-    aesop
+    simp
 
-def weakening {Gamma} {Delta} {f : OpenFormula Sorts L varIndT} (H1: Gamma ⊆ Delta) (H2 : prf Sorts L varIndT Gamma f)
-  : prf Sorts L varIndT Delta f :=
+def weakening {Gamma} {Delta} {f : OpenFormula Sorts L varIndT} (H1: Gamma ⊆ Delta) (H2 : provable Sorts L varIndT Gamma f)
+  : provable Sorts L varIndT Delta f :=
   by
-    match H2 with
-    | prf.axm h =>
-      apply prf.axm
-      apply H1 h
-    | prf.impI h =>
-      apply prf.impI
-      sorry
-    | prf.impE h h1 h2 =>
-      sorry
-    | prf.falsumE falsumE =>
-      sorry
+    sorry
+    -- constructor
+    -- induction H2.default
+    -- match H2.default with
+    -- | prf.axm h =>
+    --   apply prf.axm
+    --   apply H1 h
+    -- | prf.impI h =>
+    --   apply prf.impI
+    -- | prf.impE h h1 h2 =>
+    --   sorry
+    -- | prf.falsumE falsumE =>
+    --   sorry
 
-open OpenFormula
-def deduction {Gamma} {A B : OpenFormula Sorts L varIndT} (H : provable Gamma (imp A B)) : provable (insert A Gamma) B :=
+def weakening1 {Gamma} {f1 f2 : OpenFormula Sorts L varIndT} (H : provable Sorts L varIndT Gamma f2)
+  : prf Sorts L varIndT (insert f1 Gamma) f2 :=
+  sorry
+  -- weakening Sorts L varIndT (Multiset.subset_cons Gamma f1) H
+
+def andI {Gamma} {f1 f2 : OpenFormula Sorts L varIndT} (H1: provable Sorts L varIndT Gamma f1) (H2: provable Sorts L varIndT Gamma f2)
+  : provable Sorts L varIndT Gamma (andf f1 f2) :=
+  by
+    unfold andf
+    unfold notf
+    constructor
+    apply prf.impI
+    apply prf.impE f2
+    {
+      apply prf.impE f1
+      apply prf.axm
+      aesop
+      apply weakening1 Sorts L varIndT H1
+    }
+    sorry
+
+def andE1 {Gamma} {f1 f2 : OpenFormula Sorts L varIndT} (H1: provable Sorts L varIndT Gamma (andf f1 f2))
+  : provable Sorts L varIndT Gamma f1 := sorry
+
+def andE2 {Gamma} {f1 f2 : OpenFormula Sorts L varIndT} (H1: provable Sorts L varIndT Gamma (andf f1 f2))
+  : provable Sorts L varIndT Gamma f2 := sorry
+
+-- open OpenFormula
+-- def deduction {Gamma} {A B : OpenFormula Sorts L varIndT} (H : provable Gamma (imp A B)) : provable (insert A Gamma) B :=
 
 
 end Language

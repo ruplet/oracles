@@ -1,0 +1,41 @@
+podejscie 1: czy to juz jest gdzies zaimplementowane?
+nie! nawet many-sorted logics mają kiepski coverage
+
+podejscie 2: czy uda nam sie zrobic shallow embedding?
+isabelle wyglada bardzo obiecujaco, ale arithmetical hierarchy
+jest juz poza zasięgiem
+nie! zaden z coq, lean, isabelle nie wspiera rozumowania o
+podzbiorach Prop z podzialem na kwantyfikatory
+
+podejscie 3: musimy zatem zrobic deep embedding.
+to jest dużo pracy.
+moglibyśmy zrobić to nawet w Pythonie.
+jest jednak nadzieja że będziemy mogli wykorzystać część maszynerii
+jeśli zapiszemy to w języku wspierającym weryfikację
+w szczególności, będziemy mogli formalnie zweryfikować sam embedding!
+
+krok 4: Isabelle?
+do niczego się nie nadaje. co chwila się wywala,
+nawet edytor się nie włącza.
+
+krok 5: Coq?
+początkowo to był mój faworyt. jednak:
+
+krok 6: Lean Flypitch + Mathlib.ModelTheory
+w Leanie mamy całkiem fajnie zaimplementowany syntax FOL,
+który szybko udało mi się przerobić na many-sorted logic.
+Mathlib.ModelTheory nie ma jednak żadnej teorii dowodowej.
+Do tego przyda nam się kod napisany przez deweloperów w Lean 3
+w ramach projektu Flypitch.
+
+Ten kod jest stary i kiepsko się przenosi na mój projekt,
+nawet tłumaczenie z Lean 3 na Lean 4 jest nieoczywiste.
+
+Jednak ludzie już tam przemyśleli co w jakiej kolejności
+zweryfikować, jakich typów użyć itd. To jest świetny punkt wyjścia
+
+krok 7: dowodzenie: możemy użyć sorry!
+ciężko mi idzie dowodzenie twierdzeń w Lean 4 (przepisując je nawet
+z odpowiedników z Flypitch). Ale możemy póki co użyć sorry żeby
+pominąc dowody w metateorii! A skupić się na dobrym user experience
+mojego embeddingu!

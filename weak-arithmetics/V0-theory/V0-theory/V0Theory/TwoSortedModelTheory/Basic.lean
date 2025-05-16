@@ -25,6 +25,7 @@ structure Language where
   /-- For every arity, a `Type*` of relations of that arity -/
   Relations : (Sorts -> Nat) -> Type v
 
+-- instance instDecidableEqFunctions {f : (Sorts -> Nat) -> Sorts -> Type u}
 
 namespace Language
 

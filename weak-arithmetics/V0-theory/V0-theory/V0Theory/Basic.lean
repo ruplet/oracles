@@ -184,6 +184,7 @@ notation:20 "!" phi => notf $ phi
 
 variable (x y : varIndT)
 
+-- the type of this should be Sentence L2
 def B1 : OpenFormulaT :=
   ((%x) + zero) =n (%x)
 
@@ -201,8 +202,11 @@ def B9 : OpenFormulaT :=
 def exercise51aStmt : OpenFormulaT :=
   !((%x) <n zero)
 
-def TwoBasic : Multiset OpenFormulaT :=
-  Multiset.ofList
+
+def TheoryL2 := List OpenFormulaT
+
+-- The type of this should be Theory L2
+def TwoBasic : TheoryL2 :=
 [
   B1 x,
   -- B2,
@@ -237,18 +241,21 @@ example exercise51a : provable Sorts Lang varIndT (TwoBasic x y) (exercise51aStm
   by
     unfold exercise51aStmt
     unfold notf
-    apply Nonempty.intro
+    constructor
     apply prf.impI
     unfold leNum
     unfold TwoBasic
+
+    have h : axm1 Sorts Lang varIndT (TwoBasic x y) ((var Sorts.num x <=n zero) & (var Sorts.num x !=n zero))
 
 
 end FormulaBuilder
 
 
 -- How to define special tactic language for easier proving in object logic?
--- https://github.com/unitb/temporal-logic/blob/amsterdam-talk/src/temporal_logic/tactic.lean
--- https://lean-forward.github.io/lean-together/2019/slides/hudon.pdf
+-- concept: https://lean-forward.github.io/lean-together/2019/slides/hudon.pdf
+-- shitty: https://github.com/unitb/temporal-logic/blob/amsterdam-talk/src/temporal_logic/tactic.lean
+-- real?: https://github.com/leanprover-community/iris-lean/blob/master/src/Iris/ProofMode/Display.lean
 
 -- def M (s: Sorts) : Type :=
 -- match s with
