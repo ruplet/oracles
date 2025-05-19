@@ -112,9 +112,10 @@ def orf {Sorts : Type x} {L : Language Sorts} (A B : OpenFormula Sorts L varIndT
 
 -- should Theory be set, multiset, list, finset, fintype, set finite?
 -- def Theory :=
+abbrev Theory := Multiset (OpenFormula Sorts L varIndT)
 
 -- Natural deduction: https://github.com/flypitch/flypitch/blob/master/src/fol.lean
-inductive prf : (Multiset (OpenFormula Sorts L varIndT)) -> (OpenFormula Sorts L varIndT) -> Type max u v u' x
+inductive prf : (Theory Sorts L varIndT) -> (OpenFormula Sorts L varIndT) -> Type max u v u' x
 | axm     {Γ} {A} (h : A ∈ Γ) : prf Γ A
 | impI    {Γ} {A B} (h : prf (insert A Γ) B) : prf Γ (OpenFormula.imp A B)
 | impE    {Γ} (A) {B} (h₁ : prf Γ (OpenFormula.imp A B)) (h₂ : prf Γ A) : prf Γ B

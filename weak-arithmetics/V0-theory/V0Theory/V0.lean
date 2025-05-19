@@ -186,29 +186,42 @@ variable (x y : varIndT)
 
 -- the type of this should be Sentence L2
 def B1 : OpenFormulaT :=
+  ((%x) + one) !=n zero
+
+def B2 : OpenFormulaT :=
+  (((%x) + one) =n ((%y) + one)) ==> ((%x) =n (%y))
+
+def B3 : OpenFormulaT :=
   ((%x) + zero) =n (%x)
 
--- def B2 x+1 = y+1 ==> x = y
--- def B3 x + 0 = x
--- def B4 x + (y + 1) = (x + y) + 1
--- def B5 x * 0 = 0
+def B4 : OpenFormulaT :=
+  ((%x) + ((%y) + one)) =n (((%x) + (%y)) + one)
+
+def B5 : OpenFormulaT :=
+  ((%x) * zero) =n zero
+
+def B6 : OpenFormulaT :=
+  ((%x) * ((%y) + one)) =n (((%x) * (%y)) + (%x))
 
 def B7 : OpenFormulaT :=
   (((%x) <=n (%y)) & ((%y) <=n (%x))) ==> ((%x) =n (%y))
 
+def B8 : OpenFormulaT :=
+  (%x) <=n ((%x) + (%y))
+
 def B9 : OpenFormulaT :=
   (%x) <=n zero
 
-def exercise51aStmt : OpenFormulaT :=
-  !((%x) <n zero)
+def C : OpenFormulaT :=
+  (zero + one) =n one
 
-
-def TheoryL2 := List OpenFormulaT
+-- here, define Comprehension, Number Induction, Min, Max
+abbrev TheoryL2 := Multiset OpenFormulaT
 
 -- The type of this should be Theory L2
-def TwoBasic : TheoryL2 :=
+def TwoBasic : TheoryL2  :=
 [
-  B1 x,
+  Formula.all (B1 x),
   -- B2,
   -- B3,
   -- B4,
@@ -237,18 +250,27 @@ def TwoBasic : TheoryL2 :=
 --   with `x ~= 0` show False by contradiction
 -- qed
 
-example exercise51a : provable Sorts Lang varIndT (TwoBasic x y) (exercise51aStmt x) :=
-  by
-    unfold exercise51aStmt
-    unfold notf
-    constructor
-    apply prf.impI
-    unfold leNum
-    unfold TwoBasic
+def e1 := ((%x) <n zero)
 
-    have h : axm1 Sorts Lang varIndT (TwoBasic x y) ((var Sorts.num x <=n zero) & (var Sorts.num x !=n zero))
+def exercise51aStmt : OpenFormulaT :=
+  !((%x) <n zero)
+
+-- theorem exercise51a {x y} : provable Sorts Lang varIndT (TwoBasic x y) (exercise51aStmt x) :=
+--   by
+--     constructor
+--     unfold exercise51aStmt
+--     unfold notf
+--     apply prf.impI
+--     unfold leNum
+--     simp
+--     unfold TwoBasic
+--     sorry
+    -- have h : axm1 Sorts Lang varIndT (TwoBasic x y) ((var Sorts.num x <=n zero) & (var Sorts.num x !=n zero))
 
 
+-- now, corollary V.1.7: V0 proves X-IND
+
+-- def Comprehension :
 end FormulaBuilder
 
 
