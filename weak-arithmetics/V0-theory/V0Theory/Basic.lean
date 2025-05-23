@@ -1,105 +1,193 @@
-import Mathlib.ModelTheory.Syntax
+-- This file defines a deep embedding of propositional natural deduction in Lean 4.
+-- It includes the syntax of formulas, the concept of a context (Gamma),
+-- and an inductive definition of the `Derivation` relation (Gamma ⊢ phi).
 
-open FirstOrder.Language
+-- We'll use the `Prop` type for our `Derivation` relation, meaning proofs are types.
 
-inductive functions0 where
-| zero
-| one
+import Lean.Data.Name
 
-inductive functions2 where
-| add
-| mul
+namespace NaturalDeduction
 
-inductive relations2 where
-| eq
-| leq
+/-!
+## 1. Syntax of Propositions (Formulas)
+Defines the structure of our logical propositions.
+-/
 
--- arity to type of functions of given arity
-def Functions (n : Nat) : Type :=
-  match n with
-  | 0 => functions0
-  | 2 => functions2
-  | _ => Empty
+inductive Formula : Type where
+  | atom (s : String)  -- Atomic propositions (e.g., P, Q, R)
+  | top                -- Truth (⊤)
+  | bot                -- Falsity (⊥)
+  | imp (φ ψ : Formula)  -- Implication (φ → ψ)
+  deriving Repr, DecidableEq, BEq
 
-def Relations (n : Nat) : Type :=
-  match n with
-  | 2 => relations2
-  | _ => Empty
+-- Custom notation for ⊤ and ⊥
+notation "⊤" => Formula.top
+notation "⊥" => Formula.bot
 
-def Lang : FirstOrder.Language :=
-{
-  Functions := Functions,
-  Relations := Relations
-}
+def Formula.neg (φ : Formula) : Formula :=
+  Formula.imp φ Formula.bot
 
-open BoundedFormula
+def Formula.conj (φ ψ : Formula) : Formula :=
+  Formula.neg (Formula.imp φ (Formula.neg ψ))
 
--- def x : Term Lang (Empty ⊕ Fin 2) := Term.var (Sum.inr 0)
-def funZero : Lang.Functions 0 := functions0.zero
-def funOne : Lang.Functions 0 := functions0.one
-def funAdd : Lang.Functions 2 := functions2.add
-def funMul : Lang.Functions 2 := functions2.mul
-def relEq : Lang.Relations 2 := relations2.eq
-def relLeq : Lang.Relations 2 := relations2.leq
+def Formula.disj (φ ψ : Formula) : Formula :=
+  Formula.imp (Formula.neg φ) ψ
 
-def x {n : Nat} : Term Lang (Empty ⊕ Fin (n + 1)) := Term.var $ Sum.inr (0 : Fin (n + 1))
-def y {n : Nat} : Term Lang (Empty ⊕ Fin (n + 2)) := Term.var $ Sum.inr (1 : Fin (n + 1))
+instance : AndOp Formula where
+  and := Formula.conj
 
-def zero {n : Nat} : Term Lang (Empty ⊕ Fin n) := Term.func funZero Fin.elim0
-def one {n : Nat} : Term Lang (Empty ⊕ Fin n) := Term.func funOne Fin.elim0
+instance : OrOp Formula where
+  or := Formula.disj
 
-def add {n : Nat} (a b : Term Lang (Empty ⊕ Fin n)) : Term Lang (Empty ⊕ Fin n) :=
-  Term.func funAdd (
-    fun argInd => match argInd with
-    | 0 => a
-    | 1 => b
-  )
+-- Example formulas:
+-- `atom "P"`
+-- `atom "P" → atom "Q"`
+-- `(atom "P" ∧ atom "Q") ∨ ¬atom "R"`
 
-def mul {n : Nat} (a b : Term Lang (Empty ⊕ Fin n)) : Term Lang (Empty ⊕ Fin n) :=
-  Term.func funMul (
-    fun argInd => match argInd with
-    | 0 => a
-    | 1 => b
-  )
+abbrev Context := List (Lean.Name × Formula)
 
-def eq {n : Nat} (a b : Term Lang (Empty ⊕ Fin n)) : BoundedFormula Lang Empty n :=
-  rel relEq (fun argInd => match argInd with | 0 => a | 1 => b)
+/-!
+## 3. Derivation Relation (Γ ⊢ φ)
+This inductive type defines what it means for a formula `φ` to be derivable
+from a `Context Γ` according to natural deduction rules.
+Each constructor corresponds to a natural deduction rule.
+-/
 
-def leq {n : Nat} (a b : Term Lang (Empty ⊕ Fin n)) : BoundedFormula Lang Empty n :=
-  rel relLeq (fun argInd => match argInd with | 0 => a | 1 => b)
+infixr:60 " → " => Formula.imp
 
-def neq {n : Nat} (a b : Term Lang (Empty ⊕ Fin n)) : BoundedFormula Lang Empty n :=
-  BoundedFormula.not $ eq a b
+inductive Derivation : Context → Formula → Prop where
+  -- Assumption (Axiom)
+  | ax (Γ : Context) (φ : Formula) (n : Lean.Name) (h : (n, φ) ∈ Γ) : Derivation Γ φ
 
-def and {n : Nat} (a b : BoundedFormula Lang Empty n) :=
-  BoundedFormula.not (imp a (BoundedFormula.not b))
+  -- Primitive Connective Rules:
+  | top_intro (Γ : Context) : Derivation Γ ⊤
+  | bot_elim (Γ : Context) (φ : Formula) (h : Derivation Γ ⊥) : Derivation Γ φ
 
-def or {n : Nat} (a b : BoundedFormula Lang Empty n) :=
-  imp (BoundedFormula.not a) b
+  | imp_intro {Γ : Context} {φ ψ : Formula} {n : Lean.Name}
+      (h : Derivation ((n, φ) :: Γ) ψ) : Derivation Γ (φ → ψ)
 
--- x + 1 neq 0
-def B1 : Sentence Lang :=
-  all $ neq (add x one) zero
+  | imp_elim {Γ : Context} {φ ψ : Formula}
+      (h₁ : Derivation Γ (φ → ψ)) (h₂ : Derivation Γ φ) : Derivation Γ ψ
 
-def B2 : Sentence Lang :=
-  all $ all $ imp (eq (add x one) (add y one)) (eq x y)
+-- Custom notation for the derivation relation (turnstile)
+notation:35 Γ " ⊢ " φ => Derivation Γ φ
 
-def B3 : Sentence Lang :=
-  all $ eq (add x zero) x
+open Derivation
 
-def B4 : Sentence Lang :=
-  all $ all $ eq (add x (add y one)) (add (add x y) one)
+def weaken_by_swap (a b : Lean.Name × Formula) (Γ : Context) (φ : Formula)
+  (h : Derivation (a :: b :: Γ) φ)
+  : Derivation (b :: a :: Γ) φ := by
+  generalize h_eq : a :: b :: Γ = G'
+  rw [h_eq] at h
+  induction h with
+  | ax _ _ n hmem =>
+    cases hmem with
+    | head _ =>
+      apply ax _ _ n
+      injection h_eq with head_eq
+      rw [head_eq]
+      apply List.mem_cons_of_mem
+      apply List.mem_cons_self
+    | tail _ in_tl =>
+      apply ax _ _ n
+      cases in_tl with
+      | head _ =>
+        injection h_eq with _ tail_eq
+        injection tail_eq with th_eq
+        rw [th_eq]
+        apply List.mem_cons_self
+      | tail _ in_t =>
+        injection h_eq with _ h_tail_eq
+        injection h_tail_eq with _ tt_eq
+        rw [tt_eq]
+        apply List.mem_cons_of_mem
+        apply List.mem_cons_of_mem
+        exact in_t
+  | top_intro => exact top_intro _
+  | bot_elim _ _ h h_ih =>
+    apply bot_elim
+    apply h_ih
+    exact h_eq
+  -- for some reason, h_ih is impossible to use here?
+  | imp_intro h _ =>
+    sorry
+  | imp_elim h1 h2 h1_ih h2_ih =>
+    apply imp_elim
+    apply h1_ih
+    exact h_eq
+    apply h2_ih
+    exact h_eq
 
-def B5 : Sentence Lang :=
-  all $ eq (mul x zero) zero
+def weaken_by_cons (Γ_new_elem : Lean.Name × Formula) (Γ : Context) (φ : Formula)
+    (h : Derivation Γ φ) : Derivation (Γ_new_elem :: Γ) φ := by
+  induction h with
+  | ax Γ φ n h =>
+    exact ax (Γ_new_elem :: Γ) φ n (List.mem_cons_of_mem Γ_new_elem h)
+  | top_intro Γ =>
+    exact top_intro (Γ_new_elem :: Γ)
+  | bot_elim Γ φ h h_ih =>
+    exact bot_elim (Γ_new_elem :: Γ) φ h_ih
+  | imp_intro h ih =>
+    apply Derivation.imp_intro
+    apply weaken_by_swap
+    exact ih
+  | imp_elim h1 h2 h1_ih h2_ih =>
+    apply Derivation.imp_elim
+    apply h1_ih
+    exact h2_ih
 
-def B6 : Sentence Lang :=
-  all $ all $ eq (mul x (add y one)) (add (mul x y) x)
+def weaken_by_concat (Γ1 : Context) (Γ2 : Context) (φ : Formula)
+    (h : Derivation Γ1 φ) : Derivation (Γ1 ++ Γ2) φ := by
+    induction Γ2 with
+    | nil =>
+      simp
+      exact h
+    | cons hd tl ih =>
+      sorry
 
-def B7 : Sentence Lang :=
-  all $ all $ imp (and (leq x y) (leq y x)) (eq x y)
+def neg_intro (Γ : Context) (φ : Formula) (n : Lean.Name)
+    (h : Derivation ((n, φ) :: Γ) ⊥) : Derivation Γ (Formula.neg φ) := by
+  exact imp_intro h
 
-def C : Sentence Lang :=
-  eq (add zero one) one
+def neg_elim (Γ : Context) (φ : Formula)
+    (h₁ : Derivation Γ (Formula.neg φ)) (h₂ : Derivation Γ φ) : Derivation Γ ⊥ := by
+  exact imp_elim h₁ h₂
 
-def Basic1 : Theory Lang := {B1, B2, B3, B4, B5, B6, B7, C}
+def conj_intro (Γ : Context) (φ ψ : Formula)
+    (h₁ : Derivation Γ φ) (h₂ : Derivation Γ ψ) : Derivation Γ (Formula.conj φ ψ) := by
+  unfold Formula.conj
+  apply neg_intro Γ (φ → (Formula.neg ψ)) `H1
+  generalize H1_eq : (`H1, φ → ψ.neg) = H1
+  have h1 := weaken_by_cons H1 Γ _ h₁
+  have h2 := ax [H1] H1.snd H1.fst (by rw [Prod.eta]; simp)
+  have h3 := weaken_by_concat [H1] Γ H1.snd h2
+  rw [<- H1_eq] at h3
+  simp [H1_eq] at h3
+  have h4 := @imp_elim (H1 :: Γ) φ (ψ.neg) h3 h1
+  apply imp_elim h4
+  apply weaken_by_cons H1 Γ
+  exact h₂
+
+
+
+  -- -- have h2 := weaken_by_add H1 Γ H1.snd (by )
+  -- rw [h1]
+
+  -- intro h_phi_imp_not_psi_hyp -- `h_phi_imp_not_psi_hyp` is the derivation for `φ → ¬ψ`
+
+  -- -- Current context is `Γ'` = `((`hyp_phi_imp_not_psi`, φ → ¬ψ) :: Γ)`.
+  -- -- We need to prove `⊥` in `Γ'`.
+  -- -- We have `h₁ : Γ ⊢ φ` and `h₂ : Γ ⊢ ψ`.
+  -- -- Weaken `h₁` to `Γ'`:
+  -- let d_phi_in_Gamma_prime := weaken_by_add (`hyp_phi_imp_not_psi, φ → (Formula.neg ψ)) Γ φ h₁
+
+  -- -- Now we can apply `h_phi_imp_not_psi_hyp` (which is `φ → ¬ψ`) to `d_phi_in_Gamma_prime` (which is `φ`).
+  -- -- This yields `¬ψ`.
+  -- let d_not_psi_in_Gamma_prime := imp_elim Γ' φ (Formula.neg ψ) h_phi_imp_not_psi_hyp d_phi_in_Gamma_prime
+
+  -- -- Weaken `h₂` to `Γ'`:
+  -- let d_psi_in_Gamma_prime := weaken_by_add (`hyp_phi_imp_not_psi, φ → (Formula.neg ψ)) Γ ψ h₂
+
+  -- -- Now we have `d_not_psi_in_Gamma_prime : Γ' ⊢ ¬ψ` and `d_psi_in_Gamma_prime : Γ' ⊢ ψ`.
+  -- -- Apply `neg_elim` to get `⊥`.
+  -- exact neg_elim Γ' ψ d_not_psi_in_Gamma_prime d_psi_in_Gamma_prime

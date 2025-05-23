@@ -39,3 +39,14 @@ ciężko mi idzie dowodzenie twierdzeń w Lean 4 (przepisując je nawet
 z odpowiedników z Flypitch). Ale możemy póki co użyć sorry żeby
 pominąc dowody w metateorii! A skupić się na dobrym user experience
 mojego embeddingu!
+
+krok 8: możemy zacząć od single-sorted logic!
+w Cook, Nguyen jest też rozważana logika jednosortowa.
+jest ona też ciekawa np. do formalizowania arytmetyk S^1_2 Bussa
+
+krok 9: znalazłem Foundations! (ktoś na Zulipie Leana mi podesłał)
+https://github.com/FormalizedFormalLogic/Foundation
+używając tego kodu, prawdopodobnie będę w stanie od razu sformalizować
+wyniki z Cooka i Nguyena dla single-sorted logic!
+
+krok 10: w Foundations, sformalizuj exercise III.1.8 (p. 42, 88 of PDF)
