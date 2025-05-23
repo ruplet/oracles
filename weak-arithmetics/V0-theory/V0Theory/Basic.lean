@@ -57,17 +57,15 @@ infixr:60 " → " => Formula.imp
 
 inductive Derivation : Context → Formula → Prop where
   -- Assumption (Axiom)
-  | ax (Γ : Context) (φ : Formula) (n : Lean.Name) (h : (n, φ) ∈ Γ) : Derivation Γ φ
-
+  | ax {Γ : Context} {φ : Formula} {n : Lean.Name} (h : (n, φ) ∈ Γ) : Derivation Γ φ
   -- Primitive Connective Rules:
   | top_intro (Γ : Context) : Derivation Γ ⊤
   | bot_elim (Γ : Context) (φ : Formula) (h : Derivation Γ ⊥) : Derivation Γ φ
-
   | imp_intro {Γ : Context} {φ ψ : Formula} {n : Lean.Name}
       (h : Derivation ((n, φ) :: Γ) ψ) : Derivation Γ (φ → ψ)
-
   | imp_elim {Γ : Context} {φ ψ : Formula}
       (h₁ : Derivation Γ (φ → ψ)) (h₂ : Derivation Γ φ) : Derivation Γ ψ
+  | dne {Γ : Context} {φ : Formula} (h₁ : Derivation Γ ((φ → ⊥) → ⊥)) : Derivation Γ φ
 
 -- Custom notation for the derivation relation (turnstile)
 notation:35 Γ " ⊢ " φ => Derivation Γ φ
@@ -80,16 +78,16 @@ def weaken_by_swap (a b : Lean.Name × Formula) (Γ : Context) (φ : Formula)
   generalize h_eq : a :: b :: Γ = G'
   rw [h_eq] at h
   induction h with
-  | ax _ _ n hmem =>
+  | ax hmem =>
     cases hmem with
     | head _ =>
-      apply ax _ _ n
+      apply ax
       injection h_eq with head_eq
       rw [head_eq]
       apply List.mem_cons_of_mem
       apply List.mem_cons_self
     | tail _ in_tl =>
-      apply ax _ _ n
+      apply ax
       cases in_tl with
       | head _ =>
         injection h_eq with _ tail_eq
@@ -117,12 +115,16 @@ def weaken_by_swap (a b : Lean.Name × Formula) (Γ : Context) (φ : Formula)
     exact h_eq
     apply h2_ih
     exact h_eq
+  | dne h1 h1_ih =>
+    apply dne
+    apply h1_ih
+    exact h_eq
 
-def weaken_by_cons (Γ_new_elem : Lean.Name × Formula) (Γ : Context) (φ : Formula)
+def weaken_by_cons (Γ_new_elem : Lean.Name × Formula) {Γ : Context} {φ : Formula}
     (h : Derivation Γ φ) : Derivation (Γ_new_elem :: Γ) φ := by
   induction h with
-  | ax Γ φ n h =>
-    exact ax (Γ_new_elem :: Γ) φ n (List.mem_cons_of_mem Γ_new_elem h)
+  | ax h =>
+    exact ax (List.mem_cons_of_mem Γ_new_elem h)
   | top_intro Γ =>
     exact top_intro (Γ_new_elem :: Γ)
   | bot_elim Γ φ h h_ih =>
@@ -135,6 +137,9 @@ def weaken_by_cons (Γ_new_elem : Lean.Name × Formula) (Γ : Context) (φ : For
     apply Derivation.imp_elim
     apply h1_ih
     exact h2_ih
+  | dne h1 h1_ih =>
+    apply dne
+    exact h1_ih
 
 def weaken_by_concat (Γ1 : Context) (Γ2 : Context) (φ : Formula)
     (h : Derivation Γ1 φ) : Derivation (Γ1 ++ Γ2) φ := by
@@ -157,37 +162,59 @@ def conj_intro (Γ : Context) (φ ψ : Formula)
     (h₁ : Derivation Γ φ) (h₂ : Derivation Γ ψ) : Derivation Γ (Formula.conj φ ψ) := by
   unfold Formula.conj
   apply neg_intro Γ (φ → (Formula.neg ψ)) `H1
-  generalize H1_eq : (`H1, φ → ψ.neg) = H1
-  have h1 := weaken_by_cons H1 Γ _ h₁
-  have h2 := ax [H1] H1.snd H1.fst (by rw [Prod.eta]; simp)
+  generalize H1_eq : (`H1, _) = H1
+  have h1 := weaken_by_cons H1 h₁
+  have h2 := @ax [H1] H1.snd H1.fst (by rw [Prod.eta]; simp)
   have h3 := weaken_by_concat [H1] Γ H1.snd h2
   rw [<- H1_eq] at h3
   simp [H1_eq] at h3
   have h4 := @imp_elim (H1 :: Γ) φ (ψ.neg) h3 h1
   apply imp_elim h4
-  apply weaken_by_cons H1 Γ
+  apply weaken_by_cons H1
   exact h₂
 
+theorem imp_intro_dummy {Γ : Context} (p : Formula) {q : Formula} (h : Derivation Γ q)
+  : Derivation Γ (p → q) := by
+  have h1 := weaken_by_cons (`a, p) h
+  apply Derivation.imp_intro
+  exact h1
 
+theorem imp_intro_undo {Γ : Context} {p q : Formula} (n : Lean.Name) (h : Derivation Γ (p → q))
+  : Derivation ((n, p) :: Γ) q := by
+  apply imp_elim (weaken_by_cons (n, p) h)
+  apply ax
+  apply List.mem_cons_self
 
-  -- -- have h2 := weaken_by_add H1 Γ H1.snd (by )
-  -- rw [h1]
+def conj_elim1 (Γ : Context) (φ ψ : Formula)
+  (h : Derivation Γ (Formula.conj φ ψ)) : Derivation Γ φ := by
+  unfold Formula.conj at h
+  apply dne
+  apply Derivation.imp_intro
+  generalize H1_eq : (`H1, _) = H1
+  have h1 := weaken_by_cons H1 h
+  have h2 := @ax (H1 :: Γ) H1.snd H1.fst (by simp)
+  rw [<- H1_eq] at h2; simp [H1_eq] at h2
+  clear h
+  -- trick: if we have ⊥, we also have ψ → ⊥
+  -- so from φ → ⊥, we can make φ → (ψ → ⊥)
+  have h2' := imp_intro_undo `_ h2
+  have h2'' := imp_intro_dummy ψ h2'
+  have h3 := Derivation.imp_intro h2''
+  rw [<- Formula.neg] at h3
+  have h4 := imp_elim h1 h3
+  exact h4
 
-  -- intro h_phi_imp_not_psi_hyp -- `h_phi_imp_not_psi_hyp` is the derivation for `φ → ¬ψ`
-
-  -- -- Current context is `Γ'` = `((`hyp_phi_imp_not_psi`, φ → ¬ψ) :: Γ)`.
-  -- -- We need to prove `⊥` in `Γ'`.
-  -- -- We have `h₁ : Γ ⊢ φ` and `h₂ : Γ ⊢ ψ`.
-  -- -- Weaken `h₁` to `Γ'`:
-  -- let d_phi_in_Gamma_prime := weaken_by_add (`hyp_phi_imp_not_psi, φ → (Formula.neg ψ)) Γ φ h₁
-
-  -- -- Now we can apply `h_phi_imp_not_psi_hyp` (which is `φ → ¬ψ`) to `d_phi_in_Gamma_prime` (which is `φ`).
-  -- -- This yields `¬ψ`.
-  -- let d_not_psi_in_Gamma_prime := imp_elim Γ' φ (Formula.neg ψ) h_phi_imp_not_psi_hyp d_phi_in_Gamma_prime
-
-  -- -- Weaken `h₂` to `Γ'`:
-  -- let d_psi_in_Gamma_prime := weaken_by_add (`hyp_phi_imp_not_psi, φ → (Formula.neg ψ)) Γ ψ h₂
-
-  -- -- Now we have `d_not_psi_in_Gamma_prime : Γ' ⊢ ¬ψ` and `d_psi_in_Gamma_prime : Γ' ⊢ ψ`.
-  -- -- Apply `neg_elim` to get `⊥`.
-  -- exact neg_elim Γ' ψ d_not_psi_in_Gamma_prime d_psi_in_Gamma_prime
+def conj_elim2 (Γ : Context) (φ ψ : Formula)
+  (h : Derivation Γ (Formula.conj φ ψ)) : Derivation Γ ψ := by
+  unfold Formula.conj at h
+  apply dne
+  apply Derivation.imp_intro
+  generalize H1_eq : (`H1, _) = H1
+  have h1 := weaken_by_cons H1 h
+  have h2 := @ax (H1 :: Γ) H1.snd H1.fst (by simp)
+  rw [<- H1_eq] at h2; simp [H1_eq] at h2
+  clear h
+  have h3 := imp_intro_dummy φ h2
+  rw [<- Formula.neg] at h3
+  have h4 := imp_elim h1 h3
+  exact h4
