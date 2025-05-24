@@ -4,6 +4,7 @@
 
 -- We'll use the `Prop` type for our `Derivation` relation, meaning proofs are types.
 
+import Lean
 import Lean.Data.Name
 
 namespace NaturalDeduction
@@ -154,11 +155,11 @@ def neg_intro (Γ : Context) (φ : Formula) (n : Lean.Name)
     (h : Derivation ((n, φ) :: Γ) ⊥) : Derivation Γ (Formula.neg φ) := by
   exact imp_intro h
 
-def neg_elim (Γ : Context) (φ : Formula)
+def neg_elim {Γ : Context} {φ : Formula}
     (h₁ : Derivation Γ (Formula.neg φ)) (h₂ : Derivation Γ φ) : Derivation Γ ⊥ := by
   exact imp_elim h₁ h₂
 
-def conj_intro (Γ : Context) (φ ψ : Formula)
+def conj_intro {Γ : Context} {φ ψ : Formula}
     (h₁ : Derivation Γ φ) (h₂ : Derivation Γ ψ) : Derivation Γ (Formula.conj φ ψ) := by
   unfold Formula.conj
   apply neg_intro Γ (φ → (Formula.neg ψ)) `H1
@@ -185,7 +186,7 @@ theorem imp_intro_undo {Γ : Context} {p q : Formula} (n : Lean.Name) (h : Deriv
   apply ax
   apply List.mem_cons_self
 
-def conj_elim1 (Γ : Context) (φ ψ : Formula)
+def conj_elim1 {Γ : Context} {φ ψ : Formula}
   (h : Derivation Γ (Formula.conj φ ψ)) : Derivation Γ φ := by
   unfold Formula.conj at h
   apply dne
@@ -204,10 +205,10 @@ def conj_elim1 (Γ : Context) (φ ψ : Formula)
   have h4 := imp_elim h1 h3
   exact h4
 
-def conj_elim2 (Γ : Context) (φ ψ : Formula)
+def conj_elim2 {Γ : Context} {φ ψ : Formula}
   (h : Derivation Γ (Formula.conj φ ψ)) : Derivation Γ ψ := by
-  unfold Formula.conj at h
   apply dne
+  unfold Formula.conj at h
   apply Derivation.imp_intro
   generalize H1_eq : (`H1, _) = H1
   have h1 := weaken_by_cons H1 h
@@ -218,3 +219,101 @@ def conj_elim2 (Γ : Context) (φ ψ : Formula)
   rw [<- Formula.neg] at h3
   have h4 := imp_elim h1 h3
   exact h4
+
+def disj_introL {Γ : Context} {φ ψ : Formula}
+  (h : Derivation Γ φ) : Derivation Γ (Formula.disj φ ψ) := by
+  sorry
+
+def disj_introR {Γ : Context} {φ ψ : Formula}
+  (h : Derivation Γ ψ) : Derivation Γ (Formula.disj φ ψ) := by
+  sorry
+
+def disj_elim {Γ : Context} {φ ψ χ : Formula}
+  (h : Derivation Γ (Formula.disj φ ψ)) (h1 : Derivation Γ (φ → χ)) (h2 : Derivation Γ (ψ → χ))
+  : Derivation Γ χ := by
+  sorry
+
+namespace MinimalLogic
+
+open Lean Elab Tactic Term Meta Syntax
+
+/-
+  Step 1: Define custom syntax for minimal logic
+-/
+
+declare_syntax_cat logic_expr
+
+syntax "⊤"                        : logic_expr
+syntax "⊥"                        : logic_expr
+syntax logic_expr " ∧ " logic_expr : logic_expr
+syntax logic_expr " ∨ " logic_expr : logic_expr
+syntax logic_expr " → " logic_expr : logic_expr
+syntax ident                      : logic_expr
+syntax "(" logic_expr ")" : logic_expr
+
+syntax "[Logic| " logic_expr "]" : term
+
+/-
+  Step 2: Macro expansion to Lean's internal logic
+-/
+
+elab_rules : term
+  | `([Logic| ⊤]) => return mkConst ``True
+  | `([Logic| ⊥]) => return mkConst ``False
+  | `([Logic| ($p)]) => do elabTerm (← `([Logic| $p])) none -- Recurse for parentheses
+  | `([Logic| $p:logic_expr ∧ $q:logic_expr]) => do
+      let lhs ← elabTerm (← `([Logic| $p])) none
+      let rhs ← elabTerm (← `([Logic| $q])) none
+      mkAppM ``And #[lhs, rhs]
+  | `([Logic| $p:logic_expr ∨ $q:logic_expr]) => do
+      let lhs ← elabTerm (← `([Logic| $p])) none
+      let rhs ← elabTerm (← `([Logic| $q])) none
+      mkAppM ``Or #[lhs, rhs]
+  | `([Logic| $p:logic_expr → $q:logic_expr]) => do
+      let lhs ← elabTerm (← `([Logic| $p])) none
+      let rhs ← elabTerm (← `([Logic| $q])) none
+      mkArrow lhs rhs
+  | `([Logic| $i:ident]) =>
+      elabTerm (mkIdent i.getId) none
+
+declare_syntax_cat minitactic
+syntax "assume " ident " : " term                       : minitactic
+syntax "introa " ident                                  : minitactic
+syntax "introduce " term                                : minitactic
+syntax "apply " ident                                   : minitactic
+syntax "exact " ident                                   : minitactic
+syntax "split"                                          : minitactic
+syntax "left"                                           : minitactic
+syntax "right"                                          : minitactic
+syntax "cases " ident                                   : minitactic
+syntax "done"                                           : minitactic
+
+syntax "begin_min " (minitactic)*  : tactic
+
+
+elab_rules : tactic
+  | `(tactic| begin_min $[$tacs:minitactic]*) => do
+      let mut tacList : Array (TSyntax `tactic) := #[]
+      for tacNode in tacs do
+        let newTac : TSyntax `tactic ← match tacNode with
+          | `(minitactic| assume $h:ident : $ty) => `(tactic| have $h : $ty := sorry)
+          | `(minitactic| introa $h:ident)       => `(tactic| intro a)
+          | `(minitactic| introduce $h:term)       => `(tactic| intro $h:term)
+          | `(minitactic| apply $h:ident)       => `(tactic| apply $h)
+          | `(minitactic| exact $h:ident)       => `(tactic| exact $h)
+          | `(minitactic| split)                => `(tactic| constructor)
+          | `(minitactic| left)                 => `(tactic| apply Or.inl)
+          | `(minitactic| right)                => `(tactic| apply Or.inr)
+          -- | `(minitactic| cases $h:ident)       => `(tactic| cases $h)
+          | `(minitactic| done)                 => `(tactic| assumption)
+          | _ => throwError m!"Unsupported mini tactic: {tacNode}"
+        tacList := tacList.push newTac
+        withTacticInfoContext tacNode do
+          evalTactic newTac
+
+example (P Q : Prop) : [Logic| P → (Q → P)] := by
+  begin_min
+    introduce p
+    introduce q
+
+end MinimalLogic
