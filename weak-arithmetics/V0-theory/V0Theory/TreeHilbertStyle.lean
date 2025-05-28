@@ -1,7 +1,14 @@
+--== SKIP BELOW FOR DEMONSTRATION ====================================
 import Lean
 import Qq
 open Lean Elab Tactic Term Meta Syntax PrettyPrinter Qq
 
+-- Section 1:
+-- + Deep embedding of Hilbert-style proof calculus
+-- + Custom syntactic macros and elaboration rules for
+--   ease of use of the object theory
+-- + Tactics to enable reasoning inside of Hilbert without
+--   having to apply List theorems / rewrite, simp etc.
 namespace HilbertStyle
 
 inductive Formula where
@@ -15,9 +22,10 @@ notation:60 a " ==> " b => imp a b
 def K (φ ψ : Formula) := φ ==> ψ ==> φ
 def S (φ ψ ξ : Formula) := (φ ==> ψ ==> ξ) ==> (φ ==> ψ) ==> φ ==> ξ
 
--- perhaps we should be able to somehow take as axiom a formula,
--- for which the proof of being of the form A1 / A2 is non-constructive
--- i.e. have predicate isAxiom. but this is slightly harder in Lean
+-- perhaps we should be able to somehow take as axiom an arbitrary formula,
+-- i.e. enable Lean-reasoning of "if ax is an axiom" -> "Γ ⊢ ax"
+-- now we don't provide a decidable procedure for "given φ : Formula, is φ an axiom?"
+-- nor we plan to...
 inductive Derivable : (List Formula) -> Formula -> Prop where
 | assumption {Γ} {φ} : (φ ∈ Γ) -> Derivable Γ φ
 | axK {Γ} {phi psi} : Derivable Γ $ K phi psi
@@ -70,7 +78,6 @@ scoped elab "by_mem" : tactic => do evalTactic (← `(tactic| simp [List.Mem]))
 
 -- Syntax category for Hilbert proof steps
 declare_syntax_cat hilbert_tactic
--- syntax "let " ident ":=" logic_expr : hilbert_tactic
 scoped syntax "have" ident ":" logic_expr "by" "assumption" : hilbert_tactic
 scoped syntax "have" ident ":=" "axK" logic_expr "," logic_expr : hilbert_tactic
 scoped syntax "have" ident ":=" "axS" logic_expr "," logic_expr "," logic_expr : hilbert_tactic
@@ -144,6 +151,8 @@ scoped elab_rules : term
 end HilbertStyle
 
 
+-- Section 2: =========================================================
+-- + Demo
 
 variable (φ ψ ϑ p q: Name)
 
@@ -201,6 +210,10 @@ example {φ ψ ϑ: Formula} : Derivable [φ, φ ==> ψ, ψ ==> ϑ] (ϑ) := by
 
 end HilbertStyle
 
+
+-- Section 3: =========================================================
+-- + proofs in meta-theory about implementation of the proof calculus
+--   weakening and deduction theorems
 theorem weakening {Γ} {φ ψ} : HilbertStyle.Derivable Γ ψ -> HilbertStyle.Derivable (φ :: Γ) ψ := by
   intro h
   induction h with
@@ -220,17 +233,17 @@ theorem deduction {Γ} {φ ψ}: HilbertStyle.Derivable (φ :: Γ) ψ <-> Hilbert
   apply Iff.intro
   {
     -- trick to bypass "index in target's type is not a variable" at `induction h`
-    generalize Sub1 : φ :: Γ = Sub1_
     intro h
-    induction h with
+    generalize hΓ' : φ :: Γ = Γ' at h
+    induction h generalizing φ Γ with
     | @assumption _ h1 mem =>
       cases mem with
       | head =>
-        injection Sub1 with head_eq
+        injection hΓ' with head_eq
         rw [head_eq]
         apply HilbertStyle.urzyczyn5_1_3'
       | tail _ mem =>
-        injection Sub1 with _ tail_eq
+        injection hΓ' with _ tail_eq
         rw [<- tail_eq] at mem
         have aux : HilbertStyle.Derivable Γ h1 := by
           apply HilbertStyle.Derivable.assumption
@@ -253,9 +266,30 @@ theorem deduction {Γ} {φ ψ}: HilbertStyle.Derivable (φ :: Γ) ψ <-> Hilbert
         apply HilbertStyle.Derivable.axK
       rw [<- List.append_nil Γ]
       apply HilbertStyle.Derivable.mult_mp aux2 aux
-    | @mult_mp G1 G2 _ _ imp base =>
-      -- the induction hypothesis is bad, can't proceed this way?
-      sorry
+    | @mult_mp Γ1 Γ2 φ' ψ' imp base imp_ih base_ih =>
+      rw [List.cons_eq_append_iff] at hΓ'
+      have aux : HilbertStyle.Derivable [] (HilbertStyle.S φ φ' ψ') := by
+        apply HilbertStyle.Derivable.axS
+      obtain ⟨rfl, rfl⟩ | ⟨Γ2', rfl, rfl⟩ := hΓ'
+      · have aux2 := HilbertStyle.Derivable.mult_mp aux (imp_ih rfl)
+        -- we don't need to use base_ih here (which is impossible to instantiate)
+        -- because we can derive φ -> φ' just from φ', which is `base`!!
+        have aux3 : HilbertStyle.Derivable [] (φ' ==> φ ==> φ') := by
+          apply HilbertStyle.Derivable.axK
+        have aux4 := HilbertStyle.Derivable.mult_mp aux3 base
+        have aux3 := HilbertStyle.Derivable.mult_mp aux2 aux4
+        rwa [List.nil_append, List.append_nil] at aux3
+      · have aux2 := base_ih rfl
+        have aux3 : HilbertStyle.Derivable [] (HilbertStyle.K (φ' ==> ψ') φ) := by
+          apply HilbertStyle.Derivable.axK
+        have aux4 := HilbertStyle.Derivable.mult_mp aux3 imp
+        have aux_S : HilbertStyle.Derivable [] (HilbertStyle.S φ φ' ψ') := by
+          apply HilbertStyle.Derivable.axS
+
+        have aux6 := HilbertStyle.Derivable.mult_mp aux_S aux4
+        have aux7 := HilbertStyle.Derivable.mult_mp aux6 aux2
+        repeat rw [List.append_nil] at aux7
+        exact aux7
   }
   {
     -- this is slightly different to the proof in the book
