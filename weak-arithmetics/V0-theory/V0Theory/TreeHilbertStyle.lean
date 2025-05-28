@@ -8,33 +8,30 @@ inductive Formula where
 | var : Name -> Formula
 | imp : Formula -> Formula -> Formula
 deriving Repr, DecidableEq
-
-notation:60 a " ==> " b => Formula.imp a b
-
-def A1 (phi psi : Formula)
-  := phi ==> psi ==> phi
-def A2 (phi psi ksi : Formula)
-  := (phi ==> psi ==> ksi) ==> (phi ==> psi) ==> phi ==> ksi
-
 open Formula
+
+notation:60 a " ==> " b => imp a b
+
+def K (φ ψ : Formula) := φ ==> ψ ==> φ
+def S (φ ψ ξ : Formula) := (φ ==> ψ ==> ξ) ==> (φ ==> ψ) ==> φ ==> ξ
 
 -- perhaps we should be able to somehow take as axiom a formula,
 -- for which the proof of being of the form A1 / A2 is non-constructive
 -- i.e. have predicate isAxiom. but this is slightly harder in Lean
 inductive Derivable : (List Formula) -> Formula -> Prop where
 | assumption {Γ} {φ} : (φ ∈ Γ) -> Derivable Γ φ
-| axK {Γ} {phi psi} : Derivable Γ $ A1 phi psi
-| axS {Γ} {phi psi ksi} : Derivable Γ $ A2 phi psi ksi
+| axK {Γ} {phi psi} : Derivable Γ $ K phi psi
+| axS {Γ} {phi psi ksi} : Derivable Γ $ S phi psi ksi
 | mult_mp {Γ1 Γ2} {phi psi} : Derivable Γ2 (phi ==> psi) -> Derivable Γ1 phi -> Derivable (Γ1 ++ Γ2) psi
 
 declare_syntax_cat logic_expr
 
-syntax ident : logic_expr
-syntax logic_expr " -> " logic_expr : logic_expr
-syntax "(" logic_expr ")" : logic_expr
-syntax "[Logic| " logic_expr "]" : term
+scoped syntax ident : logic_expr
+scoped syntax logic_expr " -> " logic_expr : logic_expr
+scoped syntax "(" logic_expr ")" : logic_expr
+scoped syntax "[Logic| " logic_expr "]" : term
 
-elab_rules : term
+scoped elab_rules : term
   | `([Logic| $e:logic_expr]) => elabTerm e none
   | `(logic_expr| $i:ident) => do
       let nameExpr ← Term.elabTerm i none
@@ -60,7 +57,7 @@ partial def extractGammaFromGoal : TacticM Expr := do
   | _ =>
     throwError "Goal is not of the form `HilbertStyle.Derivable Γ φ`, got: {goal}"
 
-elab "hilbertDebug" : tactic => do
+scoped elab "hilbertDebug" : tactic => do
   let goal ← getMainTarget
   let ppGoal := goal.dbgToString
   logInfo m!"Goal expression: {ppGoal}"
@@ -69,46 +66,33 @@ elab "hilbertDebug" : tactic => do
 
   logInfo m!"Gamma: {gamma}"
 
-elab "by_mem" : tactic => do evalTactic (← `(tactic| simp [List.Mem]))
+scoped elab "by_mem" : tactic => do evalTactic (← `(tactic| simp [List.Mem]))
 
 -- Syntax category for Hilbert proof steps
 declare_syntax_cat hilbert_tactic
 -- syntax "let " ident ":=" logic_expr : hilbert_tactic
-syntax "have" ident ":" logic_expr "by" "assumption" : hilbert_tactic
-syntax "have" ident ":=" "axK" logic_expr "," logic_expr : hilbert_tactic
-syntax "have" ident ":=" "axS" logic_expr "," logic_expr "," logic_expr : hilbert_tactic
-syntax "have" ident ":=" "mp" ident ident : hilbert_tactic
-syntax "debug" : hilbert_tactic
-syntax "exact " ident : hilbert_tactic
+scoped syntax "have" ident ":" logic_expr "by" "assumption" : hilbert_tactic
+scoped syntax "have" ident ":=" "axK" logic_expr "," logic_expr : hilbert_tactic
+scoped syntax "have" ident ":=" "axS" logic_expr "," logic_expr "," logic_expr : hilbert_tactic
+scoped syntax "have" ident ":=" "mult_mp" ident ident : hilbert_tactic
+scoped syntax "debug" : hilbert_tactic
+scoped syntax "exact " ident : hilbert_tactic
 
-syntax "begin_hilbert " (hilbert_tactic)* : tactic
+scoped syntax "begin_hilbert " (hilbert_tactic)* : tactic
 
-elab_rules : tactic
+scoped elab_rules : tactic
   | `(tactic| begin_hilbert $[$tacs:hilbert_tactic]*) => do
     for tacNode in tacs do
       let tac ← match tacNode with
-        -- | `(hilbert_tactic| let $name:ident := $e:logic_expr) => do
-        --     let e' <- `([Logic| $e])
-        --     let phi' <- Lean.Elab.Term.elabTerm e' none
-        --     let phi <- delab phi'
-        --     `(tactic| let $name := $phi)
         | `(hilbert_tactic| debug) => do
             `(tactic| hilbertDebug)
 
         | `(hilbert_tactic| have $name:ident : $phi:logic_expr by assumption) => do
-            -- let e1' <- `([Logic| $e1])
-            -- withoutErrToSorry do
             let phi' ← Lean.Elab.Term.elabTerm phi none
             let phi <- delab phi'
             let gamma' <- extractGammaFromGoal
             let gamma <- delab gamma'
             let goal ← `(Derivable $gamma $phi)
-            -- let goalTy := mkApp2 (mkConst ``Derivable) gamma' phi'
-            -- let byMem ← `(by by_mem)
-            -- let rhs ← mkAppM ``Derivable.assumption #[gamma', phi', ← Lean.Elab.Term.elabTerm byMem (some goalTy)]
-            -- let goal <- getMainGoal
-            -- let fVarId <- goal.assert name goalTy rhs
-
             `(tactic| have $name : $goal := @Derivable.assumption _ $phi (by by_mem))
 
         | `(hilbert_tactic| have $name:ident := axK $e1, $e2) => do
@@ -120,7 +104,7 @@ elab_rules : tactic
             let psi <- delab psi'
             let gamma' <- extractGammaFromGoal
             let gamma <- delab gamma'
-            let goal ← `(Derivable $gamma (A1 $phi $psi))
+            let goal ← `(Derivable $gamma (K $phi $psi))
             `(tactic| have $name : $goal := Derivable.axK)
 
         | `(hilbert_tactic| have $name:ident := axS $e1, $e2, $e3) => do
@@ -135,9 +119,9 @@ elab_rules : tactic
             let ksi <- delab ksi'
             let gamma' <- extractGammaFromGoal
             let gamma <- delab gamma'
-            `(tactic| have $name : Derivable $gamma (A2 $phi $psi $ksi) := Derivable.axS)
+            `(tactic| have $name : Derivable $gamma (S $phi $psi $ksi) := Derivable.axS)
 
-        | `(hilbert_tactic| have $name:ident := mp $h1 $h2) =>
+        | `(hilbert_tactic| have $name:ident := mult_mp $h1 $h2) =>
             `(tactic| have $name := Derivable.mult_mp $h1 $h2)
 
         | `(hilbert_tactic| exact $id:ident) =>
@@ -145,31 +129,54 @@ elab_rules : tactic
 
         | _ => throwError m!"Unsupported tactic: {tacNode}"
       withTacticInfoContext tacNode do
-        withMacroExpansion tacNode tac (evalTactic tac)
-        -- evalTactic tac
+        -- withMacroExpansion tacNode tac (evalTactic tac)
+        evalTactic tac
+
+scoped syntax "[Logic|" sepBy(logic_expr, ",") "⊢" logic_expr "]": term
+
+scoped elab_rules : term
+  | `([Logic| $assumptions,* ⊢ $goal]) => do
+    let assumpExprs ← assumptions.getElems.mapM (fun stx => elabTerm stx none)
+    let goalExpr ← elabTerm goal none
+    let listExpr <- Lean.Meta.mkListLit (mkConst ``Formula) assumpExprs.toList
+    pure $ mkApp2 (mkConst ``Derivable) listExpr goalExpr
+
+end HilbertStyle
 
 
-def a : Name := `a
+
 variable (φ ψ ϑ p q: Name)
 
 -- Urzyczyn, Sorensen: example 5.1.3
+namespace HilbertStyle
+-- version 1: no embedding used
 example {φ : Formula} : Derivable [] (φ ==> φ) := by
-  have a : Derivable [] $ A2 φ (φ ==> φ) φ := Derivable.axS
-  have b : Derivable [] $ A1 φ (φ ==> φ) := Derivable.axK
+  have a : Derivable [] $ S φ (φ ==> φ) φ := Derivable.axS
+  have b : Derivable [] $ K φ (φ ==> φ) := Derivable.axK
   have c := Derivable.mult_mp a b
-  have d : Derivable [] $ A1 φ φ := Derivable.axK
+  have d : Derivable [] $ K φ φ := Derivable.axK
   exact Derivable.mult_mp c d
 
+-- version 2: inside embedding!
 example : Derivable [] [Logic| φ -> φ] := by
   begin_hilbert
     have a := axS φ, φ -> φ, φ
     have b := axK φ, φ -> φ
-    have c := mp a b
+    have c := mult_mp a b
     have d := axK φ, φ
-    have e := mp c d
+    have e := mult_mp c d
     exact e
 
--- Urzyczyn, Sorensen: example 5.1.6
+-- strengthen to arbitrary Γ, will be needed in proof of deduction
+-- syntax for variables meaning sets of formulas not yet supported!
+theorem urzyczyn5_1_3' {φ : Formula} {Γ} : Derivable Γ (φ ==> φ) := by
+  have a : Derivable Γ $ S φ (φ ==> φ) φ := Derivable.axS
+  have b : Derivable [] $ K φ (φ ==> φ) := Derivable.axK
+  have c := Derivable.mult_mp a b
+  have d : Derivable [] $ K φ φ := Derivable.axK
+  exact Derivable.mult_mp c d
+
+-- Urzyczyn, Sorensen: example 5.1.6, version 1 (no embedding)
 example {φ ψ ϑ: Formula} : Derivable [φ, φ ==> ψ, ψ ==> ϑ] (ϑ) := by
   have a : Derivable [φ ==> ψ] $ φ ==> ψ := Derivable.assumption (by simp [List.Mem])
   have b : Derivable [φ] $ φ := Derivable.assumption (by simp [List.Mem])
@@ -178,104 +185,84 @@ example {φ ψ ϑ: Formula} : Derivable [φ, φ ==> ψ, ψ ==> ϑ] (ϑ) := by
   have e : Derivable [φ, φ ==> ψ, ψ ==> ϑ] $ ϑ := Derivable.mult_mp d c
   exact e
 
-syntax "[Logic|" sepBy(logic_expr, ",") "⊢" logic_expr "]": term
+-- version 2
+-- Urzyczyn, Sorensen: example 5.1.6, version 2
+-- sorry! for multiplicative mp, we need syntax to declare how
+-- the assumption set Γ is distributed to proof of premises
+-- it's not there yet!
+-- example : [Logic| φ, φ -> ψ, ψ -> ϑ ⊢ ϑ] := by
+  -- begin_hilbert
+    -- have a : φ -> ψ by assumption
+    -- have b : φ by assumption
+    -- have c := mult_mp a b
+    -- have d : ψ -> ϑ by assumption
+    -- have e := mult_mp d c
+    -- exact e
 
-elab_rules : term
-  | `([Logic| $assumptions,* ⊢ $goal]) => do
-    let assumpExprs ← assumptions.getElems.mapM (fun stx => elabTerm stx none)
-    let goalExpr ← elabTerm goal none
-    let listExpr <- Lean.Meta.mkListLit (mkConst ``Formula) assumpExprs.toList
-    pure $ mkApp2 (mkConst ``Derivable) listExpr goalExpr
+end HilbertStyle
 
--- Urzyczyn, Sorensen: proposition 5.1.7
--- syntax for mixing formulas with sets of formulas not yet supported
--- this proof is conducted in the meta theory!
-
--- strengthen to any Gamma not just []
--- + conduct proof in system with multiplicative mp, not standard
-theorem urzyczyn5_1_3' {φ : Formula} {Γ} :  Derivable Γ (φ ==> φ) := by
-  have a : Derivable Γ $ A2 φ (φ ==> φ) φ := Derivable.axS
-  have b : Derivable [] $ A1 φ (φ ==> φ) := Derivable.axK
-  have c := Derivable.mult_mp a b
-  have d : Derivable [] $ A1 φ φ := Derivable.axK
-  exact Derivable.mult_mp c d
-
-theorem weakening {Γ} {φ ψ} : Derivable Γ ψ -> Derivable (φ :: Γ) ψ := by
-  generalize Sub1 : φ :: Γ = Sub1_
-  generalize Sub2 : ψ = Sub2_
+theorem weakening {Γ} {φ ψ} : HilbertStyle.Derivable Γ ψ -> HilbertStyle.Derivable (φ :: Γ) ψ := by
   intro h
-  induction h
-  case _ h1 h2 =>
-    apply Derivable.assumption
-    rw [<- Sub1]
+  induction h with
+  | assumption mem =>
+    apply HilbertStyle.Derivable.assumption
     rw [List.mem_cons]
     right
-    apply h2
-  case _ phi psi =>
-    apply Derivable.axK
-  case _ phi psi ksi =>
-    apply Derivable.axS
-  case _ a b c d imp base imp_ih base_ih =>
-    -- the induction hypothesis for some reason is unusable...
-    rw [<- Sub1]
-    rw [<- Sub2]
-    rw [<- Sub1] at base_ih
-    rw [<- Sub1] at imp_ih
-    simp at base_ih
-    rw [Sub2] at base_ih
-    simp at imp_ih
-    sorry
+    exact mem
+  | axK => apply HilbertStyle.Derivable.axK
+  | axS => apply HilbertStyle.Derivable.axS
+  | mult_mp imp base imp_ih base_ih =>
+    apply HilbertStyle.Derivable.mult_mp imp base_ih
 
-theorem deduction {Γ} : Derivable (var φ :: Γ) [Logic|ψ] <-> Derivable Γ [Logic|φ -> ψ] := by
+-- Urzyczyn, Sorensen: proposition 5.1.7
+-- this proof is conducted in the meta theory!
+theorem deduction {Γ} {φ ψ}: HilbertStyle.Derivable (φ :: Γ) ψ <-> HilbertStyle.Derivable Γ (HilbertStyle.Formula.imp φ ψ) := by
   apply Iff.intro
   {
     -- trick to bypass "index in target's type is not a variable" at `induction h`
-    generalize Sub1 : var φ :: Γ = Sub1_
-    generalize Sub2 : var ψ = Sub2_
+    generalize Sub1 : φ :: Γ = Sub1_
     intro h
-    induction h
-    case mp.assumption h1 h2 =>
-      cases h2 with
+    induction h with
+    | @assumption _ h1 mem =>
+      cases mem with
       | head =>
         injection Sub1 with head_eq
         rw [head_eq]
-        apply urzyczyn5_1_3'
+        apply HilbertStyle.urzyczyn5_1_3'
       | tail _ mem =>
         injection Sub1 with _ tail_eq
         rw [<- tail_eq] at mem
-        have aux : Derivable Γ h1 := by
-          apply Derivable.assumption
+        have aux : HilbertStyle.Derivable Γ h1 := by
+          apply HilbertStyle.Derivable.assumption
           assumption
-        have aux2 : Derivable [] (h1 ==> var φ ==> h1) := by
-          apply Derivable.axK
-
+        have aux2 : HilbertStyle.Derivable [] (h1 ==> φ ==> h1) := by
+          apply HilbertStyle.Derivable.axK
         rw [<- List.append_nil Γ]
-        apply Derivable.mult_mp aux2 aux
-    case mp.axK phi psi =>
-      have aux : Derivable Γ (A1 phi psi) := by
-        apply Derivable.axK
-      have aux2 : Derivable [] ((A1 phi psi) ==> var φ ==> (A1 phi psi)) := by
-        apply Derivable.axK
+        apply HilbertStyle.Derivable.mult_mp aux2 aux
+    | @axK _ phi psi =>
+      have aux : HilbertStyle.Derivable Γ (HilbertStyle.K phi psi) := by
+        apply HilbertStyle.Derivable.axK
+      have aux2 : HilbertStyle.Derivable [] ((HilbertStyle.K phi psi) ==> φ ==> (HilbertStyle.K phi psi)) := by
+        apply HilbertStyle.Derivable.axK
       rw [<- List.append_nil Γ]
-      apply Derivable.mult_mp aux2 aux
-    case mp.axS phi psi theta =>
-      have aux : Derivable Γ (A2 phi psi theta) := by
-        apply Derivable.axS
-      have aux2 : Derivable [] ((A2 phi psi theta) ==> var φ ==> (A2 phi psi theta)) := by
-        apply Derivable.axK
+      apply HilbertStyle.Derivable.mult_mp aux2 aux
+    | @axS _ phi psi ksi =>
+      have aux : HilbertStyle.Derivable Γ (HilbertStyle.S phi psi ksi) := by
+        apply HilbertStyle.Derivable.axS
+      have aux2 : HilbertStyle.Derivable [] ((HilbertStyle.S phi psi ksi) ==> φ ==> (HilbertStyle.S phi psi ksi)) := by
+        apply HilbertStyle.Derivable.axK
       rw [<- List.append_nil Γ]
-      apply Derivable.mult_mp aux2 aux
-    case mp.mult_mp =>
+      apply HilbertStyle.Derivable.mult_mp aux2 aux
+    | @mult_mp G1 G2 _ _ imp base =>
+      -- the induction hypothesis is bad, can't proceed this way?
       sorry
   }
   {
     -- this is slightly different to the proof in the book
     -- we don't use weakening in this version due to multiplicative mp
     intro h
-    have aux_base : Derivable ([var φ]) (var φ) := by
-      apply Derivable.assumption
+    have aux_base : HilbertStyle.Derivable [φ] φ := by
+      apply HilbertStyle.Derivable.assumption
       simp
-    apply Derivable.mult_mp h aux_base
+    apply HilbertStyle.Derivable.mult_mp h aux_base
   }
-
-end HilbertStyle
