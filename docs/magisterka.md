@@ -23,8 +23,9 @@ date:
 
 # NC0
 - One-way permutations in NC0: [@10.1016/0020-01908790053-6]
-- All sets complete under AC0 reductions are in fact already complete under NC0 reductions: [@10.1145/258533.258671]
+- All sets complete under AC0 reductions are in fact already complete under NC0 reductions: [@10.1145/258533.258671] [@AGRAWAL1998127]
 - Immerman at page 81 shows how to do addition in NC0 and MAJORITY in NC1 [@Immerman1998-IMMDC]
+
 - Addition and substraction of binary numbers is in AC0: [@27676]
 - This is not trivial, as these algorithms in NC0/AC0 use Chinese Remainder Representation or Fermat's Little Theorem!
 
@@ -39,6 +40,7 @@ date:
 
 # NC1
 - Division is in DLOGTIME-uniform NC1: [@ITA_2001__35_3_259_0]
+- Reductions for NC1: Dlogtime!
 - Reductions for NC1: UE* reductions; UE*-uniform NC1 = ALOGTIME [@RUZZO1981365]
 - example of many-one NC1 reduction for L-completeness of tree isomorphism (trees repr. as pointers): [@694595]
 

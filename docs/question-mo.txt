@@ -1,0 +1,36 @@
+Can Witnessing theorems lead to code extraction from proofs? (bounded arithmetics)
+
+
+
+In bounded arithmetic (or bounded reverse mathematics) we study formal systems so weak that the structures of their proofs correspond to some known complexity classes such as PTIME, LOGSPACE or AC0.
+
+Here I will refer to the astonishing work of Steven Cook and Phuong Nguyen, "Logical Foundations of Proof Complexity" - specifically, to the draft available here: [cook-nguyen.pdf][1], as the original is non open-access. For motivation:
+
+> Conceptually the theory VC associated with a complexity class C can
+prove a given mathematical theorem if the induction hypotheses needed
+in the proof can be formulated using concepts from C. We are interested
+in trying to find the weakest class C needed to prove various theorems of
+interest in computer science.
+
+The authors show that weak pigeonhole principle is not provable in theory $VAC^0$ corresponding to $AC^0$ complexity class, but it is provable in $VTC^0$, along with a formula denoting that for every sequence, a sorted sequence exists. Fermat's Little Theorem is not provable in $VPTIME$, condition prime factorization is not in $PTIME$.
+
+In the area of bounded arithmetic, **Witnessing theorems** are studied, which roughly say that if a formula $\forall x \exists y \varphi(x, y)$ is provable in theory $VC$ (for a complexity class $C$), then there exists a function $f$ of complexity $C$ such that $\forall x \varphi(x, f(x))$ is provable in $VC$. 
+
+
+So, that we can theoretically extract a real algorithm from a proof of a functional formula! The problem with these theorems are that their proofs typically involve cut elimination theorem or Herbrand's theorem, which say that something is *possible* to do, but in practice it's not really computationally feasible. As I don't have enough expertise to judge myself, it leads me to thinking that we won't really be able to implement a real code extraction tool from the proofs in these weak logics.
+
+
+**My question is: can we actually implement algorithm extraction from a proof of the Witnessing theorem?** Maybe I'm wrong in thinking that the current proofs are not convertible to feasible computation? Maybe alternative proofs exist (there are at least 2 for $V^0$ (i.e. $VAC^0$) in the book above), which are computationally feasible? Maybe no feasible proof is known, but theoretically there might exist one?
+ 
+
+
+I don't want to list all the technical definitions here, as it would require introducing the two-sorted logic and the bounded arithmetical hierarchy the authors use, which is not strictly essential to this question. But, as an example of a witnessing theorem for AC0:
+
+At page 105 (116 of the pdf): Theorem 5.60 (Witnessing Theorem for V0). Suppose that $\varphi (\overrightarrow x, \overrightarrow y, \overrightarrow X, \overrightarrow Y )$
+is a $\Sigma^B_0$ formula such that
+$V^0 \vdash \forall \overrightarrow x \forall \overrightarrow X\exists \overrightarrow y \exists \overrightarrow Y \varphi( \overrightarrow x,  \overrightarrow y, \overrightarrow X, \overrightarrow Y )$
+Then there are $FAC^0$ functions $f_1, \dots , f_k, F_1, \dots , F_m$ so that
+$V^0(f_1, \dots , f_k, F_1, \dots , F_m) \vdash \forall \overrightarrow x \forall \overrightarrow X \varphi( \overrightarrow x , \overrightarrow f(\overrightarrow x,  \overrightarrow X),  \overrightarrow X,  \overrightarrow F ( \overrightarrow x,  \overrightarrow X)) $
+
+
+  [1]: https://www.karlin.mff.cuni.cz/~krajicek/cook-nguyen.pdf
