@@ -1,5 +1,6 @@
 // import opened CookNguyen
 include "CookNguyen.dfy"
+// $ dafny run Main.dfy 11101011010111
 
 // module Main {
 

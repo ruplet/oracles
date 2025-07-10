@@ -314,4 +314,9 @@ method TestPalindromeExamples()
 
 // Prove that V^i proves Sigma^B_i-IND, -MIN, -MAX
 
+
+// Cool: https://dafny.org/v3.9.0/DafnyRef/DafnyRef#sec-function-declarations
+// https://dafny.org/blog/2023/08/14/clear-specification-and-implementation/
+// proof by contradiction: https://github.com/dafny-lang/dafny/issues/95 
+
 // }

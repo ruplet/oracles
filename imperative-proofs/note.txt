@@ -1,0 +1,18 @@
+What does x86 arch spec prove?
+
+very simple properties!
+forall x. {rax == x} mov rax, 7 { rax == 7}
+
+
+C++ compiler:
+
+under reasonable assumptions [1], we can tell something about the behavior of a program.
+
+What can we tell?
+
+Reasonable assumptions:
+- hardware is correct (manual proof)
+- compiler implementation is correct (manual proof)
+- (perhaps) OS is correct
+
+-> then program will behave according to the C standard
