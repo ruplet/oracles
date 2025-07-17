@@ -1,3 +1,35 @@
+- Computing aspects of set theory, Erwin Engeler ETH Zurich
+> https://people.math.ethz.ch/~engeler/computing_aspects.pdf
+
+- About the computational content of set theory
+https://terrytao.wordpress.com/2010/03/19/a-computational-perspective-on-set-theory/
+
+- Can a specific graph theory be a foundations of mathematics?
+> https://mathoverflow.net/q/397581
+
+- Comparing set theory, type theory and category theory as foundations
+> https://philosophy.stackexchange.com/questions/87027/set-theory-vs-type-theory-vs-category-theory
+
+- What do we want a foundation to be?
+> What do we want a foundation to do? Comparing set-theoretic, category-theoretic, and univalent approaches  
+> https://sites.socsci.uci.edu/~pjmaddy/bio/What%20do%20we%20want%20-%20final
+
+- About different theories for foundations of mathematics
+> https://mathoverflow.net/questions/364228/are-categories-special-foundationally  
+> https://mathoverflow.net/questions/8731/categorical-foundations-without-set-theory  
+> https://mathoverflow.net/questions/360578/category-theory-and-set-theory-just-a-different-language-or-different-foundati  
+> https://mathoverflow.net/questions/352298/could-groups-be-used-instead-of-sets-as-a-foundation-of-mathematics?noredirect=1&lq=1  
+> https://mathoverflow.net/questions/24773/why-do-categorical-foundationalists-want-to-escape-set-theory  
+> https://mathoverflow.net/questions/9269/category-of-categories-as-a-foundation-of-mathematics
+
+- Physical aspects of the foundational model
+> What is the physical nature of computation?  
+> Church-Turing thesis only relates to N->N functions.  
+> Turing machines operating on real numbers are hypercomputation  
+> Malament-Hogarth spacetime; relativistic Turing machines, that can
+> peek into the future
+> https://plato.stanford.edu/entries/computation-physicalsystems/
+
 yuri gurevich what is an algorithm?
 
 Cytat ze skryptu jajo:
@@ -127,3 +159,4 @@ isbn="978-3-642-27660-6"
  volume = {14},
  year = {2008}
 }
+
