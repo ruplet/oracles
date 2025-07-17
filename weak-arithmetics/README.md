@@ -1,2 +1,75 @@
 some intuitionistic logic in lean:
 https://github.com/DafinaTrufas/Intuitionistic-Logic-Lean
+
+Bounded arithmetics in Lean:
+https://github.com/FormalizedFormalLogic/Foundation
+
+ważne: palalansouki
+
+
+file:///home/maryjane/Downloads/1235421934.pdf
+strona 52 pdf, strona 316 ksiazki
+chapter V Bounded arithmetic
+tu jest o kodowaniu CFG
+
+Paper:
+Suppose IS12 proves Exists y . A(y, c).
+Then S12 proves istnieje dowod
+https://mathweb.ucsd.edu/~sbuss/ResearchWeb/intuitionisticBA/intuitionisticBA_OCR.pdf
+Tutaj strona 160 (58 pdfa) wykazuje conjecture 3 z powyzszego!:
+https://doi.org/10.1016/0168-0072(93)90044-E
+no i Godel encoding jest wazny, bo jego dowod 1 twierdzenia o niezupelnosci
+to tak naprawde interpreter!
+
+ważne: Cook and Urquhart's theory IPV
+
+przykłady rozszerzeń arytmetyki:
+https://en.wikipedia.org/wiki/Conservative_extension
+
+hierarchia arytmetyk
+https://en.wikipedia.org/wiki/Ordinal_analysis
+
+Weak systems of arithmetic:
+https://golem.ph.utexas.edu/category/2011/10/weak_systems_of_arithmetic.html
+
+IΔ₀ and linear time hierarchy!
+Elementary Function Arithmetic = EFA
+Primitive Recursive Arithmetic = PRA
+RCA0*
+IDelta0 + Exp
+
+Primitive recursion:
+https://ftp.cs.ru.nl/CSI/CompMath.Found/week9.pdf
+
+A constructive proof of the Gödel-Rosser incompleteness theorem has been completed using the Coq proof assistant
+http://r6.ca/Goedel/goedel1.html
+
+Redukcje w Coq różne:  jest tutaj Ackermann function, PRA
+https://github.com/rocq-community/hydra-battles
+
+Definicje e.g. arytmetyki Q Robinsona:
+file:///home/maryjane/Downloads/1235421930-2.pdf
+
+Coding of sets and sequences, strona 31 pdfa (295):
+file:///home/maryjane/Downloads/1235421934.pdf
+Książka:
+https://projecteuclid.org/eBooks/perspectives-in-logic/Metamathematics-of-First-Order-Arithmetic/toc/pl/1235421926
+
+Funkcja jest dowodliwa w PA wtedy i tylko wtedy gdy rośnie wystarczająco wolno!
+https://math.stackexchange.com/questions/4859305/are-there-examples-of-statements-not-provable-in-pa-that-do-not-require-fast-gro?rq=1
+Czyli funkcje, które są niedowodliwe, a rosną wolno (np. są 0/1), nie mogą być wyrażalne!
+
+https://mathoverflow.net/questions/382179/what-can-i-delta-0-prove
+
+Euler's phi function in IDelta0:
+https://link.springer.com/article/10.1007/BF01375521
+
+czym jest transfinite induction w ERA, PRA, PA:
+https://mathoverflow.net/questions/123713/era-pra-pa-transfinite-induction-and-equivalences?rq=1
+
+
+24. Cook-Nguyen (history):
+The universal theory VPV is based on the single-sorted theory PV [39].
+which historically was the first theory designed to capture polynomial time
+reasoning. 
+
