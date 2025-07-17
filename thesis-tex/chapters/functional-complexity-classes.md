@@ -1,4 +1,8 @@
 # What do we mean by "P", "NP" complexity classes and why do we need "FP" and "FNP"
+## Intro
+23. Morioka tells that it is important to tell between decision and function complexity classes!
+Cook, Nguyen shows that FAC0 is enough for reductions
+
 ## P: p-time decision problems
 - P are decision(!) problems solvable in polynomial time on a Turing machine
 - NP are also decision problems solvable in p-time on a Nondeterministic Turing machine
