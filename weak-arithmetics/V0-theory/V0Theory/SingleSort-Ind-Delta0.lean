@@ -1,5 +1,7 @@
 import Mathlib.ModelTheory.Basic
 import Mathlib.ModelTheory.Syntax
+import Mathlib.ModelTheory.Complexity
+import Mathlib.ModelTheory.Semantics
 
 namespace L2
 
@@ -14,7 +16,7 @@ inductive Functions2 where
 deriving BEq, DecidableEq
 
 inductive Relations2 where
-| eqnum
+-- | eqnum
 | leq
 deriving BEq, DecidableEq
 
@@ -37,13 +39,15 @@ def Lang : FirstOrder.Language :=
 
 open FirstOrder.Language (Term BoundedFormula Formula Sentence)
 
-def isOpen (sentence: FirstOrder.Language.Sentence Lang) : Bool :=
-match sentence with
-| .falsum => true
-| .equal _ _ => false -- please use our internal equation symbol!
-| .rel _ _ => true
-| .imp pre post => isOpen pre ∧ isOpen post
-| .all _ => false
+-- def isOpen {a} [DecidableEq a] {n} (sentence: Lang.BoundedFormula a n) : Bool :=
+-- match sentence with
+-- | .falsum => true
+-- | .equal _ _ => false -- please use our internal equation symbol!
+-- | .rel _ _ => true
+-- | .imp pre post => isOpen pre ∧ isOpen post
+-- | .all _ => false
+
+def isOpen {a} {n} [DecidableEq a] (formula : Lang.BoundedFormula a n) := FirstOrder.Language.BoundedFormula.IsQF formula
 
 def contains_var_zero {a} [DecidableEq a] {n} (t : Lang.Term (a ⊕ Fin n)) : Bool :=
   if h_eq : n = 0 then
@@ -83,7 +87,7 @@ def isDelta0 {a} [DecidableEq a] {n} : Lang.BoundedFormula a n -> Bool
 | .all phi =>
   (is_x_le_t_imp_A phi) ∧ (isDelta0 phi) -- Recursively check inner formula
 
-def relationEq : Lang.Relations 2 := Relations2.eqnum
+-- def relationEq : Lang.Relations 2 := Relations2.eqnum
 def relationLeq : Lang.Relations 2 := Relations2.leq
 
 -- --- Sentence Construction Helpers ---
@@ -94,15 +98,6 @@ def relationLeq : Lang.Relations 2 := Relations2.leq
 -- If we're inside `all {n} f`, then `f` has context `n+1`, so `Fin (n+1)`.
 def var_term {k : ℕ} (idx : Fin k) : Term Lang (Empty ⊕ (Fin k)) := Term.var (Sum.inr idx)
 
--- -- A constant term (e.g., 0 or 1 from `L2.Functions0`)
--- def const_term (c : Lang.Functions 0) : Term Lang (Empty ⊕ (Fin 0)) := Term.func c ![]
-
--- -- A term from a unary function (if you had any, e.g., successor)
--- -- def unary_func_term (f : Lang.Functions 1) (t : Term Lang (Empty ⊕ (Fin k))) : Term Lang (Empty ⊕ (Fin k)) := Term.func f ![t]
-
--- -- A term from a binary function (e.g., add, mul)
--- def binary_func_term {k : ℕ} (f : Lang.Functions 2) (t1 t2 : Term Lang (Empty ⊕ (Fin k))) : Term Lang (Empty ⊕ (Fin k)) := Term.func f ![t1, t2]
-
 -- A constant term. Now `k` is a free variable, so Lean can infer it.
 -- This term type is `Term Lang (α ⊕ (Fin k))`
 def const_term {α} {k : ℕ} (c : Lang.Functions 0) : Term Lang (α ⊕ (Fin k)) := Term.func c ![]
@@ -112,7 +107,7 @@ def binary_func_term {α} {k : ℕ} (f : Lang.Functions 2) (t1 t2 : Term Lang (�
 
 -- Atomic formulas
 def eq_form {k : ℕ} (t1 t2 : Term Lang (Empty ⊕ (Fin k))) : BoundedFormula Lang Empty k :=
-  BoundedFormula.rel relationEq ![t1, t2]
+  BoundedFormula.equal t1 t2
 
 def leq_form {k : ℕ} (t1 t2 : Term Lang (Empty ⊕ (Fin k))) : BoundedFormula Lang Empty k :=
   BoundedFormula.rel relationLeq ![t1, t2]
@@ -146,6 +141,14 @@ def open_s_2 : Sentence Lang :=
 def open_s_3 : Sentence Lang :=
   imp_form (leq_form (const_term funcZero) (const_term funcOne))
            (eq_form (const_term funcOne) (const_term funcZero))
+
+-- `x = 0` (deep embedding)
+def open_x_eq_zero : BoundedFormula Lang Empty 1 :=
+  eq_form (var_term (Fin.mk 0 Nat.zero_lt_one)) (const_term (k := 1) funcZero)
+
+-- `x ≤ 0` (deep embedding)
+def open_x_le_zero_form : BoundedFormula Lang Empty 1 :=
+  leq_form (var_term (Fin.mk 0 Nat.zero_lt_one)) (const_term (k := 1) funcZero)
 
 -- 2. Delta0 Sentences (only bounded quantifiers)
 
@@ -193,36 +196,47 @@ def pi1_s_3 : Sentence Lang :=
 
 -- --- Test Cases ---
 
-#eval isOpen open_s_1   -- Expected: true
-#eval isDelta0 open_s_1 -- Expected: true (open formulas are vacuously Delta0)
+theorem ex1 : isOpen open_s_1 := by {
+  unfold open_s_1 eq_form
+  apply FirstOrder.Language.BoundedFormula.IsQF.of_isAtomic
+  apply FirstOrder.Language.BoundedFormula.IsAtomic.equal
+}
 
-#eval isOpen open_s_2   -- Expected: true
-#eval isDelta0 open_s_2 -- Expected: true
+-- -- #eval isOpen open_s_1   -- Expected: true
+-- #eval isDelta0 open_s_1 -- Expected: true (open formulas are vacuously Delta0)
 
-#eval isOpen open_s_3   -- Expected: true
-#eval isDelta0 open_s_3 -- Expected: true
+-- #eval isOpen open_s_2   -- Expected: true
+-- #eval isDelta0 open_s_2 -- Expected: true
 
-#eval isOpen delta0_s_1   -- Expected: false
-#eval isDelta0 delta0_s_1 -- Expected: true
+-- #eval isOpen open_s_3   -- Expected: true
+-- #eval isDelta0 open_s_3 -- Expected: true
 
-#eval isOpen delta0_s_2   -- Expected: false
-#eval isDelta0 delta0_s_2 -- Expected: true
+-- #eval isOpen open_x_eq_zero
+-- #eval isDelta0 open_x_eq_zero
 
-#eval isOpen delta0_s_3   -- Expected: false
-#eval isDelta0 delta0_s_3 -- Expected: true
+-- #eval isOpen open_x_le_zero_form
+-- #eval isDelta0 open_x_le_zero_form
 
-#eval isOpen pi1_s_1    -- Expected: false
-#eval isDelta0 pi1_s_1    -- Expected: false (unbounded quantifier)
+-- #eval isOpen delta0_s_1   -- Expected: false
+-- #eval isDelta0 delta0_s_1 -- Expected: true
 
-#eval isOpen pi1_s_2    -- Expected: false
-#eval isDelta0 pi1_s_2    -- Expected: false (outer quantifier is unbounded)
+-- #eval isOpen delta0_s_2   -- Expected: false
+-- #eval isDelta0 delta0_s_2 -- Expected: true
 
-#eval isOpen pi1_s_3    -- Expected: false
-#eval isDelta0 pi1_s_3    -- Expected: false (outermost quantifier is unbounded)
+-- #eval isOpen delta0_s_3   -- Expected: false
+-- #eval isDelta0 delta0_s_3 -- Expected: true
+
+-- #eval isOpen pi1_s_1    -- Expected: false
+-- #eval isDelta0 pi1_s_1    -- Expected: false (unbounded quantifier)
+
+-- #eval isOpen pi1_s_2    -- Expected: false
+-- #eval isDelta0 pi1_s_2    -- Expected: false (outer quantifier is unbounded)
+
+-- #eval isOpen pi1_s_3    -- Expected: false
+-- #eval isDelta0 pi1_s_3    -- Expected: false (outermost quantifier is unbounded)
 
 
--- Section 3.1 Peano Arithmetic (Draft)
-
+-- Section 3.1 Peano Arithmetic (Draft, page 34 (45 of pdf))
 
 structure BASICModel where
   -- Sorts
@@ -233,8 +247,8 @@ structure BASICModel where
   one    : num
   add    : num → num → num
   mul    : num → num → num
-  le     : num → num → Prop
-  eqnum  : num → num → Prop := fun x y => x = y
+  leq    : num → num → Prop
+  -- eqnum  : num → num → Prop := fun x y => x = y
 
   -- B1. x + 1 ≠ 0
   B1 : ∀ (x : num), add x one ≠ zero
@@ -255,42 +269,128 @@ structure BASICModel where
   B6 : ∀ (x y : num), mul x (add y one) = add (mul x y) x
 
   -- B7. (x ≤ y ∧ y ≤ x) ⊃ x = y
-  B7 : ∀ (x y : num), le x y → le y x → x = y
+  B7 : ∀ (x y : num), leq x y → leq y x → x = y
 
   -- B8. x ≤ x + y
-  B8 : ∀ (x y : num), le x (add x y)
+  B8 : ∀ (x y : num), leq x (add x y)
 
   -- C. 0 + 1 = 1
   C : add zero one = one
 
-def lt (M : BASICModel) (x y : M.num) : Prop :=
-  M.le x y ∧ x ≠ y
+instance BASICModel_Structure (M : BASICModel) : Lang.Structure M.num :=
+{
+  -- Carrier := fun _ => M.num,
+  funMap := fun {arity} f =>
+    match arity, f with
+    | 0, Functions0.zero => fun _ => M.zero
+    | 0, Functions0.one => fun _ => M.one
+    | 2, Functions2.add => fun args => M.add (args 0) (args 1)
+    | 2, Functions2.mul => fun args => M.mul (args 0) (args 1)
+
+  RelMap := fun {arity} r =>
+    match arity, r with
+    -- | 2, Relations2.eqnum => fun args => M.eqnum (args 0) (args 1)
+    | 2, Relations2.leq => fun args => M.leq (args 0) (args 1)
+}
+
+def realize_at : forall {n}, (M : BASICModel) -> Lang.BoundedFormula Empty (n + 1) -> M.num -> Prop
+| 0, M, phi, term => @phi.Realize Lang M.num (BASICModel_Structure M) _ _ (Empty.elim) ![term]
+| _ + 1, M, phi, term => realize_at M phi.all term
 
 structure IOPENModel extends BASICModel where
-  -- the sole `num` argument of `φ` is the exposed free
-  -- variable for induction purposes!
-  OPEN (φ : num -> Prop) : Prop
+  open_induction {n} :
+    ∀ (phi_syntax : Lang.BoundedFormula Empty (n + 1)),
+    isOpen phi_syntax ->
+    -- phi(0)
+    realize_at toBASICModel phi_syntax zero ->
+    -- (@(phi_syntax.alls).Realize Lang toBASICModel.num (BASICModel_Structure toBASICModel) _ _ (Empty.elim) ![]) (zero)->
+    -- (∀ x : num, φ x → φ (add x one)) →
+    (forall x : num,
+      realize_at toBASICModel phi_syntax x ->
+      realize_at toBASICModel phi_syntax (add x one)
+    ) ->
+    -- ∀ x, φ x
+    (forall x : num, realize_at toBASICModel phi_syntax x)
+    -- @(phi_syntax.alls).Realize Lang toBASICModel.num (BASICModel_Structure toBASICModel) _ _ (Empty.elim) ![]
 
-  open_induction :
-    ∀ (φ : num → Prop),
-    OPEN φ →
-    φ zero →
-    (∀ x, φ x → φ (add x one)) →
-    ∀ x, φ x
+-- Example 3.8 (draft) The following formulas (and their universal closures) are theorems of IOPEN:
+-- O1. (x + y) + z = x + (y + z) (Associativity of +)
+-- proof: induction on z
+def add_assoc_form :=
+-- deBruijn indices
+  let x := var_term (2 : Fin 3)
+  let y := var_term (1 : Fin 3)
+  let z := var_term (0 : Fin 3)
+  let lhs := binary_func_term Functions2.add (binary_func_term Functions2.add x y) z
+  let rhs := binary_func_term Functions2.add x (binary_func_term Functions2.add y z)
+  eq_form lhs rhs
 
+def add_assoc_form_shallow (M : IOPENModel) := ∀ x y z, M.add (M.add x y) z = M.add x (M.add y z)
 
-axiom open_add_zero : IOPENModel.OPEN (λ x => add x zero = x)
-theorem add_x_zero_eq_x (M : IOPENModel) : ∀ x, M.add x M.zero = x :=
-  M.open_induction
-    (λ x => M.add x M.zero = x)
-    open_add_zero
-    (by
-      -- base case: add 0 0 = 0 by axiom B1
-      exact M.b1)
-    (by
-      -- inductive step: assume add x 0 = x ⇒ add (x+1) 0 = x + 1
-      intros x ih
-      -- use axiom B2: add (x+1) y = (add x y) + 1
-      have h := M.b2 x M.zero
-      rw [h, ih]
-      exact rfl)
+def add_assoc_form_deep (M : IOPENModel) := @BoundedFormula.Realize Lang M.num (BASICModel_Structure M.toBASICModel) _ _ (add_assoc_form.alls) (Empty.elim) ![]
+
+theorem iopen_add_assoc_iff (M : IOPENModel) : add_assoc_form_shallow M <-> add_assoc_form_deep M := by {
+  apply Iff.intro
+  · intro h
+    unfold add_assoc_form_deep
+    unfold add_assoc_form
+    simp [BoundedFormula.Realize, eq_form, binary_func_term, var_term]
+    repeat unfold BoundedFormula.alls
+    simp
+    unfold add_assoc_form_shallow at h
+    intros x y z
+    specialize h z y x
+    rw [<- Term.bdEqual]
+    simp
+    simp [FirstOrder.Language.Structure.funMap, Fin.snoc]
+    exact h
+  · intro h
+    unfold add_assoc_form_shallow
+    intros x y z
+    unfold add_assoc_form_deep at h
+    unfold add_assoc_form at h
+    simp [BoundedFormula.Realize, eq_form, binary_func_term, var_term] at h
+    repeat unfold BoundedFormula.alls at h
+    simp at h
+    specialize h z y x
+    rw [<- Term.bdEqual] at h
+    simp at h
+    simp [FirstOrder.Language.Structure.funMap, Fin.snoc] at h
+    exact h
+}
+
+theorem iopen_add_assoc (M : IOPENModel) : ∀ x y z, M.add (M.add x y) z = M.add x (M.add y z):= by {
+  rw [<- add_assoc_form_shallow]
+  rw [iopen_add_assoc_iff]
+  apply M.open_induction add_assoc_form
+  -- prove that add_assoc_form is OPEN
+  · unfold add_assoc_form
+    apply BoundedFormula.IsQF.of_isAtomic
+    apply BoundedFormula.IsAtomic.equal
+  -- prove phi(0)
+  · unfold add_assoc_form
+    simp [realize_at]
+    unfold eq_form
+    intros a b
+    simp [BoundedFormula.Realize, eq_form, binary_func_term, var_term]
+    simp [FirstOrder.Language.Structure.funMap, Fin.snoc]
+    -- use B3. x + 0 = x
+    rw [M.B3 (M.add b a)]
+    rw [M.B3 a]
+  -- prove that forall x, (phi(x) -> phi(x + 1))
+  · intros x ih
+    unfold add_assoc_form
+    simp [realize_at]
+    intros y z
+    simp [BoundedFormula.Realize, eq_form, binary_func_term, var_term]
+    simp [FirstOrder.Language.Structure.funMap, Fin.snoc]
+    -- use B4. x + (y + 1) = (x + y) + 1
+    repeat rw [M.B4]
+    -- try to use B2 in reverse: x + 1 = y + 1 <- x = y
+    have b2_rev : forall (x y : M.num), x = y -> M.add x M.one = M.add y M.one := by {
+      intros x y h
+      rw [h]
+    }
+    apply b2_rev
+    apply ih
+}
