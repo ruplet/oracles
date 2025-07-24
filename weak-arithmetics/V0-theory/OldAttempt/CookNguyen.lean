@@ -70,32 +70,3 @@ structure TwoSortedBASICModel extends BASICModel where
     length X = length Y →
     (∀ (i : num), le i (length X) → mem i X ↔ mem i Y) →
     X = Y
-
-def lt (M : TwoSortedBASICModel) (x y : M.num) : Prop :=
-  M.le x y ∧ x ≠ y
-
-theorem ex5_1a (M : TwoSortedBASICModel) :
-  forall x : M.num, ¬(lt M x M.zero) :=
-by
-  intro x h
-  unfold lt at h
-  let ⟨le_x_0, x_ne_0⟩ := h
-  -- But B9 says 0 ≤ x, so if x ≤ 0 and 0 ≤ x ⇒ x = 0 by B7
-  have le_0_x := M.B9 x
-  have eq := M.B7 x M.zero le_x_0 le_0_x
-  contradiction
-
-
-
-namespaceBASIC TwoSortedModel
-
-def isPalindrome (M : TwoSortedBASICModel) (X : M.str) : Prop :=
-  let l := M.length X
-  M.le l M.one ∨
-    ∀ (x y : M.num),
-      M.le x l →
-      M.le y l →
-      M.add (M.add x y) (M.add M.one M.one) = l →
-        (M.mem x X ↔ M.mem y X)
-
-end TwoSoBASICrtedModel

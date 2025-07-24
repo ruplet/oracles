@@ -1,3 +1,30 @@
+proposition 5.32 a string function is sigma0b-bit-definable iff it is in FAC0
+follows from def 5.32, corollary 5.17
+def 5.32:
+for Phi: set of formulas (e.g. sigma0b)
+string function F(x, Y) is Phi-bit-definable if is formula phi in Phi and number term t(x, Y) s.t.
+F(x, Y)(i) iff i < t(x, Y) and phi(i, x, Y)
+the RHS of this is a bit-defining axiom of F.
+
+corollary 5.17: string function is in FAC0 iff is p-bounded
+and its bit graph is represented by a sigma0b formula
+the same holds for a  number function, with graph replacing bit-graph
+proof: follows from sigma0b representation theorem 4.17
+
+theorem 4.17: relation R(x, X) is in AC0 iff it is represented by some Sigma0b formula phi(x,X)
+proof: like theorem 3.58
+
+there are functions whose graphs are in AC0 (representable by sigma0b formulas),
+but which do not belong to FAC0 (section: proof of witnessing theorem for v0)
+
+
+theorem 3.58.
+one side: compline LTH turing machines to formulas. we're not going to do that.
+second side: Delta0n subset LTH.
+bounded quantifiers correspond to exists, forall states in ATM.
+only interesting case is that `R(x, y, z) iff x*y=z` is in LTH.
+use corollary 3.60 which shows L subseteq LTH and that multiplication is in L.
+
 some intuitionistic logic in lean:
 https://github.com/DafinaTrufas/Intuitionistic-Logic-Lean
 

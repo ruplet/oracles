@@ -1,7 +1,7 @@
 import Mathlib.ModelTheory.Basic
-import Mathlib.ModelTheory.Syntax
+import V0Theory.TwoSortedModelTheory.Syntax
 import Mathlib.ModelTheory.Complexity
-import Mathlib.ModelTheory.Semantics
+import V0Theory.TwoSortedModelTheory.Semantics
 
 namespace L2
 
