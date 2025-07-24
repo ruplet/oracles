@@ -1,6 +1,6 @@
-import Mathlib.ModelTheory.Basic
+import V0Theory.TwoSortedModelTheory.Basic
 import V0Theory.TwoSortedModelTheory.Syntax
-import Mathlib.ModelTheory.Complexity
+import V0Theory.TwoSortedModelTheory.Complexity
 import V0Theory.TwoSortedModelTheory.Semantics
 
 namespace L2
@@ -84,8 +84,10 @@ def isDelta0 {a} [DecidableEq a] {n} : Lang.BoundedFormula a n -> Bool
 | .equal _ _=> false
 | .rel _ _ => true
 | .imp pre post => isDelta0 pre ∧ isDelta0 post
-| .all phi =>
+| .ex phi =>
   (is_x_le_t_imp_A phi) ∧ (isDelta0 phi) -- Recursively check inner formula
+| .all phi =>
+  (is_x_le_t_imp_A phi) ∧ (isDelta0 phi)
 
 -- def relationEq : Lang.Relations 2 := Relations2.eqnum
 def relationLeq : Lang.Relations 2 := Relations2.leq

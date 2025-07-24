@@ -2,7 +2,7 @@
 import Mathlib.Data.Set.Prod
 import Mathlib.Logic.Equiv.Fin.Basic
 import V0Theory.TwoSortedModelTheory.Basic
--- import Mathlib.ModelTheory.LanguageMap
+-- import V0Theory.TwoSortedModelTheory.LanguageMap
 import Mathlib.Algebra.Order.Group.Nat
 import Mathlib.Logic.Nonempty
 import Mathlib.Data.Multiset.Basic

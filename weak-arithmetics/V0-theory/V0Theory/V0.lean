@@ -1,7 +1,7 @@
-import Mathlib.ModelTheory.Basic
-import Mathlib.ModelTheory.Syntax
-import Mathlib.ModelTheory.Complexity
-import Mathlib.ModelTheory.Semantics
+import V0Theory.TwoSortedModelTheory.Basic
+import V0Theory.TwoSortedModelTheory.Syntax
+import V0Theory.TwoSortedModelTheory.Complexity
+import V0Theory.TwoSortedModelTheory.Semantics
 
 
 -- Here, we use the idea described in section 4.5 Single-sorted logic interpretation
