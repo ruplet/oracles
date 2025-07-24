@@ -124,10 +124,10 @@ def all_form {a} {k : ℕ} (f : BoundedFormula Lang a (k + 1)) : BoundedFormula 
 
 -- 1. Open Sentences (no quantifiers)
 
-def funcZero := Functions0.zero
-def funcOne := Functions0.one
-def funcAdd := Functions2.add
-def funcMul := Functions2.mul
+def funcZero : Lang.Functions 0 := Functions0.zero
+def funcOne : Lang.Functions 0 := Functions0.one
+def funcAdd : Lang.Functions 2 := Functions2.add
+def funcMul : Lang.Functions 2 := Functions2.mul
 
 -- 0 = 1 (false)
 def open_s_1 : Sentence Lang :=
@@ -277,6 +277,7 @@ structure BASICModel where
   -- C. 0 + 1 = 1
   C : add zero one = one
 
+
 instance BASICModel_Structure (M : BASICModel) : Lang.Structure M.num :=
 {
   -- Carrier := fun _ => M.num,
@@ -303,7 +304,6 @@ structure IOPENModel extends BASICModel where
     isOpen phi_syntax ->
     -- phi(0)
     realize_at toBASICModel phi_syntax zero ->
-    -- (@(phi_syntax.alls).Realize Lang toBASICModel.num (BASICModel_Structure toBASICModel) _ _ (Empty.elim) ![]) (zero)->
     -- (∀ x : num, φ x → φ (add x one)) →
     (forall x : num,
       realize_at toBASICModel phi_syntax x ->
@@ -311,7 +311,6 @@ structure IOPENModel extends BASICModel where
     ) ->
     -- ∀ x, φ x
     (forall x : num, realize_at toBASICModel phi_syntax x)
-    -- @(phi_syntax.alls).Realize Lang toBASICModel.num (BASICModel_Structure toBASICModel) _ _ (Empty.elim) ![]
 
 -- Example 3.8 (draft) The following formulas (and their universal closures) are theorems of IOPEN:
 -- O1. (x + y) + z = x + (y + z) (Associativity of +)
@@ -394,3 +393,89 @@ theorem iopen_add_assoc (M : IOPENModel) : ∀ x y z, M.add (M.add x y) z = M.ad
     apply b2_rev
     apply ih
 }
+
+structure IDelta0Model extends BASICModel where
+  delta0_induction {n} :
+    ∀ (phi_syntax : Lang.BoundedFormula Empty (n + 1)),
+    isDelta0 phi_syntax ->
+    -- phi(0)
+    realize_at toBASICModel phi_syntax zero ->
+    -- (∀ x : num, φ x → φ (add x one)) →
+    (forall x : num,
+      realize_at toBASICModel phi_syntax x ->
+      realize_at toBASICModel phi_syntax (add x one)
+    ) ->
+    -- ∀ x, φ x
+    (forall x : num, realize_at toBASICModel phi_syntax x)
+
+
+-- Example 3.9 The following formulas (and their universal closures) are theorems of IDelta0:
+-- D1. x neq 0 -> Exists y<=x . (x = y + 1) (Predecessor)
+-- proof: induction on x
+def pred_form :=
+  -- let x := var_term (1 : Fin 2)
+  -- let y := var_term (0 : Fin 2) -- y will actually be bound by a quatifier
+  let xneq0 := BoundedFormula.not $ BoundedFormula.equal (var_term (0 : Fin 2)) (const_term funcZero) -- here 'y' means actually our 'x'!!!! (deBruijn indices)
+  let rhs : Lang.BoundedFormula Empty 2 := BoundedFormula.ex
+    (max
+      (BoundedFormula.rel relationLeq ![var_term (0 : Fin 2), var_term (1 : Fin 2)])
+      (BoundedFormula.equal
+        (var_term (1 : Fin 2))
+        (Term.func funcAdd ![var_term (0 : Fin 2), const_term funcOne]))
+    )
+  imp_form xneq0 rhs
+
+def pred_form_shallow (M : IDelta0Model) := ∀ x, (x ≠ M.zero) -> ∃ y , (M.leq y x ∧ x = M.add x M.one)
+
+def pred_form_deep (M : IDelta0Model) := @BoundedFormula.Realize Lang M.num (BASICModel_Structure M.toBASICModel) _ _ (pred_form.alls) (Empty.elim) ![]
+
+theorem idelta0_pred_iff (M : IDelta0Model) : pred_form_shallow M <-> pred_form_deep M := by {
+  apply Iff.intro
+  · intro h
+    unfold pred_form_deep
+    unfold pred_form
+    simp [BoundedFormula.Realize, eq_form, binary_func_term, var_term]
+    repeat unfold BoundedFormula.alls
+    simp
+    unfold pred_form_shallow at h
+    intros x y z
+    specialize h y
+    rw [<- Term.bdEqual]
+    simp
+    simp [FirstOrder.Language.Structure.funMap, Fin.snoc]
+    sorry
+  · sorry
+}
+
+
+-- D2. Exists z . (x + z = y or y + z = x)
+-- proof: induction on x. Base case: B2, O2. Induction step: B3, B4, D1
+-- def symm_diff_form :=
+--   let
+-- def add_assoc_form :=
+-- -- deBruijn indices
+--   let x := var_term (2 : Fin 3)
+--   let y := var_term (1 : Fin 3)
+--   let z := var_term (0 : Fin 3)
+--   let lhs := binary_func_term Functions2.add (binary_func_term Functions2.add x y) z
+--   let rhs := binary_func_term Functions2.add x (binary_func_term Functions2.add y z)
+--   eq_form lhs rhs
+
+-- def add_assoc_form_shallow (M : IOPENModel) := ∀ x y z, M.add (M.add x y) z = M.add x (M.add y z)
+
+-- def add_assoc_form_deep (M : IOPENModel) := @BoundedFormula.Realize Lang M.num (BASICModel_Structure M.toBASICModel) _ _ (add_assoc_form.alls) (Empty.elim) ![]
+
+-- Exercise 3.10 Show that IDelta0 proves the division theorem:
+-- IDelta0 |- Forall x y (0 < x -> Exists q . Exists (r < x) . y = x * q + r)
+
+-- def division_form :=
+--   let x := var_term (2 : Fin 3)
+--   let y := var_term (1 : Fin 3)
+--   let z := var_term (0 : Fin 3)
+--   let lhs := binary_func_term Functions2.add (binary_func_term Functions2.add x y) z
+--   let rhs := binary_func_term Functions2.add x (binary_func_term Functions2.add y z)
+--   eq_form lhs rhs
+
+-- def add_assoc_form_shallow (M : IOPENModel) := ∀ x y z, M.add (M.add x y) z = M.add x (M.add y z)
+
+-- def add_assoc_form_deep (M : IOPENModel) := @BoundedFormula.Realize Lang M.num (BASICModel_Structure M.toBASICModel) _ _ (add_assoc_form.alls) (Empty.elim) ![]
