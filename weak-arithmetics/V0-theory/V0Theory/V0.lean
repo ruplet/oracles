@@ -2,6 +2,7 @@ import V0Theory.TwoSortedModelTheory.Basic
 import V0Theory.TwoSortedModelTheory.Syntax
 import V0Theory.TwoSortedModelTheory.Complexity
 import V0Theory.TwoSortedModelTheory.Semantics
+import Mathlib.Tactic.Linarith
 
 
 -- Here, we use the idea described in section 4.5 Single-sorted logic interpretation
@@ -25,7 +26,9 @@ inductive V0Func : Nat -> Type
 deriving DecidableEq
 
 inductive V0Rel : Nat -> Type
--- | eqnum, eqstr -- we will use built-in equality syntax from ModelTheory lib
+-- | eqsort, eqstr -- we will use built-in equality syntax from ModelTheory lib
+| isnum : V0Rel 1
+| isstr : V0Rel 1
 | leq : V0Rel 2
 | mem : V0Rel 2
 deriving DecidableEq
@@ -39,11 +42,11 @@ def Lang : FirstOrder.Language :=
 -- Most of the theories presented in this book, including those in (2), have the
 -- same “second-order” underlying language L2A, introduced by Zambella. The
 -- language L2 A is actually a language for the two-sorted first-order predicate cal-
--- culus, where one sort is for numbers in N and the second sort is for finite sets of
--- numbers. Here we regard an object of the second sort as a finite string over the
+-- culus, where one sort is for sortbers in N and the second sort is for finite sets of
+-- sortbers. Here we regard an object of the second sort as a finite string over the
 -- alphabet {0, 1} (the i-th bit in the string is 1 iff i is in the set). The strings are
 -- the objects of interest for the complexity classes, and serve as the main inputs
--- for the machines or circuits that determine the class. The numbers serve a use-
+-- for the machines or circuits that determine the class. The sortbers serve a use-
 -- ful purpose as indices for the strings when describing properties of the strings.
 -- When they are used as machine or circuit inputs, they are presented in unary
 -- notation.
@@ -58,22 +61,22 @@ namespace Language.zambella
 -- | .imp pre post => isOpen pre ∧ isOpen post
 -- | .all _ => false
 
-def isOpen {a} {n} [DecidableEq a] (formula : Lang.BoundedFormula a n) := FirstOrder.Language.BoundedFormula.IsQF formula
+@[simp] def isOpen {a} {n} [DecidableEq a] (formula : Lang.BoundedFormula a n) := FirstOrder.Language.BoundedFormula.IsQF formula
 
-def contains_var_zero {a} [DecidableEq a] {n} (t : Lang.Term (a ⊕ Fin n)) : Bool :=
+@[simp] def contains_var_zero {a} [DecidableEq a] {n} (t : Lang.Term (a ⊕ Fin n)) : Bool :=
   if h_eq : n = 0 then
     false
   else
     (Sum.inr $ @Fin.mk n 0 (Nat.pos_of_ne_zero h_eq)) ∈ t.varFinset
 
-def is_x_le_t_imp_A {a} [DecidableEq a] {n} (f : Lang.BoundedFormula a n) : Bool :=
+@[simp] def is_x_le_t_imp_A {a} [DecidableEq a] {n} (f : Lang.BoundedFormula a n) : Bool :=
   match f with
   | BoundedFormula.imp pre _ =>
     match pre with
     | @BoundedFormula.rel _ _ _ l R ts =>
       if h_eq_2 : l = 2 then
-        let relationLeq : Lang.Relations 2 := Relations2.leq
-        let R_as_rel2 : Relations2 := Eq.mp (congrArg Lang.Relations h_eq_2) R
+        let relationLeq : Lang.Relations 2 := V0Rel.leq
+        let R_as_rel2 : V0Rel 2 := Eq.mp (congrArg Lang.Relations h_eq_2) R
         let term_vec_type (k : ℕ) := Fin k → Term Lang (a ⊕ (Fin n))
         let ts_as_fin2 : term_vec_type 2 := Eq.mp (congrArg term_vec_type h_eq_2) ts
         if R_as_rel2 == relationLeq then
@@ -90,16 +93,11 @@ def is_x_le_t_imp_A {a} [DecidableEq a] {n} (f : Lang.BoundedFormula a n) : Bool
     | _ => false
   | _ => false
 
-def isDelta0 {a} [DecidableEq a] {n} : Lang.BoundedFormula a n -> Bool
-| .falsum => true
-| .equal _ _=> false
-| .rel _ _ => true
-| .imp pre post => isDelta0 pre ∧ isDelta0 post
-| .all phi =>
-  (is_x_le_t_imp_A phi) ∧ (isDelta0 phi) -- Recursively check inner formula
 
--- def relationEq : Lang.Relations 2 := Relations2.eqnum
-def relationLeq : Lang.Relations 2 := Relations2.leq
+-- def relationEq : Lang.Relations 2 := Relations2.eqsort
+@[simp] def relationLeq : Lang.Relations 2 := V0Rel.leq
+@[simp] def relationMem : Lang.Relations 2 := V0Rel.mem
+@[simp] def relationIsnum : Lang.Relations 1 := V0Rel.isnum
 
 -- --- Sentence Construction Helpers ---
 -- For sentences, α is Empty, and n is 0.
@@ -107,398 +105,369 @@ def relationLeq : Lang.Relations 2 := Relations2.leq
 -- A variable term (for current context `n`).
 -- For sentences, `n = 0`, so `Fin 0` is `Empty`.
 -- If we're inside `all {n} f`, then `f` has context `n+1`, so `Fin (n+1)`.
-def var_term {k : ℕ} (idx : Fin k) : Term Lang (Empty ⊕ (Fin k)) := Term.var (Sum.inr idx)
+@[simp] def var_term {k : ℕ} (idx : Fin k) : Term Lang (Empty ⊕ (Fin k)) := Term.var (Sum.inr idx)
 
 -- A constant term. Now `k` is a free variable, so Lean can infer it.
 -- This term type is `Term Lang (α ⊕ (Fin k))`
-def const_term {α} {k : ℕ} (c : Lang.Functions 0) : Term Lang (α ⊕ (Fin k)) := Term.func c ![]
+@[simp] def const_term {α} {k : ℕ} (c : Lang.Functions 0) : Term Lang (α ⊕ (Fin k)) := Term.func c ![]
 
 -- A term from a binary function (e.g., add, mul). `k` is also generic here.
-def binary_func_term {α} {k : ℕ} (f : Lang.Functions 2) (t1 t2 : Term Lang (α ⊕ (Fin k))) : Term Lang (α ⊕ (Fin k)) := Term.func f ![t1, t2]
+@[simp] def binary_func_term {α} {k : ℕ} (f : Lang.Functions 2) (t1 t2 : Term Lang (α ⊕ (Fin k))) : Term Lang (α ⊕ (Fin k)) := Term.func f ![t1, t2]
+
+@[simp] def not_form {a} {k : ℕ} (f : BoundedFormula Lang a k) : BoundedFormula Lang a k :=
+  BoundedFormula.not f
+
+@[simp] def isnum_form {k : ℕ} (t1 : Term Lang (Empty ⊕ (Fin k))) : BoundedFormula Lang Empty k :=
+  BoundedFormula.rel relationIsnum ![t1]
 
 -- Atomic formulas
-def eq_form {k : ℕ} (t1 t2 : Term Lang (Empty ⊕ (Fin k))) : BoundedFormula Lang Empty k :=
+@[simp] def eq_form {k : ℕ} (t1 t2 : Term Lang (Empty ⊕ (Fin k))) : BoundedFormula Lang Empty k :=
   BoundedFormula.equal t1 t2
 
-def leq_form {k : ℕ} (t1 t2 : Term Lang (Empty ⊕ (Fin k))) : BoundedFormula Lang Empty k :=
+@[simp] def leq_form {k : ℕ} (t1 t2 : Term Lang (Empty ⊕ (Fin k))) : BoundedFormula Lang Empty k :=
   BoundedFormula.rel relationLeq ![t1, t2]
 
-def falsum_form {a} {k : ℕ} : Lang.BoundedFormula a k := BoundedFormula.falsum
+@[simp] def mem_form {k : ℕ} (t1 t2 : Term Lang (Empty ⊕ (Fin k))) : BoundedFormula Lang Empty k :=
+  BoundedFormula.rel relationMem ![t1, t2]
 
-def imp_form {a} {k : ℕ} (f1 f2 : BoundedFormula Lang a k) : BoundedFormula Lang a k :=
+@[simp] def falsum_form {a} {k : ℕ} : Lang.BoundedFormula a k := BoundedFormula.falsum
+
+@[simp] def and_form {a} {k : ℕ} (f1 f2 : BoundedFormula Lang a k) : BoundedFormula Lang a k :=
+  max f1 f2
+
+@[simp] def imp_form {a} {k : ℕ} (f1 f2 : BoundedFormula Lang a k) : BoundedFormula Lang a k :=
   BoundedFormula.imp f1 f2
 
-def all_form {a} {k : ℕ} (f : BoundedFormula Lang a (k + 1)) : BoundedFormula Lang a k :=
+@[simp] def ex_form {a} {k : ℕ} (f : BoundedFormula Lang a (k + 1)) : BoundedFormula Lang a k :=
+  BoundedFormula.ex f
+
+@[simp] def all_form {a} {k : ℕ} (f : BoundedFormula Lang a (k + 1)) : BoundedFormula Lang a k :=
   BoundedFormula.all f
-
--- --- Example Sentences ---
-
--- 1. Open Sentences (no quantifiers)
-
-def funcZero : Lang.Functions 0 := Functions0.zero
-def funcOne : Lang.Functions 0 := Functions0.one
-def funcAdd : Lang.Functions 2 := Functions2.add
-def funcMul : Lang.Functions 2 := Functions2.mul
-
--- 0 = 1 (false)
-def open_s_1 : Sentence Lang :=
-  eq_form (const_term funcZero) (const_term funcOne)
-
--- 0 <= 0 (true)
-def open_s_2 : Sentence Lang :=
-  leq_form (const_term funcZero) (const_term funcZero)
-
--- (0 <= 1) -> (1 = 0)
-def open_s_3 : Sentence Lang :=
-  imp_form (leq_form (const_term funcZero) (const_term funcOne))
-           (eq_form (const_term funcOne) (const_term funcZero))
-
--- `x = 0` (deep embedding)
-def open_x_eq_zero : BoundedFormula Lang Empty 1 :=
-  eq_form (var_term (Fin.mk 0 Nat.zero_lt_one)) (const_term (k := 1) funcZero)
-
--- `x ≤ 0` (deep embedding)
-def open_x_le_zero_form : BoundedFormula Lang Empty 1 :=
-  leq_form (var_term (Fin.mk 0 Nat.zero_lt_one)) (const_term (k := 1) funcZero)
-
--- 2. Delta0 Sentences (only bounded quantifiers)
-
--- ∀x (x <= 1 -> x = 0)
--- Here, x corresponds to the de Bruijn index 0 in the inner formula.
--- '1' is the constant `funcOne`.
-def delta0_s_1 : Sentence Lang :=
-  all_form (imp_form (leq_form (var_term (0 : Fin 1)) (const_term funcOne))
-                     (eq_form (var_term (0 : Fin 1)) (const_term funcZero)))
-
--- ∀x (x <= 1 -> (x = 0 -> x <= 1))
-def delta0_s_2 : Sentence Lang :=
-  all_form (imp_form (leq_form (var_term (0 : Fin 1)) (const_term funcOne))
-                     (imp_form (eq_form (var_term (0 : Fin 1)) (const_term funcZero))
-                               (leq_form (var_term (0 : Fin 1)) (const_term funcOne))))
-
--- ∀x (x <= y -> x = 0) -- This is NOT a sentence because 'y' is a free variable (unless y is 0 here)
--- Let's make it a proper sentence: ∀x (x <= 1 + 1 -> x = 0)
--- The term `1 + 1` should not contain `x` (de Bruijn index 0).
-def term_one_plus_one : Term Lang (Empty ⊕ (Fin 1)) :=
-  binary_func_term funcAdd (const_term funcOne) (const_term funcOne)
-
-def delta0_s_3 : Sentence Lang :=
-  all_form (imp_form (leq_form (var_term (0 : Fin 1)) term_one_plus_one)
-                     (eq_form (var_term (0 : Fin 1)) (const_term funcZero)))
-
-
--- 3. Pi1 Sentences (block of universal quantifiers, inner formula is Delta0)
-
--- ∀x (x = x) -- This is Pi1 (vacuously Delta0 inside) and also not Delta0 (unbounded quantifier)
-def pi1_s_1 : Sentence Lang :=
-  all_form (eq_form (var_term (0 : Fin 1)) (var_term (0 : Fin 1)))
-
--- ∀x (∀y (x <= y -> x = x)) -- This is Pi1 (inner is Delta0, outer is unbounded)
--- The `(0 : Fin 1)` refers to `y`, `(1 : Fin 2)` refers to `x` in the `Fin 2` context
-def pi1_s_2 : Sentence Lang :=
-  all_form (all_form (imp_form (leq_form (var_term (1 : Fin 2)) (var_term (0 : Fin 2))) -- x <= y
-                                (eq_form (var_term (1 : Fin 2)) (var_term (1 : Fin 2))))) -- x = x
-
--- Let's make a Pi1 where the inner formula is a full Delta0 formula with its own bounded quantifier
--- ∀z (∀x (x <= 1 -> x = 0)) -- This is Pi1, the outermost `z` is unbounded
-def pi1_s_3 : Sentence Lang :=
-  all_form (all_form (imp_form (leq_form (var_term (0 : Fin 2)) (const_term funcOne))
-                                (eq_form (var_term (0 : Fin 2)) (const_term funcZero))))
-
--- --- Test Cases ---
-
-theorem ex1 : isOpen open_s_1 := by {
-  unfold open_s_1 eq_form
-  apply FirstOrder.Language.BoundedFormula.IsQF.of_isAtomic
-  apply FirstOrder.Language.BoundedFormula.IsAtomic.equal
-}
-
--- -- #eval isOpen open_s_1   -- Expected: true
--- #eval isDelta0 open_s_1 -- Expected: true (open formulas are vacuously Delta0)
-
--- #eval isOpen open_s_2   -- Expected: true
--- #eval isDelta0 open_s_2 -- Expected: true
-
--- #eval isOpen open_s_3   -- Expected: true
--- #eval isDelta0 open_s_3 -- Expected: true
-
--- #eval isOpen open_x_eq_zero
--- #eval isDelta0 open_x_eq_zero
-
--- #eval isOpen open_x_le_zero_form
--- #eval isDelta0 open_x_le_zero_form
-
--- #eval isOpen delta0_s_1   -- Expected: false
--- #eval isDelta0 delta0_s_1 -- Expected: true
-
--- #eval isOpen delta0_s_2   -- Expected: false
--- #eval isDelta0 delta0_s_2 -- Expected: true
-
--- #eval isOpen delta0_s_3   -- Expected: false
--- #eval isDelta0 delta0_s_3 -- Expected: true
-
--- #eval isOpen pi1_s_1    -- Expected: false
--- #eval isDelta0 pi1_s_1    -- Expected: false (unbounded quantifier)
-
--- #eval isOpen pi1_s_2    -- Expected: false
--- #eval isDelta0 pi1_s_2    -- Expected: false (outer quantifier is unbounded)
-
--- #eval isOpen pi1_s_3    -- Expected: false
--- #eval isDelta0 pi1_s_3    -- Expected: false (outermost quantifier is unbounded)
-
 
 -- Section 3.1 Peano Arithmetic (Draft, page 34 (45 of pdf))
 
-structure BASICModel where
-  -- Sorts
-  num    : Type          -- First sort: natural numbers
+structure TwoSortedBASICModel where
+  sort    : Type
 
-  -- Functions and predicates for num
-  zero   : num
-  one    : num
-  add    : num → num → num
-  mul    : num → num → num
-  leq    : num → num → Prop
-  -- eqnum  : num → num → Prop := fun x y => x = y
+  -- Functions and predicates for sort
+  zero   : sort
+  one    : sort
+  empty  : sort
+  add    : sort → sort → sort
+  mul    : sort → sort → sort
+  len    : sort -> sort
+  isnum  : sort -> Prop
+  isstr  : sort -> Prop
+  leq    : sort → sort → Prop
+  mem    : sort -> sort -> Prop
+  -- we want to be able to reason by contradiction
+  [leq_dec : DecidableRel leq]
+  [mem_dec : DecidableRel mem]
+
+  -- typing axioms; 4.5 Single-sorted logic interpretation (Draft p.83 / p.94 of pdf)
+  TypeDec   : ∀ x, isnum x ∨ isstr x
+  TypeZero  : isnum zero
+  TypeOne   : isnum one
+  TypeEmpty : isstr empty
+  TypeAdd   : forall x y, isnum x -> isnum y -> isnum (add x y)
+  TypeMul   : forall x y, isnum x -> isnum y -> isnum (mul x y)
+  TypeLen   : forall x, isstr x -> isnum (len x)
+  TypeLeq   : forall x y, leq x y -> (isnum x ∧ isnum y)
+  TypeMem   : forall x y, mem x y -> (isnum x ∧ isstr y)
+
+  -- axiom for empty string; 4.4.1 Two-Sorted Free Variable Normal Form
+  E : len empty = zero
 
   -- B1. x + 1 ≠ 0
-  B1 : ∀ (x : num), add x one ≠ zero
-
+  B1 : ∀ (x : sort), isnum x -> add x one ≠ zero
   -- B2. x + 1 = y + 1 ⊃ x = y
-  B2 : ∀ (x y : num), add x one = add y one → x = y
-
+  B2 : ∀ (x y : sort), isnum x -> isnum y -> add x one = add y one → x = y
   -- B3. x + 0 = x
-  B3 : ∀ (x : num), add x zero = x
-
+  B3 : ∀ (x : sort), isnum x -> add x zero = x
   -- B4. x + (y + 1) = (x + y) + 1
-  B4 : ∀ (x y : num), add x (add y one) = add (add x y) one
-
+  B4 : ∀ (x y : sort), isnum x -> isnum y -> add x (add y one) = add (add x y) one
   -- B5. x · 0 = 0
-  B5 : ∀ (x : num), mul x zero = zero
-
+  B5 : ∀ (x : sort), isnum x -> mul x zero = zero
   -- B6. x · (y + 1) = (x · y) + x
-  B6 : ∀ (x y : num), mul x (add y one) = add (mul x y) x
-
+  B6 : ∀ (x y : sort), isnum x -> isnum y -> mul x (add y one) = add (mul x y) x
   -- B7. (x ≤ y ∧ y ≤ x) ⊃ x = y
-  B7 : ∀ (x y : num), leq x y → leq y x → x = y
-
+  B7 : ∀ (x y : sort), isnum x -> isnum y -> leq x y → leq y x → x = y
   -- B8. x ≤ x + y
-  B8 : ∀ (x y : num), leq x (add x y)
+  B8 : ∀ (x y : sort), isnum x -> isnum y -> leq x (add x y)
+  B9 : ∀ (x : sort), isnum x -> leq zero x
+  B10 : forall x y : sort, isnum x -> isnum y -> leq x y ∨ leq y x
+  B11 : forall x y : sort, isnum x -> isnum y -> leq x y ↔ (leq x (add y one) ∧ x ≠ (add y one))
+  B12 : forall x : sort, isnum x -> x ≠ zero -> (∃ y : sort, (leq y x ∧ (add y one) = x))
+  L1 : forall X y : sort, isstr X -> isnum y -> mem y X -> (leq y (len X) ∧ y ≠ (len X))
+  L2 : forall X y : sort, isstr X -> isnum y -> (add y one) = len X -> mem y X
 
-  -- C. 0 + 1 = 1
-  C : add zero one = one
+  SE : forall X Y : sort,
+    isstr X ->
+    isstr Y ->
+    len X = len Y ->
+    (forall i : sort,
+      ((leq i (len X) ∧ i ≠ (len X)) ->
+        mem i X ↔ mem i Y
+      )
+    ) ->
+    X = Y
 
-
-instance BASICModel_Structure (M : BASICModel) : Lang.Structure M.num :=
+instance TwoSortedBASICModel_Structure (M : TwoSortedBASICModel) : Lang.Structure M.sort :=
 {
-  -- Carrier := fun _ => M.num,
+  -- Carrier := fun _ => M.sort,
   funMap := fun {arity} f =>
     match arity, f with
-    | 0, Functions0.zero => fun _ => M.zero
-    | 0, Functions0.one => fun _ => M.one
-    | 2, Functions2.add => fun args => M.add (args 0) (args 1)
-    | 2, Functions2.mul => fun args => M.mul (args 0) (args 1)
+    | 0, V0Func.zero => fun _ => M.zero
+    | 0, V0Func.one => fun _ => M.one
+    | 0, V0Func.empty => fun _ => M.empty
+    | 1, V0Func.len => fun args => M.len (args 0)
+    | 2, V0Func.add => fun args => M.add (args 0) (args 1)
+    | 2, V0Func.mul => fun args => M.mul (args 0) (args 1)
 
   RelMap := fun {arity} r =>
     match arity, r with
-    -- | 2, Relations2.eqnum => fun args => M.eqnum (args 0) (args 1)
-    | 2, Relations2.leq => fun args => M.leq (args 0) (args 1)
+    | 1, V0Rel.isnum => fun args => M.isnum (args 0)
+    | 1, V0Rel.isstr=> fun args => M.isnum (args 0)
+    | 2, V0Rel.leq => fun args => M.leq (args 0) (args 1)
+    | 2, V0Rel.mem => fun args => M.mem (args 0) (args 1)
 }
 
-def realize_at : forall {n}, (M : BASICModel) -> Lang.BoundedFormula Empty (n + 1) -> M.num -> Prop
-| 0, M, phi, term => @phi.Realize Lang M.num (BASICModel_Structure M) _ _ (Empty.elim) ![term]
+@[simp] def realize_at : forall {n}, (M : TwoSortedBASICModel) -> Lang.BoundedFormula Empty (n + 1) -> M.sort -> Prop
+| 0, M, phi, term => @phi.Realize Lang M.sort (TwoSortedBASICModel_Structure M) _ _ (Empty.elim) ![term]
 | _ + 1, M, phi, term => realize_at M phi.all term
 
-structure IOPENModel extends BASICModel where
-  open_induction {n} :
+
+-- TODO: DEBRUIJN: here I assumed 0 deBruijn index is the closest quantifier. but this does not seem to be right!
+-- for now, I changed 0 to n
+inductive IsSigma0B : {n : Nat} -> Lang.BoundedFormula Empty n -> Prop
+| of_isQF {phi} (h : BoundedFormula.IsQF phi) : IsSigma0B phi
+-- bounded number quantifiers are allowed
+| bdNumEx  {n} {phi : Lang.BoundedFormula Empty (n + 1)} (t : Lang.Term (Empty ⊕ Fin (n + 1))) (h : IsSigma0B phi):  IsSigma0B $ ex_form $ and_form (leq_form (var_term n) (t)) (phi)
+| bdNumAll {n} {phi : Lang.BoundedFormula Empty (n + 1)} (t : Lang.Term (Empty ⊕ Fin (n + 1))) (h : IsSigma0B phi) : IsSigma0B $ all_form $ imp_form (leq_form (var_term n) (t)) (phi)
+-- enable optional type implication
+| bdNumAll' {n} {phi : Lang.BoundedFormula Empty (n + 1)} (t : Lang.Term (Empty ⊕ Fin (n + 1))) (h : IsSigma0B phi) : IsSigma0B $ all_form $ imp_form (isnum_form (var_term n)) $ imp_form (leq_form (var_term n) (t)) (phi)
+
+
+-- inductive IsNotContainsNthQuantifiedVar {n} : (nth : Nat) -> Lang.BoundedFormula Empty n -> Prop
+-- | mk0 nth phi (_ : n = 0) : IsNotContainsNthQuantifiedVar nth phi
+-- | mk nth phi (h_eq : n ≠ 0) (_ : (Sum.inr $ @Fin.mk n nth (Nat.pos_of_ne_zero h_eq)) ∉ phi.varFinset): IsNotContainsNthQuantifiedVar nth phi
+
+-- def contains_var_zero {a} [DecidableEq a] {n} (t : Lang.Term (a ⊕ Fin n)) : Bool :=
+--   if h_eq : n = 0 then
+--     false
+--   else
+--     (Sum.inr $ @Fin.mk n 0 (Nat.pos_of_ne_zero h_eq)) ∈ t.varFinset
+
+def TwoSortedBASICModel.lt (M : TwoSortedBASICModel) (x y : M.sort) : Prop :=
+  M.leq x y ∧ x ≠ y
+
+-- p. 87 Draft (98 of pdf)
+structure V0Model extends TwoSortedBASICModel where
+  sigma0B_comp {n} :
     ∀ (phi_syntax : Lang.BoundedFormula Empty (n + 1)),
-    isOpen phi_syntax ->
-    -- phi(0)
-    realize_at toBASICModel phi_syntax zero ->
-    -- (∀ x : num, φ x → φ (add x one)) →
-    (forall x : num,
-      realize_at toBASICModel phi_syntax x ->
-      realize_at toBASICModel phi_syntax (add x one)
-    ) ->
-    -- ∀ x, φ x
-    (forall x : num, realize_at toBASICModel phi_syntax x)
-
--- Example 3.8 (draft) The following formulas (and their universal closures) are theorems of IOPEN:
--- O1. (x + y) + z = x + (y + z) (Associativity of +)
--- proof: induction on z
-def add_assoc_form :=
--- deBruijn indices
-  let x := var_term (2 : Fin 3)
-  let y := var_term (1 : Fin 3)
-  let z := var_term (0 : Fin 3)
-  let lhs := binary_func_term Functions2.add (binary_func_term Functions2.add x y) z
-  let rhs := binary_func_term Functions2.add x (binary_func_term Functions2.add y z)
-  eq_form lhs rhs
-
-def add_assoc_form_shallow (M : IOPENModel) := ∀ x y z, M.add (M.add x y) z = M.add x (M.add y z)
-
-def add_assoc_form_deep (M : IOPENModel) := @BoundedFormula.Realize Lang M.num (BASICModel_Structure M.toBASICModel) _ _ (add_assoc_form.alls) (Empty.elim) ![]
-
-theorem iopen_add_assoc_iff (M : IOPENModel) : add_assoc_form_shallow M <-> add_assoc_form_deep M := by {
-  apply Iff.intro
-  · intro h
-    unfold add_assoc_form_deep
-    unfold add_assoc_form
-    simp [BoundedFormula.Realize, eq_form, binary_func_term, var_term]
-    repeat unfold BoundedFormula.alls
-    simp
-    unfold add_assoc_form_shallow at h
-    intros x y z
-    specialize h z y x
-    rw [<- Term.bdEqual]
-    simp
-    simp [FirstOrder.Language.Structure.funMap, Fin.snoc]
-    exact h
-  · intro h
-    unfold add_assoc_form_shallow
-    intros x y z
-    unfold add_assoc_form_deep at h
-    unfold add_assoc_form at h
-    simp [BoundedFormula.Realize, eq_form, binary_func_term, var_term] at h
-    repeat unfold BoundedFormula.alls at h
-    simp at h
-    specialize h z y x
-    rw [<- Term.bdEqual] at h
-    simp at h
-    simp [FirstOrder.Language.Structure.funMap, Fin.snoc] at h
-    exact h
-}
-
-theorem iopen_add_assoc (M : IOPENModel) : ∀ x y z, M.add (M.add x y) z = M.add x (M.add y z):= by {
-  rw [<- add_assoc_form_shallow]
-  rw [iopen_add_assoc_iff]
-  apply M.open_induction add_assoc_form
-  -- prove that add_assoc_form is OPEN
-  · unfold add_assoc_form
-    apply BoundedFormula.IsQF.of_isAtomic
-    apply BoundedFormula.IsAtomic.equal
-  -- prove phi(0)
-  · unfold add_assoc_form
-    simp [realize_at]
-    unfold eq_form
-    intros a b
-    simp [BoundedFormula.Realize, eq_form, binary_func_term, var_term]
-    simp [FirstOrder.Language.Structure.funMap, Fin.snoc]
-    -- use B3. x + 0 = x
-    rw [M.B3 (M.add b a)]
-    rw [M.B3 a]
-  -- prove that forall x, (phi(x) -> phi(x + 1))
-  · intros x ih
-    unfold add_assoc_form
-    simp [realize_at]
-    intros y z
-    simp [BoundedFormula.Realize, eq_form, binary_func_term, var_term]
-    simp [FirstOrder.Language.Structure.funMap, Fin.snoc]
-    -- use B4. x + (y + 1) = (x + y) + 1
-    repeat rw [M.B4]
-    -- try to use B2 in reverse: x + 1 = y + 1 <- x = y
-    have b2_rev : forall (x y : M.num), x = y -> M.add x M.one = M.add y M.one := by {
-      intros x y h
-      rw [h]
-    }
-    apply b2_rev
-    apply ih
-}
-
-structure IDelta0Model extends BASICModel where
-  delta0_induction {n} :
-    ∀ (phi_syntax : Lang.BoundedFormula Empty (n + 1)),
-    isDelta0 phi_syntax ->
-    -- phi(0)
-    realize_at toBASICModel phi_syntax zero ->
-    -- (∀ x : num, φ x → φ (add x one)) →
-    (forall x : num,
-      realize_at toBASICModel phi_syntax x ->
-      realize_at toBASICModel phi_syntax (add x one)
-    ) ->
-    -- ∀ x, φ x
-    (forall x : num, realize_at toBASICModel phi_syntax x)
-
-
--- Example 3.9 The following formulas (and their universal closures) are theorems of IDelta0:
--- D1. x neq 0 -> Exists y<=x . (x = y + 1) (Predecessor)
--- proof: induction on x
-def pred_form :=
-  -- let x := var_term (1 : Fin 2)
-  -- let y := var_term (0 : Fin 2) -- y will actually be bound by a quatifier
-  let xneq0 := BoundedFormula.not $ BoundedFormula.equal (var_term (0 : Fin 2)) (const_term funcZero) -- here 'y' means actually our 'x'!!!! (deBruijn indices)
-  let rhs : Lang.BoundedFormula Empty 2 := BoundedFormula.ex
-    (max
-      (BoundedFormula.rel relationLeq ![var_term (0 : Fin 2), var_term (1 : Fin 2)])
-      (BoundedFormula.equal
-        (var_term (1 : Fin 2))
-        (Term.func funcAdd ![var_term (0 : Fin 2), const_term funcOne]))
+    IsSigma0B phi_syntax ->
+    -- X must not occur free in phi(z); 1 is deBruijn index for second-shallowest quantifier
+    -- no_free 1 phi_syntax ->
+    -- ∀ y ∃ X <= y ∀ z < y, (z ∈ X ↔ φ(z))
+    forall n_free_vars : Fin (n - 2) -> sort,
+    (
+    forall y : sort,
+      isnum y ->
+      (∃ X : sort, isstr X ∧ leq (len X) y ∧
+        (∀ z : sort,
+          isnum z ->
+          ((leq z y ∧ z ≠ y) ->
+            (
+              mem z X ↔
+              @phi_syntax.Realize
+                Lang
+                sort
+                (TwoSortedBASICModel_Structure toTwoSortedBASICModel)
+                _ _ (Empty.elim)
+                (fun (idx : Fin (n + 1)) =>
+                  let free_vars := List.ofFn n_free_vars ++ [z, X, y]
+                  -- let free_vars := [z, X, y] ++ List.ofFn n_free_vars
+                  have h2 : (n + 1) <= free_vars.length := by
+                    unfold free_vars
+                    simp
+                    match n with
+                    | 0 => simp
+                    | 1 => simp
+                    | k + 2 => simp
+                  have idx_cast : Fin free_vars.length := Fin.castLE h2 idx
+                  List.get free_vars idx_cast
+                )
+          )
+        )
+      )
     )
-  imp_form xneq0 rhs
+    )
 
-def pred_form_shallow (M : IDelta0Model) := ∀ x, (x ≠ M.zero) -> ∃ y , (M.leq y x ∧ x = M.add x M.one)
+instance V0Model_Structure (M : V0Model) : Lang.Structure M.sort :=
+{
+  funMap := fun {arity} f =>
+    match arity, f with
+    | 0, V0Func.zero => fun _ => M.zero
+    | 0, V0Func.one => fun _ => M.one
+    | 0, V0Func.empty => fun _ => M.empty
+    | 1, V0Func.len => fun args => M.len (args 0)
+    | 2, V0Func.add => fun args => M.add (args 0) (args 1)
+    | 2, V0Func.mul => fun args => M.mul (args 0) (args 1)
 
-def pred_form_deep (M : IDelta0Model) := @BoundedFormula.Realize Lang M.num (BASICModel_Structure M.toBASICModel) _ _ (pred_form.alls) (Empty.elim) ![]
-
-theorem idelta0_pred_iff (M : IDelta0Model) : pred_form_shallow M <-> pred_form_deep M := by {
-  apply Iff.intro
-  · intro h
-    unfold pred_form_deep
-    unfold pred_form
-    simp [BoundedFormula.Realize, eq_form, binary_func_term, var_term]
-    repeat unfold BoundedFormula.alls
-    simp
-    unfold pred_form_shallow at h
-    intros x y z
-    specialize h y
-    rw [<- Term.bdEqual]
-    simp
-    simp [FirstOrder.Language.Structure.funMap, Fin.snoc]
-    exact h
-  · intro h
-    unfold pred_form_shallow
-    intros x y z
-    unfold pred_form_deep at h
-    unfold pred_form at h
-    simp [BoundedFormula.Realize, eq_form, binary_func_term, var_term] at h
-    repeat unfold BoundedFormula.alls at h
-    simp at h
-    specialize h z y x
-    rw [<- Term.bdEqual] at h
-    simp at h
-    simp [FirstOrder.Language.Structure.funMap, Fin.snoc] at h
-    exact h
+  RelMap := fun {arity} r =>
+    match arity, r with
+    | 1, V0Rel.isnum => fun args => M.isnum (args 0)
+    | 1, V0Rel.isstr => fun args => M.isstr (args 0)
+    | 2, V0Rel.leq => fun args => M.leq (args 0) (args 1)
+    | 2, V0Rel.mem => fun args => M.mem (args 0) (args 1)
 }
 
+-- Lemma 5.6 (p. 87 Draft / 98 of pdf); V^0 ⊢ X-MIN
 
--- D2. Exists z . (x + z = y or y + z = x)
--- proof: induction on x. Base case: B2, O2. Induction step: B3, B4, D1
--- def symm_diff_form :=
---   let
--- def add_assoc_form :=
--- -- deBruijn indices
---   let x := var_term (2 : Fin 3)
---   let y := var_term (1 : Fin 3)
---   let z := var_term (0 : Fin 3)
---   let lhs := binary_func_term Functions2.add (binary_func_term Functions2.add x y) z
---   let rhs := binary_func_term Functions2.add x (binary_func_term Functions2.add y z)
---   eq_form lhs rhs
 
--- def add_assoc_form_shallow (M : IOPENModel) := ∀ x y z, M.add (M.add x y) z = M.add x (M.add y z)
 
--- def add_assoc_form_deep (M : IOPENModel) := @BoundedFormula.Realize Lang M.num (BASICModel_Structure M.toBASICModel) _ _ (add_assoc_form.alls) (Empty.elim) ![]
+-- phi(z) := forall y' <= z, ¬X(y')
+-- the final comprehension axiom acquired will go:
+-- forall y, exists Y <= y, forall z < |X|, mem z Y ↔ (forall y' <= z, ¬X(y'))
+-- beware of the name collision
+-- (y comes from universalization of comp axiom, y' used only inside phi)
+def v0_xmin_comp1_form :=
+  -- now we're inside of the 'phi' above
+  let y' := var_term (4 : Fin 5)
+  let z := var_term (3 : Fin 5)
+  let X := var_term (0 : Fin 5)
+  all_form $ imp_form (isnum_form y') $ imp_form (leq_form y' z) (not_form $ mem_form y' X)
 
--- Exercise 3.10 Show that IDelta0 proves the division theorem:
--- IDelta0 |- Forall x y (0 < x -> Exists q . Exists (r < x) . y = x * q + r)
+def v0_xmin_comp1_form_shallow (M : V0Model) :=
+  ∀ X, M.isstr X -> (
+    ∀y,
+      ∃ Y,
+        (M.leq (M.len Y) y) ∧
+        (∀ z,
+          M.isnum z ->
+          (M.lt z (M.len Y)) ->
+          (∀ y', (M.leq y' z) -> ¬M.mem y' X
+          )
+        )
+  )
 
--- def division_form :=
---   let x := var_term (2 : Fin 3)
---   let y := var_term (1 : Fin 3)
---   let z := var_term (0 : Fin 3)
---   let lhs := binary_func_term Functions2.add (binary_func_term Functions2.add x y) z
---   let rhs := binary_func_term Functions2.add x (binary_func_term Functions2.add y z)
---   eq_form lhs rhs
+def v0_xmin_form_shallow (M : V0Model) : Prop :=
+  forall X,
+    M.isstr X ->
+    M.lt M.zero (M.len X) ->
+    exists x,
+      (
+        M.lt x (M.len X) ∧
+        M.mem x X ∧
+        (forall y, M.isnum y -> M.lt y x -> ¬ M.mem y X)
+      )
 
--- def add_assoc_form_shallow (M : IOPENModel) := ∀ x y z, M.add (M.add x y) z = M.add x (M.add y z)
+theorem v0_xmin (M : V0Model) : v0_xmin_form_shallow M := by
+  -- by Sigma0B-COMP, there is a set Y such that |Y| <= |X| and for all z < |X|,
+  -- Y(z) <-> $ Forall y, y <= z -> not X(y)
+  have h_comp := M.sigma0B_comp v0_xmin_comp1_form
+  have h_comp' := h_comp (by
+    unfold v0_xmin_comp1_form
+    apply IsSigma0B.bdNumAll'
+    apply IsSigma0B.of_isQF
+    apply BoundedFormula.IsQF.imp
+    apply BoundedFormula.IsQF.of_isAtomic
+    apply BoundedFormula.IsAtomic.rel
+    apply BoundedFormula.IsQF.falsum
+  )
+  clear h_comp
+  intro X h_X_type h_X_len_pos
+  have h_comp'' := h_comp' ![X] (M.len X)
+  clear h_comp'
+  have h_comp3 := h_comp'' (by
+    apply M.TypeLen
+    exact h_X_type
+  )
+  clear h_comp''
+  -- now, the Y we obtain is exactly the Y from the proof!
+  obtain ⟨Y, h_Y_type, h_Y_len, h_Y_content⟩ := h_comp3
+  unfold v0_xmin_comp1_form at h_Y_content
+  simp at h_Y_content
+  simp [BoundedFormula.Realize] at h_Y_content
+  simp [FirstOrder.Language.Structure.RelMap] at h_Y_content
+  simp [Fin.snoc] at h_Y_content
+  norm_num at h_Y_content
+  -- simplify dite (4 : Fin 5) < (4 : Nat)
+  simp (config := { decide := true }) at h_Y_content
+  -- try simplify [X, z, Y, M.len X][↑3] = M.len X ?
+  -- cannot simplify yet, as 'z' is bound by a quantifier!
+  -- have c : forall z, [X, z, Y, M.len X][↑3] = M.len X := by
+  --   simp
+  -- rw [c] at h_Y_content
 
--- def add_assoc_form_deep (M : IOPENModel) := @BoundedFormula.Realize Lang M.num (BASICModel_Structure M.toBASICModel) _ _ (add_assoc_form.alls) (Empty.elim) ![]
+  -- [...] Thus the set Y consists of the numbers smaller than every element in X.
+  -- Assuming 0 < |X| [h_X_len_pos], we will show that |Y| is the least member of X.
+  -- Intuitively, this is because |Y| is the least number that is larger than
+  -- any member of Y. Formally, we need to show:
+  -- (i) X(|Y|)
+  -- (ii) ∀ y < |Y|, ¬X(y)
+  -- Details are as follows.
+  have h_i_ii : M.mem (M.len Y) X ∧ (∀ t, M.isnum t -> M.lt t (M.len Y) -> ¬ M.mem t X) := by
+  -- First, suppose that Y is empty.
+    if h_Y_empty : Y = M.empty then {
+      refine ⟨?_, ?_⟩
+      rw [h_Y_empty]
+      rw [M.E]
+      by_contra h_zero_not_mem_X
+      -- prove (i) X(|Y|)
+      · -- from definition of Y, having the assumption (contradictory) that
+        -- zero is not in X, try to obtain element of Y. since Y empty, contr.
+        specialize h_Y_content M.zero M.TypeZero ?_ ?_
+        -- prove 0 <= |X|
+        · unfold TwoSortedBASICModel.lt at h_X_len_pos
+          obtain ⟨h_X_len_leq_zero, _ ⟩ := h_X_len_pos
+          apply (h_X_len_leq_zero)
+        -- prove 0 ≠ |X|
+        · unfold TwoSortedBASICModel.lt at h_X_len_pos
+          obtain ⟨_, h_X_len_neq_zero⟩ := h_X_len_pos
+          apply (h_X_len_neq_zero)
+        -- now in h_Y_content we should have something of the form:
+        -- forall a, isnum a -> leq a 0 -> ¬ mem a X
+        have Yc' := (Iff.mpr h_Y_content)
+        have h_zero_not_mem_Y : ¬ M.mem M.zero Y := by
+          intro h_zero_mem_Y
+          have ⟨_, h_zero_neq_len_Y⟩ := M.L1 Y M.zero h_Y_type M.TypeZero h_zero_mem_Y
+          apply h_zero_neq_len_Y
+          rw [h_Y_empty]
+          rw [M.E]
+        apply h_zero_not_mem_Y
+        apply Yc'
+        intro a h_a_type h_a_leq_zero h_a_mem_X
+        apply h_zero_not_mem_X
+        -- now, just prove that a = 0
+        have h_a_eq_zero : a = M.zero := by
+          apply M.B7 a M.zero h_a_type M.TypeZero
+          · -- something's wrong witih simplifying the [] in h_a_leq_zero
+            sorry
+          · apply M.B9 a h_a_type
+        rw [h_a_eq_zero] at h_a_mem_X
+        exact h_a_mem_X
+      -- prove (ii) ∀ y < |Y|, ¬X(y)
+      · intro t h_t_type h_t_lt_len_Y h_t_mem_X
+        rw [h_Y_empty] at h_t_lt_len_Y
+        rw [M.E] at h_t_lt_len_Y
+        obtain ⟨h_t_leq_zero, h_t_neq_zero⟩ := h_t_lt_len_Y
+        apply h_t_neq_zero
+        apply M.B7 t M.zero h_t_type M.TypeZero
+        apply h_t_leq_zero
+        apply M.B9 t h_t_type
+    } else {
+      -- Now suppose that Y is not empty, i.e. Y(y) holds for some y.
+      -- ...
+      sorry
+    }
+
+  -- now, finish the proof!
+  have ⟨h_len_Y_mem_X, h_len_Y_is_min⟩ := h_i_ii
+  clear h_i_ii
+
+  exists (M.len Y)
+  refine ⟨?_, ?_, ?_⟩
+  · apply M.L1 X (M.len Y) h_X_type (M.TypeLen Y h_Y_type) h_len_Y_mem_X
+  · apply h_len_Y_mem_X
+  · apply h_len_Y_is_min

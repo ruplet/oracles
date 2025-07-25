@@ -360,7 +360,7 @@ theorem iopen_add_assoc_iff (M : IOPENModel) : add_assoc_form_shallow M <-> add_
     exact h
 }
 
-theorem iopen_add_assoc (M : IOPENModel) : ∀ x y z, M.add (M.add x y) z = M.add x (M.add y z):= by {
+theorem iopen_add_assoc (M : IOPENModel) : ∀ x y z, M.add (M.add x y) z = M.add x (M.add y z) := by {
   rw [<- add_assoc_form_shallow]
   rw [iopen_add_assoc_iff]
   apply M.open_induction add_assoc_form
