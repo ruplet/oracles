@@ -1,3 +1,8 @@
+All of my work on the formaliation of bounded arithmetic has been moved to
+https://github.com/ruplet/formalization-of-bounded-arithmetic
+
+
+
 proposition 5.32 a string function is sigma0b-bit-definable iff it is in FAC0
 follows from def 5.32, corollary 5.17
 def 5.32:
