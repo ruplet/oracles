@@ -8,24 +8,22 @@ Rather than analyzing *how* a problem is computed, descriptive complexity focuse
 
 For finite, *ordered* structures (structures equipped with a total order) with a successor relation and basic arithmetic predicates, the following landmark characterizations hold:
 
-- **AC⁰**: First-order logic (FO) captures the class of problems solvable by constant-depth, polynomial-size Boolean circuits with unbounded fan-in.  (Theorem 2.1. [BIS90, Imm99] A relation  is in  AC0 iff it is representable by an FO-sentence; https://eccc.weizmann.ac.il/resources/pdf/morioka.pdf)
+- **$\text{AC}^0$**: First-order logic (FO) captures the class of problems solvable by constant-depth, polynomial-size Boolean circuits with unbounded fan-in.  (Theorem 2.1. [BIS90, Imm99] A relation  is in  AC0 iff it is representable by an FO-sentence; https://eccc.weizmann.ac.il/resources/pdf/morioka.pdf)
 - **L**: FO extended with deterministic transitive closure operator captures deterministic logarithmic space.  
 - **NL**: FO with general transitive closure captures nondeterministic logarithmic space.  
 - **P**: FO extended with a *least fixed-point* operator (FO[LFP]) captures deterministic polynomial time.  
-- **NP**: Existential second-order logic (∃SO) captures nondeterministic polynomial time.  
-- **co-NP**: Universal second-order logic (∀SO) captures co-NP.  
+- **NP**: Existential second-order logic ($\exists \text{SO}$) captures nondeterministic polynomial time.  
+- **co-NP**: Universal second-order logic ($\forall \text{SO}$) captures co-NP.  
 - **PH**: Full second-order logic corresponds to the polynomial-time hierarchy.  
 - **PSPACE**: Second-order logic with transitive closure captures polynomial space.  
 - **EXPTIME**: Second-order logic with least fixed points characterizes exponential time.  
 - **ELEMENTARY**: Higher-order logic corresponds to the class of elementary functions.
 
-In the case of *sub-polynomial* time, first-order logic over various signatures continues to play a central role. For instance, FO with basic arithmetic predicates corresponds to AC⁰, and FO with just the order predicate characterizes the class of *star-free languages*.
-
 ### Descriptive Complexity and PTIME
 
-Among the most influential results is the **Immerman–Vardi theorem**, which states that *first-order logic with a least fixed-point operator* captures **PTIME**—but **only over ordered structures**. In FO[LFP], the least fixed-point operator enables recursion, allowing many iterative computations to be expressed logically.
+Among the most influential results is the **Immerman–Vardi theorem**, which states that *first-order logic with a least fixed-point operator* captures **PTIME**—but **only over ordered structures**. The least fixed-point operator allows for recursion and thus enables expressing many iterative computations in logic.
 
-This theorem reveals a deep link between recursion in logic and computation time, and it provides a powerful method for proving that certain problems lie in PTIME: if a problem can be defined in FO[LFP] over ordered structures, then it is solvable in deterministic polynomial time.
+This theorem highlights a deep connection between recursion in logic and computational complexity. It also provides a powerful method for proving PTIME membership: if a problem can be defined in FO[LFP] over ordered structures, then it is solvable in deterministic polynomial time.
 
 This connection is not merely theoretical. In practice, computers operate on memory that is linearly ordered (via memory addresses), meaning that the assumption of ordered structures is both natural and realistic. However, this assumption is *crucial*: without an explicit ordering, FO[LFP] does **not** capture PTIME. The existence of a logic that characterizes PTIME on *unordered* structures remains a major open problem in computer science as of 2025.
 
@@ -45,13 +43,6 @@ Source: https://www.cl.cam.ac.uk/~ad260/talks/wollic-tutorial.pdf (Descriptive c
 Fixed point is not necessary to capture PTIME on ordered structures: (Grädel's theorem) On the class of finite structures with a successor relation, the collection of polynomial-time decidable properties coincides with those expressible in the Horn-fragment of existential second-order logic
 (https://www.sciencedirect.com/science/article/pii/030439759290149A)
 
-These results show both the power and the limitations of descriptive approaches: while logic can cleanly characterize many complexity classes, subtle structural properties of the input domain (like order or treewidth) often determine what can or cannot be captured.
+### Descriptive Complexity and Type Systems
 
-### Why Use Descriptive Complexity?
-
-Descriptive complexity offers several advantages:
-- **Machine-independence**: It avoids tying complexity classes to specific computational models.
-- **Expressiveness**: It provides a natural way to prove upper bounds on complexity—e.g., showing that a relation is in AC⁰ by expressing it in FO.
-- **Bridging logic and computation**: It creates a foundation for reasoning about complexity directly within logic, which is especially useful in formal verification, database theory, and logic programming.
-
-In this thesis, descriptive complexity serves as one of the key starting points for exploring how the expressiveness of specifications relates to the complexity of the resulting programs. While descriptive complexity traditionally deals with decision problems, the idea of aligning logical expressiveness with complexity classes also motivates the search for *type systems* that could enforce similar guarantees for *functional programs*—an exploration taken up in Part I.
+At present, the connection between descriptive complexity and type systems—particularly those based on the lambda calculus—is far from well understood. In the following section, we examine the expressiveness of the lambda calculus under various type systems. As of 2025, these two areas remain largely disconnected, and no clear bridge between them has yet emerged. As a result, neither descriptive complexity nor typed lambda calculi currently offer a direct, off-the-shelf solution to the central problem addressed in this thesis.
