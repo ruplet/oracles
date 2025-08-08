@@ -1,10 +1,10 @@
-## Descriptive Complexity: An Overview
+# Descriptive Complexity: An Overview
 
 Descriptive complexity theory seeks to characterize computational complexity classes not by machine models like Turing machines or RAMs, but by the logical resources needed to describe problems. The central idea is that the complexity of a decision problem corresponds to the expressive power of the logic required to define it over finite structures.
 
 Rather than analyzing *how* a problem is computed, descriptive complexity focuses on *what* can be described using a given logical formalism. This perspective has led to elegant characterizations of many classical complexity classes in terms of logical languages.
 
-### Classical Results
+## Classical Results
 
 For finite, *ordered* structures (structures equipped with a total order) with a successor relation and basic arithmetic predicates, the following landmark characterizations hold:
 
@@ -19,7 +19,7 @@ For finite, *ordered* structures (structures equipped with a total order) with a
 - **EXPTIME**: Second-order logic with least fixed points characterizes exponential time.  
 - **ELEMENTARY**: Higher-order logic corresponds to the class of elementary functions.
 
-### Descriptive Complexity and PTIME
+## Descriptive Complexity and PTIME
 
 Among the most influential results is the **Immerman–Vardi theorem**, which states that *first-order logic with a least fixed-point operator* captures **PTIME**—but **only over ordered structures**. The least fixed-point operator allows for recursion and thus enables expressing many iterative computations in logic.
 
@@ -43,6 +43,6 @@ Source: https://www.cl.cam.ac.uk/~ad260/talks/wollic-tutorial.pdf (Descriptive c
 Fixed point is not necessary to capture PTIME on ordered structures: (Grädel's theorem) On the class of finite structures with a successor relation, the collection of polynomial-time decidable properties coincides with those expressible in the Horn-fragment of existential second-order logic
 (https://www.sciencedirect.com/science/article/pii/030439759290149A)
 
-### Descriptive Complexity and Type Systems
+## Descriptive Complexity and Type Systems
 
-At present, the connection between descriptive complexity and type systems—particularly those based on the lambda calculus—is far from well understood. In the following section, we examine the expressiveness of the lambda calculus under various type systems. As of 2025, these two areas remain largely disconnected, and no clear bridge between them has yet emerged. As a result, neither descriptive complexity nor typed lambda calculi currently offer a direct, off-the-shelf solution to the central problem addressed in this thesis.
+After investigating systems within descriptive complexity, we explored whether their logical frameworks could be combined with type-theoretic approaches to design programming languages that capture complexity classes. While this attempt to bridge descriptive complexity and type systems was conceptually motivated, the two fields remain quite far apart in practice, and we were not successful in fully integrating them. Nonetheless, this line of inquiry led us to a broader investigation of type systems that enforce resource bounds—particularly those inspired by linear logic and implicit computational complexity. The results of this exploration are presented in the next chapter.

@@ -1,4 +1,4 @@
-## Introduction
+# Introduction
 This thesis investigates approaches to designing programming languages whose expressiveness is precisely aligned with a target computational complexity class. In such languages, every program would, by construction, operate within the given class, and conversely, any function or problem in that class would be expressible and implementable in the language.
 
 The work is organized into three main parts.
