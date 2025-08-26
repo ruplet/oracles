@@ -1,0 +1,9 @@
+A foundational delineation of computational feasibility
+@[151625]
+search by: Proceedings Sixth Annual IEEE Symposium on LOGIC IN COMPUTER SCIENCE 1991
+https://annas-archive.org/md5/451cacae7e86ca684a4e20ec17ab5ec3
+leivant-1991-a-foundational-delineation-of-computational-feasibility.pdf
+
+@[4568079]
+https://deepblue.lib.umich.edu/bitstream/handle/2027.42/5236/bac3721.0001.001.pdf?sequence=5&isAllowed=y
+gurevich-algebras-of-feasible-functions.pdf

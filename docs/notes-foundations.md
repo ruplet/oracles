@@ -1,3 +1,14 @@
+While thinking about computational complexity, we need to ask ourselves the question: "what is our computational model?". While we are used to thinking about the computational complexity of algorithms executing on a Turing machine, the notions of complexity for lambda calculus are less standard and less commonly agreed on (beta-reduction is not everything, as the existence of lamping's algorithm show). Instead of thinking of an algorithm as a sequence of transitions of a Turing machine,
+we can think about a sequence of union and intersection operations on sets, about sequence of operations in any other algebra or a deductive system. Here we explore what is the current state of knowledge when it comes to "which computational model is the most natural to study computational complexity?" - because maybe it happens that, similarly like RAM model is more appropritae than Turing machines, some other model is even more appropriate? We explore the notion of algorithm, hypothethical hypercomputation and of different foundations as mathematics as candidates for the computational model we'll target.
+
+We revisit what is the best programming paradigm to
+study complexity. turing machines are not useful anymore, we rather use ram model!
+what should we really do the proofs in? we examine foundations of mathematics.
+we propose that physics and philosophy should constitute the foundations, and
+we should have a framework to easily switch between these. define hypercomputation,
+halt oracles.
+
+
 - Computing aspects of set theory, Erwin Engeler ETH Zurich
 > https://people.math.ethz.ch/~engeler/computing_aspects.pdf
 
