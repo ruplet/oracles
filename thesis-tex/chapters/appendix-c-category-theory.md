@@ -1,41 +1,33 @@
-- About deriving functor in ghc
-> https://byorgey.wordpress.com/2010/03/03/deriving-pleasure-from-ghc-6-12-1
+# Appendix C: Type theory induced by category with sufficient structure
+Computational complexity is a semantic property of a program. Since we want to reason about semantics,
+it is of great interest for us for our semantics to have nice properties. A connection exists, which can be
+described as follows:
 
-- Connection of catgory theory and logic
-> https://ncatlab.org/nlab/show/internal+logic
+> Type theory[^1] and certain kinds of category theory[^2] are closely related. By a syntax-semantics duality[^3] one may view type theory as a formal syntactic[^4] language or calculus for category theory, and conversely one may think of category theory as providing semantics[^5] for type theory.
 
-- Category theory: An abstract theory of functional programming
-> https://camdar.io/static/h4t/stuff/10/categoryTheory.pdf
+| Internal Logic[^6] / Type Theory (Syntax) | Category of Contexts (Semantics)         |
+|---------------------------------------|------------------------------------------|
+| Propositional logic                   | Lindenbaum–Tarski algebra (~Kripke model) |
+| Intuitionistic propositional logic    | Heyting algebra                           |
+| Classical propositional logic         | Boolean algebra                           |
+| Minimal logic[^7] / Simply typed lambda calculus (STLC)  | Cartesian closed category (CCC)           |
 
-- Category theory in SML
-> https://jeremykun.com/2013/04/07/a-sample-of-standard-ml-and-the-treesort-algorithm/
+[^1]: https://ncatlab.org/nlab/show/type+theory
+[^2]: https://ncatlab.org/nlab/show/category+theory
+[^3]: https://ncatlab.org/nlab/show/syntax-semantics+duality
+[^4]: https://ncatlab.org/nlab/show/syntax
+[^5]: https://ncatlab.org/nlab/show/categorical+semantics
+[^6]: https://ncatlab.org/nlab/show/internal+logic
+[^7]: https://ncatlab.org/nlab/show/minimal+logic
 
-- Outstanding! article on TK in functional programming
-> A Neighborhood of Infinity: A Partial Ordering of some Category Theory applied to Haskell  
-> http://blog.sigfpe.com/2010/03/partial-ordering-of-some-category.html
+If we could design a category such that constructible morphisms correspond to feasible computations, then by taking the internal language of such a category, we would obtain a programming language capturing (some) complexity class.
 
-- How type theory is the syntax of category theory
-> https://ncatlab.org/nlab/show/type+theory
+However, complexity theory is, for now, very distant from category theory. During the exploration of this approach,
+I stumbled upon discussion on stackexchange.com, regarding the problem: "Does it make sense to consider a category of all NP-complete problems, with morphisms as poly-time reductions between different instances?"[^8]. The discussion suggested that
+it doesn't make a sense to go this direction. One of the answers introduced me to *Implicit Computational Complexity*, which turned out to be the field of research I should solely focus on since the beginning of my work.
 
-- Physics, Topology, Logic and Computation: A Rosetta Stone  
-  parallel execution = proofs carried out in parallel = disjoint union of cobordisms = tensor product of morphisms
-> https://arxiv.org/pdf/0903.0340.pdf
+[^8]: https://cstheory.stackexchange.com/q/3074
 
-- Theory of species, derivative of a data structure, quantum field theory
-> http://lambda-the-ultimate.org/node/1957
-
-- Does it make sense to consider a category of all NP-complete problems, with morphisms as poly-time reductions between different instances?
-> https://cstheory.stackexchange.com/questions/3074/a-category-of-np-complete-problems
-
-- Term algebras are initial objects in the category of algebras over a given signature
-> https://en.wikipedia.org/wiki/Term_algebra#:~:text=From%20a%20category%20theory%20perspective,all%20algebras%20in%20the%20category.
-
-- Connection between logic, category and type theory:
-  * Logic: minimal logic = simply typed lambda calculus (positive, implicational fragment of intuitionistic logic)
-  * Category: Cartesian closed categories
-  * Type theory: finite products only so curry/uncurry enough,
-  because we can construct finite products from binary products?
-
-- Computational trilogy: programming languages, type theory and algebraic topology
-> https://ncatlab.org/nlab/show/computational+trilogy
-
+Category theory is important for people developing e.g. type theory of Lean.
+But it is, for now, too far away from providing anything for studying computational complexity.
+We don't explore this connection further.
