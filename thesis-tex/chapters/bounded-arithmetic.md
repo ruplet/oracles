@@ -5,3 +5,10 @@ and this work: [https://www.karlin.mff.cuni.cz/~krajicek/cook-nguyen.pdf](https:
 
 
 At the same time, in 1986 Sam Buss' PhD thesis was released [@buss1985bounded]
+
+
+- Cloute, Takeuti: Recursion-theoretic characterization of complexity classes
+> AC0(2), AC0(6), Flogspace - also with explicit bounds!
+1995
+> page 163 pdf: https://link.springer.com/chapter/10.1007/978-1-4612-2566-9_6
+[@10.1007/978-1-4612-2566-9_6]
