@@ -37,7 +37,17 @@
 }
 
 
-@article{Cook_1970, title={Alan Cobham. The intrinsic computational difficulty of functions. Logic, methodology and philosophy of science, Proceedings of the 1964 International Congress, edited by Yehoshua Bar-Hillel, Studies in logic and the foundations of mathematics, North-Holland Publishing Company, Amsterdam 1965, pp. 24–30.}, volume={34}, DOI={10.2307/2270886}, number={4}, journal={The Journal of Symbolic Logic}, author={Cook, Stephen A.}, year={1970}, pages={657–657}} 
+@incollection{Cobham1964-COBTIC,
+	author = {Alan Cobham},
+	booktitle = {Logic, methodology and philosophy of science},
+	editor = {Yehoshua Bar{-}Hillel},
+	pages = {24--30},
+	publisher = {North-Holland Pub. Co.},
+	title = {The Intrinsic Computational Difficulty of Functions},
+	year = {1964},
+  url = {https://web.archive.org/web/20240121142633/https://www.cs.toronto.edu/~sacook/homepage/cobham_intrinsic.pdf}
+}
+
 
 @INPROCEEDINGS{4568079,
   author={Gurevich, Yuri},
@@ -263,14 +273,24 @@ isbn="978-3-540-35636-3"
 }
 
 @article{kristiansenvoda2005,
-author = {Kristiansen, Lars and Voda, Paul},
+author = {Kristiansen, Lars and Voda, Paul J.},
+title = {Programming languages capturing complexity classes},
 year = {2005},
-month = {01},
-pages = {89-115},
-title = {Programming Languages Capturing Complexity Classes.},
+issue_date = {April 2005},
+publisher = {Publishing Association Nordic Journal of Computing},
+url = {https://www.researchgate.net/publication/220673222_Programming_Languages_Capturing_Complexity_Classes},
+address = {FIN},
 volume = {12},
-journal = {Nord. J. Comput.}
+number = {2},
+issn = {1236-6064},
+abstract = {We investigate an imperative and a functional programming language. The computational power of fragments of these languages induce two hierarchies of complexity classes. Our first main theorem says that these hierarchies match, level by level, a complexity-theoretic alternating space-time hierarchy known from the literature. Our second main theorems says that a slightly different complexity-theoretic hierarchy (the Goerdt-Seidl hierarchy) also can be captured by hierarchies induced by fragments of the programming languages. Well known complexity classes like LOGSPACE, LINSPACE, P, PSPACE, etc., occur in the hierarchies.},
+journal = {Nordic J. of Computing},
+month = {apr},
+pages = {89–115},
+numpages = {27},
+keywords = {complexity classes, computational complexity, higher types, imperative and functional programming languages, typed λ-calculi}
 }
+
 
 @misc{hofmann2006logspace,
   author       = {Martin Hofmann},
@@ -322,6 +342,24 @@ lastchecked = {2025-08-27}
   month        = {February 16},
   note         = {Part of the GEOCAL workshop series},
   url          = {https://web.archive.org/web/20240507113929/https://www-lipn.univ-paris13.fr/~baillot/GEOCAL06/SLIDES/Schoepp.pdf}
+}
+
+
+@InProceedings{10.1007/978-3-030-22996-2_19,
+author="Moyen, Jean-Yves
+and Simonsen, Jakob Grue",
+editor="Manea, Florin
+and Martin, Barnaby
+and Paulusma, Dani{\"e}l
+and Primiero, Giuseppe",
+title="More Intensional Versions of Rice's Theorem",
+booktitle="Computing with Foresight and Industry",
+year="2019",
+publisher="Springer International Publishing",
+address="Cham",
+pages="217--229",
+abstract="Classic results in computability theory concern extensional results: the behaviour of partial recursive functions rather than the programs computing them. We prove a generalisation of Rice's Theorem concerning equivalence classes of programs and show how it can be used to study intensional properties such as time and space complexity. While many results that follow from our general theorems can - and have - been proved by more involved, specialised methods, our results are sufficiently simple that little work is needed to apply them.",
+isbn="978-3-030-22996-2"
 }
 
 
@@ -401,6 +439,52 @@ url="https://doi.org/10.1007/978-3-642-31485-8_3"
   month        = {January 9},
   note         = {Available online via Newton Institute archive},
   url          = {https://web.archive.org/web/20210515020503/https://www.newton.ac.uk/files/seminar/20120109163017301-152985.pdf}
+}
+
+
+% COMPLETE
+@article{COOK19852,
+title = {A taxonomy of problems with fast parallel algorithms},
+journal = {Information and Control},
+volume = {64},
+number = {1},
+pages = {2-22},
+year = {1985},
+note = {International Conference on Foundations of Computation Theory},
+issn = {0019-9958},
+doi = {https://doi.org/10.1016/S0019-9958(85)80041-3},
+url = {https://www.sciencedirect.com/science/article/pii/S0019995885800413},
+eprint = {https://web.archive.org/web/20190320200248/https://core.ac.uk/download/pdf/81978561.pdf},
+author = {Stephen A. Cook},
+abstract = {The class NC consists of problems solvable very fast (in time polynomial in log n) in parallel with a feasible (polynomial) number of processors. Many natural problems in NC are known; in this paper an attempt is made to identify important subclasses of NC and give interesting examples in each subclass. The notion of NC1-reducibility is introduced and used throughout (problem R is NC1-reducible to problem S if R can be solved with uniform log-depth circuits using oracles for S). Problems complete with respect to this reducibility are given for many of the subclasses of NC. A general technique, the “parallel greedy algorithm,” is identified and used to show that finding a minimum spanning forest of a graph is reducible to the graph accessibility problem and hence is in NC2 (solvable by uniform Boolean circuits of depth O(log2 n) and polynomial size). The class LOGCFL is given a new characterization in terms of circuit families. The class DET of problems reducible to integer determinants is defined and many examples given. A new problem complete for deterministic polynomial time is given, namely, finding the lexicographically first maximal clique in a graph. This paper is a revised version of S. A. Cook, (1983, in “Proceedings 1983 Intl. Found. Comut. Sci. Conf.,” Lecture Notes in Computer Science Vol. 158, pp. 78–93, Springer-Verlag, Berlin/New York).}
+}
+
+@article{10.1007/BF00289513,
+author = {Hartmanis, Juris},
+title = {On non-determinancy in simple computing devices},
+year = {1972},
+issue_date = {December  1972},
+publisher = {Springer-Verlag},
+address = {Berlin, Heidelberg},
+volume = {1},
+number = {4},
+issn = {0001-5903},
+url = {https://doi.org/10.1007/BF00289513},
+doi = {10.1007/BF00289513},
+abstract = {This paper studies one-tape Turing machines with k read-only heads which are restricted to the original input. The main result shows that if any set accepted by such a 3-head non-deterministic Turing machine can be accepted by a deterministic Turing machine with more read-only heads, then the deterministic and non-deterministic context-sensitive languages are identical. Several related results are derived and some tantalizing open problems are discussed.},
+journal = {Acta Inf.},
+month = dec,
+pages = {336–344},
+numpages = {9}
+}
+
+@MISC {423885,
+    TITLE = {Multi-head two-way finite automata versus logarithmic space},
+    AUTHOR = {Damiano Mazza (https://mathoverflow.net/users/45027/damiano-mazza)},
+    HOWPUBLISHED = {MathOverflow},
+    NOTE = {URL:https://mathoverflow.net/q/423885 (version: 2022-06-03)},
+    EPRINT = {https://mathoverflow.net/q/423885},
+    URL = {https://mathoverflow.net/q/423885}
 }
 
 

@@ -7,7 +7,7 @@ The field started with consecutive results from 1991 by Leivant [@151625] and fr
 Results existed before that, e.g.  
 - Immerman in 1987 characterized [@doi:10.1137/0216051] polytime *relations* in a way that doesn't involve any explicit size bounds in the defining expressions.  
 - Compton and LaFlamme in 1990 [@COMPTON1990241] characterized uniform $\text{NC}^1$. Allen in 1991 [@ALLEN19911] characterized uniform $\text{NC}$. Their works were unsatisfactory due to relying on explicit polynomial bounds, more or less hidden in the definitions. Moreover, they have also only considered *relations* or *decisive* complexity classes (e.g. $\text{PTIME}$) and not *functions* computable in these complexities ($\text{FPTIME}$). But e.g. the exponential relation  $E(x, y) \iff y = 2^x$ is polytime to decide.  
-- There has been some related work on characterizations of polytime functions, e.g. of Gurevich from 1983 [@4568079], and the foundational work by Cobham from 1964 [@Cook_1970], but their approaches still contained explicit polynomial bounds in some form, more or less hidden in the definition.  
+- There has been some related work on characterizations of polytime functions, e.g. of Gurevich from 1983 [@4568079], and the foundational work by Cobham from 1964 [@Cobham1964-COBTIC], but their approaches still contained explicit polynomial bounds in some form, more or less hidden in the definition.  
 For an exhaustive literature review of the origins of this area, please see [@bloch1994function]
 
 Since 1990's, an abundance of complexity classes have been characterized implicitly, e.g. PSPACE [@gaboardi2010implicitcharacterizationpspace] and $\text{PP}$ [@dallago_et_al:LIPIcs.MFCS.2021.35]. Many classes have been characterized in a variety of ways, see e.g. [@NIGGL201047] for an overview of characterizations of $\text{FPTIME}$ and $\text{FNC}$, or [@10.1016/j.ic.2015.12.009] for two different function algebras capturing the $\text{NC}^k$ hierarchy.
@@ -15,10 +15,18 @@ Since 1990's, an abundance of complexity classes have been characterized implici
 Notably, in 1999 Neil D. Jones published how fragments of the Lisp language correspond to L and P decisive complexity classes [@JONES1999151]. Bonfante in 2006, expanding on Jones' work, published his characterizations of the same two classes [@10.1007/11784180_8]. Kristiansen and Voda in 2005 [@kristiansenvoda2005]. Martin Hoffman presented an overview of languages for LOGSPACE in 2006: [@hofmann2006logspace]. Kristiansen in 2005 characterize logspace and linspace: [@kristiansen2005neat] Oitavem [@Oitavem+2010+355+362]
 
 
-Some of the studied complexity classes remain notoriously difficult to be characterized implicitly. One example is BPP,
+Some of the studied complexity classes remain notoriously difficult to be characterized implicitly. 
+One example is BPP,
 a characterization of which was however studied in [@lago2012higherordercharacterizationprobabilisticpolynomial]. But
 more importantly, the class `inv-P` of graph permutation-invariant problems decidable in polynomial time, is conjectured
-to not be characterizable this way. This is a restatement of the problem of finding a "logic capturing PTIME on unordered structures". A good discussion of this problem is present in Anuj Dawar's presentation from 2012: [@dawar2012syntactic].
+to not be characterizable this way. This is a restatement of the problem of finding a "logic capturing PTIME on unordered structures".
+The classes for which a characterization exists are called 'syntactic' complexity classes, as opposed to 'semantic'
+complexity classes, for which such characterization is conjectured to not exist.
+A good discussion of this problem is present in Anuj Dawar's presentation from 2012: [@dawar2012syntactic].
+
+In a paper from 2019, Jean-Yves Moyen and Jakob Grue Simonsen discuss the problem of providing syntax for PTIME ,
+concluding that in the light of their generalization of Rice's theorem [@10.1007/978-3-030-22996-2_19]. (problem w reprezentacji:
+mozemy miec jezyk programowania dla P, ale odkladamy nierozstrzygalnos do problemu sprawdzenia czy mozna przetlumaczyc dana maszyne turinga na ten jezyk)
 
 As the most important classes for the scope of this thesis are PTIME and LOGSPACE (the classes most commonly used for
 writing reductions in complexity theory), we devote separate sections for their characterizations.

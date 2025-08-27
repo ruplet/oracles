@@ -1,3 +1,18 @@
+# Type system vs computational model 
+- this is something which I don't understand
+- if we think about Turing machines, we got only one type - finite strings over a finite alphabet
+- if our type system allows inductive types like Tree = Leaf | Node Tree Tree, 
+  do our programs start to describe tree automata?
+- intuition: type system should be strong enough so that we don't lose information
+  about the computation performed
+- e.g. if we don't have a type to denote Prime numbers, we might want to
+  think twice before writing a function which outputs nth prime - it will
+  require manual verification to use it afterwards
+- the programming language should be just as strong to construct
+  every ,,correct'' function (where ,,correct'' is terminating and satisfying its signature)
+  and no reason for it to express more
+
+
 While thinking about computational complexity, we need to ask ourselves the question: "what is our computational model?". While we are used to thinking about the computational complexity of algorithms executing on a Turing machine, the notions of complexity for lambda calculus are less standard and less commonly agreed on (beta-reduction is not everything, as the existence of lamping's algorithm show). Instead of thinking of an algorithm as a sequence of transitions of a Turing machine,
 we can think about a sequence of union and intersection operations on sets, about sequence of operations in any other algebra or a deductive system. Here we explore what is the current state of knowledge when it comes to "which computational model is the most natural to study computational complexity?" - because maybe it happens that, similarly like RAM model is more appropritae than Turing machines, some other model is even more appropriate? We explore the notion of algorithm, hypothethical hypercomputation and of different foundations as mathematics as candidates for the computational model we'll target.
 
@@ -110,10 +125,6 @@ parallel execution etc.?
 neither is better. but, keeping in mind that reduceron is very limited,
 in this work we will begin with algorithms for turing machines
 
-
-c++ compiler is turing complete :{ not so good.
-we don't want the compiler we'll be writing to be turing complete!
-we want it to at least terminate, since we only compile LOGSPACE programs.
 
 
 @article{757d00a2-cc01-38d8-ac3b-ecd9b7df0a72,
