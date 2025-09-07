@@ -1,16 +1,13 @@
 # Reverse mathematics and bounded arithmetics
 If we can limit mathematics to not use axiom of choice (and study what we can and cannot prove after the restriction), why
-not limit computer science to not use full recursion? This leads to me discovering the connection with bounded arithmetics,
-and this work: [https://www.karlin.mff.cuni.cz/~krajicek/cook-nguyen.pdf](https://www.karlin.mff.cuni.cz/~krajicek/cook-nguyen.pdf). This approach has a community and heavily relies on formalizing the field of arithmetic. Recently, a nice write-up occured on feasible mathematics for computer scientists: [https://eccc.weizmann.ac.il/report/2025/086/](https://eccc.weizmann.ac.il/report/2025/086/). The task of formalizing arithmetic seems to be well beyond the current reach. An expert in the field told me it'd take 5-7 years to formalize results of the form "SubsetOfPeanoArithmetic proves phi(x)". I found a way to obtain a well-enough formalization of most of such results using tools we already have.
+not limit computer science to not use full recursion? 
 
+In 1985 Sam Buss PhD thesis was released [@buss1985bounded] introducing Bounded arithmetic.
 
-At the same time, in 1986 Sam Buss' PhD thesis was released [@buss1985bounded]
+Very good book released in 2010b by Stephen Cook: [https://www.karlin.mff.cuni.cz/~krajicek/cook-nguyen.pdf](https://www.karlin.mff.cuni.cz/~krajicek/cook-nguyen.pdf). 
 
+Good text from July 2025: [https://eccc.weizmann.ac.il/report/2025/086/](https://eccc.weizmann.ac.il/report/2025/086/).
 
-- Cloute, Takeuti: Recursion-theoretic characterization of complexity classes
-> AC0(2), AC0(6), Flogspace - also with explicit bounds!
-1995
-> page 163 pdf: https://link.springer.com/chapter/10.1007/978-1-4612-2566-9_6
-[@10.1007/978-1-4612-2566-9_6]
+My work on formalizing bounded arithmetic is here: [https://github.com/ruplet/formalization-of-bounded-arithmetic](https://github.com/ruplet/formalization-of-bounded-arithmetic) - in this repo there is also my presentation from AITP, the abstract and the reviews it received.
 
-- PV logic
+This is also the subject of my visit at INRIA, beginning 8th September 2025.
