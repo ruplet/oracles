@@ -5,9 +5,7 @@ PDF          := thesis.pdf
 CHAPTERS     := chapters/preface.md \
                 chapters/introduction.md \
                 chapters/descriptive-complexity.md \
-                chapters/affine-types.md \
-                chapters/approach-2-icc.md \
-                chapters/appendix-c-category-theory.md
+                chapters/approach-2-icc.md
 
 # Add any extra flags you want (e.g., --pdf-engine=xelatex)
 PANDOC_FLAGS := -f markdown --citeproc
@@ -18,6 +16,9 @@ all: $(PDF)
 
 $(PDF): $(CHAPTERS)
 	$(PANDOC) $(PANDOC_FLAGS) $^ -o $@
+
+random-category-theory.md: chapters/appendix-c-category-theory.md
+	$(PANDOC) -t markdown-citations --citeproc $^ -o $@
 
 clean:
 	rm -f $(PDF)

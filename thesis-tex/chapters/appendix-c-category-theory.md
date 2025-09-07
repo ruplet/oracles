@@ -1,3 +1,12 @@
+---
+author:
+- "Paweł Balawender"
+title: Practical programming languages expressing complexity classes
+link-citations: true
+csl: ieee.csl
+bibliography: references.bib
+---
+
 # Appendix C: Type theory induced by category with sufficient structure
 Computational complexity is a semantic property of a program. Since we want to reason about semantics,
 it is of great interest for us for our semantics to have nice properties. A connection exists, which can be
