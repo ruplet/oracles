@@ -1,5 +1,8 @@
 # Oracle-oriented programming: a proof of concept
 
+## Current TODO
+1. Render `.md` files with random notes (category theory, rubik, sudoku) to GitHub with nice citations!
+
 
 ## Future directions
 ### OEIS for theoretical computer science problem statements
