@@ -18,6 +18,35 @@
   annote =	{Keywords: implicit computational complexity, linear logic, geometry of interaction}
 }
 
+@InProceedings{10.1007/11874683_40,
+author="Sch{\"o}pp, Ulrich",
+editor="{\'E}sik, Zolt{\'a}n",
+title="Space-Efficient Computation by Interaction",
+booktitle="Computer Science Logic",
+year="2006",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="606--621",
+abstract="We introduce a typed functional programming language for logarithmic space. Its type system is an annotated subsystem of Hofmann's polytime LFPL. To guide the design of the programming language and to enable the proof of logspace-soundness, we introduce a realisability model over a variant of the Geometry of Interaction. This realisability model, which takes inspiration from M{\o}ller-Neergaard and Mairson's work on BC{\$}^{\{}{\backslash}rm --{\}}{\_}{\{}{\backslash}epsilon{\}}{\$}, provides a general framework for modelling space-restricted computation.",
+isbn="978-3-540-45459-5"
+}
+
+@article{DALLAGO2016150,
+title = {Computation by interaction for space-bounded functional programming},
+journal = {Information and Computation},
+volume = {248},
+pages = {150-194},
+year = {2016},
+note = {Development on Implicit Computational Complexity (DICE 2013)},
+issn = {0890-5401},
+doi = {https://doi.org/10.1016/j.ic.2015.04.006},
+url = {https://www.sciencedirect.com/science/article/pii/S089054011500142X},
+author = {Ugo {Dal Lago} and Ulrich Schöpp},
+keywords = {Implicit computational complexity, Logarithmic space, Type system, Geometry of interaction, Functional programming},
+abstract = {When programming with sublinear space constraints one often needs to use special implementation techniques even for simple tasks, such as function composition. In this paper, we study how such implementation techniques can be supported in a functional programming language. Our approach is based on modelling computation by interaction using the Int construction of Joyal, Street & Verity. We apply this construction to a term model of a first-order programming language and use the resulting structure to derive the functional programming language intml. Intml can be understood as a programming language simplification of Stratified Bounded Affine Logic. We formulate intml by means of a type system inspired by Baillot & Terui's Dual Light Affine Logic. We show that it captures the complexity classes flogspace and nflogspace. We illustrate its expressiveness by showing how typical graph algorithms, such a test for acyclicity in undirected graphs, can be represented.}
+}
+
+
 
 % OLD IMPLICIT
 
@@ -167,15 +196,6 @@ numpages = {4}
 
 
 % MODERN:
-@misc{gaboardi2010implicitcharacterizationpspace,
-      title={An Implicit Characterization of PSPACE}, 
-      author={Marco Gaboardi and Jean-Yves Marion and Simona Ronchi Della Rocca},
-      year={2010},
-      eprint={1006.0030},
-      archivePrefix={arXiv},
-      primaryClass={cs.LO},
-      url={https://arxiv.org/abs/1006.0030}, 
-}
 
 @InProceedings{dallago_et_al:LIPIcs.MFCS.2021.35,
   author =	{Dal Lago, Ugo and Kahle, Reinhard and Oitavem, Isabel},
@@ -303,6 +323,17 @@ keywords = {complexity classes, computational complexity, higher types, imperati
   url          = {https://web.archive.org/web/20240714044259/https://www-lipn.univ-paris13.fr/~baillot/GEOCAL06/SLIDES/Hofmann1302.pdf}
 }
 
+@misc{schoepp2006spaceefficiency,
+  author       = {Ulrich Schöpp},
+  title        = {Space-efficiency and the Geometry of Interaction},
+  howpublished = {Presentation at GEOCAL ’06, Luminy},
+  institution  = {Ludwig-Maximilians-Universität München},
+  year         = {2006},
+  month        = {February 16},
+  note         = {Part of the GEOCAL workshop series},
+  url          = {https://web.archive.org/web/20240507113929/https://www-lipn.univ-paris13.fr/~baillot/GEOCAL06/SLIDES/Schoepp.pdf}
+}
+
 @article{kristiansen2005neat,
   author    = {Lars Kristiansen},
   title     = {Neat function algebraic characterizations of logspace and linspace},
@@ -332,37 +363,6 @@ isbn = {9783110324907},
 year = {2010},
 lastchecked = {2025-08-27}
 }
-
-@misc{schoepp2006spaceefficiency,
-  author       = {Ulrich Schöpp},
-  title        = {Space-efficiency and the Geometry of Interaction},
-  howpublished = {Presentation at GEOCAL ’06, Luminy},
-  institution  = {Ludwig-Maximilians-Universität München},
-  year         = {2006},
-  month        = {February 16},
-  note         = {Part of the GEOCAL workshop series},
-  url          = {https://web.archive.org/web/20240507113929/https://www-lipn.univ-paris13.fr/~baillot/GEOCAL06/SLIDES/Schoepp.pdf}
-}
-
-
-@InProceedings{10.1007/978-3-030-22996-2_19,
-author="Moyen, Jean-Yves
-and Simonsen, Jakob Grue",
-editor="Manea, Florin
-and Martin, Barnaby
-and Paulusma, Dani{\"e}l
-and Primiero, Giuseppe",
-title="More Intensional Versions of Rice's Theorem",
-booktitle="Computing with Foresight and Industry",
-year="2019",
-publisher="Springer International Publishing",
-address="Cham",
-pages="217--229",
-abstract="Classic results in computability theory concern extensional results: the behaviour of partial recursive functions rather than the programs computing them. We prove a generalisation of Rice's Theorem concerning equivalence classes of programs and show how it can be used to study intensional properties such as time and space complexity. While many results that follow from our general theorems can - and have - been proved by more involved, specialised methods, our results are sufficiently simple that little work is needed to apply them.",
-isbn="978-3-030-22996-2"
-}
-
-
 
 
 % INTRO
