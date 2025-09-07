@@ -1,3 +1,7 @@
+- koncepcja: różnica między algebrą BCeps- a BC jest taka, że BCeps- "wymaga"
+  re-obliczania podwyrażeń po zrobieniu na nich ifa. To jest insight za L neq P
+  
+
 in neergaard's logic for logspace, we cannot use the result of computation after doing an `if` on the result.
 this 'affinity' seems to be the difference between algebra for FL and for FP.
 
