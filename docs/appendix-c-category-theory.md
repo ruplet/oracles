@@ -5,7 +5,10 @@ title: Practical programming languages expressing complexity classes
 link-citations: true
 csl: ieee.csl
 bibliography: references.bib
+# random-category-theory.md: chapters/appendix-c-category-theory.md
+# 	$(PANDOC) @(PANDOC_FLAGS) -t markdown-citations preface.md $^ -o $@
 ---
+
 
 # Appendix C: Type theory induced by category with sufficient structure
 Computational complexity is a semantic property of a program. Since we want to reason about semantics,
