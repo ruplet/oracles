@@ -5,7 +5,9 @@ author:
 title: Practical programming languages expressing complexity classes
 link-citations: true
 csl: ieee.csl
-bibliography: references.bib
+bibliography:
+- chapters/descriptive-complexity.md.bib
+- references.bib
 header-includes:
 - \usepackage{proof}
 ---

@@ -2,13 +2,14 @@
 
 PANDOC       := pandoc
 PDF          := thesis.pdf
-CHAPTERS     := chapters/introduction.md \
-				chapters/unexplored.md \
-                chapters/icc-introduction.md \
-				chapters/icc-linear-logic.md \
-				chapters/icc-recursion-theory.md \
-				chapters/bounded-arithmetic.md \
-				chapters/end-remarks.md
+CHAPTERS := chapters/preliminaries-reductions.md chapters/descriptive-complexity.md
+# CHAPTERS     := chapters/introduction.md \
+# 				chapters/unexplored.md \
+#                 chapters/icc-introduction.md \
+# 				chapters/icc-linear-logic.md \
+# 				chapters/icc-recursion-theory.md \
+# 				chapters/bounded-arithmetic.md \
+# 				chapters/end-remarks.md
 
 # Add any extra flags you want (e.g., --pdf-engine=xelatex)
 PANDOC_FLAGS := -f markdown --citeproc
