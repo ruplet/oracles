@@ -1,4 +1,10 @@
 ## Through complete problems
+Given $x, y, z$: binary representations of natural numbers, it is decidable in uniform AC0 if $x + y = z$, but it is not decidable in AC0 if $x * y = z$. We will get back to details of this complexity class in (TODO: Chapter: approach1, reductions).
+
+
+A family of circuits $\langle C_n \rangle_{n \in \mathbb{N}}$ for $n$: number of input bits is in AC0 iff every $C_n$ is of depth $O(1)$ and polynomial size w.r.t $n$, contains only unlimited-fanin AND gates and OR gates, and optional NOT gates at the inputs. 
+
+We say that family of circuits in AC0 is uniform if the function $n \rightarrow C_n$ is *simple to compute*; there is a variety of notions of uniformity of AC0 circuits, which we will explore in (TODO: chapter reductions). For the sake of this section we can assume that by AC0 we will denote the class of circuit families $C_n$, for which there is a LOGSPACE Turing machine $M$ which on input $0^n$ outputs a *standard representation*
 
 To show FL-completeness, it suffices to show L-completeness: FL = L* = L + NC1 reductions [@COOK19852, proposition 4.1]
 
@@ -6,6 +12,29 @@ To show FL-completeness, it suffices to show L-completeness: FL = L* = L + NC1 r
 - USTCONN is complete for L
 - a programming language for L: a finite number of variables, each <= n
 - alternative: a finite number of input pointers; this is really similar to multi-head two-way automaton [@423885] [@10.1007/BF00289513]
+
+
+definitions of ac, nc, tc:
+immerman definition 5.17
+
+notions of uniformity of ac0:
+0. U_{E^*}-uniformity
+1. direct connection language / extended connection language is decidable by FO.
+2. is decidable by DLogTime on a random-access turing machine (check if ith bit of representation of nth circuit is b)
+
+3. fo-query: definition 1.26, immerman
+
+
+weak notions of reductions: fo-reductions; fo-projections (fops); quantifier-free fo-projections (qfps); Immerman!
+fo-uniformity: there is a first order query I : STRUC[ts] -> STRUC[tc] with I(0^n) = C_n; definition 5.16 immerman
+definition 11.7 first-order projections
+
+what query is first-order?
+
+
+fo-reduction is defined as a first-order query (definition 1.26)
+also there is definition how to represent a circuit!
+
 
 # FO
 - FO[+, *] = FO[BIT]
