@@ -1,0 +1,179 @@
+\chapter{Linear types}
+\label{chap:linear-types}
+
+This chapter introduces the minimal fragment of linear logic and its term assignment needed later. The purpose is to contrast ordinary (intuitionistic) derivations with linear derivations where duplication and discarding of assumptions are controlled. Only the connectives $\multimap$ and ${!}$ are used, together with the falsity constant $\bot$ for completeness. No multiplicative products or additive connectives are introduced.
+
+\section{Structural rules}
+\label{sec:linear-structural}
+
+In intuitionistic propositional reasoning and in the simply typed $\lambda$-calculus, contexts admit \emph{contraction} (assumptions may be duplicated) and \emph{weakening} (assumptions may be ignored). Linear logic removes these two principles from the default context and admits them only through an explicit modality ${!}$.
+
+\begin{itemize}
+  \item \textit{No weakening in the linear context:} every linear assumption must be used.
+  \item \textit{No contraction in the linear context:} linear assumptions cannot be duplicated.
+  \item \textit{Exchange:} reordering assumptions is permitted.
+\end{itemize}
+
+\section{Propositional linear logic}
+\label{sec:lin-logic}
+
+\paragraph{Atomic formulas.}
+Fix a countable set $\mathcal{P}=\{P,Q,R,\dots\}$ of propositional variables. The set of atomic formulas is $\mathcal{A}_0 := \mathcal{P} \cup \{\bot\}$, where $\bot$ is falsity.
+
+\paragraph{Formulas.}
+\[
+A ::= A_0 \mid (A \multimap A) \mid {!}A \qquad (A_0 \in \mathcal{A}_0).
+\]
+
+\paragraph{Contexts and judgments.}
+Judgments have the form $\Gamma \,;\, \Delta \vdash A$, where $\Gamma$ (unrestricted context) contains formulas of the form ${!}B$, and $\Delta$ (linear context) contains linear formulas. In rules below, $\Delta_1 \uplus \Delta_2$ denotes a disjoint split of the multiset $\Delta$.
+
+\paragraph{Rules.}
+Identity:
+\[
+\infer[\mathrm{id}]
+      {\Gamma \,;\, A \vdash A}{}
+\qquad
+\infer[\mathrm{id}!]
+      {\Gamma,{!}A \,;\, \cdot \vdash A}{}
+\]
+
+Linear implication:
+\[
+\infer[\multimap\mathrm{I}]
+      {\Gamma \,;\, \Delta \vdash A \multimap B}
+      {\Gamma \,;\, \Delta, A \vdash B}
+\qquad
+\infer[\multimap\mathrm{E}]
+      {\Gamma \,;\, \Delta_1 \uplus \Delta_2 \vdash B}
+      {\Gamma \,;\, \Delta_1 \vdash A \multimap B
+       \quad
+       \Gamma \,;\, \Delta_2 \vdash A}
+\]
+
+Exponentials (${!}$):
+\[
+\infer[\mathrm{dereliction}]
+      {\Gamma \,;\, \Delta, {!}A \vdash A}{}
+\qquad
+\infer[\mathrm{weak}!]
+      {\Gamma,{!}A \,;\, \Delta \vdash C}
+      {\Gamma \,;\, \Delta \vdash C}
+\qquad
+\infer[\mathrm{contr}!]
+      {\Gamma,{!}A \,;\, \Delta \vdash C}
+      {\Gamma,{!}A,{!}A \,;\, \Delta \vdash C}
+\]
+\[
+\infer[\mathrm{promotion}]
+      {\Gamma \,;\, \Delta \vdash {!}A}
+      {\Gamma \,;\, \cdot \vdash A}
+\]
+
+The unrestricted context $\Gamma$ admits weakening and contraction via the explicit rules above. The linear context $\Delta$ admits neither.
+
+\section{Linear $\lambda$-calculus (term assignment)}
+\label{sec:lin-lambda}
+
+\paragraph{Atomic types.}
+Fix a countable set $\mathcal{T}_0=\{\alpha,\beta,\gamma,\dots\}$ of base types and include $\bot$. Atomic types are $\mathcal{U}_0:=\mathcal{T}_0 \cup \{\bot\}$.
+
+\paragraph{Types and terms.}
+\[
+\tau ::= U_0 \mid (\tau \multimap \tau) \mid {!}\tau
+\qquad (U_0 \in \mathcal{U}_0).
+\]
+\[
+t ::= x \mid \lambda x{:}\tau.\, t \mid (t\,u) \mid \mathsf{abort}_{\tau}(t).
+\]
+Here $\mathsf{abort}_{\tau}(t)$ is the eliminator for $\bot$.
+
+\paragraph{Typing.}
+Typing judgments have the form $\Gamma \,;\, \Delta \vdash t : \tau$, where $\Gamma$ records unrestricted variables and $\Delta$ records linear variables.
+\[
+\infer[\mathrm{var}]
+      {\Gamma \,;\, x{:}\tau \vdash x : \tau}{}
+\qquad
+\infer[\mathrm{var}!]
+      {\Gamma, x:{!}\tau \,;\, \cdot \vdash x : \tau}{}
+\]
+\[
+\infer[\multimap\mathrm{I}]
+      {\Gamma \,;\, \Delta \vdash \lambda x{:}\sigma.\, t : \sigma \multimap \rho}
+      {\Gamma \,;\, \Delta, x{:}\sigma \vdash t : \rho}
+\qquad
+\infer[\multimap\mathrm{E}]
+      {\Gamma \,;\, \Delta_1 \uplus \Delta_2 \vdash t\,u : \rho}
+      {\Gamma \,;\, \Delta_1 \vdash t : \sigma \multimap \rho
+       \quad
+       \Gamma \,;\, \Delta_2 \vdash u : \sigma}
+\]
+\[
+\infer[\mathrm{dereliction}]
+      {\Gamma \,;\, \Delta, x:{!}\sigma \vdash x : \sigma}{}
+\qquad
+\infer[\mathrm{promotion}]
+      {\Gamma \,;\, \Delta \vdash t : {!}\sigma}
+      {\Gamma \,;\, \cdot \vdash t : \sigma}
+\qquad
+\infer[\bot\mathrm{E}]
+      {\Gamma \,;\, \Delta \vdash \mathsf{abort}_{\tau}(t) : \tau}
+      {\Gamma \,;\, \Delta \vdash t : \bot}
+\]
+
+\paragraph{Evaluation.}
+Evaluation is by $\beta$-reduction, closed under the usual congruence rules:
+\[
+(\lambda x{:}\sigma.\, t)\,u \;\to_\beta\; t[x:=u].
+\]
+No reduction rule is given for $\mathsf{abort}_{\tau}$.
+
+\section{Curry--Howard identification}
+\label{sec:ch-linear}
+Under the identification of formulas with types and derivations with well-typed terms: $\multimap$ corresponds to the linear function space, and the rules for ${!}$ correspond to the admissibility of duplication and discarding in the unrestricted context. The separation $\Gamma \,;\, \Delta$ enforces that each variable in $\Delta$ is used exactly once.
+
+\section{Example}
+\label{sec:example-linear}
+
+\paragraph{Statement.}
+\[
+\vdash\; (A \multimap B) \multimap A \multimap B.
+\]
+
+\paragraph{Derivation.}
+\[
+\infer[\multimap\mathrm{I}]{\; \vdash (A \multimap B) \multimap A \multimap B \;}{
+  \infer[\multimap\mathrm{I}]{\; A \multimap B \vdash A \multimap B \;}{
+    \infer[\multimap\mathrm{E}]{\; A \multimap B, A \vdash B \;}{
+      \infer[\mathrm{id}]{A \multimap B \vdash A \multimap B}{}
+      &
+      \infer[\mathrm{id}]{A \vdash A}{}
+    }
+  }
+}
+\]
+
+\paragraph{Program.}
+\[
+\lambda f{:}A \multimap B.\,\lambda a{:}A.\, f\,a \;:\; (A \multimap B) \multimap A \multimap B.
+\]
+
+\paragraph{Executable instance (Haskell, \texttt{LinearTypes}).}
+\begin{verbatim}
+{-# LANGUAGE LinearTypes #-}
+module Main where
+
+-- apply : (a %1-> b) %1-> a %1-> b
+apply :: (a %1-> b) %1-> a %1-> b
+apply f a = f a
+
+idL :: a %1-> a
+idL x = x
+
+main :: IO ()
+main = print (apply idL (42 :: Int))
+\end{verbatim}
+
+\section{Implicit computational complexity (orientation)}
+\label{sec:icc-orientation}
+The rules for ${!}$ make duplication and discarding explicit in derivations and in typing. Restrictions on the use of ${!}$ (e.g., stratification) yield bounds on normalization and can characterize complexity classes. One instance is the language \emph{IntML} by Dal Lago and Sch\"opp, designed to capture \textbf{FLOGSPACE} via a linear typing discipline \cite{DALLAGO2016150}. An implementation is available.\footnote{\url{https://github.com/uelis/IntML}.}

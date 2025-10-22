@@ -1,0 +1,57 @@
+% main.tex
+\documentclass[12pt,oneside]{book}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{proof}
+% theorem-like environments
+\usepackage{amsthm} % already present per your log; keep it
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Workaround for "duplicate destination name{page.i}" on front matter:
+% disable page anchors just for the title pages, then re-enable.
+\usepackage{etoolbox}
+\makeatletter
+\pretocmd{\maketitle}{\hypersetup{pageanchor=false}}{}{}
+\apptocmd{\tableofcontents}{\clearpage\hypersetup{pageanchor=true}}{}{}
+\makeatletter
+
+
+% theorem-like environments
+\theoremstyle{remark}
+% \newtheorem{remark}{Remark}
+
+\title{Programming languages..}
+\author{Pawel Balawender}
+\date{\today}
+
+\begin{document}
+\frontmatter
+\maketitle
+\tableofcontents
+
+\mainmatter
+
+\include{chapters/curry-howard}
+\include{chapters/linear-logic} % placeholder to satisfy the reference
+
+\backmatter
+% \bibliographystyle{plain}
+% \bibliography{refs}
+
+\end{document}

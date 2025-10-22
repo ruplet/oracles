@@ -1,8 +1,11 @@
 # Recursion-theoretical approach to Implicit Computational Complexity {#icc-recursion-theory}
+The recursion-theoretic branch of implicit computational complexity does not analyze programs by simulating machines such as Turing machines. Instead, it controls the complexity of functions directly, by limiting the ways in which functions can be built from simpler ones.
 
-This is based on Bellantoni and Cook characterization
-of PTIME ([https://www.cs.toronto.edu/~sacook/homepage/ptime.pdf](https://www.cs.toronto.edu/~sacook/homepage/ptime.pdf)) and on further work by Neergaard to characterize FLOGSPACE in a similar way.
+In classical recursion theory, new functions are defined from basic ones (e.g. zero, successor, projections) by closing under composition and recursion. This unrestricted scheme is powerful enough to capture all computable functions. The ICC idea is to restrict the recursion principles: if you only allow certain kinds of recursion, you only obtain functions of a certain complexity.
 
+A prime example of this is the class of primitive recursive functions, and the Grzegorczyk hierarchy, which classifies these functions by their rate of growth through increasingly strong recursion schemes. These notions give deep insight into the structure of computable functions, but they do not align cleanly with standard complexity classes such as PTIME or LOGSPACE.
+
+What is needed, then, is a refined way of restricting recursion schemes so that they correspond exactly to natural complexity classes. This idea will be developed in the following sections.
 
 ## Bellantoni and Cook's safe recursion for $\mathsf{FP}$ and $\mathsf{FL}$
 
@@ -14,15 +17,14 @@ Bellantoni and Cook introduced a function algebra $\mathcal B$ whose key idea is
 We write a function as $f(\vec{x}; \vec{a})$, where $\vec{x}$ are normal inputs and $\vec{a}$ are safe inputs.  
 
 Intuitively:  
+
 - Normal inputs control recursion depth.  
 - Safe inputs can be passed around but recursion depth cannot depend on them.  
 - This should guarantee that recursion does not produce more than polynomial growth.
 
 For an integer $x$, $|x|$ denotes the binary length $\lceil \log_2(x+1) \rceil$. For a vector $\vec{x}=(x_1,\dots,x_n)$, we write $|\vec{x}| = (|x_1|,\dots,|x_n|)$ and we write  $\vec{f(\vec{x})} = (f_1(\vec{x}),\dots,f_m(\vec{x}))$.
 
-The computation considered here is on non-negative integers, but proof of equivalence to PTIME carries to binary strings.
-
----
+The computation considered here is on non-negative integers, but proof of equivalence to PTIME carries to binary strings [@10.1007/BF01201998].
 
 ### Definition of $\mathcal B$
 
@@ -69,27 +71,25 @@ $\mathcal B$ is the smallest class of functions containing the following initial
    Given $g,h_0,h_1 \in \mathcal B$, define $f$ by, for $i\in\{0,1\}$,
    $$
    \begin{aligned}
-   f(0, \vec{x};\, \vec{a}) \;&=\; g(\vec{x};\, \vec{a}), \\
-   f(y i, \vec{x};\, \vec{a}) \;&=\; h_i\!\big(y, \vec{x};\, \vec{a},\, f(y,\vec{x};\,\vec{a})\big),
+   f(0, \vec{x};\, \vec{a})   &= g(\vec{x};\, \vec{a}), \\
+   f(y i, \vec{x};\, \vec{a}) &= h_i\!\big(y,\vec{x};\,\vec{a},\,f(y,\vec{x};\,\vec{a})\big) \quad (y i \neq 0),
    \end{aligned}
    $$
-   where $y i$ denotes appending the bit $i$ to $y$.
+   where $i \in \{0,1\}$ and $y i$ denotes the number formed by appending $i$ to $y$. 
 
    The recursive call $f(y,\vec{x};\vec{a})$ is passed into a safe argument position of $h_i$. This ensures the result cannot later be promoted to a normal input, preventing uncontrolled growth.
 
----
 
 7. Safe Composition (SC)  
-   Given $h,r,t \in \mathcal B$, define $f$ by
+   Given $h,\vec{r},\vec{t} \in \mathcal B$, define $f$ by
    $$
-   f(\vec{x};\,\vec{a}) \;=\; h\!\big(r(\vec{x};\,);\, t(\vec{x};\,\vec{a})\big).
+   f(\vec{x};\,\vec{a}) \;=\; h\!\big(\vec{r}(\vec{x};\,);\, \vec{t}(\vec{x};\,\vec{a})\big).
    $$
 
    Here $r$ produces the normal inputs for $h$ using only the normal data $\vec{x}$, while $t$ produces the safe inputs for $h$, which may depend on both $\vec{x}$ and $\vec{a}$.  
 
    The restriction is that safe arguments may not flow into normal positions. This enforces that recursion depth is bounded by the normal inputs, never by results of recursion.
 
----
 
 ### Intuition
 

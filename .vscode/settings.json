@@ -33,6 +33,7 @@
     ],
     "latex-workshop.formatting.latex": "latexindent",
     "latex-workshop.linting.chktex.enabled": true,
+    "latex-workshop.linting.lacheck.enabled": true,
     "files.exclude": {
         "**/*.vo": true,
         "**/*.vok": true,
