@@ -67,3 +67,8 @@ szukamy takiego metajęzyka, żeby problem stopu podjęzyka był łatwy.
 ANSWER: best syntax is such that correctness of its parsing can be proven in 
 the weakest logic / weakest arithmetic!
 
+
+file:///home/maryjane/Downloads/1235421934.pdf
+strona 52 pdf, strona 316 ksiazki
+chapter V Bounded arithmetic
+tu jest o kodowaniu CFG
