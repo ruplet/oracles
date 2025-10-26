@@ -141,8 +141,69 @@ Every step above---the loop rule, the compilation of \texttt{for}, the use of \(
 Thus, implementing the language with its Hoare system requires a solid formalization of this arithmetic (lists/strings, iterators, truncation, and the associated induction principles), so that programs and their proofs are checked against PV-PL rather than an external meta-theory.
 For all formal statements and proofs, we refer to Chapter~4.
 
+\section{Definability of functions in \texorpdfstring{$V^0$}{V0}}
+Our ultimate goal is to say that a function $f$ is in C.
+As we observed in~\ref{sec:complete-problems}, AC0 reductions are enough for us
+and these are expressed by V0 theory. Now we bring up the definitions that make this precise.
 
-\section{}
+\begin{definition}[V.4.1 (Two-Sorted Definability, syntactic)]
+Let \(T\) be a theory with vocabulary \(L \supseteq L^2_A\), and let \(\Phi\) be a set of \(L\)-formulas.
+
+\medskip
+A number function \(f\) is \(\Phi\)\textit{-definable in} \(T\) if there exists a formula
+\(\varphi(x, y, X) \in \Phi\) such that
+\begin{align}
+T &\;\vdash\; \forall x \, \forall X \, \exists! y \, \varphi(x, y, X), \tag{61} \\[4pt]
+y = f(x, X) &\;\leftrightarrow\; \varphi(x, y, X). \tag{62}
+\end{align}
+
+\medskip
+A string function \(F\) is \(\Phi\)\textit{-definable in} \(T\) if there exists a formula
+\(\varphi(x, X, Y) \in \Phi\) such that
+\begin{align}
+T &\;\vdash\; \forall x \, \forall X \, \exists! Y \, \varphi(x, X, Y), \tag{63} \\[4pt]
+Y = F(x, X) &\;\leftrightarrow\; \varphi(x, X, Y). \tag{64}
+\end{align}
+
+\medskip
+Then \textup{(62)} is a defining axiom for \(f\) and \textup{(64)} is a defining axiom for \(F\).
+We write \(T(f)\) or \(T(F)\) for the theory extending \(T\) by adding \(f\) or \(F\)
+together with its corresponding defining axiom.
+We say that \(f\) or \(F\) is \textit{definable in} \(T\) if it is \(\Phi\)-definable in \(T\)
+for some \(\Phi\).
+\end{definition}
+
+
+\begin{definition}[V.4.12] (semantic)
+A string function is said to be \(\Sigma^B_0\)\textit{-definable from a collection} \(L\) of two-sorted functions and relations if it is \(p\)-bounded and its bit graph is represented by a \(\Sigma^B_0(L)\) formula.  
+Similarly, a number function is \(\Sigma^B_0\)\textit{-definable from} \(L\) if it is \(p\)-bounded and its graph is represented by a \(\Sigma^B_0(L)\) formula.
+
+\medskip
+This \emph{semantic} notion of \(\Sigma^B_0\)-definability should not be confused with \(\Sigma^B_0\)-definability \emph{in a theory} (Definition~V.4.1), which involves provability.  
+The next result connects these two notions.
+\end{definition}
+
+\begin{corollary}[V.4.13]
+Let \(T\) be a theory over \(L\) that contains \(V^0\), and suppose that \(T\) proves the 
+\(\Sigma^B_0(L)\)\textit{-COMP} axiom scheme.  
+Then any function that is \(\Sigma^B_0\)\textit{-definable from} \(L\) is 
+\(\Sigma^B_0(L)\)\textit{-definable in} \(T\).
+\end{corollary}
+
+
+% - Corollary V.4.11. Every function in FAC0 is ΣB0 -definable in V0.
+\begin{proposition}[V.4.7]
+A string function is \(\Sigma^B_0\)\textit{-bit-definable} if and only if it is in \(\mathsf{FAC}^0\).
+\end{proposition}
+
+\begin{corollary}[V.2.4]
+\leavevmode
+\end{corollary} 
+
+
+
+\section{Real-world constructions in weak theories}
+Expander construction in VNC1~\cite{BUSS2020102796}.
 
 \section{Type-theoretical treatment}
 It seems possible to reason about bounded arithmetic in type-theoretical framework.
