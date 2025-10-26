@@ -11,6 +11,7 @@
 \usepackage{proof}
 % theorem-like environments
 \usepackage{amsthm} % already present per your log; keep it
+\usepackage[backend=biber,style=authoryear]{biblatex}
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -40,6 +41,8 @@
 \author{Pawel Balawender}
 \date{\today}
 
+\addbibresource{chapters/bounded-arithmetic.bib}
+
 \begin{document}
 \frontmatter
 \maketitle
@@ -48,9 +51,13 @@
 \mainmatter
 
 \include{chapters/curry-howard}
-\include{chapters/linear-logic} % placeholder to satisfy the reference
+\include{chapters/linear-logic}
+\include{chapters/recursion-theory}
+\include{chapters/bounded-arithmetic}
 
 \backmatter
+
+\printbibliography
 % \bibliographystyle{plain}
 % \bibliography{refs}
 
