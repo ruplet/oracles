@@ -1,0 +1,93 @@
+@article{GRADEL199235,
+title = {Capturing complexity classes by fragments of second-order logic},
+journal = {Theoretical Computer Science},
+volume = {101},
+number = {1},
+pages = {35-57},
+year = {1992},
+issn = {0304-3975},
+doi = {https://doi.org/10.1016/0304-3975(92)90149-A},
+url = {https://www.sciencedirect.com/science/article/pii/030439759290149A},
+author = {Erich Grädel},
+abstract = {We investigate the expressive power of certain fragments of second-order logic on finite structures. The fragments are second-order Horn logic, second-order Krom logic as well as a symmetric and a deterministic version of the latter. It is shown that all these logics collapse to their existential fragments. In the presence of successor relation they provide characterizations of polynomial time, deterministic and nondeterministic logspace and of the complement of symmetric logspace. Without successor relation these logics still can express certain problems that are complete in the corresponding complexity classes, but on the other hand they are strictly weaker than previously known logics for these classes and fail to express some very simple properties.}
+}
+
+@book{Immerman1999-IMMDC,
+	author = {Neil Immerman},
+	title = {Descriptive Complexity},
+	year = {1999},
+      isbn = {978-1-4612-0539-5},
+      url = {https://doi.org/10.1007/978-1-4612-0539-5},
+	publisher = {Springer New York, NY},
+      doi = {10.1007/978-1-4612-0539-5},
+      pages = {268},
+}
+
+@book{Cook_Nguyen_2010,
+title={Logical Foundations of Proof Complexity},
+author={Cook, Stephen and Nguyen, Phuong},
+year={2010},
+place={Cambridge},
+publisher={Cambridge University Press},
+doi={10.1017/CBO9780511676277},
+url       = {http://web.archive.org/web/20240713034207/https://www.karlin.mff.cuni.cz/~krajicek/cook-nguyen.pdf},
+urldate   = {2025-09-03}
+} <div></div>
+
+@article{IMMERMAN198686,
+title = {Relational queries computable in polynomial time},
+journal = {Information and Control},
+volume = {68},
+number = {1},
+pages = {86-104},
+year = {1986},
+issn = {0019-9958},
+doi = {https://doi.org/10.1016/S0019-9958(86)80029-8},
+url = {https://www.sciencedirect.com/science/article/pii/S0019995886800298},
+author = {Neil Immerman},
+abstract = {We characterize the polynomial time computable queries as those expressible in relational calculus plus a least fixed point operator and a total ordering on the universe. We also show that even without the ordering one application of fixed point suffices to express any query expressible with several alternations of fixed point and negation. This proves that the fixed point query hierarchy suggested by Chandra and Harel collapses at the first fixed point level. It is also a general result showing that in finite model theory one application of fixed point suffices.}
+}
+
+@inproceedings{10.1145/800070.802186,
+author = {Vardi, Moshe Y.},
+title = {The complexity of relational query languages (Extended Abstract)},
+year = {1982},
+isbn = {0897910702},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/800070.802186},
+doi = {10.1145/800070.802186},
+abstract = {Two complexity measures for query languages are proposed. Data complexity is the complexity of evaluating a query in the language as a function of the size of the database, and expression complexity is the complexity of evaluating a query in the language as a function of the size of the expression defining the query. We study the data and expression complexity of logical languages - relational calculus and its extensions by transitive closure, fixpoint and second order existential quantification - and algebraic languages - relational algebra and its extensions by bounded and unbounded looping. The pattern which will be shown is that the expression complexity of the investigated languages is one exponential higher then their data complexity, and for both types of complexity we show completeness in some complexity class.},
+booktitle = {Proceedings of the Fourteenth Annual ACM Symposium on Theory of Computing},
+pages = {137–146},
+numpages = {10},
+location = {San Francisco, California, USA},
+series = {STOC '82}
+}
+
+@article{Cai1992,
+  author    = {Jin-Yi Cai and Martin F{\"u}rer and Neil Immerman},
+  title     = {An optimal lower bound on the number of variables for graph identification},
+  journal   = {Combinatorica},
+  year      = {1992},
+  volume    = {12},
+  number    = {4},
+  pages     = {389--410},
+  doi       = {10.1007/BF01305232},
+  url       = {https://doi.org/10.1007/BF01305232},
+  issn      = {1439-6912},
+  abstract  = {In this paper we show that Ω(n) variables are needed for first-order logic with counting to identify graphs on n vertices. The k-variable language with counting is equivalent to the (k−1)-dimensional Weisfeiler-Lehman method. We thus settle a long-standing open problem. Previously it was an open question whether or not 4 variables suffice. Our lower bound remains true over a set of graphs of color class size 4. This contrasts sharply with the fact that 3 variables suffice to identify all graphs of color class size 3, and 2 variables suffice to identify almost all graphs. Our lower bound is optimal up to multiplication by a constant because n variables obviously suffice to identify graphs on n vertices.}
+}
+
+
+% redundant
+@phdthesis{COMMENT10.5555/1104410,
+author = {Morioka, Tsuyoshi},
+title = {Logical approaches to the complexity of search problems: proof complexity, quantified propositional calculus, and bounded arithmetic},
+year = {2005},
+isbn = {0494027266},
+publisher = {University of Toronto},
+address = {CAN},
+abstract = {For every binary predicate  R , there is a  search problem Q R  for finding, given x , any  y  such that  R (  x ,  y ) holds.  Q R  is said to be  total  if every instance x  has a solution  y , that is, (\'{y}  x )(\'{y}  y )  R (  x ,  y ) holds. Total search problems are commonplace in computer science, and studying their complexity is therefore an important endeavour. In this dissertation, we present links between the complexity of solving  Q R  and the difficulty of proving the totality of  Q R  in the three logical formalisms: propositional calculus, quantified propositional calculus (QPC), and theories of bounded arithmetic. These links allow logical approaches to the complexity of search problems. We show several links between the complexity of a type-2 total search problem  Q R , where  R  is represented by a first-order existential sentence \'{y}, and the lengths of proofs of the propositional translations of \'{y} in bounded-depth Frege systems and the Nullstellensatz proof system. In particular, we prove the first direct links between reducibilities among type-2 search problems and lengths of propositional proofs. Based on this and the results on propositional proof complexity, we obtain a number of relative separations among the so-called NP-search classes such as Polynomial Local Search (PLS). Some of the relative separations we obtain are new. Let  H  be a QPC proof system and  j  \'{y} 1. We define the S q  j  -witnessing problem for  H  to be: given an  H -proof of a prenex S q  j  -formula  A , and a truth assignment to the free variables of  A , find a witness for the outermost existential quantifiers of  A . These witnessing problems provide a tangible link between the proof lengths in QPC and the complexity of search problems, and we consider them for various parameters. We also introduce and study the new QPC proof systems G *  0  and  G 0, and prove that the S q  1  -witnessing problem for each is complete for  NC  1 -search problems. Our proof involves proving the  TC  0 -versions of Gentzen's midsequent theorem and Herbrand's theorem. We introduce a second-order theory  VNC  1 of bounded arithmetic, and show that the S B  1  -definable functions of  VNC  1 are precisely the  NC  1 -functions. We describe simple translations of every  VNC  1 -proof into a family of polynomial-size G *  0  -proofs. From this and similar translation theorems for other bounded arithmetic theories, we obtain the hardness of the S q  j  -witnessing problem for  H  for various  H  and  j  \'{y} 1.},
+note = {AAINR02726}
+}

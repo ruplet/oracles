@@ -1,0 +1,144 @@
+% ============================================
+% Descriptive Complexity Section (LaTeX)
+% todo: literature review https://plato.stanford.edu/archives/win2017/entries/computational-complexity/#DesCom
+% ============================================
+
+\section{Descriptive Complexity: An Overview}
+
+In descriptive complexity theory, an object (e.g., a set of graphs) in
+a complexity class is specified as the set of all finite models of a given
+formula. In this work, we only consider the case where the object is a language 
+\(L \subseteq \{0,1\}^*\) and the model is a finite binary string.
+
+The central problem of descriptive complexity is to characterize a
+complexity class by the \emph{power of logic required to define its problems}.
+This is in contrast to \emph{Implicit Complexity Theory}, discussed later,
+which seeks the weakest system sufficient to \emph{implement algorithms}
+of the class; and in contrast to \emph{Bounded Arithmetic}, which studies
+the weakest \emph{theory} required to define a function \emph{and prove its correctness}.
+This perspective has led to elegant logical characterizations of many traditional
+complexity classes.
+
+As an example, Grädel’s Theorem in descriptive complexity states that
+\(\mathsf{NL}\) is the class of finite models of the second-order Krom formulas
+\cite{GRADEL199235}.
+Here, a \emph{Krom formula} is a propositional
+formula in conjunctive normal form (CNF) where each clause contains at most
+two literals. The satisfiability problem for Krom formulas, Krom-SAT, is
+complete for \(\mathsf{coNL}\) (or equivalently \(\mathsf{NL}\), by the Immerman–Szelepcsényi
+Theorem).
+
+Similarly, Grädel~\cite{GRADEL199235} shows that second-order Horn formulas
+express precisely the properties decidable in polynomial time.
+A \emph{Horn clause} is a clause with at most one positive literal and any number
+of negative literals, and a Horn formula is a conjunction of such clauses.
+By a result independently proved by Immerman~\cite{IMMERMAN198686}
+and Vardi~\cite{10.1145/800070.802186},
+\(\mathsf{PTIME}\) is also characterized by first-order logic with a least fixed-point operator
+(\(\mathrm{FO[LFP]}\)).
+Similar results exist for most commonly studied complexity classes:
+\(\mathsf{NP}\) (Fagin's theorem), \(\mathsf{coNP}\), \(\mathsf{PH}\), \(\mathsf{PSPACE}\), and \(\mathsf{EXPTIME}\).
+
+For an accessible introduction, see the classical and self-contained reference
+by Immerman~\cite{Immerman1999-IMMDC}.
+
+% -------------------------------------------------
+\subsection{Ordered and Unordered Structures}
+
+Most of the results discussed in this chapter assume that the input is
+given as an \emph{ordered structure}, i.e., for two positions \(x\) and \(y\)
+of the input word, we can test whether \(y\) is to the right of \(x\).
+In fact, many theorems also assume the presence of a \emph{successor relation},
+allowing us to test whether \(y\) is the \emph{immediate} right neighbor of \(x\).
+
+In practice, computers operate on linearly ordered memory
+(via addresses), so the assumption of ordered structures is both natural
+and realistic.
+However, this assumption is \emph{crucial}:
+without an explicit ordering, \(\mathrm{FO[LFP]}\) does \textbf{not} capture
+\(\mathsf{PTIME}\)~\cite{Cai1992}.
+The existence of a logic that characterizes \(\mathsf{PTIME}\) on
+\emph{unordered structures} remains a major open problem in computer science as of 2025.
+
+Fagin's theorem says that existential second-order logic characterizes
+\(\mathsf{NP}\).
+It is worth noting that this theorem does \emph{not} assume order on the input ---
+intuitively, \(\mathsf{NP}\) is strong enough to ``guess'' the order relation.
+
+% -------------------------------------------------
+\subsection{Descriptive Complexity and Type Systems}
+
+After investigating systems within descriptive complexity, we explored
+whether their logical frameworks could be combined with type-theoretic
+approaches to design programming languages that capture complexity classes.
+While this attempt to bridge descriptive complexity and type systems
+was conceptually motivated, the two fields remain quite distant in practice,
+and we were not successful in fully integrating them.
+Nonetheless, this line of inquiry led to a broader investigation of
+type systems that enforce resource bounds --- particularly those inspired
+by linear logic and implicit computational complexity.
+The results of this exploration are presented in the next chapter.
+
+% -------------------------------------------------
+\subsection{\texorpdfstring{$\mathrm{FO} = \mathrm{AC}^0$}{FO = AC0} and the Definition of \texorpdfstring{$\mathrm{FAC}^0$}{FAC0}}
+
+Due to their declarative nature, results from descriptive complexity do not
+directly help in designing programming languages.
+However, one result from this field will be important for us in
+Chapter~V (on bounded arithmetic). There, we will study a logical system
+characterizing \(\mathrm{FAC}^0\): a class of \emph{reductions} (functions) that is very weak,
+yet strong enough to define nontrivial computations.
+The definition of \(\mathrm{FAC}^0\) will be based on a logical characterization of
+\(\mathrm{AC}^0\).
+
+A foundational result in descriptive complexity theory is that
+\[
+\mathrm{FO} = \mathrm{AC}^0,
+\]
+i.e., relations definable by a first-order sentence are precisely those
+decidable by \(\mathrm{AC}^0\) circuits
+(Corollary~5.32 in~\cite{Immerman1999-IMMDC}).%
+\footnote{%
+Under reasonable assumptions, namely:
+FO formulas have access to an order relation on the input structure and to
+basic arithmetic predicates \(+\) and \(\times\);
+\(\mathrm{AC}^0\) is FO-uniform; and
+all structures considered are ordered and have at least two elements (so that
+\(0\) and \(1\) are distinct).
+See Provisos~1.14 and~1.15 of~\cite{Immerman1999-IMMDC} for details.%
+}
+\footnote{%
+Part of Corollary~5.32 relevant for our purposes refers to Theorem~5.22,
+which states that \(\mathrm{FO}[t(n)] = \mathrm{AC}[t(n)]\)
+for all polynomially bounded and FO-constructible functions \(t(n)\).
+Here, \(\mathrm{FO}[t(n)]\) denotes formulas with a quantifier block iterated
+\(t(n)\) times (Definition~4.24), and
+\(\mathrm{AC}[t(n)]\) denotes FO-uniform circuits of depth \(O(t(n))\)
+(Definition~5.17).
+For our purposes, \(t(n) = 1\), circuits have depth \(O(1)\),
+and \(\mathrm{AC}[t(n)] = \mathrm{AC}^0\).%
+}
+
+TODO: semantic notion of definability, i.e. a function is definable means
+its graph is expressible by a formula in some logic.
+
+This characterization will later be used (Definition~V.2.3 in~\cite{Cook_Nguyen_2010})
+to define functions in \(\mathrm{FAC}^0\) as those of polynomially bounded output length
+whose \emph{bit-graphs} lie in \(\mathrm{AC}^0\).
+That is how we will transition to studying functional complexity classes.
+
+% % -------------------------------------------------
+% \section*{References}
+
+% \bibliographystyle{plain}
+% \bibliography{references}
+
+
+% <!-- IMPORTANT: what is bit? what is <=, +, -.
+% section 1.2 of immerman
+% bit(i, 0) holds iff i is odd.
+% PLUS(i, j, k) meaning i + j = k
+% 2. TIMES(i, j, k) meaning i x j = k
+% 3. BIT(i, j) meaning bit j in the binary representation of i is  -->
+
+% <!-- this PLUS, TIMES seems to be like operations on unary numbers. This is unary numbers because we can only do it up until `n` (because we only have forall x, PLUS(x), PLUS(0), PLUS(1), PLUS(max),...) -->

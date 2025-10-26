@@ -52,11 +52,3 @@ This characterization will be used in (Definition V.2.3, [@Cook_Nguyen_2010]) to
 [^1]: under "reasonable assumptions" which here are that: FO formulas have access to order relation on input structure and to basic arithmetical predicates including $+, \times$; $\text{AC}^0$ is FO-uniform; all structures considered are ordered and have at least 2 elements (so that $0$ and $1$ are unequal). For more details, please see Proviso 1.14 and Proviso 1.15 of\nobreakspace{}[@Immerman1999-IMMDC]. Theorems 1.36, 1.37 in\nobreakspace{}[@Immerman1999-IMMDC] (FO without bit characterizes star-free regular languages; monadic SO without bit characterizes regular languages) and the remark after them is also of use to motivate adding arithmetical symbols to FO. Definitions of the symbols mentioned are in Section 1.2 of\nobreakspace{}[@Immerman1999-IMMDC]. We should think of the operations $+, \times$ added to FO as operations on unary numbers, not on binary representations; the former are trivial to implement as binary circuits in $\text{AC}^0$, while existence of the latter is a theorem.
 [^2]: Part of Corollary 5.32 that is interesting for us refers to Theorem 5.22 saying that $\text{FO}[t(n)] = \text{AC}[t(n)]$ for all polynomially-bounded and FO-constructible $t(n)$. $FO[t(n)]$ is defined in Definition 4.24 as formulas with a quantifier block iterated $t(n)$ times. $\text{AC}[t(n)]$ is defined in Definition 5.17 as FO-uniform circuits of depth $O(t(n))$. For our purposes, $t(n)$ is just 1, circuits have depth $O(1)$ and $\text{AC}[t(n)]$ is just \text{AC}^0$.
 
-<!-- IMPORTANT: what is bit? what is <=, +, -.
-section 1.2 of immerman
-bit(i, 0) holds iff i is odd.
-PLUS(i, j, k) meaning i + j = k
-2. TIMES(i, j, k) meaning i x j = k
-3. BIT(i, j) meaning bit j in the binary representation of i is  -->
-
-<!-- this PLUS, TIMES seems to be like operations on unary numbers. This is unary numbers because we can only do it up until `n` (because we only have forall x, PLUS(x), PLUS(0), PLUS(1), PLUS(max),...) -->
