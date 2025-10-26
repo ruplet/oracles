@@ -16,34 +16,34 @@ C n must be specified in a uniform way; for example one could require that
 $\langle C_n \rangle$ is in FO. See also Appendix A.5.
 
 
-\section{$\text{NC}^i$}
+\section{\texorpdfstring{$\text{NC}^i$}{NC\string^i}}
 $\text{AC}^i$ is the class of languages accepted by uniform circuit
 families of polynomial size and depth $O(\log^i n)$, consisting of unbounded fan-in
 AND, and OR gates, along with NOT gates.
 
 Contained in $\text{AC}^i$.
 
-\section{$\text{AC}^i$}
+\section{\texorpdfstring{$\text{AC}^i$}{AC\string^i}}
 $\text{AC}^i$ is the class of languages accepted by uniform circuit
 families of polynomial size and depth $O(\log^i n)$, consisting of unbounded fan-in
 AND, and OR gates, along with NOT gates.
 
-\section{$\text{AC}^i[m]$}
+\section{\texorpdfstring{$\text{AC}^i[m]$}{AC\string^i[m]}}
 $\text{AC}^i[m]$ is defined as $\text{AC}^i$, but in addition unbounded fan-in $\text{MOD}_m$ gates
 are allowed, which output 1 iff the number of input wires carrying a value of 1 is a
 multiple of $m$.
 
-\section{$\text{ACC}^i$}
+\section{\texorpdfstring{$\text{ACC}^i$}{ACC\string^i}}
 $\text{ACC}^i = \bigcup_m \text{AC}^i[m]$. $\text{ACC}^0$ is contained in $\text{TC}^0$.
 
-\section{$\text{TC}^i$}
+\section{\texorpdfstring{$\text{TC}^i$}{TC\string^i}}
 $\text{TC}^i$ is the class of languages accepted by uniform circuit families 
 of polynomial size and depth $O(\log^i n)$, consisting of unbounded fan-in MAJORITY
 gates, along with NOT gates.
 
 Contained in $\text{NC}^{i + 1}$.
 
-\section{$\text{AC}^0$-reduction}
+\section{\texorpdfstring{$\text{AC}^0$-reduction}{AC\string^0-reduction}}
 \label{sec:ac0red}
 Definition IX.1.1 CN10. We say that a string function F
 (resp. a number function f) is $\text{AC}^0$ -reducible to L if there is a sequence
@@ -61,4 +61,3 @@ represented by a $\Sigma^B_0(L \cup \{F_1, \dots, F_n\})$ formula.
 \label{sec:complete-problems}
 For every class C from: AC0, L, P, there is some problem F such that F is C-complete under AC0 reductions.
 So AC0 reductions are enough for us, and AC0 reductions is(?) the same class as FAC0 functions.
-

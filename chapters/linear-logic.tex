@@ -53,16 +53,16 @@ Linear implication:
 
 Exponentials (${!}$):
 \[
+\begin{gathered}
 \infer[\mathrm{dereliction}]
-      {\Gamma \,;\, \Delta, {!}A \vdash A}{}
-\qquad
+      {\Gamma \,;\, \Delta, {!}A \vdash A}{} \\[4pt]
 \infer[\mathrm{weak}!]
       {\Gamma,{!}A \,;\, \Delta \vdash C}
-      {\Gamma \,;\, \Delta \vdash C}
-\qquad
+      {\Gamma \,;\, \Delta \vdash C} \\[4pt]
 \infer[\mathrm{contr}!]
       {\Gamma,{!}A \,;\, \Delta \vdash C}
       {\Gamma,{!}A,{!}A \,;\, \Delta \vdash C}
+\end{gathered}
 \]
 \[
 \infer[\mathrm{promotion}]
@@ -72,7 +72,7 @@ Exponentials (${!}$):
 
 The unrestricted context $\Gamma$ admits weakening and contraction via the explicit rules above. The linear context $\Delta$ admits neither.
 
-\section{Linear $\lambda$-calculus (term assignment)}
+\section{Linear \texorpdfstring{$\lambda$}{lambda}-calculus (term assignment)}
 \label{sec:lin-lambda}
 
 \paragraph{Atomic types.}
@@ -91,34 +91,36 @@ Here $\mathsf{abort}_{\tau}(t)$ is the eliminator for $\bot$.
 \paragraph{Typing.}
 Typing judgments have the form $\Gamma \,;\, \Delta \vdash t : \tau$, where $\Gamma$ records unrestricted variables and $\Delta$ records linear variables.
 \[
+\begin{gathered}
 \infer[\mathrm{var}]
-      {\Gamma \,;\, x{:}\tau \vdash x : \tau}{}
-\qquad
+      {\Gamma \,;\, x{:}\tau \vdash x : \tau}{} \\[4pt]
 \infer[\mathrm{var}!]
       {\Gamma, x:{!}\tau \,;\, \cdot \vdash x : \tau}{}
+\end{gathered}
 \]
 \[
+\begin{gathered}
 \infer[\multimap\mathrm{I}]
       {\Gamma \,;\, \Delta \vdash \lambda x{:}\sigma.\, t : \sigma \multimap \rho}
-      {\Gamma \,;\, \Delta, x{:}\sigma \vdash t : \rho}
-\qquad
+      {\Gamma \,;\, \Delta, x{:}\sigma \vdash t : \rho} \\[4pt]
 \infer[\multimap\mathrm{E}]
       {\Gamma \,;\, \Delta_1 \uplus \Delta_2 \vdash t\,u : \rho}
       {\Gamma \,;\, \Delta_1 \vdash t : \sigma \multimap \rho
        \quad
        \Gamma \,;\, \Delta_2 \vdash u : \sigma}
+\end{gathered}
 \]
 \[
+\begin{gathered}
 \infer[\mathrm{dereliction}]
-      {\Gamma \,;\, \Delta, x:{!}\sigma \vdash x : \sigma}{}
-\qquad
+      {\Gamma \,;\, \Delta, x:{!}\sigma \vdash x : \sigma}{} \\[4pt]
 \infer[\mathrm{promotion}]
       {\Gamma \,;\, \Delta \vdash t : {!}\sigma}
-      {\Gamma \,;\, \cdot \vdash t : \sigma}
-\qquad
+      {\Gamma \,;\, \cdot \vdash t : \sigma} \\[4pt]
 \infer[\bot\mathrm{E}]
       {\Gamma \,;\, \Delta \vdash \mathsf{abort}_{\tau}(t) : \tau}
       {\Gamma \,;\, \Delta \vdash t : \bot}
+\end{gathered}
 \]
 
 \paragraph{Evaluation.}

@@ -1,4 +1,4 @@
-\chapter{Propositions as types, proofs as programs: the Curry--Howard correspondence}
+\chapter[Propositions as types]{Propositions as types, proofs as programs: the Curry--Howard correspondence}
 \label{chap:curry-howard}
 
 The aim of this thesis is to reason about computation and its cost on standard machines. To do so, we will fix a minimal logical and computational core that is sufficient to state and track the shape of computations without introducing additional connectives or control features. In this chapter we present the implicational fragment of intuitionistic logic and the simply typed lambda calculus with only function types. We use these and nothing more.
@@ -82,9 +82,11 @@ There is no reduction rule for $\mathsf{abort}_{\tau}$.
 \section{Curry--Howard (implicational-only)}
 Under the correspondence:
 \[
-\text{propositions} \;\leftrightarrow\; \text{types}, \qquad
-\text{proofs} \;\leftrightarrow\; \text{well-typed terms}, \qquad
-\text{modus ponens / normalization} \;\leftrightarrow\; \text{application / $\beta$-reduction}.
+\begin{aligned}
+\text{propositions} &\;\leftrightarrow\; \text{types}, \\
+\text{proofs} &\;\leftrightarrow\; \text{well-typed terms}, \\
+\text{modus ponens / normalization} &\;\leftrightarrow\; \text{application / $\beta$-reduction}.
+\end{aligned}
 \]
 Concretely:
 \begin{itemize}
