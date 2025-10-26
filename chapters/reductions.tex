@@ -1,0 +1,59 @@
+\chapter{Reductions}
+\label{chap:reductions}
+The definitions below are from~\cite{10.5555/520668}.
+
+
+\section{Uniformity}
+Dlogtime-uniformity. First-order reductions. Logspace-uniformity. $U_{E^*}$. Direct / extended connection language.
+Below it should not matter which of these types we use? But I don't have citation for that.
+When we don't say poly, it means class is uniform. Otherwise: Immerman showed that the class FO is the same as a uniform version
+of AC 0 . Originally AC0 was defined in its nonuniform version, which
+we shall refer to as AC0/poly. A language in AC0/poly is specified by
+a polynomial size bounded depth family $\langle C_n \rangle$ of Boolean circuits, where
+each circuit Cn has n input bits, and is allowed to have ¬-gates, as well as
+unbounded fan-in $\land$-gates and $\lor$-gates. In the uniform version, the circuit
+C n must be specified in a uniform way; for example one could require that
+$\langle C_n \rangle$ is in FO. See also Appendix A.5.
+
+
+\section{$\text{NC}^i$}
+$\text{AC}^i$ is the class of languages accepted by uniform circuit
+families of polynomial size and depth $O(\log^i n)$, consisting of unbounded fan-in
+AND, and OR gates, along with NOT gates.
+
+Contained in $\text{AC}^i$.
+
+\section{$\text{AC}^i$}
+$\text{AC}^i$ is the class of languages accepted by uniform circuit
+families of polynomial size and depth $O(\log^i n)$, consisting of unbounded fan-in
+AND, and OR gates, along with NOT gates.
+
+\section{$\text{AC}^i[m]$}
+$\text{AC}^i[m]$ is defined as $\text{AC}^i$, but in addition unbounded fan-in $\text{MOD}_m$ gates
+are allowed, which output 1 iff the number of input wires carrying a value of 1 is a
+multiple of $m$.
+
+\section{$\text{ACC}^i$}
+$\text{ACC}^i = \bigcup_m \text{AC}^i[m]$. $\text{ACC}^0$ is contained in $\text{TC}^0$.
+
+\section{$\text{TC}^i$}
+$\text{TC}^i$ is the class of languages accepted by uniform circuit families 
+of polynomial size and depth $O(\log^i n)$, consisting of unbounded fan-in MAJORITY
+gates, along with NOT gates.
+
+Contained in $\text{NC}^{i + 1}$.
+
+\section{$\text{AC}^0$-reduction}
+\label{sec:ac0red}
+Definition IX.1.1 CN10. We say that a string function F
+(resp. a number function f) is $\text{AC}^0$ -reducible to L if there is a sequence
+of string functions $F_1, \dots, F_n (n \geqslant 0)$ such that
+$F_i$ is $\Sigma^B_0$-definable from $L \cup \{F_1, \dots , F_{i-1}\}$, for $i = 1, \dots, n$
+and F (resp. f) is $\Sigma^B_0$ -definable from $L \cup \{F_1, \dots , F_{i-1}\}$. A relation R is
+$\text{AC}^0$-reducible to L if there is a sequence $F_1, \dots, F_n$ as above, and R is
+represented by a $\Sigma^B_0(L \cup \{F_1, \dots, F_n\})$ formula.
+
+\section{LOGSPACE reduction}
+
+\section{P reduction}
+
