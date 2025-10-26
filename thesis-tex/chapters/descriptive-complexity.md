@@ -1,3 +1,5 @@
+TODO: istotne: https://plato.stanford.edu/archives/win2017/entries/computational-complexity/#DesCom
+
 # Descriptive Complexity: An Overview
 
 In descriptive complexity theory, an object (e.g. a set of graphs) in
