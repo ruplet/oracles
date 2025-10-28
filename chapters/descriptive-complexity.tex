@@ -1,9 +1,13 @@
 % ============================================
 % Descriptive Complexity Section (LaTeX)
-% todo: literature review https://plato.stanford.edu/archives/win2017/entries/computational-complexity/#DesCom
+% TODO: literature review https://plato.stanford.edu/archives/win2017/entries/computational-complexity/#DesCom
 % ============================================
 
 \section{Descriptive Complexity: An Overview}
+
+TODO: glue the below 2 paragraphs
+Descriptive complexity is a branch of complexity theory that uses sentences in finite model theory
+to describe computational queries.
 
 In descriptive complexity theory, an object (e.g., a set of graphs) in
 a complexity class is specified as the set of all finite models of a given
@@ -19,13 +23,13 @@ the weakest \emph{theory} required to define a function \emph{and prove its corr
 This perspective has led to elegant logical characterizations of many traditional
 complexity classes.
 
-As an example, Grädel’s Theorem in descriptive complexity states that
+As an example, Grädel's Theorem in descriptive complexity states that
 \(\mathsf{NL}\) is the class of finite models of the second-order Krom formulas
 \cite{GRADEL199235}.
-Here, a \emph{Krom formula} is a propositional
-formula in conjunctive normal form (CNF) where each clause contains at most
+Here, a \emph{Krom formula} is a formula in conjunctive normal form (CNF)
+where each clause contains at most
 two literals. The satisfiability problem for Krom formulas, Krom-SAT, is
-complete for \(\mathsf{coNL}\) (or equivalently \(\mathsf{NL}\), by the Immerman–Szelepcsényi
+complete for \(\mathsf{coNL}\) (or equivalently \(\mathsf{NL}\), by the Immerman-Szelepcsényi
 Theorem).
 
 Similarly, Grädel~\cite{GRADEL199235} shows that second-order Horn formulas
