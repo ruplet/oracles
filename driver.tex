@@ -1,6 +1,13 @@
-% main.tex
-\documentclass[12pt,oneside]{book}
-
+\documentclass[en]  {pracamgr}
+%include standalone forest, tikz figures
+\usepackage{standalone}
+\usepackage{biblatex}
+% \usepackage[backend=biber,style=authoryear]{biblatex}
+% recommended while using biblatex with babel
+\usepackage{csquotes}
+\usepackage{amsmath}
+% make references clickable, hide boxes around links
+\usepackage[hidelinks, pdfpagelabels]{hyperref}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
@@ -9,24 +16,20 @@
 \usepackage{microtype}
 \usepackage{hyperref}
 \usepackage{proof}
+\usepackage{enumitem}
 % theorem-like environments
 \usepackage{amsthm} % already present per your log; keep it
-\usepackage[backend=biber,style=authoryear]{biblatex}
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[chapter]
-\newtheorem{lemma}[theorem]{Lemma}
+% \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
 
 \theoremstyle{definition}
-% \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
-
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
-
 \theoremstyle{plain}
 \newtheorem{proposition}[definition]{Proposition}
-
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
@@ -51,25 +54,165 @@
 \addbibresource{chapters/linear-logic.bib}
 \addbibresource{chapters/bounded-arithmetic.bib}
 \addbibresource{chapters/descriptive-complexity.bib}
+\addbibresource{chapters/recursion-theory.bib}
+\addbibresource{chapters/prehistory-icc.bib}
+
+
+\newcommand{\llbracket}{\mathopen{[\![}}
+\newcommand{\rrbracket}{\mathclose{]\!]}}
+
+% \addbibresource{references.bib}
+
+% https://tex.stackexchange.com/a/404990
+% https://mirror.aarnet.edu.au/pub/CTAN/macros/latex/contrib/hyperref/doc/hyperref-doc.html#x1-140004
+\addto\extrasenglish{%
+  \def\chapterautorefname{Chapter}%
+}
+\addto\extrasenglish{%
+  \def\chaptername{Chapter}%
+}
+
+\addto\extrasenglish{%
+  \def\sectionautorefname{Section}%
+}
+\addto\extrasenglish{%
+  \def\sectionname{Section}%
+}
+\usepackage{subcaption}
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  frame=single,
+  breaklines=true,
+  literate={ą}{{\k a}}1
+  	  {Ą}{{\k A}}1
+           {ż}{{\. z}}1
+           {Ż}{{\. Z}}1
+           {ź}{{\' z}}1
+           {Ź}{{\' Z}}1
+           {ć}{{\' c}}1
+           {Ć}{{\' C}}1
+           {ę}{{\k e}}1
+           {Ę}{{\k E}}1
+           {ó}{{\' o}}1
+           {Ó}{{\' O}}1
+           {ń}{{\' n}}1
+           {Ń}{{\' N}}1
+           {ś}{{\' s}}1
+           {Ś}{{\' S}}1
+           {ł}{{\l}}1
+           {Ł}{{\L}}1
+}
+\usepackage{url}
+\usepackage{xr}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{forest}
+\usepackage{tikz-qtree}
+% https://tex.stackexchange.com/a/18927
+
+
+\usepackage{pdflscape}
+
+\usepackage[titletoc]{appendix}
+\usepackage{amsthm}
+
+
+\autor{Paweł Balawender}{429141}
+
+\title{Practical programming languages capturing complexity classes}
+\titlepl{Praktyczne języki programowania wyrażające klasy złożoności}
+% \tytulang{An implementation of a difference blabalizer based on the theory of $\sigma$ -- $\rho$ phetors}
+
+%kierunek: 
+% - matematyka, informacyka, ...
+% - Mathematics, Computer Science, ...
+\kierunek{Computer Science}
+
+% informatyka - nie okreslamy zakresu (opcja zakomentowana)
+% matematyka - zakres moze pozostac nieokreslony,
+% a jesli ma byc okreslony dla pracy mgr,
+% to przyjmuje jedna z wartosci:
+% {metod matematycznych w finansach}
+% {metod matematycznych w ubezpieczeniach}
+% {matematyki stosowanej}
+% {nauczania matematyki}
+% Dla pracy licencjackiej mamy natomiast
+% mozliwosc wpisania takiej wartosci zakresu:
+% {Jednoczesnych Studiow Ekonomiczno--Matematycznych}
+
+% \zakres{Tu wpisac, jesli trzeba, jedna z opcji podanych wyzej}
+
+% Praca wykonana pod kierunkiem:
+% (podać tytuł/stopień imię i nazwisko opiekuna
+% Instytut
+% ew. Wydział ew. Uczelnia (jeżeli nie MIM UW))
+\opiekun{dr hab. Paweł Parys, prof. UW\\
+  Institute of Informatics, University of Warsaw\\
+  }
+
+% miesiąc i~rok:
+\date{July~2025}
+
+%Podać dziedzinę wg klasyfikacji Socrates-Erasmus:
+\dziedzina{ 
+%11.0 Matematyka, Informatyka:\\ 
+%11.1 Matematyka\\ 
+%11.2 Statystyka\\ 
+11.3 Computer Science\\ 
+%11.4 Sztuczna inteligencja\\ 
+%11.5 Nauki aktuarialne\\
+%11.9 Inne nauki matematyczne i informatyczne
+}
+
+%Klasyfikacja tematyczna wedlug AMS (matematyka) lub ACM (informatyka)
+\klasyfikacja{F. Theory of computation\\
+  F.3. Logics and meanings of programs\\
+  F.3.3. Studies of program constructs}
+
+% Słowa kluczowe:
+\keywords{Implicit Computational Complexity, Bounded arithmetic, Lean 4}
+
+% Tu jest dobre miejsce na Twoje własne makra i~środowiska:
+% \newtheorem{defi}{Definicja}[section]
+\newcommand{\bcem}{\ensuremath{\text{BC}_{\varepsilon}^-}}
+\newtheorem{thm}{Theorem}
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{prop}{Proposition}
+
+% koniec definicji
 
 \begin{document}
-\frontmatter
+\hypersetup{pageanchor=false}
 \maketitle
+
+\begin{abstract}
+    In this work, I study what features does it make sense to add to a programming language
+    from the computational complexity perspective. Specifically, I focus on how these features can be used to capture various complexity classes, such as LOGSPACE, PTIME, and PSPACE. By analyzing the expressiveness and limitations of these features, I aim to provide insights into the design of programming languages that are both practical and theoretically sound.
+\end{abstract}
+
+\hypersetup{pageanchor=true}
 \tableofcontents
+%\listoffigures
+%\listoftables
 
-\mainmatter%
-
-\include{chapters/reductions}
-\include{chapters/descriptive-complexity}
-\include{chapters/curry-howard}
-\include{chapters/linear-logic}
 \include{chapters/recursion-theory}
-\include{chapters/bounded-arithmetic}
 
-\backmatter%
+\printbibliography[heading=bibintoc]
+% \begin{thebibliography}{99}
+% \addcontentsline{toc}{chapter}{Bibliografia}
 
-\printbibliography%
-% \bibliographystyle{plain}
-% \bibliography{refs}
+% \bibitem[Bea65]{beaman} Juliusz Beaman, \textit{Morbidity of the Jolly
+%     function}, Mathematica Absurdica, 117 (1965) 338--9.
+% \end{thebibliography}
 
 \end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% coding: latin-2
+%%% End:
