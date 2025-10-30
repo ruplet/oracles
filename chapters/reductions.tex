@@ -1,134 +1,134 @@
 \chapter{Reductions}
 \label{chap:reductions}
 A lot of the definitions below are from~\cite{10.5555/520668} and \cite{Immerman1999-IMMDC}.
-TODO: Add explicit definitions of $\text{AC}$, $\text{NC}$, and $\text{TC}$ (see Immerman Definition~5.17).
+TODO: Add explicit definitions of $\complexity{AC}$, $\complexity{NC}$, and $\complexity{TC}$ (see Immerman Definition~5.17).
 
 
 \section{Decisional and functional problems}
-When we hear a sentence like ``prime factorization is in NP'', it usually
-means that the \emph{decisional} version of this problem is decidable in NP.
+When we hear a sentence like ``prime factorization is in \complexity{NP}'', it usually
+means that the \emph{decisional} version of this problem is decidable in \complexity{NP}.
 
 But we actually usually want to reason about complexity of \emph{functions},
 and it appears to not be equivalent. E.g. \ the graph of exponential function is 
 decidable in polytime, but calculating exponential function is not.
 
 There is surprisingly little literature on functional complexity classes.
-An interesting case is TFNP, studied later in~\ref{sec:complexity-class-tfnp}.
+An interesting case is \complexity{TFNP}, studied later in~\ref{sec:complexity-class-tfnp}.
 Another interesting case are \emph{transductors}.
 
 \section{Uniformity}
-TODO: Clarify how DLOGTIME-uniformity, first-order reductions, logspace-uniformity, and $U_{E^*}$ relate, including the role of direct and extended connection languages.
+TODO: Clarify how \complexity{DLOGTIME}-uniformity, first-order reductions, logspace-uniformity, and $U_{E^*}$ relate, including the role of direct and extended connection languages.
 TODO: Provide a citation supporting that the choice among these uniformity notions does not affect the arguments below.
 When we do not say ``poly'', it means the class is uniform. Otherwise: Immerman showed that the class FO is the same as a uniform version
-of $\text{AC}^0$. Originally $\text{AC}^0$ was defined in its nonuniform version, which
-we shall refer to as $\text{AC}^0/\text{poly}$. A language in $\text{AC}^0/\text{poly}$ is specified by
+of $\complexityi{AC}{0}$. Originally $\complexityi{AC}{0}$ was defined in its nonuniform version, which
+we shall refer to as $\complexityi{AC}{0}/\text{poly}$. A language in $\complexityi{AC}{0}/\text{poly}$ is specified by
 a polynomial size bounded depth family $\langle C_n \rangle$ of Boolean circuits, where
 each circuit $C_n$ has $n$ input bits, and is allowed to have $\neg$-gates, as well as
 unbounded fan-in $\land$-gates and $\lor$-gates. In the uniform version, the circuit
 $C_n$ must be specified in a uniform way; for example one could require that
 $\langle C_n \rangle$ is in FO\@. See also Appendix~A.5.
 
-We say that a family of circuits in $\text{AC}^0$ is uniform if the function $n \rightarrow C_n$ is
-\emph{simple to compute}; there is a variety of notions of uniformity of $\text{AC}^0$ circuits.
+We say that a family of circuits in $\complexityi{AC}{0}$ is uniform if the function $n \rightarrow C_n$ is
+\emph{simple to compute}; there is a variety of notions of uniformity of $\complexityi{AC}{0}$ circuits.
 TODO: Explore these notions in Chapter~\ref{chap:reductions}. For the sake of this section we can assume
-that by $\text{AC}^0$ we denote the class of circuit families $C_n$, for which there is a 
-LOGSPACE Turing machine $M$ which on input $0^n$ outputs a \emph{standard representation}
+that by $\complexityi{AC}{0}$ we denote the class of circuit families $C_n$, for which there is a 
+\complexity{LOGSPACE} Turing machine $M$ which on input $0^n$ outputs a \emph{standard representation}
 
 
-\section{\texorpdfstring{$\text{NC}^i$}{NC\string^i}}
-$\text{AC}^i$ is the class of languages accepted by uniform circuit
+\section{\texorpdfstring{$\complexityi{NC}{i}$}{NC\string^i}}
+$\complexityi{AC}{i}$ is the class of languages accepted by uniform circuit
 families of polynomial size and depth $\bigO(\log^i n)$, consisting of unbounded fan-in
 AND, and OR gates, along with NOT gates.
 
-TODO: Confirm that this class is contained in $\text{AC}^i$.
+TODO: Confirm that this class is contained in $\complexityi{AC}{i}$.
 
-\subsection{NC0}
-For example, each output of an NC0 computable function can depend on only finitely many
-inputs. Thus, NC0 can't even compute an AND of all its inputs (in contrast, the unbounded
-fan-in AND is an AC0 function).
-\paragraph{TODO: Notes on $\text{NC}^0$.}
-TODO: Provide an introductory overview of the key references on $\text{NC}^0$ listed below.
+\subsection{\complexityi{NC}{0}}
+For example, each output of an \complexityi{NC}{0} computable function can depend on only finitely many
+inputs. Thus, \complexityi{NC}{0} can't even compute an AND of all its inputs (in contrast, the unbounded
+fan-in AND is an \complexityi{AC}{0} function).
+\paragraph{TODO: Notes on $\complexityi{NC}{0}$.}
+TODO: Provide an introductory overview of the key references on $\complexityi{NC}{0}$ listed below.
 \begin{itemize}
-\item TODO: Summarize the construction of one-way permutations in $\text{NC}^0$~\cite{10.1016/0020-01908790053-6}.
-\item TODO: Explain why all sets complete under $\text{AC}^0$ reductions are already complete under $\text{NC}^0$ reductions~\cite{10.1145/258533.258671,AGRAWAL1998127}.
-\item TODO: Describe Immerman's page~81 discussion of addition in $\text{NC}^0$ and MAJORITY in $\text{NC}^1$~\cite{Immerman1999-IMMDC}.
-\item TODO: Detail why addition and subtraction of binary numbers lies in $\text{AC}^0$~\cite{27676}.
+\item TODO: Summarize the construction of one-way permutations in $\complexityi{NC}{0}$~\cite{10.1016/0020-01908790053-6}.
+\item TODO: Explain why all sets complete under $\complexityi{AC}{0}$ reductions are already complete under $\complexityi{NC}{0}$ reductions~\cite{10.1145/258533.258671,AGRAWAL1998127}.
+\item TODO: Describe Immerman's page~81 discussion of addition in $\complexityi{NC}{0}$ and MAJORITY in $\complexityi{NC}{1}$~\cite{Immerman1999-IMMDC}.
+\item TODO: Detail why addition and subtraction of binary numbers lies in $\complexityi{AC}{0}$~\cite{27676}.
 \end{itemize}
 
 
-TODO: Clarify what notion of uniformity should be used for $\text{NC}^0$, given that DLOGTIME Turing machines can do things that cannot be done by
-any $\text{NC}^0$ circuit.
-\subsection{NC1}
+TODO: Clarify what notion of uniformity should be used for $\complexityi{NC}{0}$, given that \complexity{DLOGTIME} Turing machines can do things that cannot be done by
+any $\complexityi{NC}{0}$ circuit.
+\subsection{\complexityi{NC}{1}}
 \begin{itemize}
-\item TODO: Present the argument that division is in DLOGTIME-uniform $\text{NC}^1$~\cite{ITA_2001__35_3_259_0}.
-\item TODO: use DLOGTIME reductions for $\text{NC}^1$.
-\item TODO: Clarify how $U_{E^*}$ reductions relate to $\text{NC}^1$ and why $U_{E^*}$-uniform $\text{NC}^1$ equals ALOGTIME~\cite{RUZZO1981365}.
+\item TODO: Present the argument that division is in \complexity{DLOGTIME}-uniform $\complexityi{NC}{1}$~\cite{ITA_2001__35_3_259_0}.
+\item TODO: use \complexity{DLOGTIME} reductions for $\complexityi{NC}{1}$.
+\item TODO: Clarify how $U_{E^*}$ reductions relate to $\complexityi{NC}{1}$ and why $U_{E^*}$-uniform $\complexityi{NC}{1}$ equals \complexity{ALOGTIME}~\cite{RUZZO1981365}.
 \end{itemize}
 
 
-\section{\texorpdfstring{$\text{AC}^i$}{AC\string^i}}
-$\text{AC}^i$ is the class of languages accepted by uniform circuit
+\section{\texorpdfstring{$\complexityi{AC}{i}$}{AC\string^i}}
+$\complexityi{AC}{i}$ is the class of languages accepted by uniform circuit
 families of polynomial size and depth $\bigO(\log^i n)$, consisting of unbounded fan-in
 AND, and OR gates, along with NOT gates.
 
 Given $x, y, z$: binary representations of natural numbers,
-it is decidable in uniform AC0 if $x + y = z$, but it is not decidable 
-in AC0 if $x * y = z$.
+it is decidable in uniform \complexityi{AC}{0} if $x + y = z$, but it is not decidable 
+in \complexityi{AC}{0} if $x * y = z$.
 
 A family of circuits $\langle C_n \rangle_{n \in \mathbb{N}}$ for $n$:
-number of input bits is in AC0 iff every $C_n$ is of depth $\bigO(1)$ and polynomial 
+number of input bits is in \complexityi{AC}{0} iff every $C_n$ is of depth $\bigO(1)$ and polynomial 
 size w.r.t $n$, contains only unlimited-fanin AND gates and OR gates, and optional 
 NOT gates at the inputs. 
 
-\subsection{AC0}
+\subsection{\complexityi{AC}{0}}
 \begin{itemize}
-\item TODO: Summarize why addition is in $\text{AC}^0$~\cite{BussLectureNotes}.
-\item TODO: Explain the equivalence $\text{FO}[+, *] = \text{DLOGTIME}$-uniform $\text{AC}^0$ (see \url{https://complexityzoo.net/Complexity_Zoo:A#ac0}).
-\item TODO: Discuss the characterization of DLOGTIME-uniform $\text{AC}^0$ presented in~\cite{hella2023regularrepresentationsuniformtc0}.
-\item TODO: Review the definitions of $\text{AC}^0$, $\text{TC}^0$, FATC0, and FTC0 provided in~\cite{612309}.
+\item TODO: Summarize why addition is in $\complexityi{AC}{0}$~\cite{BussLectureNotes}.
+\item TODO: Explain the equivalence $\text{FO}[+, *] = \complexity{DLOGTIME}$-uniform $\complexityi{AC}{0}$ (see \url{https://complexityzoo.net/Complexity_Zoo:A#ac0}).
+\item TODO: Discuss the characterization of \complexity{DLOGTIME}-uniform $\complexityi{AC}{0}$ presented in~\cite{hella2023regularrepresentationsuniformtc0}.
+\item TODO: Review the definitions of $\complexityi{AC}{0}$, $\complexityi{TC}{0}$, FATC0, and FTC0 provided in~\cite{612309}.
 \end{itemize}
-TODO: Document the notions of uniformity of $\text{AC}^0$ outlined below.
+TODO: Document the notions of uniformity of $\complexityi{AC}{0}$ outlined below.
 \begin{enumerate}
 \item TODO: $U_{E^*}$-uniformity.
 \item TODO: uniform iff direct/extended connection language decidable by FO 
-\item TODO: uniform iff decidable by DLOGTIME random-access tm (checking whether the $i$th bit of the representation of the $n$th circuit is $b$).
+\item TODO: uniform iff decidable by \complexity{DLOGTIME} random-access tm (checking whether the $i$th bit of the representation of the $n$th circuit is $b$).
 \end{enumerate}
 
 
 
-\section{\texorpdfstring{$\text{AC}^i[m]$}{AC\string^i[m]}}
-$\text{AC}^i[m]$ is defined as $\text{AC}^i$, but in addition unbounded fan-in $\text{MOD}_m$ gates
+\section{\texorpdfstring{$\complexityi{AC}{i[m]}$}{AC\string^i[m]}}
+$\complexityi{AC}{i[m]}$ is defined as $\complexityi{AC}{i}$, but in addition unbounded fan-in $\text{MOD}_m$ gates
 are allowed, which output 1 iff the number of input wires carrying a value of 1 is a
 multiple of $m$.
 
-\section{\texorpdfstring{$\text{ACC}^i$}{ACC\string^i}}
-$\text{ACC}^i = \bigcup_m \text{AC}^i[m]$. $\text{ACC}^0$ is contained in $\text{TC}^0$.
+\section{\texorpdfstring{$\complexityi{ACC}{i}$}{\complexity{ACC}\string^i}}
+$\complexityi{ACC}{i} = \bigcup_m \complexityi{AC}{i[m]}$. $\complexityi{ACC}{0}$ is contained in $\complexityi{TC}{0}$.
 
-\section{\texorpdfstring{$\text{TC}^i$}{TC\string^i}}
-$\text{TC}^i$ is the class of languages accepted by uniform circuit families 
+\section{\texorpdfstring{$\complexityi{TC}{i}$}{TC\string^i}}
+$\complexityi{TC}{i}$ is the class of languages accepted by uniform circuit families 
 of polynomial size and depth $\bigO(\log^i n)$, consisting of unbounded fan-in MAJORITY
 gates, along with NOT gates.
 
-TODO: Check whether $\text{TC}^i$ is contained in $\text{NC}^{i + 1}$.
-\subsection{TC0}
+TODO: Check whether $\complexityi{TC}{i}$ is contained in $\complexityi{NC}{i + 1}$.
+\subsection{\complexityi{TC}{0}}
 \begin{itemize}
-\item TODO: Confirm that multiplication is in $\text{TC}^0$~\cite{BussLectureNotes}, and locate the supporting details in~\cite{doi:10.1137/0213028}.
+\item TODO: Confirm that multiplication is in $\complexityi{TC}{0}$~\cite{BussLectureNotes}, and locate the supporting details in~\cite{doi:10.1137/0213028}.
 \end{itemize}
 
 
-\section{P}
-TODO: Elaborate on poly-time relations and the use of first-order/$\text{AC}^0$ reductions when defining reductions between P-complete problems.
+\section{\complexity{P}}
+TODO: Elaborate on poly-time relations and the use of first-order/$\complexityi{AC}{0}$ reductions when defining reductions between \complexity{P}-complete problems.
 
-\subsection{inv-P}
-TODO: Expand on permutation-invariant P (P on unordered structures).
+\subsection{inv-\complexity{P}}
+TODO: Expand on permutation-invariant \complexity{P} (\complexity{P} on unordered structures).
 
-\section{FP}
+\section{\complexity{FP}}
 TODO: Detail the class of poly-time functions.
 
-\section{NP}
-TODO: Clarify that the reductions used here are precisely the class FL of logspace reductions.
+\section{\complexity{NP}}
+TODO: Clarify that the reductions used here are precisely the class \complexity{FL} of logspace reductions.
 
-\section{FNP}
+\section{\complexity{FNP}}
 \begin{itemize}
 \item TODO: Extract the key points from the discussion at \url{https://cs.stackexchange.com/questions/71617/function-problems-and-fp-subseteq-fnp}.
 \item TODO: Summarize the insights from \url{https://cstheory.stackexchange.com/questions/37812/what-exactly-are-the-classes-fp-fnp-and-tfnp}.
@@ -136,32 +136,32 @@ TODO: Clarify that the reductions used here are precisely the class FL of logspa
 \end{itemize}
 
 
-\section{TFNP}
+\section{\complexity{TFNP}}
 \label{sec:complexity-class-tfnp}
 
-\section{\texorpdfstring{$\text{AC}^0$-reduction}{AC\string^0-reduction}}
+\section{\texorpdfstring{$\complexityi{AC}{0}$-reduction}{AC\string^0-reduction}}
 \label{sec:ac0red}
 Definition IX.1.1 CN10. We say that a string function F
-(resp. \  a number function f) is $\text{AC}^0$-reducible to $L$ if there is a sequence
+(resp. \  a number function f) is $\complexityi{AC}{0}$-reducible to $L$ if there is a sequence
 of string functions $F_1, \dots, F_n (n \geqslant 0)$ such that
 $F_i$ is $\Sigma^B_0$-definable from $L \cup \{F_1, \dots , F_{i-1}\}$, for $i = 1, \dots, n$
 and F (resp. \ f) is $\Sigma^B_0$-definable from $L \cup \{F_1, \dots , F_{i-1}\}$. A relation R is
-$\text{AC}^0$-reducible to $L$ if there is a sequence $F_1, \dots, F_n$ as above, and R is
+$\complexityi{AC}{0}$-reducible to $L$ if there is a sequence $F_1, \dots, F_n$ as above, and R is
 represented by a $\Sigma^B_0(L \cup \{F_1, \dots, F_n\})$ formula.
 
 In Chapter~2 of~\cite{edbd4873718c414f90d22dadf0dba2b1} there is an extensive discussion about
-the different subtleties of defining $\text{AC}^0$ functions and numerous different characterizations
-of Dlogtime-uniform $\text{AC}^0$-computable functions.
+the different subtleties of defining $\complexityi{AC}{0}$ functions and numerous different characterizations
+of Dlogtime-uniform $\complexityi{AC}{0}$-computable functions.
 
 
-\section{\texorpdfstring{$\text{NC}^0$}{NC\string^0} reductions}
-In~\cite{edbd4873718c414f90d22dadf0dba2b1}, it is shown that, surprisingly, all known NP-complete problems
-are complete under $\text{NC}^0/poly$ reductions already. Another candidate for a problem that is NP-complete
+\section{\texorpdfstring{$\complexityi{NC}{0}$}{NC\string^0}} reductions
+In~\cite{edbd4873718c414f90d22dadf0dba2b1}, it is shown that, surprisingly, all known \complexity{NP}-complete problems
+are complete under $\complexityi{NC}{0/poly}$ reductions already. Another candidate for a problem that is \complexity{NP}-complete
 under poly-time reductions but not under logspace reductions is discussed in~\cite{18631}.
 
-\section{DLOGTIME-uniformity}
+\section{\complexity{DLOGTIME}-uniformity}
 \begin{itemize}
-\item TODO: Work out the example of a DLOGTIME reduction showing that tree isomorphism for string-represented trees is $\text{NC}^1$-complete~\cite{694595}.
+\item TODO: Work out the example of a \complexity{DLOGTIME} reduction showing that tree isomorphism for string-represented trees is $\complexityi{NC}{1}$-complete~\cite{694595}.
 \end{itemize}
 
 
@@ -185,34 +185,34 @@ TODO: Provide Definition~11.7 describing first-order projections.
 \section{Quantifier-free fo-projections}
 TODO: Summarize quantifier-free FO-projections (QFPs).
 
-\section{LOGSPACE reduction}
+\section{\complexity{LOGSPACE} reduction}
 \begin{itemize}
-\item TODO: reductions for L: first-order reductions (see~\cite[Section~5.1]{Immerman1999-IMMDC}).
-\item TODO: Revisit why USTCONN is complete for L.
-\item TODO: Example programming language characterizing L: finite number of variables each bounded by $n$.
+\item TODO: reductions for \complexity{L}: first-order reductions (see~\cite[Section~5.1]{Immerman1999-IMMDC}).
+\item TODO: Revisit why USTCONN is complete for \complexity{L}.
+\item TODO: Example programming language characterizing \complexity{L}: finite number of variables each bounded by $n$.
 \item TODO: Explore the alternative characterization using a finite number of input pointers, relating it to multi-head two-way automata~\cite{423885},~\cite{10.1007/BF00289513}.
 \end{itemize}
 
-\section{P reduction}
-TODO: Outline the notion of P-reductions to be used later in this chapter.
+\section{\complexity{P} reduction}
+TODO: Outline the notion of \complexity{P}-reductions to be used later in this chapter.
 
 \section{Complete problems}
 \label{sec:complete-problems}
-TODO: (this is Cook, Nguyen somewher) Verify that for every class $C \in \{\text{AC}^0, \text{L}, \text{P}\}$ there exists a problem $F$ that is $C$-complete under $\text{AC}^0$ reductions.
-TODO: This means $\text{AC}^0$ reductions coincide with the class of $\mathrm{FAC}^0$ functions.
+TODO: (this is Cook, Nguyen somewher) Verify that for every class $C \in \{\complexityi{AC}{0}, \complexity{L}, \complexity{P}\}$ there exists a problem $F$ that is $C$-complete under $\complexityi{AC}{0}$ reductions.
+TODO: This means $\complexityi{AC}{0}$ reductions coincide with the class of $\complexityi{FAC}{0}$ functions.
 
 \subsection{Functional complexity classes and completeness}
-TODO: Determine whether showing $\text{L}$-completeness suffices for $\text{FL}$-completeness, using the identity $\text{FL} = \text{L}^* = \text{L} + \text{NC}^1$ reductions~\cite[Proposition~4.1]{COOK19852}.
+TODO: Determine whether showing $\complexity{L}$-completeness suffices for $\complexity{FL}$-completeness, using the identity $\complexity{FL} = \complexityi{L}{*} = \complexity{L} + \complexityi{NC}{1}$ reductions~\cite[Proposition~4.1]{COOK19852}.
 
 \section{Which class we will focus on?}
 \label{sec:classes-of-interest}
-For chapters about ICC we will focus on L and P, as these are the most abundant reductions,
+For chapters about ICC we will focus on \complexity{L} and \complexity{P}, as these are the most abundant reductions,
 and other classes might have problems like in the below subsections.
 Later, in the chapter about bounded arithmetic we will find that we actually want to care
-about characterization of $\text{AC}^0$-reductions.
+about characterization of $\complexityi{AC}{0}$-reductions.
 
-TODO: Why P and L are important and robust complexity classes
-TODO: because they are the smallest class containing linear time and closed under subroutines is P. The smallest class containing log space and closed under subroutines is still log space. So P and L are the smallest robust classes for time and space respectively which is why they feel right for modeling efficient computation.  
+TODO: Why \complexity{P} and \complexity{L} are important and robust complexity classes
+TODO: because they are the smallest class containing linear time and closed under subroutines is \complexity{P}. The smallest class containing log space and closed under subroutines is still log space. So \complexity{P} and \complexity{L} are the smallest robust classes for time and space respectively which is why they feel right for modeling efficient computation.  
 TODO: source: \url{https://cstheory.stackexchange.com/a/3448/71933}
 
 \subsection{Fine-grained complexity theory}
@@ -221,11 +221,11 @@ as the field of fine-grained complexity is relatively modern and little or none 
 characterizations of these classes have been found as of writing this work.
 \begin{itemize}
 \item TODO: Review Neil D. Jones's ``Constant Time Factors Do Matter'' for its discussion of NLIN-complete problems (\url{https://dl.acm.org/doi/pdf/10.1145/167088.167244}).
-\item TODO: Summarize the insights from Gurevich and Shelah's ``Nearly Linear Time'' concerning the definition of $\mathrm{DTIME}(n)$ and nearly-linear-time-complete problems under QL reductions (\url{https://link.springer.com/content/pdf/10.1007/3-540-51237-3_10.pdf}).
+\item TODO: Summarize the insights from Gurevich and Shelah's ``Nearly Linear Time'' concerning the definition of $\complexity{DTIME}(n)$ and nearly-linear-time-complete problems under QL reductions (\url{https://link.springer.com/content/pdf/10.1007/3-540-51237-3_10.pdf}).
 \end{itemize}
 
 \subsection{Semantic and syntactic complexity classes}
-TODO: Investigate which classes can realistically be characterized, likely excluding BPP and permutation-invariant PTIME (see \url{https://mathoverflow.net/questions/35236/is-there-a-syntactic-characterization-for-bpp-bqp-or-qma}).
+TODO: Investigate which classes can realistically be characterized, likely excluding \complexity{BPP} and permutation-invariant \complexity{PTIME} (see \url{https://mathoverflow.net/questions/35236/is-there-a-syntactic-characterization-for-bpp-bqp-or-qma}).
 \begin{itemize}
 
 \item TODO: Extract key questions and scenarios from Anuj Dawar's ``On Syntactic and Semantic Complexity Classes'' (Spitalfields Day, Isaac Newton Institute, 9 January 2012), including the ``Two Possible Worlds'' discussion (\url{http://web.archive.org/web/20250428195619/https://www.frontiersinai.com/turingfiles/January/Dawar,%20A.pdf}).

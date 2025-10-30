@@ -9,7 +9,7 @@ While not the primary focus of this work, the field of recursion theory develope
 that later became foundational for ICC\@. An important formal system studied there is \emph{primitive recursion}.
 
 \begin{definition}[Primitive recursive functions]
-\(\mathsf{PR}\) is the smallest class of functions containing \(\text{(i)}\)--\(\text{(iii)}\) and closed under \(\text{(iv)}\), \(\text{(v)}\).
+\(\complexity{PR}\) is the smallest class of functions containing \(\text{(i)}\)--\(\text{(iii)}\) and closed under \(\text{(iv)}\), \(\text{(v)}\).
 \begin{enumerate}[label=(\roman*)]
 \item \textbf{(Constants)} For every \(n\in\mathbb{N}\) and \(k\ge 0\), the \(k\)-ary constant function
       \(c_{n}^{(k)}(\vec x)=n\).
@@ -17,11 +17,11 @@ that later became foundational for ICC\@. An important formal system studied the
 \item \textbf{(Projections)} For \(k\ge 1\) and \(1\le i\le k\),
       \(\pi_i^{(k)}(x_1,\dots,x_k)=x_i\).
 \item[(iv)] \textbf{(Composition)} If \(h:\mathbb{N}^m\to\mathbb{N}\) and
-      \(g_1,\dots,g_m:\mathbb{N}^k\to\mathbb{N}\) are in \(\mathsf{PR}\), then
-      \(f(\vec x)=h\big(g_1(\vec x),\dots,g_m(\vec x)\big)\) is in \(\mathsf{PR}\).
+      \(g_1,\dots,g_m:\mathbb{N}^k\to\mathbb{N}\) are in \(\complexity{PR}\), then
+      \(f(\vec x)=h\big(g_1(\vec x),\dots,g_m(\vec x)\big)\) is in \(\complexity{PR}\).
 \item[(v)] \textbf{(Primitive recursion)} If \(g:\mathbb{N}^k\to\mathbb{N}\) and
-      \(h:\mathbb{N}^{k+2}\to\mathbb{N}\) are in \(\mathsf{PR}\), then the unique
-      \(f:\mathbb{N}^{k+1}\to\mathbb{N}\) is in \(\mathsf{PR}\) with:
+      \(h:\mathbb{N}^{k+2}\to\mathbb{N}\) are in \(\complexity{PR}\), then the unique
+      \(f:\mathbb{N}^{k+1}\to\mathbb{N}\) is in \(\complexity{PR}\) with:
       \[
       f(0,\vec x)=g(\vec x),\qquad
       f(S(y),\vec x)=h\big(y,\,f(y,\vec x),\,\vec x\big).
@@ -102,26 +102,26 @@ For the details of the historical origins, consult~\cite{Adams2011}.
 % Earlier work hinted at the programme.
 % Immerman characterised polynomial-time relations in 1987 without explicit
 % size bounds~\cite{doi:10.1137/0216051}.
-% Compton and LaFlamme~\cite{COMPTON1990241} captured uniform \(\mathsf{NC}^1\),
-% and Allen~\cite{ALLEN19911} uniform \(\mathsf{NC}\), though their definitions
+% Compton and LaFlamme~\cite{COMPTON1990241} captured uniform \(\complexityi{NC}{1}\),
+% and Allen~\cite{ALLEN19911} uniform \(\complexity{NC}\), though their definitions
 % still concealed polynomial bounds and targeted relations instead of functions.
 % Other precursors include Gurevich's algebraic view of polynomial-time
 % functions~\cite{4568079} and Cobham's seminal 1964 characterisation of
-% \(\mathsf{FP}\)~\cite{Cobham1964-COBTIC}, both of which retained explicit
+% \(\complexity{FP}\)~\cite{Cobham1964-COBTIC}, both of which retained explicit
 % polynomial constraints.
 % For a broader literature survey, see Bloch~\cite{bloch1994function}.
 
 % Since the 1990s numerous classes have been captured implicitly; see, for
 % example, Niggl~\cite{NIGGL201047} and Oitavem et al.~\cite{10.1016/j.ic.2015.12.009}
-% for overviews of \(\mathsf{FPTIME}\) and \(\mathsf{FNC}\) characterisations.
-% Jones connected fragments of Lisp to the decisive classes \(\mathsf{L}\) and
-% \(\mathsf{P}\)~\cite{JONES1999151}; Bonfante extended the analysis~\cite{10.1007/11784180_8};
+% for overviews of \(\complexity{FPTIME}\) and \(\complexity{FNC}\) characterisations.
+% Jones connected fragments of Lisp to the decisive classes \(\complexity{L}\) and
+% \(\complexity{P}\)~\cite{JONES1999151}; Bonfante extended the analysis~\cite{10.1007/11784180_8};
 % Kristiansen and Voda~\cite{kristiansenvoda2005} investigated both imperative
 % and functional languages whose fragments yield hierarchies containing logspace,
 % linear space, polynomial time, and polynomial space.
 % Related contributions include work by Kristiansen~\cite{kristiansen2005neat},
 % Oitavem~\cite{Oitavem+2010+355+362}, and many others.
-% Because this thesis concentrates on \(\mathsf{FPTIME}\) and \(\mathsf{FLOGSPACE}\),
+% Because this thesis concentrates on \(\complexity{FPTIME}\) and \(\complexity{FLOGSPACE}\),
 % these classes receive focused attention below.
 
 % Accessible introductions to ICC include the three-part presentation by
@@ -143,11 +143,11 @@ For the details of the historical origins, consult~\cite{Adams2011}.
 
 % Primitive recursion and the Grzegorczyk hierarchy already stratify total
 % functions by growth rate, yet they do not align neatly with standard classes
-% such as \(\mathsf{P}\) or \(\mathsf{L}\).
+% such as \(\complexity{P}\) or \(\complexity{L}\).
 % The challenge is to refine recursion principles so that they correspond exactly
 % to natural complexity classes.
 
-% \subsection{Bellantoni and Cook's Safe Recursion for \texorpdfstring{\(\mathsf{FP}\)}{FP} and \texorpdfstring{\(\mathsf{FL}\)}{FL}}
+% \subsection{Bellantoni and Cook's Safe Recursion for \texorpdfstring{\(\complexity{FP}\)}{\complexity{FP}} and \texorpdfstring{\(\complexity{FL}\)}{\complexity{FL}}}
 % Bellantoni and Cook introduced a function algebra \(\mathcal{B}\) whose key
 % innovation is the separation of arguments into \emph{normal} inputs (written to
 % the left of a semicolon) and \emph{safe} inputs (to the right).
@@ -285,7 +285,7 @@ For the details of the historical origins, consult~\cite{Adams2011}.
   
 
 % in neergaard's logic for logspace, we cannot use the result of computation after doing an `if` on the result.
-% this 'affinity' seems to be the difference between algebra for FL and for FP.
+% this 'affinity' seems to be the difference between algebra for \complexity{FL} and for \complexity{FP}.
 
 % but: we know a similar picture. in proof theory, we have dag-like and tree-like proof systems,
 % and the difference between them is than in dag-like proof systems we can name a fragment of proof
@@ -293,10 +293,10 @@ For the details of the historical origins, consult~\cite{Adams2011}.
 % exponential difference of size of proofs of propositional tautologies in these two
 
 
-% \section{Cobham's Characterisation of \texorpdfstring{\(\mathsf{FP}\)}{FP}}
+% \section{Cobham's Characterisation of \texorpdfstring{\(\complexity{FP}\)}{\complexity{FP}}}
 % \label{sec:cobham-characterisation-stub}
 % \textbf{Stub.} Detailed material on Cobham's function algebra for
-% \(\mathsf{FP}\) will be added once the supporting definitions are prepared.
+% \(\complexity{FP}\) will be added once the supporting definitions are prepared.
 
 % \section{Logspace-Oriented Developments}
 % Lind developed early logspace-oriented function algebras in 1973 and
@@ -307,7 +307,7 @@ For the details of the historical origins, consult~\cite{Adams2011}.
 % and Jones explored tail-recursive read-only programs~\cite{JONES1999151}.
 % Murawski and Ong introduced \(BC^{-}\) in 2000~\cite{murawski2000can},
 % with further refinements in 2004~\cite{MURAWSKI2004197}, and
-% Møller-Neergaard proved \(BC\varepsilon^{-} = \mathsf{FL}\) in the same
+% Møller-Neergaard proved \(BC\varepsilon^{-} = \complexity{FL}\) in the same
 % period.
 % Hofmann summarised logspace languages in 2006~\cite{hofmann2006logspace},
 % and Schöpp traced the history of logspace characterisations~\cite{schoepp2006spaceefficiency}.

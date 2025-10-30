@@ -15,6 +15,7 @@
 \usepackage{microtype}
 \usepackage{proof}
 \usepackage{enumitem}
+\usepackage{xspace}
 % theorem-like environments
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[chapter]
@@ -174,14 +175,8 @@
 
 % We will not use `complexity' CTAN package, because it is wacky
 % https://tex.stackexchange.com/q/391604
-\newcommand{\class}[1]{\mathsf{#1}}
-\newcommand{\NC}{\class{NC}}
-\newcommand{\AC}{\class{AC}}
-\newcommand{\TC}{\class{TC}}
-\newcommand{\Ptime}{\class{P}}
-\newcommand{\NP}{\class{NP}}
-\newcommand{\Lspace}{\class{L}}
-\newcommand{\NL}{\class{NL}}
+\newcommand{\complexity}[1]{\ensuremath{\mathsf{#1}}\xspace}
+\newcommand{\complexityi}[2]{\ensuremath{\mathsf{#1}^{#2}}\xspace}
 
 
 % koniec definicji

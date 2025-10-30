@@ -9,8 +9,8 @@
 \section{The zoo of arithmetical theories}
 Historically, the single-sorted equational PV theory~\cite{10.1145/800116.803756} was
 the first designed to capture polynomial time reasoning.
-Its language contains one symbol for every function in FP --- functions are mapped to symbols
-using Cobham's original characterization of FP with explicit bounds, as mentioned in~\ref{sec:cobham-characterization}.
+Its language contains one symbol for every function in \complexity{FP} --- functions are mapped to symbols
+using Cobham's original characterization of \complexity{FP} with explicit bounds, as mentioned in~\ref{sec:cobham-characterization}.
 
 We also have Buss' $S^1_2$ theory. Apparently, to characterize below-polytime classes, a split to two sorts (strings and indices)
 is necessary. This is the approach of Cook and Nguyen 2010, who introduce $V^i$ theories, which we focus on here.
@@ -146,7 +146,7 @@ For all formal statements and proofs, we refer to Chapter~4.
 
 \section{Definability of functions in \texorpdfstring{$V^0$}{V0}}
 Our ultimate goal is to say that a function $f$ is in C.
-As we observed in~\ref{sec:complete-problems}, AC0 reductions are enough for us
+As we observed in~\ref{sec:complete-problems}, \complexityi{AC}{0} reductions are enough for us
 and these are expressed by V0 theory. Now we bring up the definitions that make this precise.
 
 \begin{definition}[V.4.1 (Two-Sorted Definability, syntactic)]
@@ -194,9 +194,9 @@ Then any function that is \(\Sigma^B_0\)\textit{-definable from} \(L\) is
 \end{corollary}
 
 
-% - Corollary V.4.11. Every function in FAC0 is ΣB0 -definable in V0.
+% - Corollary V.4.11. Every function in \complexityi{FAC}{0} is ΣB0 -definable in V0.
 \begin{proposition}[V.4.7]
-A string function is \(\Sigma^B_0\)\textit{-bit-definable} if and only if it is in \(\mathsf{FAC}^0\).
+A string function is \(\Sigma^B_0\)\textit{-bit-definable} if and only if it is in \(\complexityi{FAC}{0}\).
 \end{proposition}
 
 \begin{corollary}[V.2.4]
@@ -225,7 +225,7 @@ lengths.
  
 % Find a paper which requires formalization of 'provability in $V^i'$ to construct Hoare semantics
 
-% proposition 5.32 a string function is sigma0b-bit-definable iff it is in FAC0
+% proposition 5.32 a string function is sigma0b-bit-definable iff it is in \complexityi{FAC}{0}
 % follows from def 5.32, corollary 5.17
 % def 5.32:
 % for Phi: set of formulas (e.g. sigma0b)
@@ -233,16 +233,16 @@ lengths.
 % F(x, Y)(i) iff i < t(x, Y) and phi(i, x, Y)
 % the RHS of this is a bit-defining axiom of F.
 
-% corollary 5.17: string function is in FAC0 iff is p-bounded
+% corollary 5.17: string function is in \complexityi{FAC}{0} iff is p-bounded
 % and its bit graph is represented by a sigma0b formula
 % the same holds for a  number function, with graph replacing bit-graph
 % proof: follows from sigma0b representation theorem 4.17
 
-% theorem 4.17: relation R(x, X) is in AC0 iff it is represented by some Sigma0b formula phi(x,X)
+% theorem 4.17: relation R(x, X) is in \complexityi{AC}{0} iff it is represented by some Sigma0b formula phi(x,X)
 % proof: like theorem 3.58
 
-% there are functions whose graphs are in AC0 (representable by sigma0b formulas),
-% but which do not belong to FAC0 (section: proof of witnessing theorem for v0)
+% there are functions whose graphs are in \complexityi{AC}{0} (representable by sigma0b formulas),
+% but which do not belong to \complexityi{FAC}{0} (section: proof of witnessing theorem for v0)
 
 % theorem 3.58.
 % one side: compline LTH turing machines to formulas. we're not going to do that.

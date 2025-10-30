@@ -12,7 +12,7 @@ BLOOP, Hostadter
 \subsection*{A. Subrecursive hierarchies \& loop programs (explicit growth controls)}
 \textbf{Why not full ICC?} These lines of work stratify total functions by growth-rate
 (e.g., Grzegorczyk hierarchy) or by syntactic loop depth; they do not align cleanly with
-natural complexity classes such as \(\mathsf{P}\) or \(\mathsf{L}\), and typically rely on overt
+natural complexity classes such as \(\complexity{P}\) or \(\complexity{L}\), and typically rely on overt
 bounds or syntactic depth measures rather than a machine-free, class-exact discipline.
 
 \noindent\textbf{Representative papers:}
@@ -34,7 +34,7 @@ program/logic discipline that \emph{guarantees} a class without naming time/spac
 \end{itemize}
 
 \subsection*{C. Function algebras with \emph{explicit} polynomial bounds}
-\textbf{Why not full ICC?} Cobham’s and follow-ups capture \(\mathsf{FP}\) but do so by \emph{building in}
+\textbf{Why not full ICC?} Cobham's and follow-ups capture \(\complexity{FP}\) but do so by \emph{building in}
 polynomial-bounded schemata or growth predicates; the bound is explicit, not implicit.
 
 \noindent\textbf{Representative papers:}
@@ -58,9 +58,9 @@ They do not, by themselves, give a function algebra/typing discipline that defin
 \end{itemize}
 
 \subsection*{E. Early bounded arithmetic \& PV (polytime ``built in'')}
-\textbf{Why not full ICC?} PV and Buss’s bounded arithmetics are foundational for feasible
+\textbf{Why not full ICC?} PV and Buss's bounded arithmetics are foundational for feasible
 reasoning, but they \emph{bake in} polytime via function symbols/axioms and proof theory,
-rather than giving a syntax/typing or recursion discipline that enforces \(\mathsf{P}\) without
+rather than giving a syntax/typing or recursion discipline that enforces \(\complexity{P}\) without
 naming time.
 
 \noindent\textbf{Representative papers/books:}
@@ -70,7 +70,7 @@ naming time.
 \end{itemize}
 
 \subsection*{F. Early logspace function characterisations (explicit/logical constraints)}
-\textbf{Why not full ICC?} Early \(\mathsf{L}\)-oriented work characterises low space using explicit resource
+\textbf{Why not full ICC?} Early \(\complexity{L}\)-oriented work characterises low space using explicit resource
 bounds or logics over relations; again, not yet an implicit \emph{functional} discipline.
 
 \noindent\textbf{Representative papers:}
@@ -82,12 +82,12 @@ bounds or logics over relations; again, not yet an implicit \emph{functional} di
 \subsection*{G. Circuit-depth algebras/logics (toward low-level uniformity)}
 \textbf{Why not full ICC?} Elegant and close to implicit viewpoints, but generally target relations
 (or need BIT/order/uniformity assumptions) and still stop short of a pure function-algebra
-or type-theoretic ICC account for \(\mathsf{NC}\)/\(\mathsf{NC}^1\).
+or type-theoretic ICC account for \(\complexity{NC}\)/\(\complexityi{NC}{1}\).
 
 \noindent\textbf{Representative papers:}
 \begin{itemize}
-  \item Compton--Laflamme, \emph{An Algebra and a Logic for \(\mathsf{NC}^{1}\)} \cite{ComptonLaflamme1990}.
-  \item Allen, \emph{Arithmetizing Uniform \(\mathsf{NC}\)} \cite{Allen1991}.
+  \item Compton--Laflamme, \emph{An Algebra and a Logic for \(\complexityi{NC}{1}\)} \cite{ComptonLaflamme1990}.
+  \item Allen, \emph{Arithmetizing Uniform \(\complexity{NC}\)} \cite{Allen1991}.
 \end{itemize}
 
 % End of prehistory catalog
