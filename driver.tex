@@ -5,7 +5,6 @@
 % \usepackage[backend=biber,style=authoryear]{biblatex}
 % recommended while using biblatex with babel
 \usepackage{csquotes}
-\usepackage{amsmath}
 % make references clickable, hide boxes around links
 \usepackage[hidelinks, pdfpagelabels]{hyperref}
 \usepackage[T1]{fontenc}
@@ -14,11 +13,9 @@
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{mathtools}
 \usepackage{microtype}
-\usepackage{hyperref}
 \usepackage{proof}
 \usepackage{enumitem}
 % theorem-like environments
-\usepackage{amsthm} % already present per your log; keep it
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[chapter]
 % \newtheorem{lemma}[theorem]{Lemma}
@@ -39,16 +36,7 @@
 \makeatletter
 \pretocmd{\maketitle}{\hypersetup{pageanchor=false}}{}{}
 \apptocmd{\tableofcontents}{\clearpage\hypersetup{pageanchor=true}}{}{}
-\makeatletter
-
-
-% theorem-like environments
-\theoremstyle{remark}
-% \newtheorem{remark}{Remark}
-
-\title{Programming languages..}
-\author{Pawel Balawender}
-\date{\today}
+\makeatother
 
 \addbibresource{chapters/reductions.bib}
 \addbibresource{chapters/linear-logic.bib}
@@ -178,9 +166,6 @@
 % Tu jest dobre miejsce na Twoje własne makra i~środowiska:
 % \newtheorem{defi}{Definicja}[section]
 \newcommand{\bcem}{\ensuremath{\text{BC}_{\varepsilon}^-}}
-\newtheorem{thm}{Theorem}
-\newtheorem{lemma}[thm]{Lemma}
-\newtheorem{prop}{Proposition}
 
 % koniec definicji
 
@@ -189,8 +174,12 @@
 \maketitle
 
 \begin{abstract}
-    In this work, I study what features does it make sense to add to a programming language
-    from the computational complexity perspective. Specifically, I focus on how these features can be used to capture various complexity classes, such as LOGSPACE, PTIME, and PSPACE. By analyzing the expressiveness and limitations of these features, I aim to provide insights into the design of programming languages that are both practical and theoretically sound.
+    In this work, I study which features make sense to add to a programming language
+    from the computational complexity perspective. Specifically, 
+    I focus on how these features can be used to capture various complexity classes, 
+    such as LOGSPACE, PTIME, and PSPACE\@. By analyzing the expressiveness and limitations 
+    of these features, I aim to provide insights into the design of programming languages
+     that are both practical and theoretically sound.
 \end{abstract}
 
 \hypersetup{pageanchor=true}
@@ -198,6 +187,7 @@
 %\listoffigures
 %\listoftables
 
+\include{chapters/reductions}
 \include{chapters/recursion-theory}
 
 \printbibliography[heading=bibintoc]
@@ -214,5 +204,5 @@
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: t
-%%% coding: latin-2
+%%% coding: utf-8
 %%% End:
