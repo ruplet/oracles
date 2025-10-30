@@ -142,10 +142,10 @@ TODO: Clarify that the reductions used here are precisely the class FL of logspa
 \section{\texorpdfstring{$\text{AC}^0$-reduction}{AC\string^0-reduction}}
 \label{sec:ac0red}
 Definition IX.1.1 CN10. We say that a string function F
-(resp. a number function f) is $\text{AC}^0$-reducible to $L$ if there is a sequence
+(resp. \  a number function f) is $\text{AC}^0$-reducible to $L$ if there is a sequence
 of string functions $F_1, \dots, F_n (n \geqslant 0)$ such that
 $F_i$ is $\Sigma^B_0$-definable from $L \cup \{F_1, \dots , F_{i-1}\}$, for $i = 1, \dots, n$
-and F (resp. f) is $\Sigma^B_0$-definable from $L \cup \{F_1, \dots , F_{i-1}\}$. A relation R is
+and F (resp. \ f) is $\Sigma^B_0$-definable from $L \cup \{F_1, \dots , F_{i-1}\}$. A relation R is
 $\text{AC}^0$-reducible to $L$ if there is a sequence $F_1, \dots, F_n$ as above, and R is
 represented by a $\Sigma^B_0(L \cup \{F_1, \dots, F_n\})$ formula.
 
@@ -190,7 +190,7 @@ TODO: Summarize quantifier-free FO-projections (QFPs).
 \item TODO: reductions for L: first-order reductions (see~\cite[Section~5.1]{Immerman1999-IMMDC}).
 \item TODO: Revisit why USTCONN is complete for L.
 \item TODO: Example programming language characterizing L: finite number of variables each bounded by $n$.
-\item TODO: Explore the alternative characterization using a finite number of input pointers, relating it to multi-head two-way automata~\cite{423885,10.1007/BF00289513}.
+\item TODO: Explore the alternative characterization using a finite number of input pointers, relating it to multi-head two-way automata~\cite{423885},~\cite{10.1007/BF00289513}.
 \end{itemize}
 
 \section{P reduction}
@@ -216,7 +216,7 @@ TODO: because they are the smallest class containing linear time and closed unde
 TODO: source: \url{https://cstheory.stackexchange.com/a/3448/71933}
 
 \subsection{Fine-grained complexity theory}
-We will not realistically capture $\text{TIME}(O(n))$ or anything of this kind,
+We will not realistically capture $\text{TIME}(\bigO(n))$ or anything of this kind,
 as the field of fine-grained complexity is relatively modern and little or none interesting
 characterizations of these classes have been found as of writing this work.
 \begin{itemize}
@@ -227,6 +227,7 @@ characterizations of these classes have been found as of writing this work.
 \subsection{Semantic and syntactic complexity classes}
 TODO: Investigate which classes can realistically be characterized, likely excluding BPP and permutation-invariant PTIME (see \url{https://mathoverflow.net/questions/35236/is-there-a-syntactic-characterization-for-bpp-bqp-or-qma}).
 \begin{itemize}
+
 \item TODO: Extract key questions and scenarios from Anuj Dawar's ``On Syntactic and Semantic Complexity Classes'' (Spitalfields Day, Isaac Newton Institute, 9 January 2012), including the ``Two Possible Worlds'' discussion (\url{http://web.archive.org/web/20250428195619/https://www.frontiersinai.com/turingfiles/January/Dawar,%20A.pdf}).
 
 \end{itemize}

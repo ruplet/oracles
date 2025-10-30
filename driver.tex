@@ -167,6 +167,23 @@
 % \newtheorem{defi}{Definicja}[section]
 \newcommand{\bcem}{\ensuremath{\text{BC}_{\varepsilon}^-}}
 
+% https://tex.stackexchange.com/a/354690
+\DeclareRobustCommand{\bigO}{%
+  \text{\usefont{OMS}{cmsy}{m}{n}O}%
+}
+
+% We will not use `complexity' CTAN package, because it is wacky
+% https://tex.stackexchange.com/q/391604
+\newcommand{\class}[1]{\mathsf{#1}}
+\newcommand{\NC}{\class{NC}}
+\newcommand{\AC}{\class{AC}}
+\newcommand{\TC}{\class{TC}}
+\newcommand{\Ptime}{\class{P}}
+\newcommand{\NP}{\class{NP}}
+\newcommand{\Lspace}{\class{L}}
+\newcommand{\NL}{\class{NL}}
+
+
 % koniec definicji
 
 \begin{document}
