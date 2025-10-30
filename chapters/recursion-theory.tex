@@ -1,9 +1,10 @@
-% TODO: why do we focus on L and P: because *reductions* chapter!
-
-\chapter{Recursion-Theoretic Implicit Complexity}
+\chapter{Implicit Computational Complexity (ICC): recursion-theoretic approach}
 \label{chap:recursion-theory}
 
-\section{Recursion theory}
+As discussed in~\ref{sec:classes-of-interest}, we will primarily focus on characterizations of L and P.
+
+
+\section{Origins of recursion theory}
 While not the primary focus of this work, the field of recursion theory developed concepts
 that later became foundational for ICC\@. An important formal system studied there is \emph{primitive recursion}.
 
@@ -66,8 +67,7 @@ Historically, the origins of primitive recursion can be traced back to~\cite{Gra
 but the class was probably first considered as the primary object of study in~\cite{Skolem1923-vanHeijenoort}.
 For the details of the historical origins, consult~\cite{Adams2011}.
 
-
-% \section{Implicit Computational Complexity}
+\section{Implicit Computational Complexity}
 
 % \subsection{What is Implicit Computational Complexity?}
 % Implicit computational complexity (ICC) studies how to guarantee resource bounds
@@ -279,6 +279,19 @@ For the details of the historical origins, consult~\cite{Adams2011}.
 % and course-of-value recursion can inspect earlier values via the offset terms,
 % yet the recursive result always flows back into a safe position linearly.
 % Removing the affine restriction recovers the original Bellantoni--Cook algebra.
+
+% - koncepcja: różnica między algebrą BCeps- a BC jest taka, że BCeps- "wymaga"
+%   re-obliczania podwyrażeń po zrobieniu na nich ifa. To jest insight za L neq P
+  
+
+% in neergaard's logic for logspace, we cannot use the result of computation after doing an `if` on the result.
+% this 'affinity' seems to be the difference between algebra for FL and for FP.
+
+% but: we know a similar picture. in proof theory, we have dag-like and tree-like proof systems,
+% and the difference between them is than in dag-like proof systems we can name a fragment of proof
+% and then refer to the name in many places. and we have a lot of results about probably
+% exponential difference of size of proofs of propositional tautologies in these two
+
 
 % \section{Cobham's Characterisation of \texorpdfstring{\(\mathsf{FP}\)}{FP}}
 % \label{sec:cobham-characterisation-stub}
