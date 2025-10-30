@@ -143,19 +143,16 @@ abstract = {We show that all sets that are complete for NP under nonuniformAC0re
       url={https://arxiv.org/abs/2309.06926}, 
 }
 
-@article{AGRAWAL2000395,
-title = {On TC0, AC0, and Arithmetic Circuits},
-journal = {Journal of Computer and System Sciences},
-volume = {60},
-number = {2},
-pages = {395-421},
-year = {2000},
-issn = {0022-0000},
-doi = {https://doi.org/10.1006/jcss.1999.1675},
-url = {https://www.sciencedirect.com/science/article/pii/S0022000099916756},
-author = {Manindra Agrawal and Eric Allender and Samir Datta},
-abstract = {Continuing a line of investigation that has studied the function classes #P, #SAC1, #L, and #NC1, we study the class of functions #AC0. One way to define #AC0 is as the class of functions computed by constant-depth polynomial-size arithmetic circuits of unbounded fan-in addition and multiplication gates. In contrast to the preceding function classes, for which we know to nontrivial lower bounds, lower bounds for #AC0 follow easily from established circuit lower bounds. One of our main results is a characterization of TC0 in terms of #AC0: A language A is in TC0 if and only if there is a #AC0 function f and a number k such that x∈A⇔f(x)=2|x|k. Using the naming conventions of Fenner et al. (1994, J. Comput. System Sci.48, 116–148) and Caussinus et al. (1998, J. Comput. System Sci.57, 200–212), this yieldsTC0=PAC0=C=AC0. Another restatement of this characterization is that TC0 can be simulated by constant-depth arithmetic circuits, with a single threshold gate. We hope that perhaps this characterization of TC0 in terms of AC0 circuits might provide a new avenue of attack for proving lower bounds. Our characterization differs markedly from earlier characterizations of TC0 in terms of arithmetic circuits over finite fields. Using our model of arithmetic circuits, computation over finite fields yields ACC0. We also prove a number of closure properties and normal forms for #AC0.}
-}
+@INPROCEEDINGS{612309,
+  author={Agrawal, M. and Allender, E. and Datta, S.},
+  booktitle={Proceedings of Computational Complexity. Twelfth Annual IEEE Conference}, 
+  title={On TC/sup 0/, AC/sup 0/, and arithmetic circuits}, 
+  year={1997},
+  volume={},
+  number={},
+  pages={134-148},
+  keywords={Arithmetic;Computer science;Polynomials;Complexity theory;Circuit simulation;Computational complexity;Sorting;Computational modeling;Neural networks},
+  doi={10.1109/CCC.1997.612309}}
 
 
 @article{doi:10.1137/0213028,
@@ -174,7 +171,7 @@ eprint = {https://doi.org/10.1137/0213028}
 
 @article{ITA_2001__35_3_259_0,
      author = {Chiu, Andrew and Davida, George and Litow, Bruce},
-     title = {Division in logspace-uniform $\mbox{NC}^1$},
+     title = {Division in logspace-uniform NC1},
      journal = {RAIRO - Theoretical Informatics and Applications - Informatique Th\'eorique et Applications},
      pages = {259--275},
      publisher = {EDP-Sciences},
@@ -200,4 +197,49 @@ doi = {https://doi.org/10.1016/0022-0000(81)90038-6},
 url = {https://www.sciencedirect.com/science/article/pii/0022000081900386},
 author = {Walter L. Ruzzo},
 abstract = {We argue that uniform circuit complexity introduced by Borodin is a reasonable model of parallel complexity. Three main results are presented. First, we show that alternating Turing machines are also a surprisingly good model of parallel complexity, by showing that simultaneous size/depth of uniform circuits is the same as space/time of alternating Turing machines, with depth and time within a constant factor and likewise log(size) and space. Second, we apply this to characterize NC, the class of polynomial size and polynomial-in-log depth circuits, in terms of tree-size bounded alternating TMs and other models. In particular, this enables us to show that context-free language recognition is in NC. Third, we investigate various definitions of uniform circuit complexity, showing that it is fairly insensitive to the choice of definition.}
+}
+
+
+@article{COOK19852,
+title = {A taxonomy of problems with fast parallel algorithms},
+journal = {Information and Control},
+volume = {64},
+number = {1},
+pages = {2-22},
+year = {1985},
+note = {International Conference on Foundations of Computation Theory},
+issn = {0019-9958},
+doi = {https://doi.org/10.1016/S0019-9958(85)80041-3},
+url = {https://www.sciencedirect.com/science/article/pii/S0019995885800413},
+eprint = {https://web.archive.org/web/20190320200248/https://core.ac.uk/download/pdf/81978561.pdf},
+author = {Stephen A. Cook},
+abstract = {The class NC consists of problems solvable very fast (in time polynomial in log n) in parallel with a feasible (polynomial) number of processors. Many natural problems in NC are known; in this paper an attempt is made to identify important subclasses of NC and give interesting examples in each subclass. The notion of NC1-reducibility is introduced and used throughout (problem R is NC1-reducible to problem S if R can be solved with uniform log-depth circuits using oracles for S). Problems complete with respect to this reducibility are given for many of the subclasses of NC. A general technique, the “parallel greedy algorithm,” is identified and used to show that finding a minimum spanning forest of a graph is reducible to the graph accessibility problem and hence is in NC2 (solvable by uniform Boolean circuits of depth O(log2 n) and polynomial size). The class LOGCFL is given a new characterization in terms of circuit families. The class DET of problems reducible to integer determinants is defined and many examples given. A new problem complete for deterministic polynomial time is given, namely, finding the lexicographically first maximal clique in a graph. This paper is a revised version of S. A. Cook, (1983, in “Proceedings 1983 Intl. Found. Comut. Sci. Conf.,” Lecture Notes in Computer Science Vol. 158, pp. 78–93, Springer-Verlag, Berlin/New York).}
+}
+
+@article{10.1007/BF00289513,
+author = {Hartmanis, Juris},
+title = {On non-determinancy in simple computing devices},
+year = {1972},
+issue_date = {December  1972},
+publisher = {Springer-Verlag},
+address = {Berlin, Heidelberg},
+volume = {1},
+number = {4},
+issn = {0001-5903},
+url = {https://doi.org/10.1007/BF00289513},
+doi = {10.1007/BF00289513},
+abstract = {This paper studies one-tape Turing machines with k read-only heads which are restricted to the original input. The main result shows that if any set accepted by such a 3-head non-deterministic Turing machine can be accepted by a deterministic Turing machine with more read-only heads, then the deterministic and non-deterministic context-sensitive languages are identical. Several related results are derived and some tantalizing open problems are discussed.},
+journal = {Acta Inf.},
+month = dec,
+pages = {336-344},
+numpages = {9}
+}
+
+@MISC {423885,
+    TITLE = {Multi-head two-way finite automata versus logarithmic space},
+    AUTHOR = {Damiano Mazza (https://mathoverflow.net/users/45027/damiano-mazza)},
+    HOWPUBLISHED = {MathOverflow},
+    NOTE = {URL:https://mathoverflow.net/q/423885 (version: 2022-06-03)},
+    EPRINT = {https://mathoverflow.net/q/423885},
+    URL = {https://mathoverflow.net/q/423885}
 }
