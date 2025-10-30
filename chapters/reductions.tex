@@ -1,7 +1,23 @@
 \chapter{Reductions}
 \label{chap:reductions}
-The definitions below are from~\cite{10.5555/520668}.
+A lot of the definitions below are from~\cite{10.5555/520668}.
+definitions of ac, nc, tc:
+immerman definition 5.17
 
+
+
+
+\section{Decisional and functional problems}
+When we hear a sentence like ``prime factorization is in NP'', it usually
+means that the \emph{decisional} version of this problem is decidable in NP.
+
+But we actually usually want to reason about complexity of \emph{functions},
+and it appears to not be equivalent. E.g. \ the graph of exponential function is 
+decidable in polytime, but calculating exponential function is not.
+
+There is surprisingly little literature on functional complexity classes.
+An interesting case is TFNP, studied later in~\ref{sec:complexity-class-tfnp}.
+Another interesting case are \emph{transductors}.
 
 \section{Uniformity}
 Dlogtime-uniformity. First-order reductions. Logspace-uniformity. $U_{E^*}$. Direct / extended connection language.
@@ -13,7 +29,13 @@ a polynomial size bounded depth family $\langle C_n \rangle$ of Boolean circuits
 each circuit Cn has n input bits, and is allowed to have ¬-gates, as well as
 unbounded fan-in $\land$-gates and $\lor$-gates. In the uniform version, the circuit
 C n must be specified in a uniform way; for example one could require that
-$\langle C_n \rangle$ is in FO. See also Appendix A.5.
+$\langle C_n \rangle$ is in FO\@. See also Appendix A.5.
+
+We say that family of circuits in AC0 is uniform if the function $n \rightarrow C_n$ is
+ *simple to compute*; there is a variety of notions of uniformity of AC0 circuits, which
+  we will explore in (TODO: chapter reductions). For the sake of this section we can assume
+   that by AC0 we will denote the class of circuit families $C_n$, for which there is a 
+   LOGSPACE Turing machine $M$ which on input $0^n$ outputs a *standard representation*
 
 
 \section{\texorpdfstring{$\text{NC}^i$}{NC\string^i}}
@@ -23,10 +45,53 @@ AND, and OR gates, along with NOT gates.
 
 Contained in $\text{AC}^i$.
 
+\subsection{NC0}
+For example, each output of an NC0 computable function can depend on only finitely many
+inputs. Thus, NC0 can't even compute an AND of all its inputs (in contrast, the unbounded
+fan-in AND is an AC0 function).
+# NC0
+- One-way permutations in NC0: [@10.1016/0020-01908790053-6]
+- All sets complete under AC0 reductions are in fact already complete under NC0 reductions: [@10.1145/258533.258671] [@AGRAWAL1998127]
+- Immerman at page 81 shows how to do addition in NC0 and MAJORITY in NC1 [@Immerman1998-IMMDC]
+- Addition and substraction of binary numbers is in AC0: [@27676]
+- This is not trivial, as these algorithms in NC0/AC0 use Chinese Remainder Representation or Fermat's Little Theorem!
+
+
+
+It is not clear what should be the notion of uniformity for $\text{NC}^0$,
+as Dlogtime Turing machines can do things that cannot be done by
+any $\text{NC}^0$ circuit.
+\subsection{NC1}
+- Division is in DLOGTIME-uniform NC1: [@ITA_2001__35_3_259_0]
+- Reductions for NC1: Dlogtime!
+- Reductions for NC1: UE* reductions; UE*-uniform NC1 = ALOGTIME [@RUZZO1981365]
+
+
 \section{\texorpdfstring{$\text{AC}^i$}{AC\string^i}}
 $\text{AC}^i$ is the class of languages accepted by uniform circuit
 families of polynomial size and depth $O(\log^i n)$, consisting of unbounded fan-in
 AND, and OR gates, along with NOT gates.
+
+Given $x, y, z$: binary representations of natural numbers,
+it is decidable in uniform AC0 if $x + y = z$, but it is not decidable 
+in AC0 if $x * y = z$.
+
+A family of circuits $\langle C_n \rangle_{n \in \mathbb{N}}$ for $n$:
+number of input bits is in AC0 iff every $C_n$ is of depth $O(1)$ and polynomial 
+size w.r.t $n$, contains only unlimited-fanin AND gates and OR gates, and optional 
+NOT gates at the inputs. 
+
+\subsection{AC0}
+- Addition is in AC0 [@BussLectureNotes]
+- FO[+, *] = DLOGTIME-uniform AC0 (https://complexityzoo.net/Complexity_Zoo:A#ac0)
+- Discussion of DLOGTIME-uniform AC0: [@hella2023regularrepresentationsuniformtc0]
+- Tutaj mamy definicje AC0, TC0, FATC0, FTC0 etc.: [@AGRAWAL2000395]
+notions of uniformity of ac0:
+0. U_{E^*}-uniformity
+1. direct connection language / extended connection language is decidable by FO.
+2. is decidable by DLogTime on a random-access turing machine (check if ith bit of representation of nth circuit is b)
+
+
 
 \section{\texorpdfstring{$\text{AC}^i[m]$}{AC\string^i[m]}}
 $\text{AC}^i[m]$ is defined as $\text{AC}^i$, but in addition unbounded fan-in $\text{MOD}_m$ gates
@@ -42,6 +107,31 @@ of polynomial size and depth $O(\log^i n)$, consisting of unbounded fan-in MAJOR
 gates, along with NOT gates.
 
 Contained in $\text{NC}^{i + 1}$.
+\subsection{TC0}
+- Multiplication is in TC0 [@BussLectureNotes], this resource cites this: [@doi:10.1137/0213028] but i cant find relevant info there
+
+
+\section{P}
+Poly-time relations. To define reductions between P-complete problems,
+first-order/$\text{AC}^0$ reductions are typically used.
+
+\subsection{inv-P}
+Permutation-invariant P; P on unordered structures.
+
+\section{FP}
+Poly-time functions.
+
+\section{NP}
+reductions used here are precisely the class FL of logspace reductions!
+
+\section{FNP}
+- https://cs.stackexchange.com/questions/71617/function-problems-and-fp-subseteq-fnp
+- https://cstheory.stackexchange.com/questions/37812/what-exactly-are-the-classes-fp-fnp-and-tfnp
+- https://complexityzoo.net/Complexity_Zoo:F#fp
+
+
+\section{TFNP}
+\label{sec:complexity-class-tfnp}
 
 \section{\texorpdfstring{$\text{AC}^0$-reduction}{AC\string^0-reduction}}
 \label{sec:ac0red}
@@ -53,7 +143,45 @@ and F (resp. f) is $\Sigma^B_0$ -definable from $L \cup \{F_1, \dots , F_{i-1}\}
 $\text{AC}^0$-reducible to L if there is a sequence $F_1, \dots, F_n$ as above, and R is
 represented by a $\Sigma^B_0(L \cup \{F_1, \dots, F_n\})$ formula.
 
+In (chapter 2, \cite{edbd4873718c414f90d22dadf0dba2b1}) there is an extensive discussion about
+the different subtleties of defining $\text{AC}^0$ functions and numerous different characterizations
+of Dlogtime-uniform $\text{AC}^0$-computable functions.
+
+
+\section{\texorpdfstring{$\text{NC}^0$}{NC\string^0} reductions}
+In~\cite{edbd4873718c414f90d22dadf0dba2b1}, it is shown that, surprisingly, all known NP-complete problems
+are complete under $\text{NC}^0/poly$ reductions already. Another candidate for a problem that is NP-complete
+under poly-time reductions but not under logspace reductions is discussed in~\cite{18631}.
+
+\section{DLOGTIME-uniformity}
+- example of DLOGTIME reduction to show tree isomorphism for string-represented trees, is NC1-complete [@694595]
+
+
+\section{First-order reduction}
+Definicja first-order redukcji:  
+[https://link.springer.com/book/10.1007/3-540-28788-4](https://link.springer.com/book/10.1007/3-540-28788-4)  
+rozdzial 12.3
+
+# FO
+- FO[+, *] = FO[BIT]
+- FO[<, *] = FO[BIT] (Crane Beach Conjecture)
+- FO[+] is less expressive than FO[<, *] = FO[<, /] = FO[<, COPRIME] [@10.1002/malq.200310041]
+3. fo-query: definition 1.26, immerman
+fo-uniformity: there is a first order query I : STRUC[ts] -> STRUC[tc] with I(0^n) = C_n; definition 5.16 immerman
+fo-reduction is defined as a first-order query (definition 1.26)
+also there is definition how to represent a circuit!
+
+\section{First-order projection}
+also named fops in immerman.
+definition 11.7 first-order projections
+\section{Quantifier-free fo-projections}
+qfps
+
 \section{LOGSPACE reduction}
+- Reductions for L: e.g. first-order reductions, Immerman 1999 p.51
+- USTCONN is complete for L
+- a programming language for L: a finite number of variables, each <= n
+- alternative: a finite number of input pointers; this is really similar to multi-head two-way automaton [@423885] [@10.1007/BF00289513]
 
 \section{P reduction}
 
@@ -61,3 +189,66 @@ represented by a $\Sigma^B_0(L \cup \{F_1, \dots, F_n\})$ formula.
 \label{sec:complete-problems}
 For every class C from: AC0, L, P, there is some problem F such that F is C-complete under AC0 reductions.
 So AC0 reductions are enough for us, and AC0 reductions is(?) the same class as FAC0 functions.
+
+\subsection{Functional complexity classes and completeness}
+To show FL-completeness, it suffices to show L-completeness: FL = L* = L + NC1 
+reductions [@COOK19852, proposition 4.1]
+
+\section{Which class we will focus on?}
+\label{sec:classes-of-interest}
+For chapters about ICC we will focus on L and P, as these are the most abundant reductions,
+and other classes might have problems like in the below subsections.
+Later, in the chapter about bounded arithmetic we will find that we actually want to care
+about characterization of $\text{AC}^0$-reductions.
+
+- Why P and L are important and robust complexity classes
+> The smallest class containing linear time and closed under subroutines is P. The smallest class containing log space and closed under subroutines is still log space. So P and L are the smallest robust classes for time and space respectively which is why they feel right for modeling efficient computation.  
+> https://cstheory.stackexchange.com/a/3448/71933
+
+\subsection{Fine-grained complexity theory}
+We will not realistically capture $\text{TIME}(O(n))$ or anything of this kind,
+as the field of fine-grained complexity is relatively modern and little or none interesting
+characterizations of these classes have been found as of writing this work.
+
+
+- Neil D. Jones: Constant Time Factors Do Matter
+> NLIN-complete problem  
+> https://dl.acm.org/doi/pdf/10.1145/167088.167244
+
+- Gurevich, Shelah: Nearly linear time
+> couple problems with defining DTIME(n) (dependency on computational model)  
+> nearly-linear-time-complete problem under QL reductions  
+> https://link.springer.com/content/pdf/10.1007/3-540-51237-3_10.pdf
+
+\subsection{Semantic and syntactic complexity classes}
+Which classes can we realistially try to characterize? Probably not BPP, nor permutation-invariant PTIME.
+https://mathoverflow.net/questions/35236/is-there-a-syntactic-characterization-for-bpp-bqp-or-qma
+
+- On Syntactic and Semantic Complexity Classes
+> Anuj Dawar  
+> University of Cambridge Computer Laboratory  
+> Spitalfields Day, Isaac Newton Institute, 9 January 2012  
+> https://www.newton.ac.uk/files/seminar/20120109163017301-152985.pdf  
+> e.g. NP = ESO (Fagin 1974), so NP is syntactical  
+> major open problem:  
+> Does P admit a syntactic characterisation?  
+> Can the class P be “built up from below” by finitely many operations?  
+> If a complexity class C has a complete problem L, it is a syntactic class.  
+> because we can enumerate all AC0 reductions  
+> Two Possible Worlds:
+> Either
+> - there is no effective syntax for inv-P
+> - there is no classification possible of polynomial-time graph problems
+> - there is an inexhaustible supply of efficient algorithmic techniques to be discovered
+> - P neq NP
+> Or,
+> - there is an effective syntax for inv-P
+> - there is a P-complete graph problem under FO-reductions
+> - all polynomial-time graph problems can be solved by easy variations of one algorithm.
+
+
+- About semantic and syntactic complexity classes
+> An interesting difference is that PR functions can be explicitly enumerated, whereas functions in R cannot be (since otherwise the halting problem would be decidable). In this sense, PR is a "syntactic" class whereas R is "semantic."  
+> https://complexityzoo.net/Complexity_Zoo:P#pr
+
+
