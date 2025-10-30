@@ -37,7 +37,7 @@ LOGSPACE Turing machine $M$ which on input $0^n$ outputs a \emph{standard repres
 
 \section{\texorpdfstring{$\text{NC}^i$}{NC\string^i}}
 $\text{AC}^i$ is the class of languages accepted by uniform circuit
-families of polynomial size and depth $O(\log^i n)$, consisting of unbounded fan-in
+families of polynomial size and depth $\bigO(\log^i n)$, consisting of unbounded fan-in
 AND, and OR gates, along with NOT gates.
 
 TODO: Confirm that this class is contained in $\text{AC}^i$.
@@ -68,7 +68,7 @@ any $\text{NC}^0$ circuit.
 
 \section{\texorpdfstring{$\text{AC}^i$}{AC\string^i}}
 $\text{AC}^i$ is the class of languages accepted by uniform circuit
-families of polynomial size and depth $O(\log^i n)$, consisting of unbounded fan-in
+families of polynomial size and depth $\bigO(\log^i n)$, consisting of unbounded fan-in
 AND, and OR gates, along with NOT gates.
 
 Given $x, y, z$: binary representations of natural numbers,
@@ -76,7 +76,7 @@ it is decidable in uniform AC0 if $x + y = z$, but it is not decidable
 in AC0 if $x * y = z$.
 
 A family of circuits $\langle C_n \rangle_{n \in \mathbb{N}}$ for $n$:
-number of input bits is in AC0 iff every $C_n$ is of depth $O(1)$ and polynomial 
+number of input bits is in AC0 iff every $C_n$ is of depth $\bigO(1)$ and polynomial 
 size w.r.t $n$, contains only unlimited-fanin AND gates and OR gates, and optional 
 NOT gates at the inputs. 
 
@@ -106,7 +106,7 @@ $\text{ACC}^i = \bigcup_m \text{AC}^i[m]$. $\text{ACC}^0$ is contained in $\text
 
 \section{\texorpdfstring{$\text{TC}^i$}{TC\string^i}}
 $\text{TC}^i$ is the class of languages accepted by uniform circuit families 
-of polynomial size and depth $O(\log^i n)$, consisting of unbounded fan-in MAJORITY
+of polynomial size and depth $\bigO(\log^i n)$, consisting of unbounded fan-in MAJORITY
 gates, along with NOT gates.
 
 TODO: Check whether $\text{TC}^i$ is contained in $\text{NC}^{i + 1}$.
