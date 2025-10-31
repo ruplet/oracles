@@ -1,46 +1,77 @@
 \chapter{Reductions}
 \label{chap:reductions}
-A lot of the definitions below are from~\cite{10.5555/520668} and \cite{Immerman1999-IMMDC}.
-TODO: Add explicit definitions of $\complexity{AC}$, $\complexity{NC}$, and $\complexity{TC}$ (see Immerman Definition~5.17).
+A lot (TODO: which?) of the definitions below are from~\cite{10.5555/520668}.
+
+\section{Decisional complexity classes}
+Most problems that are considered in complexity theory ask, for a given input,
+if it satisfies some property or not. I.e. \ the return type of the function that solves
+the problem, is a boolean. Here we list the definitions of some of complexity classes
+that contain solely such decisional problems. These turn out to be the most well-known complexity classes,
+but not the primary interest of this work. Our focus are more general functions that can return
+a string, a pair of numbers, or a graph, and not just a boolean value. After we introduce
+the decisional complexity classes in this section, we will use them to define functional
+complexity classes in~\ref{sec:functional-complexity-classes}.
+
+\subsection{Cicuit complexity classes}
+The complexity classes in this subsection are \emph{circuit complexity} classes,
+which means that the computation is done by \emph{boolean circuits}, which we will
+now introduce. Note that this is a different computational model to Turing machines, finite
+automata or lambda calculi, and thus comes with its own notion of complexity. The definitions
+in this subsection are based on~\cite[Definition 5.17]{Immerman1999-IMMDC}.
+
+\begin{definition}[Boolean circuits]
+A \emph{boolean circuit} is a finite directed, acyclic graph. The leaf nodes (of indegree zero)
+represent the input, which here is always a finite binary string. The internal nodes
+represent logical gates such as AND, OR and NOT gates, in that we say that the value
+of an internal AND node is 1 if the values of all of its children is 1 etc.
+For decisional problems we require the circuit to be rooted. A rigorous definition is discussed in~\cite[Definition 2.27]{Immerman1999-IMMDC}.
+\end{definition}
+
+\begin{definition}[Words accepted by a circuit]
+We say that a circuit \emph{accepts} a given binary word iff the value of its root is 1 with values of leaves
+set according to the input.
+\end{definition}
+
+\begin{definition}[Language decided by circuit family]
+We say that a family $\langle C_n \rangle_{n \in \mathbb{N}}$
+of boolean circuits decides a language $L$ iff for every $w \in \{0, 1\}^*$, $C_{|w|}$ accepts
+$w$ iff $w \in L$.
+\end{definition}
+
+\begin{definition}[\complexity{NC} circuits (Nick's class)]
+A boolean circuit is \emph{\complexity{NC}} iff the gates are only binary AND and OR gates.
+\end{definition}
+
+\begin{definition}[\complexity{AC} circuits (Alternating circuits)]
+A boolean circuit is \emph{\complexity{AC}} iff the gates are only unlimited fan-in AND and OR gates.
+It is a theorem that we can also allow unary NOT gates at leaves only.
+\end{definition}
+
+\begin{definition}[\complexity{TC} circuits (Threshold circuits)]
+A boolean circuit is \emph{\complexity{AC}} iff the gates are only unlimited fan-in Threshold(?) gates.
+It is a theorem that we can also allow unlimited fan-in AND and OR gates(?).
+\end{definition}
+
+\begin{definition}[\complexity{NC[t(n)]_{/poly}}, \complexity{AC[t(n)]_{/poly}}, \complexity{TC[t(n)]_{/poly}}]
+We define $\complexity{NC[t(n)]_{/poly}}$ to be the class of $\complexity{NC}$ circuits that:
+\begin{enumerate}
+   \item have polynomially-many internal nodes w.r.t. $n$, the number of leaves.
+   \item have depth $\bigO(t(n))$.
+\end{enumerate}
+Let $\complexityi{NC_{/poly}}{i} = \complexity{NC[(\log n)^i]_{/poly}}$. We define
+$\complexity{AC[t(n)]_{/poly}}, \complexity{TC[t(n)]_{/poly}}, \complexityi{AC_{/poly}}{i}, \complexityi{TC_{/poly}}{i}$ analogously.
+
+In particular, $\complexityi{NC_{/poly}}{0}$, $\complexityi{AC_{/poly}}{0}$, $\complexityi{TC_{/poly}}{0}$ are families of circuits with
+uniformly constant depth.
+
+For now we have not talked about how do we generate the consecutive circuits $C_n$.
+Later in~\ref{sec:uniformity} we will restrict the family of (some standard) descriptions of the circuits
+to have to be \emph{computable efficiently} and then we will be able to drop the $_{/poly}$ suffix in our complexity classes.
+\end{definition}
 
 
-\section{Decisional and functional problems}
-When we hear a sentence like ``prime factorization is in \complexity{NP}'', it usually
-means that the \emph{decisional} version of this problem is decidable in \complexity{NP}.
 
-But we actually usually want to reason about complexity of \emph{functions},
-and it appears to not be equivalent. E.g. \ the graph of exponential function is 
-decidable in polytime, but calculating exponential function is not.
-
-There is surprisingly little literature on functional complexity classes.
-An interesting case is \complexity{TFNP}, studied later in~\ref{sec:complexity-class-tfnp}.
-Another interesting case are \emph{transductors}.
-
-\section{Uniformity}
-TODO: Clarify how \complexity{DLOGTIME}-uniformity, first-order reductions, logspace-uniformity, and $U_{E^*}$ relate, including the role of direct and extended connection languages.
-TODO: Provide a citation supporting that the choice among these uniformity notions does not affect the arguments below.
-When we do not say ``poly'', it means the class is uniform. Otherwise: Immerman showed that the class FO is the same as a uniform version
-of $\complexityi{AC}{0}$. Originally $\complexityi{AC}{0}$ was defined in its nonuniform version, which
-we shall refer to as $\complexityi{AC}{0}/\text{poly}$. A language in $\complexityi{AC}{0}/\text{poly}$ is specified by
-a polynomial size bounded depth family $\langle C_n \rangle$ of Boolean circuits, where
-each circuit $C_n$ has $n$ input bits, and is allowed to have $\neg$-gates, as well as
-unbounded fan-in $\land$-gates and $\lor$-gates. In the uniform version, the circuit
-$C_n$ must be specified in a uniform way; for example one could require that
-$\langle C_n \rangle$ is in FO\@. See also Appendix~A.5.
-
-We say that a family of circuits in $\complexityi{AC}{0}$ is uniform if the function $n \rightarrow C_n$ is
-\emph{simple to compute}; there is a variety of notions of uniformity of $\complexityi{AC}{0}$ circuits.
-TODO: Explore these notions in Chapter~\ref{chap:reductions}. For the sake of this section we can assume
-that by $\complexityi{AC}{0}$ we denote the class of circuit families $C_n$, for which there is a 
-\complexity{LOGSPACE} Turing machine $M$ which on input $0^n$ outputs a \emph{standard representation}
-
-
-\section{\texorpdfstring{$\complexityi{NC}{i}$}{NC\string^i}}
-$\complexityi{AC}{i}$ is the class of languages accepted by uniform circuit
-families of polynomial size and depth $\bigO(\log^i n)$, consisting of unbounded fan-in
-AND, and OR gates, along with NOT gates.
-
-TODO: Confirm that this class is contained in $\complexityi{AC}{i}$.
+\section{\texorpdfstring{$\complexityi{NC}{i}_{/poly}$}{NC\string^ipoly}}
 
 \subsection{\complexityi{NC}{0}}
 For example, each output of an \complexityi{NC}{0} computable function can depend on only finitely many
@@ -64,9 +95,11 @@ any $\complexityi{NC}{0}$ circuit.
 \item TODO: use \complexity{DLOGTIME} reductions for $\complexityi{NC}{1}$.
 \item TODO: Clarify how $U_{E^*}$ reductions relate to $\complexityi{NC}{1}$ and why $U_{E^*}$-uniform $\complexityi{NC}{1}$ equals \complexity{ALOGTIME}~\cite{RUZZO1981365}.
 \end{itemize}
+TODO: Confirm that this class is contained in $\complexityi{AC}{i}$.
 
 
 \section{\texorpdfstring{$\complexityi{AC}{i}$}{AC\string^i}}
+
 $\complexityi{AC}{i}$ is the class of languages accepted by uniform circuit
 families of polynomial size and depth $\bigO(\log^i n)$, consisting of unbounded fan-in
 AND, and OR gates, along with NOT gates.
@@ -74,11 +107,6 @@ AND, and OR gates, along with NOT gates.
 Given $x, y, z$: binary representations of natural numbers,
 it is decidable in uniform \complexityi{AC}{0} if $x + y = z$, but it is not decidable 
 in \complexityi{AC}{0} if $x * y = z$.
-
-A family of circuits $\langle C_n \rangle_{n \in \mathbb{N}}$ for $n$:
-number of input bits is in \complexityi{AC}{0} iff every $C_n$ is of depth $\bigO(1)$ and polynomial 
-size w.r.t $n$, contains only unlimited-fanin AND gates and OR gates, and optional 
-NOT gates at the inputs. 
 
 \subsection{\complexityi{AC}{0}}
 \begin{itemize}
@@ -114,6 +142,42 @@ TODO: Check whether $\complexityi{TC}{i}$ is contained in $\complexityi{NC}{i + 
 \begin{itemize}
 \item TODO: Confirm that multiplication is in $\complexityi{TC}{0}$~\cite{BussLectureNotes}, and locate the supporting details in~\cite{doi:10.1137/0213028}.
 \end{itemize}
+
+
+
+\section{Functional complexity classes}
+\label{sec:functional-complexity-classes}
+When we hear a sentence like ``prime factorization is in \complexity{NP}'', it usually
+means that the \emph{decisional} version of this problem is decidable in \complexity{NP}.
+
+But we actually usually want to reason about complexity of \emph{functions},
+and it appears to not be equivalent. E.g. \ the graph of exponential function is 
+decidable in polytime, but calculating exponential function is not.
+
+There is surprisingly little literature on functional complexity classes.
+An interesting case is \complexity{TFNP}, studied later in~\ref{sec:complexity-class-tfnp}.
+Another interesting case are \emph{transductors}.
+
+\section{Uniformity}
+TODO: Clarify how \complexity{DLOGTIME}-uniformity, first-order reductions, logspace-uniformity, and $U_{E^*}$ relate, including the role of direct and extended connection languages.
+TODO: Provide a citation supporting that the choice among these uniformity notions does not affect the arguments below.
+When we do not say ``poly'', it means the class is uniform. Otherwise: Immerman showed that the class FO is the same as a uniform version
+of $\complexityi{AC}{0}$. Originally $\complexityi{AC}{0}$ was defined in its nonuniform version, which
+we shall refer to as $\complexityi{AC}{0}/\text{poly}$. A language in $\complexityi{AC}{0}/\text{poly}$ is specified by
+a polynomial size bounded depth family $\langle C_n \rangle$ of Boolean circuits, where
+each circuit $C_n$ has $n$ input bits, and is allowed to have $\neg$-gates, as well as
+unbounded fan-in $\land$-gates and $\lor$-gates. In the uniform version, the circuit
+$C_n$ must be specified in a uniform way; for example one could require that
+$\langle C_n \rangle$ is in FO\@. See also Appendix~A.5.
+
+We say that a family of circuits in $\complexityi{AC}{0}$ is uniform if the function $n \rightarrow C_n$ is
+\emph{simple to compute}; there is a variety of notions of uniformity of $\complexityi{AC}{0}$ circuits.
+TODO: Explore these notions in Chapter~\ref{chap:reductions}. For the sake of this section we can assume
+that by $\complexityi{AC}{0}$ we denote the class of circuit families $C_n$, for which there is a 
+\complexity{LOGSPACE} Turing machine $M$ which on input $0^n$ outputs a \emph{standard representation}
+
+
+
 
 
 \section{\complexity{P}}
@@ -158,6 +222,10 @@ of Dlogtime-uniform $\complexityi{AC}{0}$-computable functions.
 In~\cite{edbd4873718c414f90d22dadf0dba2b1}, it is shown that, surprisingly, all known \complexity{NP}-complete problems
 are complete under $\complexityi{NC}{0/poly}$ reductions already. Another candidate for a problem that is \complexity{NP}-complete
 under poly-time reductions but not under logspace reductions is discussed in~\cite{18631}.
+
+
+\section{Uniformity}
+\label{sec:uniformity}
 
 \section{\complexity{DLOGTIME}-uniformity}
 \begin{itemize}
