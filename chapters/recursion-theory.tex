@@ -193,18 +193,27 @@ Bellantoni and Cook introduced a function algebra \(\mathcal{B}\) whose key
 innovation is the separation of arguments into \emph{normal} inputs (controlling
 recursion depth) and \emph{safe} inputs (being passed around without
 influencing that depth).
-We write \(f(\vec{x};\vec{a})\), with normal inputs \(\vec{x}\) written to the left of the semicolon and safe inputs \(\vec{a}\) to the right .
+We write \(f(\vec{x};\vec{a})\), with normal inputs \(\vec{x}\) to the left of
+the semicolon and safe inputs \(\vec{a}\) to the right.
 The computation is performed on non-negative integers; proofs transfer to
 general binary strings (e.g.\ starting with a zero)~\cite{10.1007/BF01201998}.
 For an integer \(x\), let \(|x|\) denote its binary length
 \(\lceil \log_2(x+1)\rceil\); for vectors use component-wise notation.
 
 \begin{definition}[Bellantoni-Cook algebra]\label{def:bellantoni-cook}
-The class \(\mathcal{B}\) is the smallest class of functions that contains the initial functions \(\text{(i)}\)--\(\text{(iv)}\) and is closed under \(\text{(vi)}\), \(\text{(vii)}\).
+The class \(\mathcal{B}\) is the smallest class of functions on non-negative
+integers that contains \((\textup{i})\)--\((\textup{v})\) and is closed under
+\((\textup{vi})\)--\((\textup{vii})\).
 \begin{enumerate}[label=(\roman*)]
   \item \textbf{(Constant)} \(0(;)=0\).
-  \item \textbf{(Projection)} \(\pi_j(x_1,\dots,x_m;\,x_{n+1},\dots,x_{n+m})=x_j\) for
-        \(1\le j\le m+n\).
+  \item \textbf{(Projection)} for \(m,n\ge 0\) and \(1\le j\le m+n\),
+        \[
+          \pi_j(x_1,\dots,x_m;\,a_1,\dots,a_n)=
+          \begin{cases}
+            x_j     & \text{if } j\le m,\\
+            a_{j-m} & \text{otherwise.}
+          \end{cases}
+        \]
   \item \textbf{(Successors)} \(s_i(;a)=2a+i\) for \(i\in\{0,1\}\).
   \item \textbf{(Predecessor)} \(p(;0)=0\) and \(p(;ai)=a\).
   \item \textbf{(Conditional)}\[
@@ -229,15 +238,18 @@ The class \(\mathcal{B}\) is the smallest class of functions that contains the i
           f(\vec{x};\vec{a}) =
           h\bigl(\vec{r}(\vec{x};\,);\ \vec{t}(\vec{x};\vec{a})\bigr).
         \]
-        Safe outputs never flow into a normal position.
+
 \end{enumerate}
 
 \paragraph{Intuition.}
+Safe outputs never flow into a normal position.
+
 Functions in \(\mathcal{B}\) can perform arbitrary polynomial-time computation
 on their normal inputs.
 Safe inputs may increase only by an additive constant, and recursive results
 remain safe, so recursion depth cannot depend on previously computed values.
 \end{definition}
+
 
 
 Interestingly, in~\cite{10.1007/978-3-642-22863-6_11} the authors claim formalizing a~proof that a~version
@@ -246,6 +258,63 @@ This is of interest to us, as initially it suggested that the authors have forma
 function in a proof assistant and managed to implement some form of an interpreter. This is not the case, however, as
 their proof is formalized proof that the class of functions in this algebra is the same as the class of functions
 in Cobham's algebra, as defined in~\ref{def:cobham}~\footnote{Link to the source code: \url{https://github.com/davidnowak/bellantonicook}.}
+
+\subsection{Neergaard's safe affine algebra for \complexity{FL}}
+
+Møller-Neergaard refines the Bellantoni-Cook discipline to capture \complexity{FL}
+while insisting that safe data are used \emph{affinely}: each safe value may be
+consumed at most once.
+We continue to write functions as \(f(\vec{x};\vec{y})\), with normal inputs
+\(\vec{x}\) and safe inputs \(\vec{y}\). Whenever \(y \in \mathbb{N}\) and \(b \in \{0, 1\}\),
+write \(yb = 2y + b\); for \(\delta \in \mathbb{N}\), put \(\texttt{shift}(y, \delta) = \lfloor y / 2^\delta \rfloor \).
+
+\begin{definition}[Neergaard's \(BC_\varepsilon^{-}\) algebra]\label{def:bc-eps}
+The class \(BC_\varepsilon^{-}\) is the smallest class of functions that contains the initial functions \((\textup{i})\)--\((\textup{v})\) as defined in~\ref{def:bellantoni-cook} and is closed under
+the below schemes of safe composition and safe recursion:
+\begin{enumerate}[label= (\roman*)]
+  
+  \item \textbf{(Safe affine composition)}\
+      Let \((h_i)_{i=1}^M\), \((g_i)_{i=1}^N\), \(f\) be functions in \(BC_\varepsilon^{-}\) such that
+      each of \(g_i\) has only normal arguments \big(\(g_i : \mathbb{N}_2^{m, 0}\) \big), and the arity of \(f\) is \(M\) normal arguments and \(N\) safe,
+      i.e.\  \(f : \mathbb{N}_2^{M, N} \rightarrow \mathbb{N}_2\). Let also $n$ be the sum of safe arities of $h_i$.
+
+      Define safe affine composition of the functions as a following function in \(\mathbb{N}_2^{m, n} \rightarrow \mathbb{N}_2\):
+        \[
+          \left (f \circ \langle g_1, \dots, g_M\; ; h_1, \dots, h_N \rangle \right ) \left (\vec{x};\vec{y}\right ) =
+          f\bigl(g_1(\vec{x};\,),\dots,g_M(\vec{x};\,) ; \,
+                h_1(\vec{x};\vec{y}_1),\dots,h_N(\vec{x};\vec{y}_N)\bigr),
+        \]
+        where \((\vec{y}_1,\dots,\vec{y}_N)\) partitions the safe inputs into
+        disjoint subtuples; the concatenation \(\sum \vec{y}_i\) is equal to \(\vec{y}\).
+  \item \textbf{(Safe affine course-of-value recursion)}\
+        let \(g,h_0,h_1,d_0,d_1\in BC_\varepsilon^{-}\). Their course-of-value
+        recursion produces \(f\) given by
+        \[
+        \begin{aligned}
+          f(0,\vec{x};\vec{y}) &= g(\vec{x};\vec{y}),\\
+          f(yb,\vec{x};\vec{y}) &=
+          h_b\!\bigl(y,\vec{x};\vec{y},
+                     f(\mathrm{shift}(y,\delta_b),\vec{x};\vec{y})\bigr),
+        \end{aligned}
+        \]
+        where \(b\in\{0,1\}\) and
+        \(\delta_b = \bigl|d_b(y,\vec{x};\,)\bigr|\) depends only on the normal
+        part \((y,\vec{x})\). 
+\end{enumerate}
+\end{definition}
+
+\paragraph{Intuition.}
+The recursive result is passed back in a safe
+        position and can be used only once.
+        Safe arguments behave linearly: once a safe value is analysed --- for instance by a
+conditional --- it must be recomputed instead of duplicated.
+Safe affine composition enforces this single-use policy, while the
+course-of-value recursion permits controlled ``look back'' determined by the
+offsets \(d_0,d_1\) computed on normal data.
+These two ingredients --- linearity on safe data and variable-step recursion on
+normal data --- precisely mirror the resources available to logarithmic-space
+machines; dropping the affinity constraint collapses back to the original
+Bellantoni-Cook algebra for \(\complexity{FP}\).
 
 
 % but: we know a similar picture. in proof theory, we have dag-like and tree-like proof systems,
