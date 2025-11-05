@@ -47,11 +47,11 @@ branchConst x =
 collatzBad :: Bits %1-> Bits
 collatzBad x =
   if evenBits x
-    then half bits5       -- ERROR: x already consumed by 'evenBits x'
-    else plus2x1 bits5    -- ERROR: x already consumed by 'evenBits x'
+    then half bits5
+    else plus2x1 bits5
 
-collatzBad :: Bits %1-> Bits
-collatzBad x =
+collatzBad2 :: Bits %1-> Bits
+collatzBad2 x =
   if evenBits x
     then half x       -- ERROR: x already consumed by 'evenBits x'
     else plus2x1 x    -- ERROR: x already consumed by 'evenBits x'
