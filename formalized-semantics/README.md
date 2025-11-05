@@ -126,23 +126,6 @@ isbn="978-3-642-32621-9"
 
 
 
-
-Dowód że Cobham = PTIME jest dopiero u Tourlakis! ale też u Odifreddi!
-
-> it's page 186 of the PDF (175 in internal numeration)  
-> https://web.archive.org/web/20240103230629/http://www.piergiorgioodifreddi.it/wp-content/uploads/2010/10/CRT2.pdf  
-
-> also, in Tourlakis 2022 (accessible on libgen)  
-> George Tourlakis - Computability-Springer (2022).pdf  
-> on page 625 of the PDF (608 internally), there is a proof, but also a remark about  
-> this theorem, with a reference to Odifreddi's work
-https://web.archive.org/web/20240121142633/https://www.cs.toronto.edu/~sacook/homepage/cobham_intrinsic.pdf
-
-
-- here is code which formalizes that Cobham algebra is the same as Bellantoni and Cook's on bitstrings (as opposed to natural numbers): 
-https://github.com/davidnowak/bellantonicook
-
-
 Najważniejsza rzecz:
 Heraud, Nowak sformalizowali algebrę BC ale na bitstringach i w Coq!
 https://inria.hal.science/hal-00654217/file/itp2011-arxiv.pdf

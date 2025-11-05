@@ -1,8 +1,19 @@
-\chapter{Implicit Computational Complexity (ICC): recursion-theoretic approach}
+\chapter{Implicit Computational Complexity: recursion-theoretic approach}
 \label{chap:recursion-theory}
+Implicit computational complexity (ICC) studies how to guarantee resource bounds
+without appealing to external machine models.
+Instead of analysing running time or space after the fact, ICC designs
+languages and recursion schemes whose syntactic constraints ensure that every
+definable function belongs to a chosen complexity class.
+The aim is a principled foundation for programming languages that ``build in''
+complexity guarantees by construction.
+In this chapter we focus on techniques from recursion theory that were successfully
+utilized in this field to characterize complexity classes.
 
 As discussed in~\ref{sec:classes-of-interest}, we will primarily focus on characterizations of L and P.
-
+Characterizations we are interested in are described mostly in~\ref{sec:icc}. All of the historical
+context of the field needs to also be addressed to describe why we were unsuccessful in designing a programming
+language based on ideas from these papers. For a broad literature survey, see~\cite{bloch1994function}.
 
 \section{Origins of recursion theory}
 While not the primary focus of this work, the field of recursion theory developed concepts
@@ -38,6 +49,8 @@ Define \(\mathrm{Add}:\mathbb{N}^2\to\mathbb{N}\) by primitive recursion:
 \]
 \end{example}
 
+Interestingly, in~\cite{10.1145/800196.806014} it has been shown that the functions definable in a particular imperative
+programming language are precisely the primitive recursive functions.
 
 \begin{definition}[LOOP language]
 Let \(\mathrm{Var}=\{x_0,x_1,x_2,\dots\}\).
@@ -56,97 +69,97 @@ where \(x_i\in\mathrm{Var}\).
 We assume standard semantics, with a remark that \(\texttt{LOOP}~x_i~\texttt{DO}~P~\texttt{END}\) repeats \(P\) exactly as many times as the value stored in \(x_i\) \emph{at loop entry} (changes to \(x_i\) inside \(P\) do not change the iteration count).
 \end{definition}
 
-Interestingly, in~\cite{10.1145/800196.806014} it has been shown that the functions definable by LOOP programs
-are precisely the primitive recursive functions.
-This simple example actually satisfies our criteria of a `programming language capturing a complexity class', as
-the LOOP language captures exactly the primitive recursive functions\footnote{As recognized in \url{https://complexityzoo.net/Complexity_Zoo:P}.}.
-Moreover, we can even stratify the primitive recursive functions into a hierarchy like in~\cite{Grzegorczyk1953}.
+\begin{theorem}[\texttt{LOOP} captures precisely \complexity{PR}]
+\label{thm:loop-captures-pr}
+      TODO: make statement precise, perhaps based on https://www.cs.cornell.edu/courses/cs6110/2012sp/MeyerAndRitchie-67.pdf
+\end{theorem}
 
+This simple connection actually satisfies our criteria of a `programming language capturing a complexity class', as
+the \(\texttt{LOOP}\) language captures exactly \(\complexity{PR}\)\footnote{As recognized in \url{https://complexityzoo.net/Complexity_Zoo:P}.}, the class of primitive recursive functions.
+Moreover, we can even stratify the primitive recursive functions into a hierarchy like in~\cite{Grzegorczyk1953}.
 
 Historically, the origins of primitive recursion can be traced back to~\cite{Grassmann1861} and~\cite{Dedekind1888},
 but the class was probably first considered as the primary object of study in~\cite{Skolem1923-vanHeijenoort}.
 For the details of the historical origins, consult~\cite{Adams2011}.
 
+\section{Characterizations not easily adjustable for a programming language}
+Before the seminal works that founded the field of Implicit Complexity, many characterizations
+of complexity classes had been known already. All of them suffered at least one of the two problems:
+either it only characterized a class of relations in a given complexity (as opposed to functions),
+or the characterization wasn't purely syntactic. We will refer to the latter of beign ``explicit''
+instead of ``implicit''.
+
+\subsection{Characterizations of classes of relations}
+Characterizations of classes of relations, such as \complexity{P} (as opposed to \complexity{FP}),
+are not of interest to us because they don't generalize at all to a programming language
+allowing to write functions with output. Nevertheless, we investigated the concepts used
+there and describe some of them briefly in this subsection.
+
+Polynomial-time relations have been characterized without explicit
+size bounds in~\cite{doi:10.1137/0216051}.
+In~\cite{COMPTON1990241}, uniform \(\complexityi{NC}{1}\) was characterized,
+and in~\cite{ALLEN19911} uniform \(\complexity{NC}\), though their definitions
+still concealed polynomial bounds and targeted relations instead of functions.
+
+In more modern works, decisive complexity classes have been successfully characterized in~\cite{JONES1999151} by a fragment of Lisp in~\(\complexity{L}\) and
+\(\complexity{P}\). The same concept has been extended to account for
+for nondeterminism in~\cite{10.1007/11784180_8}.
+
+The authors of~\cite{kristiansenvoda2005} investigated both imperative
+and functional programming languages whose fragments yield hierarchies containing \emph{decisional} \complexity{L},
+\complexity{LINSPACE}, \complexity{P}, and \complexity{PSPACE}.
+Related contributions include~\cite{kristiansen2005neat} and~\cite{Oitavem+2010+355+362}.
+
+\subsection{Explicit characterizations}
+\label{subsec:explicit}
+If a characterization of a complexity class is not purely syntactic, i.e.\ it needs a proof of some
+additional property besides the function description, it becomes practically impossible to
+use it as foundation of a practical programming language --- it becomes undecidable~\footnote{Nowadays, proof
+assistants such as Rocq and Lean could be used to verify a user-provided proof, but this goes out of
+scope of a \emph{programming language}.} if
+a given function description is in the programming language at all. Nevertheless, these concepts
+have been very important for the field and we shall discuss some of them in this subsection.
+
+An example of such characterization is the Cobham's famous characterization
+of polynomial-time functions.
+\begin{definition}
+
+\end{definition}
+\begin{definition}[Cobham's algebra for \complexity{FP}]
+\label{def:cobham}
+ TODO: define the algebra
+\end{definition}
+
+Cobham has published this algebra in~\cite{Cobham1964-COBTIC}, suggesting that it captures \complexity{FP}.
+A proof of that is in~\cite[p. 175 / p. 186 of the PDF]{Odifreddi1999CRT2} and in~\cite[p. 608 / p. 625 of the PDF]{Tourlakis2022Computability}
+
+Cobham's characterisation of polynomial time, though it doesn't name an explicit machine model, still embeds resource bounds through
+size constraints on arguments. The side condition that the bounding term $k$ dominate the function being defined 
+makes it undecidable to test whether a proposed definition is admissible.
+
+Other explicit characterizations include the algebraic view of polynomial-time
+functions~\cite{4568079} and, as mentioned above in~\ref{subsec:explicit}, uniform \(\complexityi{NC}{1}\) from~\cite{COMPTON1990241},
+and uniform \(\complexity{NC}\) from~\cite{ALLEN19911}.
+
 \section{Implicit Computational Complexity}
+\label{sec:icc}
+We can refine the connection given by~\ref{thm:loop-captures-pr}. As we will see, by carefully modifying the schemes of
+recursion and composition, we can obtain characterizations of complexity classes such as \complexity{L} and \complexity{P}.
 
-% \subsection{What is Implicit Computational Complexity?}
-% Implicit computational complexity (ICC) studies how to guarantee resource bounds
-% without appealing to external machine models.
-% Instead of analysing running time or space after the fact, ICC designs
-% languages and recursion schemes whose syntactic constraints ensure that every
-% definable function belongs to a chosen complexity class.
-% The aim is a principled foundation for programming languages that ``build in''
-% complexity guarantees by construction.
-% Techniques from proof theory, recursion theory, and linear logic play prominent
-% roles in this development.
+The modern study of ICC begins with two breakthroughs:
+\cite{151625}~and~\cite{10.1007/BF01201998}
+gave the first implicit characterisations of polynomial-time computable functions.
+Since then, numerous classes have been captured implicitly; see, for
+example, \cite{NIGGL201047}~and~\cite{10.1016/j.ic.2015.12.009}
+for overviews of \(\complexity{FPTIME}\) and \(\complexity{FNC}\) characterisations.
+However, the idea of Bellantoni and Cook seemed to best align with being the foundation
+of a practical programming language. Hence, we decided to solely focus on it and its successors.
 
-% ICC can be seen as the proof-theoretic analogue of descriptive complexity.
-% While descriptive complexity classifies decision problems through logical
-% definability, ICC approaches complexity from within programming languages and
-% type systems, enforcing bounds through their typing and recursion disciplines.
+Accessible introductions to ICC include the three-part presentation~\cite{martini2006implicit1,martini2006implicit2,martini2006implicit3},
+the talk~\cite{ronchi2019logic},
+and a short overview~\cite{DalLago2012}.
 
-% Two prominent ICC traditions illustrate this idea.
-% One investigates typed \(\lambda\)-calculi, often inspired by linear logic;
-% this thread is discussed in the chapter on linear logic.
-% The other starts with basic functions on binary strings (e.g. \( \mathsf{append}_0(x) \),
-% \( \mathsf{append}_1(x) \), \( \mathsf{pop}(x) \), \( \mathsf{empty}() \))
-% and studies the classes generated by closing under composition and recursion
-% subject to carefully crafted restrictions.
-% This recursion-theoretic viewpoint is the focus of the remainder of the chapter.
-
-% \subsection{History of the Field}
-% The modern study of ICC begins with back-to-back breakthroughs:
-% Leivant in 1991~\cite{151625} and Bellantoni-Cook in 1992~\cite{10.1007/BF01201998}
-% gave the first implicit characterisations of polynomial-time computable functions.
-
-% Earlier work hinted at the programme.
-% Immerman characterised polynomial-time relations in 1987 without explicit
-% size bounds~\cite{doi:10.1137/0216051}.
-% Compton and LaFlamme~\cite{COMPTON1990241} captured uniform \(\complexityi{NC}{1}\),
-% and Allen~\cite{ALLEN19911} uniform \(\complexity{NC}\), though their definitions
-% still concealed polynomial bounds and targeted relations instead of functions.
-% Other precursors include Gurevich's algebraic view of polynomial-time
-% functions~\cite{4568079} and Cobham's seminal 1964 characterisation of
-% \(\complexity{FP}\)~\cite{Cobham1964-COBTIC}, both of which retained explicit
-% polynomial constraints.
-% For a broader literature survey, see Bloch~\cite{bloch1994function}.
-
-% Since the 1990s numerous classes have been captured implicitly; see, for
-% example, Niggl~\cite{NIGGL201047} and Oitavem et al.~\cite{10.1016/j.ic.2015.12.009}
-% for overviews of \(\complexity{FPTIME}\) and \(\complexity{FNC}\) characterisations.
-% Jones connected fragments of Lisp to the decisive classes \(\complexity{L}\) and
-% \(\complexity{P}\)~\cite{JONES1999151}; Bonfante extended the analysis~\cite{10.1007/11784180_8};
-% Kristiansen and Voda~\cite{kristiansenvoda2005} investigated both imperative
-% and functional languages whose fragments yield hierarchies containing logspace,
-% linear space, polynomial time, and polynomial space.
-% Related contributions include work by Kristiansen~\cite{kristiansen2005neat},
-% Oitavem~\cite{Oitavem+2010+355+362}, and many others.
-% Because this thesis concentrates on \(\complexity{FPTIME}\) and \(\complexity{FLOGSPACE}\),
-% these classes receive focused attention below.
-
-% Accessible introductions to ICC include the three-part presentation by
-% Simone Martini~\cite{martini2006implicit1,martini2006implicit2,martini2006implicit3},
-% Simona Ronchi Della Rocca's 2019 talk~\cite{ronchi2019logic},
-% and Ugo Dal Lago's short overview~\cite{DalLago2012}.
-
-% \section{Recursion-Theoretic Approach}
-% \label{sec:recursion-theory-approach}
-% The recursion-theoretic branch of ICC avoids simulating Turing machines.
-% Instead, it controls complexity directly by limiting how new functions arise
-% from simpler ones.
-
-% Classical recursion theory builds all computable functions from basic ones
-% (zero, successor, projections) by closing under composition and recursion.
-% Restricting the recursion principles offers refined control: only certain
-% recursion patterns are allowed, and the resulting function algebra coincides
-% with a target complexity class.
-
-% Primitive recursion and the Grzegorczyk hierarchy already stratify total
-% functions by growth rate, yet they do not align neatly with standard classes
-% such as \(\complexity{P}\) or \(\complexity{L}\).
-% The challenge is to refine recursion principles so that they correspond exactly
-% to natural complexity classes.
-
+\subsection{Bellantoni and Cook's algebra for \complexity{FP}}
 % \subsection{Bellantoni and Cook's Safe Recursion for \texorpdfstring{\(\complexity{FP}\)}{\complexity{FP}} and \texorpdfstring{\(\complexity{FL}\)}{\complexity{FL}}}
 % Bellantoni and Cook introduced a function algebra \(\mathcal{B}\) whose key
 % innovation is the separation of arguments into \emph{normal} inputs (written to
@@ -218,6 +231,12 @@ For the details of the historical origins, consult~\cite{Adams2011}.
 % signature contains only normal inputs.
 % Duplicating safe arguments would allow super-polynomial growth, so their role is
 % strictly controlled.
+
+
+
+Interestingly, in~\cite{10.1007/978-3-642-22863-6_11} it has been formally verified that a version of Bellantoni and Cook's algebra on bitstrings (as opposed to natural numbers) corresponds precisely to the algebra of
+Cobham, as defined in~\ref{def:cobham}~\footnote{Link to the source code: \url{https://github.com/davidnowak/bellantonicook}.}
+
 
 % \subsection{Neergaard's \(BC\text{-}\varepsilon\): Definition and Intuition}
 % Neergaard's \(BC\text{-}\varepsilon\) algebra follows the Bellantoni--Cook
@@ -292,11 +311,6 @@ For the details of the historical origins, consult~\cite{Adams2011}.
 % and then refer to the name in many places. and we have a lot of results about probably
 % exponential difference of size of proofs of propositional tautologies in these two
 
-
-% \section{Cobham's Characterisation of \texorpdfstring{\(\complexity{FP}\)}{\complexity{FP}}}
-% \label{sec:cobham-characterisation-stub}
-% \textbf{Stub.} Detailed material on Cobham's function algebra for
-% \(\complexity{FP}\) will be added once the supporting definitions are prepared.
 
 % \section{Logspace-Oriented Developments}
 % Lind developed early logspace-oriented function algebras in 1973 and
