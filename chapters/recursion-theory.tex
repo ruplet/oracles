@@ -324,22 +324,6 @@ Bellantoni-Cook algebra for \(\complexity{FP}\).
 
 
 
-\subsection{Related works on specifically the \complexity{FL} class}
-Early function algebras for \complexity{FL} appeared in~\cite{10.1145/1008293.1008295} and~\cite{lind1974logspace},
-but these were explicit characterizations.
-In~\cite{10.1007/BF01201998} it was shown how to readily use their concept
-to characterize functions from \complexity{FL} with ``small output'', but this characterization
-relied on using unary representation of natural numbers on input, which is more of a 
-hack than a true characterization of this class.
-In~\cite{murawski2000can}, with further refinements in~\cite{MURAWSKI2004197},
-\(BC^{-}\) was introduced, an algebra that was contained in \complexity{FL},
-but was not known (and unlikely) to be \complexity{FL}-complete.
-In~\cite{Neergaard04} this was improved to the result that \(BC_\varepsilon^{-} = \complexity{FL}\),
-with a short discussion that using course-of-value affine recursion instead of predicative affine recursion
-seem to be the reason behind \(BC_\varepsilon^{-}\) being FL-complete, and \(BC^{-}\) being probably not.
-In~\cite{hofmann2006logspace} a good overview of languages for \complexity{FL} is presented,
-and in~\cite{schoepp2006spaceefficiency}, the history of \complexity{FL} characterizations is traced.
-
 % The original \(BC\text{-}\varepsilon\) code has been ported from Moscow ML to
 % SML/NJ and released under a compatible licence, alongside an unpublished note
 % that clarifies the original presentation.\footnote{\url{https://github.com/ruplet/neergaard-logspace-characterization}}
