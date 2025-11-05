@@ -20,6 +20,7 @@ While not the primary focus of this work, the field of recursion theory develope
 that later became foundational for ICC\@. An important formal system studied there is \emph{primitive recursion}.
 
 \begin{definition}[Primitive recursive functions]
+\label{def:primitive-recursive}
 \(\complexity{PR}\) is the smallest class of functions containing \(\text{(i)}\)--\(\text{(iii)}\) and closed under \(\text{(iv)}\), \(\text{(v)}\).
 \begin{enumerate}[label=(\roman*)]
 \item \textbf{(Constants)} For every \(n\in\mathbb{N}\) and \(k\ge 0\), the \(k\)-ary constant function
@@ -121,21 +122,48 @@ a given function description is in the programming language at all. Nevertheless
 have been very important for the field and we shall discuss some of them in this subsection.
 
 An example of such characterization is the Cobham's famous characterization
-of polynomial-time functions.
+of polynomial-time functions, using the recursion scheme defined below in the style of~\cite{Tourlakis2022Computability}.
 \begin{definition}
-
+\label{def:bounded-binary-primitive-recursion}
+A function \(f\) is defined from functions \(g\), \(h_0\), \(h_1\), and \(s\) by \emph{bounded primitive recursion on binary notation}
+if, for every \(\vec x\) and \(y\in\mathbb{N}\),
+\begin{align*}
+f(\vec x, 0)      &= g(\vec x),\\
+f(\vec x, S_0(y)) &= h_0\big(\vec x, y, f(\vec x, y)\big),\\
+f(\vec x, S_1(y)) &= h_1\big(\vec x, y, f(\vec x, y)\big),
+\end{align*}
+and moreover \(f(\vec x, y) \le s(\vec x, y)\).
+Here \(S_0(y)=2y\) and \(S_1(y)=2y+1\) append a binary digit to \(y\).
+% Writing \(y0\) (resp.\ \(y1\)) for the natural number whose binary expansion is that of \(y\)
+% followed by \(0\) (resp.\ \(1\)), the unfolding behaves like ordinary primitive recursion on binary notation while respecting the bound:
+% \begin{align*}
+% f(\vec x, 0)  &= g(\vec x) \le s(\vec x, 0),\\
+% f(\vec x, 1)  &= h_1\big(\vec x, 0, f(\vec x, 0)\big) \le s(\vec x, 1),\\
+% f(\vec x, 10) &= h_0\big(\vec x, 1, f(\vec x, 1)\big) \le s(\vec x, 10),\\
+% f(\vec x, 11) &= h_1\big(\vec x, 1, f(\vec x, 1)\big) \le s(\vec x, 11),\;\dots
+% \end{align*}
+% An analogous construction can be formulated for any radix \(n \ge 2\).
 \end{definition}
 \begin{definition}[Cobham's algebra for \complexity{FP}]
 \label{def:cobham}
- TODO: define the algebra
+The class of polynomial-time computable functions is the smallest class \(\mathcal{C}\) of functions such that:
+\begin{enumerate}[label=(\roman*)]
+\item \(\mathcal{C}\) contains the initial functions (as in~\ref{def:primitive-recursive}: constants, successor, projections), the~binary successor functions \(S_0(x)=2x\) and \(S_1(x)=2x+1\), and the weak exponential \((x,y)\mapsto x^{\lvert y\rvert}\).
+\item \(\mathcal{C}\) is closed under composition.
+\item \(\mathcal{C}\) is closed under bounded primitive recursion on binary notation as in Definition~\ref{def:bounded-binary-primitive-recursion}.
+\end{enumerate}
 \end{definition}
 
-Cobham has published this algebra in~\cite{Cobham1964-COBTIC}, suggesting that it captures \complexity{FP}.
-A proof of that is in~\cite[p. 175 / p. 186 of the PDF]{Odifreddi1999CRT2} and in~\cite[p. 608 / p. 625 of the PDF]{Tourlakis2022Computability}
+This formulation, due to Cobham~\cite{Cobham1964-COBTIC}, hides the polynomial bounds that are explicit in other
+presentations. The recursion parameter is the binary representation of the argument, so a definition of~\(f(\vec x,y)\)
+unfolds only \(\mathcal{O}(|y|)\) many steps, which is polynomial in the input size.
+Moreover, the side condition \(f(\vec x,y)\le s(\vec x,y)\) forces every intermediate value to stay within
+numbers of the form \(2^{p(|\vec x|,|y|)}\) for some polynomial \(p\), hence their binary length remains polynomially bounded.
+When writing a function in this style, it is unclear how to certify that \(f(\vec x, y) \le s(\vec x, y)\) holds in
+a way other than providing a full mathematical proof on the side.
 
-Cobham's characterisation of polynomial time, though it doesn't name an explicit machine model, still embeds resource bounds through
-size constraints on arguments. The side condition that the bounding term $k$ dominate the function being defined 
-makes it undecidable to test whether a proposed definition is admissible.
+Cobham has published this algebra in~\cite{Cobham1964-COBTIC}, suggesting that it captures \complexity{FP}.
+A~proof of that is in~\cite[p. 175 / p. 186 of the PDF]{Odifreddi1999CRT2} and in~\cite[p. 608 / p. 625 of the PDF]{Tourlakis2022Computability}
 
 Other explicit characterizations include the algebraic view of polynomial-time
 functions~\cite{4568079} and, as mentioned above in~\ref{subsec:explicit}, uniform \(\complexityi{NC}{1}\) from~\cite{COMPTON1990241},
