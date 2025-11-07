@@ -3,14 +3,6 @@
 23. Morioka tells that it is important to tell between decision and function complexity classes!
 Cook, Nguyen shows that FAC0 is enough for reductions
 
-## P: p-time decision problems
-- P are decision(!) problems solvable in polynomial time on a Turing machine
-- NP are also decision problems solvable in p-time on a Nondeterministic Turing machine
-- footnote: NP certainly does not mean "non-polynomial time" (reference: Physical portrayal of computational complexity, Arto Annila)
-- example of a problem in P: Circuit value problem; given a circuit, the inputs and one gate in the circuit, calculate the output of that gate
-- example of a problem not in P: given two natural numbers in binary, calculate the sum of these numbers
-- the above problem requires us to output more than one bit. It is not a decision problem - it is a functional problem
-
 ## FP: p-time functional problems
 - there are many definitions of FP (functional problems computable functional problems computable in polynomial time), not necessarily equivalent.
 - we will use this:

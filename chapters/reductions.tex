@@ -6,12 +6,32 @@
 % - Dla pewnych klas L, FL = L + AC0 redukcje (Cook). Dla innych klas tez?
 % - mozemy czy nie wielomianowo duzo razy odpalic "czy i-ty bit wyniku to 0? czy 1?" dla grafu funkcji?
 
+\section{\complexity{P}}
+Given x, y checking if Problem(x, y) is decidable by poly-time turing machine.
+
+There are many characterizations of P, and for our purposes they are not equivalent.
+
+Most importantly, FP is a different class - otherwise we can only check if IsZero(Bit_0) etc.
+Alternative definition of "P on unordered structures" defined in~\ref{def:inv-P}.
+
+\section{\complexity{FP}}
+FP is formally defined as follows:
+A binary relation P ( x , y ) {\displaystyle P(x,y)} is in FP if and only if there is a deterministic polynomial time algorithm that, given x {\displaystyle x}, either finds some y {\displaystyle y} such that P ( x , y ) {\displaystyle P(x,y)} holds, or signals that no such y {\displaystyle y} exists
+
+
+
+
+- example of a problem in P: Circuit value problem; given a circuit, the inputs and one gate in the circuit, calculate the output of that gate
+- example of a problem not in P: given two natural numbers in binary, calculate the sum of these numbers
+- the above problem requires us to output more than one bit. It is not a decision problem - it is a functional problem
+
+
 \label{chap:reductions}
 A lot (TODO: which?) of the definitions below are from~\cite{10.5555/520668}.
 
 \section{Decisional complexity classes}
 Most problems that are considered in complexity theory ask, for a given input,
-if it satisfies some property or not. I.e. \ the return type of the function that solves
+if it satisfies some property or not. I.e.\ the return type of the function that solves
 the problem, is a boolean. Here we list the definitions of some of complexity classes
 that contain solely such decisional problems. These turn out to be the most well-known complexity classes,
 but not the primary interest of this work. Our focus are more general functions that can return
@@ -186,16 +206,6 @@ that by $\complexityi{AC}{0}$ we denote the class of circuit families $C_n$, for
 
 
 
-
-\section{\complexity{P}}
-TODO: Elaborate on poly-time relations and the use of first-order/$\complexityi{AC}{0}$ reductions when defining reductions between \complexity{P}-complete problems.
-
-\subsection{inv-\complexity{P}}
-TODO: Expand on permutation-invariant \complexity{P} (\complexity{P} on unordered structures).
-
-\section{\complexity{FP}}
-TODO: Detail the class of poly-time functions.
-
 \section{\complexity{NP}}
 TODO: Clarify that the reductions used here are precisely the class \complexity{FL} of logspace reductions.
 
@@ -223,6 +233,8 @@ represented by a $\Sigma^B_0(L \cup \{F_1, \dots, F_n\})$ formula.
 In Chapter~2 of~\cite{edbd4873718c414f90d22dadf0dba2b1} there is an extensive discussion about
 the different subtleties of defining $\complexityi{AC}{0}$ functions and numerous different characterizations
 of Dlogtime-uniform $\complexityi{AC}{0}$-computable functions.
+
+first-order/$\complexityi{AC}{0}$ are used for P-completeness.
 
 
 \section{\texorpdfstring{$\complexityi{NC}{0}$}{NC\string^0}} reductions
@@ -275,6 +287,7 @@ TODO: Outline the notion of \complexity{P}-reductions to be used later in this c
 \label{sec:complete-problems}
 TODO: (this is Cook, Nguyen somewher) Verify that for every class $C \in \{\complexityi{AC}{0}, \complexity{L}, \complexity{P}\}$ there exists a problem $F$ that is $C$-complete under $\complexityi{AC}{0}$ reductions.
 TODO: This means $\complexityi{AC}{0}$ reductions coincide with the class of $\complexityi{FAC}{0}$ functions.
+
 
 \subsection{Functional complexity classes and completeness}
 TODO: Determine whether showing $\complexity{L}$-completeness suffices for $\complexity{FL}$-completeness, using the identity $\complexity{FL} = \complexityi{L}{*} = \complexity{L} + \complexityi{NC}{1}$ reductions~\cite[Proposition~4.1]{COOK19852}.
