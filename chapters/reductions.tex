@@ -10,6 +10,18 @@
 Given x, y checking if Problem(x, y) is decidable by poly-time turing machine.
 
 There are many characterizations of P, and for our purposes they are not equivalent.
+We will study these in~\ref{sec:alternative-ptime}.
+
+\begin{definition}[Deterministic characterization of \complexity{P}]
+A language $L$ is in \complexity{P} iff there exists a deterministic Turing machine $M$ such that:
+\begin{enumerate}
+    \item $M$ halts on every input within time bounded by a polynomial in the input length.
+    \item For all $x \in L$, $M(x) = 1$.
+    \item For all $x \notin L$, $M(x) = 0$.
+\end{enumerate}
+\end{definition}
+
+
 
 Most importantly, FP is a different class - otherwise we can only check if IsZero(Bit_0) etc.
 Alternative definition of "P on unordered structures" defined in~\ref{def:inv-P}.
@@ -17,6 +29,14 @@ Alternative definition of "P on unordered structures" defined in~\ref{def:inv-P}
 \section{\complexity{FP}}
 FP is formally defined as follows:
 A binary relation P ( x , y ) {\displaystyle P(x,y)} is in FP if and only if there is a deterministic polynomial time algorithm that, given x {\displaystyle x}, either finds some y {\displaystyle y} such that P ( x , y ) {\displaystyle P(x,y)} holds, or signals that no such y {\displaystyle y} exists
+transducers of polynomial growth are studied in~\cite{10.1145/3531130.3533326}, where also
+are given pebble, functinal, impearitve and logical models of computation.
+
+
+\section{\complexity{FNP}}
+Equivalently, Q is FNP if and only
+if there is a non deterministic polynomial time algorithm that, given an arbitrary input x,
+can find some y such that (x, y) ∈ Q~\cite{bournez_et_al:LIPIcs.MFCS.2019.23}.
 
 
 
@@ -24,6 +44,21 @@ A binary relation P ( x , y ) {\displaystyle P(x,y)} is in FP if and only if the
 - example of a problem in P: Circuit value problem; given a circuit, the inputs and one gate in the circuit, calculate the output of that gate
 - example of a problem not in P: given two natural numbers in binary, calculate the sum of these numbers
 - the above problem requires us to output more than one bit. It is not a decision problem - it is a functional problem
+
+
+\section{Alternative characterizations of P}
+\label{sec:alternative-ptime}
+E.g. in~\cite{bournez_et_al:LIPIcs.MFCS.2019.23}, FP and FNP is characterized by disrete differential equations.
+\begin{definition}[Non-standard circuit view of \complexity{P}]
+One can also view \complexity{P} as a polynomial-time uniform family of Boolean circuits $\{C_n\}_{n \in \mathbb{N}}$.
+Under this view, a language $L$ is in \complexity{P} iff there exists such a family with:
+\begin{enumerate}
+    \item Each $C_n$ taking $n$ input bits and producing one output bit.
+    \item For all $x \in L$, $C_{|x|}(x) = 1$.
+    \item For all $x \notin L$, $C_{|x|}(x) = 0$.
+\end{enumerate}
+We regard this circuit characterization as non-standard for the purposes of this text.
+\end{definition}
 
 
 \label{chap:reductions}
@@ -298,10 +333,6 @@ For chapters about ICC we will focus on \complexity{L} and \complexity{P}, as th
 and other classes might have problems like in the below subsections.
 Later, in the chapter about bounded arithmetic we will find that we actually want to care
 about characterization of $\complexityi{AC}{0}$-reductions.
-
-TODO: Why \complexity{P} and \complexity{L} are important and robust complexity classes
-TODO: because they are the smallest class containing linear time and closed under subroutines is \complexity{P}. The smallest class containing log space and closed under subroutines is still log space. So \complexity{P} and \complexity{L} are the smallest robust classes for time and space respectively which is why they feel right for modeling efficient computation.  
-TODO: source: \url{https://cstheory.stackexchange.com/a/3448/71933}
 
 \subsection{Fine-grained complexity theory}
 We will not realistically capture $\text{TIME}(\bigO(n))$ or anything of this kind,
