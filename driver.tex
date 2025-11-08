@@ -32,15 +32,22 @@
 % \usepackage[pl]{babel}
 \usepackage[
   backend=biber,
-  style=alphabetic
+  style=alphabetic,
+  bibencoding=utf8 % this is default, but make it explicit
 ]{biblatex}
 % recommended while using biblatex with babel
 \usepackage{csquotes}
 % make references clickable, hide boxes around links
 \usepackage[hidelinks, pdfpagelabels]{hyperref}
-\usepackage[T1]{fontenc}
+
+% Ensure correct handling and display of accented and non-ASCII characters:
+% - fontenc[T1]: use 8-bit fonts with full Latin alphabet (proper hyphenation, PDF copy/paste)
+% - inputenc[utf8]: tell LaTeX that the source files are saved in UTF-8 encoding
+% - lmodern: load Latin Modern fonts (Unicode-aware version of Computer Modern)
+\usepackage[T1]{fontenc} 
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
+
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{mathtools}
 \usepackage{microtype}
