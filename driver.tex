@@ -19,18 +19,20 @@
 \documentclass[en]  {pracamgr}
 %include standalone forest, tikz figures
 \usepackage{standalone}
-% Select citation style (CSL sources live under thesis-tex/).
 
+% TODO: CSL doesn't work with Biblatex. Use luatex, citeproc for it: https://github.com/zepinglee/citeproc-lua
+% Select citation style (CSL sources live under thesis-tex/).
 % https://github.com/citation-style-language/styles/blob/2e3e9964846c9a1ad709e6974307b85f70a37f06/apa.csl
 % \PassOptionsToPackage{style=apa}{biblatex} % default APA, see thesis-tex/apa.csl
-
 % https://github.com/citation-style-language/styles/blob/2e3e9964846c9a1ad709e6974307b85f70a37f06/ieee.csl
 % \PassOptionsToPackage{style=ieee}{biblatex} % switch to IEEE, see thesis-tex/ieee.csl
-
 % https://github.com/citation-style-language/styles/blob/2e3e9964846c9a1ad709e6974307b85f70a37f06/chicago-author-date-17th-edition.csl
-\PassOptionsToPackage{style=chicago-author-date-17th-edition}{biblatex}
+% \PassOptionsToPackage{style=chicago-author-date-17th-edition}{biblatex}
 
-\usepackage[backend=biber]{biblatex}
+\usepackage[
+  backend=biber,
+  style=alphabetic
+]{biblatex}
 % recommended while using biblatex with babel
 \usepackage{csquotes}
 % make references clickable, hide boxes around links
@@ -191,7 +193,7 @@
   F.3.3. Studies of program constructs}
 
 % Słowa kluczowe:
-\keywords{Implicit Computational Complexity, Bounded arithmetic, Lean 4}
+\keywords{TODO keywords at the end}
 
 % Tu jest dobre miejsce na Twoje własne makra i~środowiska:
 % \newtheorem{defi}{Definicja}[section]
