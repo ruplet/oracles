@@ -1,6 +1,97 @@
-\chapter{Reductions}
+\chapter{Reductions}\label{chap:reductions}
+% A lot (TODO: which?) of the definitions below are from~\cite{10.5555/520668}.
 
-We will introduce concepts about P, FP, NP, FNP in the style of~\cites[Theorem1]{10.5555/1540612}[Theorem2]{DRAFT10.5555/1540612}.
+We introduce the definitions of complexity classes considered in this work.
+
+In~\ref{sec:decisional-complexity-classes} we introduce standard complexity classes such as \(\complexity{L}\), \(\complexity{P}\)
+and \(\complexity{NP}\). It is important to note that these definitions only talk about the complexity of
+computing \emph{Boolean} functions, i.e.\ functions \(f : \{0,1\}^\ast \to \{0,1\}\). These functions define
+\emph{decision} problems or \emph{languages}.
+
+It is not obvious whether focusing solely on the complexity of Boolean functions is sufficient to reason about
+the general functions that we want to implement in a practical programming language. 
+As we will see in~\ref{sec:decisional-and-functional-complexity-classes}, the answer is negative.
+In~\ref{sec:functional-complexity-classes} we introduce the still standard, but much less talked about, \emph{functional} complexity classes,
+which study functions \(f : \{0,1\}^\ast \to \{0,1\}^\ast\) in general. The results about these classes 
+transfer much better to our interests than results about the decisional complexity classes. As we discuss 
+in~\ref{chap:recursion-theory}, programming-language-like characterizations of decisional complexity classes 
+are more abundant and by far predate the characterizations of functional complexity classes. It is the latter, 
+however, that is viable for our purposes of designing a programming language.
+
+
+\section{Decisional complexity classes}
+\label{sec:decisional-complexity-classes}
+We say that a machine decides a language \(L \subseteq \{0,1\}^\ast\) if it computes the 
+characteristic function \(f_L : \{0,1\}^\ast \to \{0,1\}\), where \(f_L(x) = 1 \Leftrightarrow x \in L\).
+Recall the definitions of complexity classes~\ref{def:turing-dtime} and~\ref{def:turing-dspace}.
+
+\subsection{\complexity{P}}
+\begin{definition}[The class \texorpdfstring{\ensuremath{\complexity{P}}}{P}]
+\[
+    \complexity{P} = \bigcup_{c \ge 1} \complexity{DTIME}(n^c).
+\]
+In other words, a language is in \(\complexity{P}\) if and only if it can be decided by a deterministic Turing machine that runs in polynomial time.
+\end{definition}
+
+
+
+There are many characterizations of \(\complexity{P}\), and for our purposes they are not equivalent.
+We will study these in~\ref{sec:alternative-ptime}.
+
+
+\subsubsection{Alternative characterizations of P}
+\label{sec:alternative-ptime}
+For example, in~\cite{bournez_et_al:LIPIcs.MFCS.2019.23}, FP and FNP are characterized by discrete differential equations.
+\begin{definition}[Non-standard circuit view of \complexity{P}]
+One can also view \complexity{P} as a polynomial-time uniform family of Boolean circuits \(\{C_n\}_{n \in \mathbb{N}}\).
+Under this view, a language \(L\) is in \complexity{P} iff there exists such a family with:
+\begin{enumerate}
+    \item each \(C_n\) taking \(n\) input bits and producing one output bit;
+    \item for all \(x \in L\), \(C_{|x|}(x) = 1\);
+    \item for all \(x \notin L\), \(C_{|x|}(x) = 0\).
+\end{enumerate}
+We regard this circuit characterization as non-standard for the purposes of this text.
+\end{definition}
+
+\section{Decisional and functional complexity classes}
+\label{sec:decisional-and-functional-complexity-classes}
+Most problems that are considered in complexity theory ask, for a given input, whether it satisfies some property, i.e.\ the return type of the function that solves the problem is a Boolean. Here we list the definitions of some complexity classes that contain solely such decisional problems. These turn out to be the most well-known complexity classes, but they are not the primary interest of this work. Our focus is on more general functions that can return a string, a pair of numbers, or a graph, and not just a Boolean value. After we introduce the decisional complexity classes in this section, we will later use them to define functional complexity classes.
+
+
+\subsection{Bibliographical remark}
+The definition of \(\complexity{P}\) is in the style
+of~\cites[Definition~1.13]{10.5555/1540612}[Definition~1.20]{DRAFT10.5555/1540612}.
+
+
+
+\section{Functional complexity classes}\label{sec:functional-complexity-classes}
+
+
+
+\section{Reductions}\label{sec:reductions}
+
+\subsection{Fine-grained reductions}\label{subsec:fine-grained-reductions}
+
+\todo[inline]{QL (quasilinear-time functions), NLT (robust complexity class for 
+    \( \complexity{DTIME} (n (\log{n})^{\bigO(1)}) \) 
+    on RAM machines~\cite{10.1007/3-540-51237-3_10})
+}
+
+
+\section{Uniformity}\label{sec:uniformity}
+
+\subsection{\complexity{DLOGTIME}-uniformity}\label{subsec:dlogtime-uniformity}
+\begin{itemize}
+\item TODO:\@ Work out the example of a \complexity{DLOGTIME} reduction showing that tree isomorphism for string-represented trees is $\complexityi{NC}{1}$-complete~\cite{694595}.
+\end{itemize}
+
+% We will not realistically capture $\text{TIME}(\bigO(n))$ or anything of this kind,
+% as the field of fine-grained complexity is relatively modern and little or none interesting
+% characterizations of these classes have been found as of writing this work.
+% \begin{itemize}
+% \item TODO: Review Neil D. Jones's ``Constant Time Factors Do Matter'' for its discussion of NLIN-complete problems (\url{https://dl.acm.org/doi/pdf/10.1145/167088.167244}).
+% \item TODO: Summarize the insights from Gurevich and Shelah's ``Nearly Linear Time'' concerning the definition of $\complexity{DTIME}(n)$ and nearly-linear-time-complete problems under QL reductions (\url{https://link.springer.com/content/pdf/10.1007/3-540-51237-3_10.pdf}).
+% \end{itemize}
 
 
 % % TODO: czemu nie moge zrobic po prostu jezyka np. dla problemu P-zupelnego, albo 3SUM-zupelnego,
@@ -9,20 +100,6 @@ We will introduce concepts about P, FP, NP, FNP in the style of~\cites[Theorem1]
 % % - Dla pewnych klas L, FL = L + AC0 redukcje (Cook). Dla innych klas tez?
 % % - mozemy czy nie wielomianowo duzo razy odpalic "czy i-ty bit wyniku to 0? czy 1?" dla grafu funkcji?
 
-% \section{\complexity{P}}
-% Given x, y checking if Problem(x, y) is decidable by poly-time turing machine.
-
-% There are many characterizations of P, and for our purposes they are not equivalent.
-% We will study these in~\ref{sec:alternative-ptime}.
-
-% \begin{definition}[Deterministic characterization of \complexity{P}]
-% A language $L$ is in \complexity{P} iff there exists a deterministic Turing machine $M$ such that:
-% \begin{enumerate}
-%     \item $M$ halts on every input within time bounded by a polynomial in the input length.
-%     \item For all $x \in L$, $M(x) = 1$.
-%     \item For all $x \notin L$, $M(x) = 0$.
-% \end{enumerate}
-% \end{definition}
 
 
 
@@ -49,33 +126,7 @@ We will introduce concepts about P, FP, NP, FNP in the style of~\cites[Theorem1]
 % - the above problem requires us to output more than one bit. It is not a decision problem - it is a functional problem
 
 
-% \section{Alternative characterizations of P}
-% \label{sec:alternative-ptime}
-% E.g. in~\cite{bournez_et_al:LIPIcs.MFCS.2019.23}, FP and FNP is characterized by disrete differential equations.
-% \begin{definition}[Non-standard circuit view of \complexity{P}]
-% One can also view \complexity{P} as a polynomial-time uniform family of Boolean circuits $\{C_n\}_{n \in \mathbb{N}}$.
-% Under this view, a language $L$ is in \complexity{P} iff there exists such a family with:
-% \begin{enumerate}
-%     \item Each $C_n$ taking $n$ input bits and producing one output bit.
-%     \item For all $x \in L$, $C_{|x|}(x) = 1$.
-%     \item For all $x \notin L$, $C_{|x|}(x) = 0$.
-% \end{enumerate}
-% We regard this circuit characterization as non-standard for the purposes of this text.
-% \end{definition}
 
-
-% \label{chap:reductions}
-% A lot (TODO: which?) of the definitions below are from~\cite{10.5555/520668}.
-
-% \section{Decisional complexity classes}
-% Most problems that are considered in complexity theory ask, for a given input,
-% if it satisfies some property or not. I.e.\ the return type of the function that solves
-% the problem, is a boolean. Here we list the definitions of some of complexity classes
-% that contain solely such decisional problems. These turn out to be the most well-known complexity classes,
-% but not the primary interest of this work. Our focus are more general functions that can return
-% a string, a pair of numbers, or a graph, and not just a boolean value. After we introduce
-% the decisional complexity classes in this section, we will use them to define functional
-% complexity classes in~\ref{sec:functional-complexity-classes}.
 
 % \subsection{Cicuit complexity classes}
 % The complexity classes in this subsection are \emph{circuit complexity} classes,
@@ -281,15 +332,6 @@ We will introduce concepts about P, FP, NP, FNP in the style of~\cites[Theorem1]
 % under poly-time reductions but not under logspace reductions is discussed in~\cite{18631}.
 
 
-% \section{Uniformity}
-% \label{sec:uniformity}
-
-% \section{\complexity{DLOGTIME}-uniformity}
-% \begin{itemize}
-% \item TODO: Work out the example of a \complexity{DLOGTIME} reduction showing that tree isomorphism for string-represented trees is $\complexityi{NC}{1}$-complete~\cite{694595}.
-% \end{itemize}
-
-
 % \section{First-order reduction}
 % TODO: Provide the definition of first-order reductions (see Chapter~12.3 of \url{https://link.springer.com/book/10.1007/3-540-28788-4}).
 
@@ -337,14 +379,6 @@ We will introduce concepts about P, FP, NP, FNP in the style of~\cites[Theorem1]
 % Later, in the chapter about bounded arithmetic we will find that we actually want to care
 % about characterization of $\complexityi{AC}{0}$-reductions.
 
-% \subsection{Fine-grained complexity theory}
-% We will not realistically capture $\text{TIME}(\bigO(n))$ or anything of this kind,
-% as the field of fine-grained complexity is relatively modern and little or none interesting
-% characterizations of these classes have been found as of writing this work.
-% \begin{itemize}
-% \item TODO: Review Neil D. Jones's ``Constant Time Factors Do Matter'' for its discussion of NLIN-complete problems (\url{https://dl.acm.org/doi/pdf/10.1145/167088.167244}).
-% \item TODO: Summarize the insights from Gurevich and Shelah's ``Nearly Linear Time'' concerning the definition of $\complexity{DTIME}(n)$ and nearly-linear-time-complete problems under QL reductions (\url{https://link.springer.com/content/pdf/10.1007/3-540-51237-3_10.pdf}).
-% \end{itemize}
 
 % \subsection{Semantic and syntactic complexity classes}
 % TODO: Investigate which classes can realistically be characterized, likely excluding \complexity{BPP} and permutation-invariant \complexity{PTIME} (see \url{https://mathoverflow.net/questions/35236/is-there-a-syntactic-characterization-for-bpp-bqp-or-qma}).

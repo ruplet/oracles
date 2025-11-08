@@ -46,6 +46,20 @@
 \usepackage{proof}
 \usepackage{enumitem}
 \usepackage{xspace}
+
+% TODO
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{xcolor}
+% lighter default and explicit label
+\setuptodonotes{
+  color=orange!20,     % lighter background
+  linecolor=orange!50, % border
+  bordercolor=orange!50,
+  textcolor=black,
+  caption={TODO},      % text used in list of todos
+  prepend={\textbf{TODO:\@}} % prefix inside note
+}
+
 % theorem-like environments
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[chapter]
@@ -69,12 +83,12 @@
 \apptocmd{\tableofcontents}{\clearpage\hypersetup{pageanchor=true}}{}{}
 \makeatother
 
+\addbibresource{chapters/foundations.bib}
 \addbibresource{chapters/reductions.bib}
 \addbibresource{chapters/linear-logic.bib}
 \addbibresource{chapters/bounded-arithmetic.bib}
 \addbibresource{chapters/descriptive-complexity.bib}
 \addbibresource{chapters/recursion-theory.bib}
-\addbibresource{chapters/prehistory-icc.bib}
 
 
 \newcommand{\llbracket}{\mathopen{[\![}}
@@ -230,6 +244,7 @@
 %\listoffigures
 %\listoftables
 
+\include{chapters/foundations}
 \include{chapters/reductions}
 \include{chapters/recursion-theory}
 

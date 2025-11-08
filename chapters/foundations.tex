@@ -1,0 +1,98 @@
+\chapter{Models of computation, programming paradigms and complexity measures}
+One of the first decisions the designer of a programming language has to make is choosing
+a programming paradigm convenient for writing the programs of their interest.
+In this chapter we try to lift the assumption that computation has to be performed in an imperative manner.
+We investigate if it would make more sense for us to seek the design of e.g.\  a functional
+programming language as opposed to imperative, or maybe we should focus on completely different
+paradigm, such as quantum or interactive computation.
+
+A difficulty encountered is that the standard notions of time and space complexity of a program
+don't make sense in models of computations fundamentally different from Turing machines.
+At the same time, computation we usually care about is computation on modern CPUs and GPUs,
+which immediately pushes us towards focusing on imperative or parallel programming paradigms.
+However, as discussed in~\cite{10.1007/978-3-642-27660-6_3}, the notion of an ``algorithm''
+has not crystallized yet and is still expanding. It is the purpose of this chapter
+to explore if we will be able to design programming languages ``capturing\todo{check
+consistency of capturing/expressing in the whole work} complexity classes'',
+by working in a different paradigm.
+We can foreshadow that the answer is (perhaps surprisingly) positive. Despite
+complexity classes being defined on Turing machines, the characterizations of these classes
+that we found, are rarely imperative.
+
+\section{Turing machines}
+\todo[inline]{Standard definitions. Will focus on these in this work.}
+
+\begin{definition}[Time complexity]\label{def:turing-dtime}
+Let \(T : \mathbb{N} \to \mathbb{N}\) be some function.  A language \(L\) belongs to \(\complexity{DTIME}(T(n))\) iff there exists a deterministic Turing machine that satisfies:
+\begin{enumerate}[label= (\roman*), ref= (\roman*)]
+    \item\label{itm:dtime} for some constant \(c > 0\) and every input \(w \in \{0,1\}^{n}\) it terminates within \(c \cdot T(n)\) steps;
+    \item for every \(w \in L\) the machine outputs \(1\);
+    \item for every \(w \notin L\) the machine outputs \(0\).
+\end{enumerate}
+We will say that a Turing machine belongs to \(\complexity{DTIME}(T(n))\) iff it satisfies~\ref{itm:dtime}.
+\end{definition}
+
+\begin{definition}[Space complexity]\label{def:turing-dspace}
+Let \(T : \mathbb{N} \to \mathbb{N}\) be some function.  A language \(L\) belongs to \(\complexity{DSPACE}(T(n))\) iff there exists a deterministic Turing machine that satisfies:
+\begin{enumerate}[label= (\roman*), ref= (\roman*)]
+    \item\label{itm:dspace} for some constant \(c > 0\) and every input \(w \in \{0,1\}^{n}\) it halts while using at most \(c \cdot T(n)\) work-tape cells;
+    \item for every \(w \in L\) the machine outputs \(1\);
+    \item for every \(w \notin L\) the machine outputs \(0\).
+\end{enumerate}
+We will say that a Turing machine belongs to \(\complexity{DSPACE}(T(n))\) iff it satisfies~\ref{itm:dspace}.
+\end{definition}
+
+\subsection{Random-access Turing machines}
+Informally, random-access Turing machines are Turing machines with a special ``pointer'' tape,
+of length logarithmic to the size of input, and a special state such that when the binary
+number on the pointer tape is \(n\), \(n\)-th digit of the input is written to the work tape.
+
+Reasoning about computation in complexity classes such as \(\complexity{L}\) or \(\complexity{P}\) is the same
+for traditional Turing machines and Random-access Turing machines. The choice of model starts to matter for machine-dependent
+notions of complexity such as \(\complexity{DTIME(n)}, \complexity{DTIME(n^2)}\) (\emph{fine-grained} complexity classes).
+Due to insufficient existing research on implicit characterizations of
+fine-grained complexity classes, we will not consider them besides brief discussion in~\ref{subsec:fine-grained-reductions}. 
+The notion of \(\complexity{DLOGTIME} = \complexity{DTIME(\log{n})}\)-uniformity explored in~\ref{subsec:dlogtime-uniformity} is also
+only defined for random-access Turing machines.
+
+\section{Circuits}
+\todo[inline]{
+Can be used for reasoning about parallel computation. Not very practical to do so, however. We will use it
+just to capture weak classes of functions, weaker than logspace etc.
+}
+
+\section{Lambda calculus}
+\todo[inline]{
+    \begin{itemize}
+        \item Foundation of functional programming
+        \item Turns out to be easier to reason about
+        \item Typed lambda calculi enable to reason about result of program
+        \item Untyped lambda calculi are close to recursion-theoretical approach studied in~\ref{chap:recursion-theory}
+        \item Doesn't translate nicely to turing machines complexity
+        \item But was used for Church-Turing thesis
+        \item In~\cite[Theorem 3.4]{10.5555/788018.788832} it is shown how functions expressible in 
+        simply-typed lambda calculus correspond to \(\complexity{REG}\), but with a different input 
+        representation,~\cite{HILLEBRAND1996117}~show how it corresponds to the whole 
+        \(\complexity{ELEMENTARY}\). Even further, in~\cite{zakrzewski2007definablefunctionssimplytyped} it is stated as common knowledge
+        that for another representation, functions definable in STLC are extended polynomials, and proved that for a different notion of \emph(equality), this is not true anymore. For more discussion, check~\cite{27863}
+
+    \end{itemize}
+}
+
+\section{Models of hypercomputation}
+% \todo[inline]{\begin{itemize}
+% \item Sequential Time. An algorithm determines a sequence of computational
+% states for each valid input. Specifically, the time is discrete. what if time is not a successor structure? i.e. we can travel back in Time
+% \item Malament-Hogarth spacetime; \href{https://plato.stanford.edu/entries/computation-physicalsystems/}
+% \end{itemize}
+% }
+
+
+\section{Complexity measures in other areas}
+\todo[inline]{If you think of sets as oracles and functions as algorithms, you can consider
+computational content of set theory; use set theory as a computatioanl model. this is slighlty explored in
+a blogpost~\cite{Tao2010ComputationalPerspective}. Your complexity is then: open sets, ..., borel sets, etc. (Borel hierarchy Boldface/Lightface).
+This was explored by me in \href{https://github.com/ruplet/prezentacja-seminarium-2/blob/main/prezentacja.pdf}.
+This also inspired the whole direction of me considering Bounded Arithmetic for computation.
+}
+

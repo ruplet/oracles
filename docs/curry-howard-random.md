@@ -85,20 +85,3 @@ haskell: system f na sterydach
 - Existential types = Abstract Data Types (ADTs)?
 > https://www.ps.uni-saarland.de/courses/seminar-ws02/ExistentialTypes.slides.pdf  
 > Mitchell, Plotkin 1988: "Abstract types have existential type"
-
-## Lambda calculus and complexity
-- About expression power of simply typed lambda calculus
-> Based on discussion under: https://cstheory.stackexchange.com/q/27824  
-> Hillebrand, Kanellakis 1996:  
-> terms of form {0, 1}* -> Bool in STLC express precisely regular languages  
-> Theorem 3.4: https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.23.8845&rep=rep1&type=pdf
-
-- What is the expressibility of simply-typed lambda calculus, really?
-> Complexity class: REG (https://mathoverflow.net/a/296879)  
-> (3. https://nguyentito.eu/2018-11-scalp.pdf - ELEMENTARY)  
-> (5. depends on the input/output representation!!!  
-  https://cstheory.stackexchange.com/a/52102)
-
-- Numeric functions expressible in STLC = extended polynomials
-
-
