@@ -84,33 +84,35 @@ The notion of \(\complexity{DLOGTIME} = \complexity{DTIME(\log{n})}\)-uniformity
 only defined for random-access Turing machines.
 
 \section{Circuits}
-\todo[inline]{
-Can be used for reasoning about parallel computation. Not very practical to do so, however. We will use it
-just to capture weak classes of functions, weaker than logspace etc.
-}
+Circuits as a model of computation are the theoretical foundation of parallel programming.
+The theoretical implications turn out to not be widely applicable in practice, however.
+In this work, we will mostly use circuits when we need to perform computation in complexity
+lower than the popular, classes such as \(\complexity{L}\) and \(\complexity{P}\).
 
 \section{Lambda calculus}
 Lambda calculus underpins functional programming. Typed lambda calculi are known
 to ease reasoning about the correctness of their programs.
 Untyped lambda calculi, on the other hand, are close to the recursion-theoretic
-considerations that we will explore in~\autoref{chap:recursion-theory}. However, lambda calculus does
-not line up cleanly with traditional Turing machine complexity measures.  For instance,
+considerations that we will explore in~\autoref{chap:recursion-theory}.
+
+Lambda calculus does
+not however line up cleanly with traditional Turing machine complexity measures.  For instance,
 for some representation of strings \(\{0, 1\}^\ast\), \cite[Theorem~3.4]{10.5555/788018.788832}~identifies
 the functions \(\{0, 1\}^\ast \rightarrow \{0, 1\}\) definable in simply typed
-lambda calculus (STLC), with \(\complexity{REG}\). But with a different encoding of inputs,
+lambda calculus (STLC), with regular languages. But with a different encoding of inputs,
 \cite{HILLEBRAND1996117} relates STLC to the whole \(\complexity{ELEMENTARY}\) class. 
 \cite{zakrzewski2007definablefunctionssimplytyped} states that
-with different ``standard'' encodings STLC instead characterizes extended polynomials, and further shows
-that if we require the desired result of a function and the actual output of lambda-term to not be
-``equal'' by \(\beta\)-equivalence, but by \(\beta\eta\)-equivalence, the class is yet different.
+with a different ``standard'' encoding, STLC instead characterizes extended polynomials, and further shows
+that if we slightly modify the encoding, the class is yet different.
 For more discussion, see also~\cite{27863}.
 Consequently, it is not obvious how to reason about complexity theory in the language of lambda calculus.
+
 Nevertheless, typed lambda calculi are the basis of one the successful approaches towards our problem of
-characterizing a complexity class syntactically, and will be discussed further in~\autoref{chap:linear-types}.
+characterizing complexity classes syntactically, and will be discussed further in~\autoref{chap:linear-types}.
 
 
 \section{Set theory as inspiration for model of computation}
-An interesting connection appears when we think of traditional notions of set complexity in set theory
+An interesting connection appears when we think of traditional notions of ``complexity'' of sets in set theory
 from the point of view of computational complexity. Let's take a look at how Borel sets are defined:
 
 \begin{definition}[Borel sets]
@@ -129,8 +131,8 @@ in terms of a computational process is a very powerful technique. It has been de
 under the name of Curry-Howard or proofs-as-programs correspondence. For the computational content
 of set theory in particular, an interesting brief discussion is presented in~\cite{Tao2010ComputationalPerspective}.
 For our purposes, an interesting connection appears when we look at the field of descriptive set theory,
-and theorems about the determinacy of Gale-Stewart games (which we shall not introduce here) in particular.
-It is an easy to prove theorem that Gale-Stewart games are determined when the underlying set is open or closed.
+and in particular theorems about the determinacy of Gale-Stewart games (which we shall not introduce here).
+It is an easy to prove that Gale-Stewart games are determined when the underlying set is open or closed.
 But allowing the underlying set to be more and more complicated (going up the Borel hierarchy), we quickly 
 reach the limits of provability in Zermelo-Fraenkel set theory, with determinacy for Borel sets being a
 difficult theorem to prove, and then with determinacy for analytic and projective sets being
@@ -143,7 +145,7 @@ that if we assume as an axiom the existence of a set of \(n\) elements, then the
 in the extended theory will have cardinality \(n^2\) or \(2^n\)?
 
 While very far from any notion of ``practical programming languages'', the above considerations
-originated~\footnote{It is interesting to note that this interest came from getting to present this topic
+originated\footnote{It is interesting to note that this interest came from getting to present this topic
 at the JAiO master's seminar at the University of Warsaw ---
 slides are available online at~\cite{Balawender2025BorelDeterminacySeminar}.}
 the most promising approach towards it that we study in this work, studied in~\autoref{chap:bounded-arithmetic}.
