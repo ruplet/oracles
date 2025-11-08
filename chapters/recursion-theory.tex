@@ -10,8 +10,8 @@ complexity guarantees by construction.
 In this chapter we focus on techniques from recursion theory that were successfully
 utilized in this field to characterize complexity classes.
 
-As discussed in~\ref{sec:classes-of-interest}, we will primarily focus on characterizations of L and P.
-Characterizations we are interested in are described mostly in~\ref{sec:icc}. All of the historical
+As discussed in~\autoref{sec:classes-of-interest}, we will primarily focus on characterizations of L and P.
+Characterizations we are interested in are described mostly in~\autoref{sec:icc}. All of the historical
 context of the field needs to also be addressed to describe why we were unsuccessful in designing a programming
 language based on ideas from these papers. For a broad literature survey, see~\cite{bloch1994function}.
 
@@ -148,9 +148,9 @@ Here \(S_0(y)=2y\) and \(S_1(y)=2y+1\) append a binary digit to \(y\).
 \label{def:cobham}
 The class of polynomial-time computable functions is the smallest class \(\mathcal{C}\) of functions such that:
 \begin{enumerate}[label=(\roman*)]
-\item \(\mathcal{C}\) contains the initial functions (as in~\ref{def:primitive-recursive}: constants, successor, projections), the~binary successor functions \(S_0(x)=2x\) and \(S_1(x)=2x+1\), and the weak exponential \((x,y)\mapsto x^{\lvert y\rvert}\).
+\item \(\mathcal{C}\) contains the initial functions (as in~\autoref{def:primitive-recursive}: constants, successor, projections), the~binary successor functions \(S_0(x)=2x\) and \(S_1(x)=2x+1\), and the weak exponential \((x,y)\mapsto x^{\lvert y\rvert}\).
 \item \(\mathcal{C}\) is closed under composition.
-\item \(\mathcal{C}\) is closed under bounded primitive recursion on binary notation as in Definition~\ref{def:bounded-binary-primitive-recursion}.
+\item \(\mathcal{C}\) is closed under bounded primitive recursion on binary notation as in Definition~\autoref{def:bounded-binary-primitive-recursion}.
 \end{enumerate}
 \end{definition}
 
@@ -166,12 +166,12 @@ Cobham has published this algebra in~\cite{Cobham1964-COBTIC}, suggesting that i
 A~proof of that is in~\cite[p. 175 / p. 186 of the PDF]{Odifreddi1999CRT2} and in~\cite[p. 608 / p. 625 of the PDF]{Tourlakis2022Computability}
 
 Other explicit characterizations include the algebraic view of polynomial-time
-functions~\cite{4568079} and, as mentioned above in~\ref{subsec:explicit}, uniform \(\complexityi{NC}{1}\) from~\cite{COMPTON1990241},
+functions~\cite{4568079} and, as mentioned above in~\autoref{subsec:explicit}, uniform \(\complexityi{NC}{1}\) from~\cite{COMPTON1990241},
 and uniform \(\complexity{NC}\) from~\cite{ALLEN19911}.
 
 \section{Implicit Computational Complexity}
 \label{sec:icc}
-We can refine the connection given by~\ref{thm:loop-captures-pr}. As we will see, by carefully modifying the schemes of
+We can refine the connection given by~\autoref{thm:loop-captures-pr}. As we will see, by carefully modifying the schemes of
 recursion and composition, we can obtain characterizations of complexity classes such as \complexity{L} and \complexity{P}.
 
 The modern study of ICC begins with two breakthroughs:
@@ -257,7 +257,7 @@ of Bellantoni and Cook's algebra on bitstrings (as opposed to natural numbers he
 This is of interest to us, as initially it suggested that the authors have formalized the notion of an \complexity{FP}
 function in a proof assistant and managed to implement some form of an interpreter. This is not the case, however, as
 their proof is formalized proof that the class of functions in this algebra is the same as the class of functions
-in Cobham's algebra, as defined in~\ref{def:cobham}~\footnote{Link to the source code: \url{https://github.com/davidnowak/bellantonicook}.}
+in Cobham's algebra, as defined in~\autoref{def:cobham}~\footnote{Link to the source code: \url{https://github.com/davidnowak/bellantonicook}.}
 
 \subsection{Neergaard's safe affine algebra for \complexity{FL}}
 
@@ -269,7 +269,7 @@ We continue to write functions as \(f(\vec{x};\vec{y})\), with normal inputs
 write \(yb = 2y + b\); for \(\delta \in \mathbb{N}\), put \(\texttt{shift}(y, \delta) = \lfloor y / 2^\delta \rfloor \).
 
 \begin{definition}[Neergaard's \(BC_\varepsilon^{-}\) algebra]\label{def:bc-eps}
-The class \(BC_\varepsilon^{-}\) is the smallest class of functions that contains the initial functions \((\textup{i})\)--\((\textup{v})\) as defined in~\ref{def:bellantoni-cook} and is closed under
+The class \(BC_\varepsilon^{-}\) is the smallest class of functions that contains the initial functions \((\textup{i})\)--\((\textup{v})\) as defined in~\autoref{def:bellantoni-cook} and is closed under
 the below schemes of safe composition and safe recursion:
 \begin{enumerate}[label= (\roman*)]
   

@@ -54,7 +54,7 @@ Let \(T : \mathbb{N} \to \mathbb{N}\) be some function.  A language \(L\) belong
     \item for every \(w \in L\) the machine outputs \(1\);
     \item for every \(w \notin L\) the machine outputs \(0\).
 \end{enumerate}
-We will say that a Turing machine belongs to \(\complexity{DTIME}(T(n))\) iff it satisfies~\ref{itm:dtime}.
+We will say that a Turing machine belongs to \(\complexity{DTIME}(T(n))\) iff it satisfies~\autoref{itm:dtime}.
 \end{definition}
 
 \begin{definition}[Space complexity]\label{def:turing-dspace}
@@ -64,7 +64,7 @@ Let \(T : \mathbb{N} \to \mathbb{N}\) be some function.  A language \(L\) belong
     \item for every \(w \in L\) the machine outputs \(1\);
     \item for every \(w \notin L\) the machine outputs \(0\).
 \end{enumerate}
-We will say that a Turing machine belongs to \(\complexity{DSPACE}(T(n))\) iff it satisfies~\ref{itm:dspace}.
+We will say that a Turing machine belongs to \(\complexity{DSPACE}(T(n))\) iff it satisfies~\autoref{itm:dspace}.
 \end{definition}
 
 \subsection{Random-access Turing machines}
@@ -77,10 +77,10 @@ for traditional Turing machines and \todo{random/Random}random-access Turing mac
 notions of complexity such as \(\complexity{DTIME(n)}, \complexity{DTIME(n^2)}\) (\emph{fine-grained} complexity classes).
 Due to insufficient existing research on implicit characterizations of
 fine-grained complexity classes, we will not consider them besides brief discussion
-in~\ref{subsec:fine-grained-reductions}.\footnote{Computation on transducers is a promising way to obtain robust characterizations of these classes --- e.g.
+in~\autoref{subsec:fine-grained-reductions}.\footnote{Computation on transducers is a promising way to obtain robust characterizations of these classes --- e.g.
 \emph{polyregular} functions are computable in linear time by a kind of transducer~\cite{bojańczyk2018polyregularfunctions}.
 This is not a \emph{characterization}, however, because it is not known to be \complexity{DTIME(\bigO(n))}-complete. } 
-The notion of \(\complexity{DLOGTIME} = \complexity{DTIME(\log{n})}\)-uniformity explored in~\ref{subsec:dlogtime-uniformity} is also
+The notion of \(\complexity{DLOGTIME} = \complexity{DTIME(\log{n})}\)-uniformity explored in~\autoref{subsec:dlogtime-uniformity} is also
 only defined for random-access Turing machines.
 
 \section{Circuits}
@@ -93,7 +93,7 @@ just to capture weak classes of functions, weaker than logspace etc.
 Lambda calculus underpins functional programming. Typed lambda calculi are known
 to ease reasoning about the correctness of their programs.
 Untyped lambda calculi, on the other hand, are close to the recursion-theoretic
-considerations that we will explore in~\ref{chap:recursion-theory}. However, lambda calculus does
+considerations that we will explore in~\autoref{chap:recursion-theory}. However, lambda calculus does
 not line up cleanly with traditional Turing machine complexity measures.  For instance,
 for some representation of strings \(\{0, 1\}^\ast\), \cite[Theorem~3.4]{10.5555/788018.788832}~identifies
 the functions \(\{0, 1\}^\ast \rightarrow \{0, 1\}\) definable in simply typed
@@ -106,7 +106,7 @@ that if we require the desired result of a function and the actual output of lam
 For more discussion, see also~\cite{27863}.
 Consequently, it is not obvious how to reason about complexity theory in the language of lambda calculus.
 Nevertheless, typed lambda calculi are the basis of one the successful approaches towards our problem of
-characterizing a complexity class syntactically, and will be discussed further in~\ref{chap:linear-types}.
+characterizing a complexity class syntactically, and will be discussed further in~\autoref{chap:linear-types}.
 
 
 \section{Set theory as inspiration for model of computation}
@@ -146,7 +146,7 @@ While very far from any notion of ``practical programming languages'', the above
 originated~\footnote{It is interesting to note that this interest came from getting to present this topic
 at the JAiO master's seminar at the University of Warsaw ---
 slides are available online at~\cite{Balawender2025BorelDeterminacySeminar}.}
-the most promising approach towards it that we study in this work, studied in~\ref{chap:bounded-arithmetic}.
+the most promising approach towards it that we study in this work, studied in~\autoref{chap:bounded-arithmetic}.
 
 % \section{Models of hypercomputation}
 % \todo[inline]{\begin{itemize}

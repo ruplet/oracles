@@ -3,18 +3,18 @@
 
 We introduce the definitions of complexity classes considered in this work.
 
-In~\ref{sec:decisional-complexity-classes} we introduce standard complexity classes such as \(\complexity{L}\), \(\complexity{P}\)
+In~\autoref{sec:decisional-complexity-classes} we introduce standard complexity classes such as \(\complexity{L}\), \(\complexity{P}\)
 and \(\complexity{NP}\). It is important to note that these definitions only talk about the complexity of
 computing \emph{Boolean} functions, i.e.\ functions \(f : \{0,1\}^\ast \to \{0,1\}\). These functions define
 \emph{decision} problems or \emph{languages}.
 
 It is not obvious whether focusing solely on the complexity of Boolean functions is sufficient to reason about
 the general functions that we want to implement in a practical programming language. 
-As we will see in~\ref{sec:decisional-and-functional-complexity-classes}, the answer is negative.
-In~\ref{sec:functional-complexity-classes} we introduce the still standard, but much less talked about, \emph{functional} complexity classes,
+As we will see in~\autoref{sec:decisional-and-functional-complexity-classes}, the answer is negative.
+In~\autoref{sec:functional-complexity-classes} we introduce the still standard, but much less talked about, \emph{functional} complexity classes,
 which study functions \(f : \{0,1\}^\ast \to \{0,1\}^\ast\) in general. The results about these classes 
 transfer much better to our interests than results about the decisional complexity classes. As we discuss 
-in~\ref{chap:recursion-theory}, programming-language-like characterizations of decisional complexity classes 
+in~\autoref{chap:recursion-theory}, programming-language-like characterizations of decisional complexity classes 
 are more abundant and by far predate the characterizations of functional complexity classes. It is the latter, 
 however, that is viable for our purposes of designing a programming language.
 
@@ -23,7 +23,7 @@ however, that is viable for our purposes of designing a programming language.
 \label{sec:decisional-complexity-classes}
 We say that a machine decides a language \(L \subseteq \{0,1\}^\ast\) if it computes the 
 characteristic function \(f_L : \{0,1\}^\ast \to \{0,1\}\), where \(f_L(x) = 1 \Leftrightarrow x \in L\).
-Recall the definitions of complexity classes~\ref{def:turing-dtime} and~\ref{def:turing-dspace}.
+Recall the definitions of complexity classes~\autoref{def:turing-dtime} and~\autoref{def:turing-dspace}.
 
 \subsection{\complexity{P}}
 \begin{definition}[The class \texorpdfstring{\ensuremath{\complexity{P}}}{P}]
@@ -36,7 +36,7 @@ In other words, a language is in \(\complexity{P}\) if and only if it can be dec
 
 
 There are many characterizations of \(\complexity{P}\), and for our purposes they are not equivalent.
-We will study these in~\ref{sec:alternative-ptime}.
+We will study these in~\autoref{sec:alternative-ptime}.
 
 
 \subsubsection{Alternative characterizations of P}
@@ -104,7 +104,7 @@ of~\cites[Definition~1.13]{10.5555/1540612}[Definition~1.20]{DRAFT10.5555/154061
 
 
 % Most importantly, FP is a different class - otherwise we can only check if IsZero(Bit_0) etc.
-% Alternative definition of "P on unordered structures" defined in~\ref{def:inv-P}.
+% Alternative definition of "P on unordered structures" defined in~\autoref{def:inv-P}.
 
 % \section{\complexity{FP}}
 % FP is formally defined as follows:
@@ -181,7 +181,7 @@ of~\cites[Definition~1.13]{10.5555/1540612}[Definition~1.20]{DRAFT10.5555/154061
 % uniformly constant depth.
 
 % For now we have not talked about how do we generate the consecutive circuits $C_n$.
-% Later in~\ref{sec:uniformity} we will restrict the family of (some standard) descriptions of the circuits
+% Later in~\autoref{sec:uniformity} we will restrict the family of (some standard) descriptions of the circuits
 % to have to be \emph{computable efficiently} and then we will be able to drop the $_{/poly}$ suffix in our complexity classes.
 % \end{definition}
 
@@ -271,7 +271,7 @@ of~\cites[Definition~1.13]{10.5555/1540612}[Definition~1.20]{DRAFT10.5555/154061
 % decidable in polytime, but calculating exponential function is not.
 
 % There is surprisingly little literature on functional complexity classes.
-% An interesting case is \complexity{TFNP}, studied later in~\ref{sec:complexity-class-tfnp}.
+% An interesting case is \complexity{TFNP}, studied later in~\autoref{sec:complexity-class-tfnp}.
 % Another interesting case are \emph{transductors}.
 
 % \section{Uniformity}
@@ -288,7 +288,7 @@ of~\cites[Definition~1.13]{10.5555/1540612}[Definition~1.20]{DRAFT10.5555/154061
 
 % We say that a family of circuits in $\complexityi{AC}{0}$ is uniform if the function $n \rightarrow C_n$ is
 % \emph{simple to compute}; there is a variety of notions of uniformity of $\complexityi{AC}{0}$ circuits.
-% TODO: Explore these notions in Chapter~\ref{chap:reductions}. For the sake of this section we can assume
+% TODO: Explore these notions in Chapter~\autoref{chap:reductions}. For the sake of this section we can assume
 % that by $\complexityi{AC}{0}$ we denote the class of circuit families $C_n$, for which there is a 
 % \complexity{LOGSPACE} Turing machine $M$ which on input $0^n$ outputs a \emph{standard representation}
 
