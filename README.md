@@ -3,6 +3,11 @@
 ## Current TODO
 1. Render `.md` files with random notes (category theory, rubik, sudoku) to GitHub with nice citations!
 
+## Useful Latex commands
+```
+biber --tool --validate-datamodel --nolog --outfile /dev/null chapters/foundations.bib
+```
+
 
 ## Future directions
 ### OEIS for theoretical computer science problem statements

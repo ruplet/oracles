@@ -1,32 +1,3 @@
----
-title:
-- Oracle-oriented programming
-author:
-- Paweł Balawender
-theme:
-- Warsaw
-date:
-- March 18, 2024
-
----
-# What's it about?
-- One year ago, I was tasked with implementing an interpreter for a programming language
-- I could define the programming language by myself
-- But what features does it make sense to add to a programming language?
-- What primitives, inexpressible in the language itself, should it contain?
-- What should be the type system of it? Or should it be untyped?
-
-# Strong case: minimization; simple programs are simple {.allowframebreaks}
-- for programs simple enough, such as representing a DFA, a minimization is possible
-- that's the ultimate case of compiler optimization - we're guaranteed
-  that a single minimal automaton exists which computes our function {0,1}\* -> Bool
-- for the more general case of finite-state transducers, we can't always minimize
-- FST minimization sometimes possible [@18919]
-- nondeterministic FST are closed under composition: [@FSTcompositionclosed]
-- example programming language for FST: [@DBLP:conf/fsmnlp/Schmid05]
-- two-way transducers are stronger that one-way transducers (they are equivalent to mso-transductions of strings): [@filiot2013twoway]
-- but two-way automata are equal to one-way automata: [@142760]
-
 # About a language for FNP {.allowframebreaks}
 - NP is characterized by existential second-order logic
 - what about functional NP?
@@ -60,26 +31,7 @@ date:
     url = {https://cseweb.ucsd.edu/classes/wi14/cse105-a/LecFST.pdf},
     urldate = {2024-03-18}
 }
-@inproceedings{DBLP:conf/fsmnlp/Schmid05,
-  author       = {Helmut Schmid},
-  editor       = {Anssi Yli{-}Jyr{\"{a}} and
-                  Lauri Karttunen and
-                  Juhani Karhum{\"{a}}ki},
-  title        = {A Programming Language for Finite State Transducers},
-  booktitle    = {Finite-State Methods and Natural Language Processing, 5th International
-                  Workshop, {FSMNLP} 2005, Helsinki, Finland, September 1-2, 2005. Revised
-                  Papers},
-  series       = {Lecture Notes in Computer Science},
-  volume       = {4002},
-  pages        = {308--309},
-  publisher    = {Springer},
-  year         = {2005},
-  url          = {https://doi.org/10.1007/11780885_38},
-  doi          = {10.1007/11780885_38},
-  timestamp    = {Tue, 14 May 2019 10:00:53 +0200},
-  biburl       = {https://dblp.org/rec/conf/fsmnlp/Schmid05.bib},
-  bibsource    = {dblp computer science bibliography, https://dblp.org}
-}
+
 
 @misc{filiot2013twoway,
       title={From Two-Way to One-Way Finite State Transducers}, 

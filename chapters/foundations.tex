@@ -12,15 +12,40 @@ At the same time, computation we usually care about is computation on modern CPU
 which immediately pushes us towards focusing on imperative or parallel programming paradigms.
 However, as discussed in~\cite{10.1007/978-3-642-27660-6_3}, the notion of an ``algorithm''
 has not crystallized yet and is still expanding. It is the purpose of this chapter
-to explore if we will be able to design programming languages ``capturing\todo{check
-consistency of capturing/expressing in the whole work} complexity classes'',
+to explore if we will be able to design programming languages ``\todo{consistency: capturing / expressing} capturing complexity classes'',
 by working in a different paradigm.
 We can foreshadow that the answer is (perhaps surprisingly) positive. Despite
-complexity classes being defined on Turing machines, the characterizations of these classes
-that we found, are rarely imperative.
+complexity classes being defined on Turing machines, the characterizations explored in this work
+are rarely imperative.
+
+\section{Finite automata and transducers}
+The existing research on finite-state automata didn't turn out to be useful for our work ---
+perhaps because the expressiveness of this model is inherently limited to \todo{consistency}Boolean-valued functions.
+This limitation is lifted by finite-state transducers, which are greatly of our interest.
+In~\cite{bojańczyk2018polyregularfunctions},
+four characterizations are described of the class of \emph{polyregular} functions --- a class of string-to-string
+functions computed by a particular kind of transducer. The definitions described readily
+constitute for the basis of a programming language. Another programming
+language for transducers is studied in~\cite{DBLP:conf/fsmnlp/Schmid05}. A particular
+class of string-to-string functions defined using logic, \emph{MSO transductions},
+is characterized to be precisely the class of functions computable by two-way deterministic finite transducers (2DFT)
+in~\cite{engelfriet1999msodefinablestringtransductions}. All of these results
+are of our interest and give us basis of new programming languages.
+
+Due to how little is still known about transducers, most of the 
+functions that we would like to compute are not known to be or to not be computable by
+a given flavor of transducer.
+Since writing programs in such a programming language would sometimes be equivalent
+to doing research on transducers, we decided to, for now, not pursue this route and focus
+on more well-established classes of functions. A good overview of existing research on
+transducers is in~\cite{muscholl_et_al:LIPIcs.STACS.2019.2}.
 
 \section{Turing machines}
-\todo[inline]{Standard definitions. Will focus on these in this work.}
+This model of computation underpins the imperative programming style.
+There is a variety of flavors of Turing machines, and the details of a specific definition will most
+of the time not affect our considerations in this work. When not explicitly stating otherwise,
+when describing a computational process we will implicitly assume the realization of it on some kind
+of a Turing machine.
 
 \begin{definition}[Time complexity]\label{def:turing-dtime}
 Let \(T : \mathbb{N} \to \mathbb{N}\) be some function.  A language \(L\) belongs to \(\complexity{DTIME}(T(n))\) iff there exists a deterministic Turing machine that satisfies:
@@ -43,15 +68,18 @@ We will say that a Turing machine belongs to \(\complexity{DSPACE}(T(n))\) iff i
 \end{definition}
 
 \subsection{Random-access Turing machines}
-Informally, random-access Turing machines are Turing machines with a special ``pointer'' tape,
+Random-access Turing machines are Turing machines with a special ``pointer'' tape,
 of length logarithmic to the size of input, and a special state such that when the binary
 number on the pointer tape is \(n\), \(n\)-th digit of the input is written to the work tape.
 
 Reasoning about computation in complexity classes such as \(\complexity{L}\) or \(\complexity{P}\) is the same
-for traditional Turing machines and Random-access Turing machines. The choice of model starts to matter for machine-dependent
+for traditional Turing machines and \todo{random/Random}random-access Turing machines. The choice of model starts to matter for machine-dependent
 notions of complexity such as \(\complexity{DTIME(n)}, \complexity{DTIME(n^2)}\) (\emph{fine-grained} complexity classes).
 Due to insufficient existing research on implicit characterizations of
-fine-grained complexity classes, we will not consider them besides brief discussion in~\ref{subsec:fine-grained-reductions}. 
+fine-grained complexity classes, we will not consider them besides brief discussion
+in~\ref{subsec:fine-grained-reductions}.\footnote{Computation on transducers is a promising way to obtain robust characterizations of these classes --- e.g.
+\emph{polyregular} functions are computable in linear time by a kind of transducer~\cite{bojańczyk2018polyregularfunctions}.
+This is not a \emph{characterization}, however, because it is not known to be \complexity{DTIME(\bigO(n))}-complete. } 
 The notion of \(\complexity{DLOGTIME} = \complexity{DTIME(\log{n})}\)-uniformity explored in~\ref{subsec:dlogtime-uniformity} is also
 only defined for random-access Turing machines.
 
@@ -62,37 +90,68 @@ just to capture weak classes of functions, weaker than logspace etc.
 }
 
 \section{Lambda calculus}
-\todo[inline]{
-    \begin{itemize}
-        \item Foundation of functional programming
-        \item Turns out to be easier to reason about
-        \item Typed lambda calculi enable to reason about result of program
-        \item Untyped lambda calculi are close to recursion-theoretical approach studied in~\ref{chap:recursion-theory}
-        \item Doesn't translate nicely to turing machines complexity
-        \item But was used for Church-Turing thesis
-        \item In~\cite[Theorem 3.4]{10.5555/788018.788832} it is shown how functions expressible in 
-        simply-typed lambda calculus correspond to \(\complexity{REG}\), but with a different input 
-        representation,~\cite{HILLEBRAND1996117}~show how it corresponds to the whole 
-        \(\complexity{ELEMENTARY}\). Even further, in~\cite{zakrzewski2007definablefunctionssimplytyped} it is stated as common knowledge
-        that for another representation, functions definable in STLC are extended polynomials, and proved that for a different notion of \emph(equality), this is not true anymore. For more discussion, check~\cite{27863}
+Lambda calculus underpins functional programming. Typed lambda calculi are known
+to ease reasoning about the correctness of their programs.
+Untyped lambda calculi, on the other hand, are close to the recursion-theoretic
+considerations that we will explore in~\ref{chap:recursion-theory}. However, lambda calculus does
+not line up cleanly with traditional Turing machine complexity measures.  For instance,
+for some representation of strings \(\{0, 1\}^\ast\), \cite[Theorem~3.4]{10.5555/788018.788832}~identifies
+the functions \(\{0, 1\}^\ast \rightarrow \{0, 1\}\) definable in simply typed
+lambda calculus (STLC), with \(\complexity{REG}\). But with a different encoding of inputs,
+\cite{HILLEBRAND1996117} relates STLC to the whole \(\complexity{ELEMENTARY}\) class. 
+\cite{zakrzewski2007definablefunctionssimplytyped} states that
+with different ``standard'' encodings STLC instead characterizes extended polynomials, and further shows
+that if we require the desired result of a function and the actual output of lambda-term to not be
+``equal'' by \(\beta\)-equivalence, but by \(\beta\eta\)-equivalence, the class is yet different.
+For more discussion, see also~\cite{27863}.
+Consequently, it is not obvious how to reason about complexity theory in the language of lambda calculus.
+Nevertheless, typed lambda calculi are the basis of one the successful approaches towards our problem of
+characterizing a complexity class syntactically, and will be discussed further in~\ref{chap:linear-types}.
 
-    \end{itemize}
-}
 
-\section{Models of hypercomputation}
+\section{Set theory as inspiration for model of computation}
+An interesting connection appears when we think of traditional notions of set complexity in set theory
+from the point of view of computational complexity. Let's take a look at how Borel sets are defined:
+
+\begin{definition}[Borel sets]
+Let \(X\) be a topological space. The class of Borel sets of \(X\) is the smallest collection of sets such that:\ 
+\begin{enumerate}[label= (\roman*)]
+    \item every open subset of \(X\) is Borel;
+    \item if \(A\) is Borel, then its complement \(X \setminus A\) is Borel;
+    \item if \(A_n\) is Borel for each \(n \in \mathbb{N}\), then the countable union \(\bigcup_{n \in \mathbb{N}} A_n\) is Borel.
+\end{enumerate}
+\end{definition}
+
+If we pose the operation of taking a complement, and of taking a union, as operations in a programming language,
+could we design a programming language for constructing Borel sets? By itself it might have not turned out to not
+be the most interesting programming language out there. However, thinking about mathematical reasoning
+in terms of a computational process is a very powerful technique. It has been deeply explored
+under the name of Curry-Howard or proofs-as-programs correspondence. For the computational content
+of set theory in particular, an interesting brief discussion is presented in~\cite{Tao2010ComputationalPerspective}.
+For our purposes, an interesting connection appears when we look at the field of descriptive set theory,
+and theorems about the determinacy of Gale-Stewart games (which we shall not introduce here) in particular.
+It is an easy to prove theorem that Gale-Stewart games are determined when the underlying set is open or closed.
+But allowing the underlying set to be more and more complicated (going up the Borel hierarchy), we quickly 
+reach the limits of provability in Zermelo-Fraenkel set theory, with determinacy for Borel sets being a
+difficult theorem to prove, and then with determinacy for analytic and projective sets being
+independent of ZF, yet provable assuming different ``large cardinal axioms''. This leads us to the field of
+\emph{ordinal analysis} --- interestingly, we can measure the strength of a mathematical theory purely
+by the means of a single ordinal, the \emph{proof-theoretic ordinal} of the theory. While incorrect,
+for the sake of the intuition let's assume that we measure the strength of the theory by the
+cardinality of the largest set that it can prove to exist. Then, can we design such mathematical theories
+that if we assume as an axiom the existence of a set of \(n\) elements, then the largest set provable to exist
+in the extended theory will have cardinality \(n^2\) or \(2^n\)?
+
+While very far from any notion of ``practical programming languages'', the above considerations
+originated~\footnote{It is interesting to note that this interest came from getting to present this topic
+at the JAiO master's seminar at the University of Warsaw ---
+slides are available online at~\cite{Balawender2025BorelDeterminacySeminar}.}
+the most promising approach towards it that we study in this work, studied in~\ref{chap:bounded-arithmetic}.
+
+% \section{Models of hypercomputation}
 % \todo[inline]{\begin{itemize}
 % \item Sequential Time. An algorithm determines a sequence of computational
 % states for each valid input. Specifically, the time is discrete. what if time is not a successor structure? i.e. we can travel back in Time
-% \item Malament-Hogarth spacetime; \href{https://plato.stanford.edu/entries/computation-physicalsystems/}
+% \item Malament-Hogarth spacetime; 
 % \end{itemize}
 % }
-
-
-\section{Complexity measures in other areas}
-\todo[inline]{If you think of sets as oracles and functions as algorithms, you can consider
-computational content of set theory; use set theory as a computatioanl model. this is slighlty explored in
-a blogpost~\cite{Tao2010ComputationalPerspective}. Your complexity is then: open sets, ..., borel sets, etc. (Borel hierarchy Boldface/Lightface).
-This was explored by me in \href{https://github.com/ruplet/prezentacja-seminarium-2/blob/main/prezentacja.pdf}.
-This also inspired the whole direction of me considering Bounded Arithmetic for computation.
-}
-

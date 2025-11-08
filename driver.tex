@@ -29,6 +29,7 @@
 % https://github.com/citation-style-language/styles/blob/2e3e9964846c9a1ad709e6974307b85f70a37f06/chicago-author-date-17th-edition.csl
 % \PassOptionsToPackage{style=chicago-author-date-17th-edition}{biblatex}
 
+% \usepackage[pl]{babel}
 \usepackage[
   backend=biber,
   style=alphabetic
@@ -47,17 +48,22 @@
 \usepackage{enumitem}
 \usepackage{xspace}
 
-% TODO
-\usepackage[colorinlistoftodos]{todonotes}
+% Package todonotes Warning: The length marginparwidth is less than 2cm and will 
+% most likely cause issues with the appearance of inserted todonotes. The issue c
+% an be solved by adding a line like \setlength {\marginparwidth }{2cm} prior to 
+% loading the todonotes package. on input line 228.
+\setlength{\marginparwidth}{2cm}
+% TODOs in draft
+% size=\scriptsize
+\usepackage[colorinlistoftodos,textsize=scriptsize]{todonotes}
 \usepackage{xcolor}
-% lighter default and explicit label
 \setuptodonotes{
   color=orange!20,     % lighter background
   linecolor=orange!50, % border
   bordercolor=orange!50,
   textcolor=black,
   caption={TODO},      % text used in list of todos
-  prepend={\textbf{TODO:\@}} % prefix inside note
+  prepend={TODO:} % prefix inside note
 }
 
 % theorem-like environments
@@ -247,6 +253,7 @@
 \include{chapters/foundations}
 \include{chapters/reductions}
 \include{chapters/recursion-theory}
+\include{chapters/bounded-arithmetic}
 
 \printbibliography[heading=bibintoc]
 % \begin{thebibliography}{99}

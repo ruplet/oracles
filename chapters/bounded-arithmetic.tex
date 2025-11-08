@@ -1,303 +1,302 @@
 % Important for literature review: https://plato.stanford.edu/archives/win2017/entries/computational-complexity/#BouAri
-
 \chapter{Bounded arithmetic}\label{chap:bounded-arithmetic}
 
- Find IDelta0 and that it can't express exp function. Look for
- Find Buss' PV theories and Cook's $V^i$ hierachy.
- ważne: Cook and Urquhart's theory IPV
+%  Find IDelta0 and that it can't express exp function. Look for
+%  Find Buss' PV theories and Cook's $V^i$ hierachy.
+%  ważne: Cook and Urquhart's theory IPV
 
-\section{The zoo of arithmetical theories}
-Historically, the single-sorted equational PV theory~\cite{10.1145/800116.803756} was
-the first designed to capture polynomial time reasoning.
-Its language contains one symbol for every function in \complexity{FP} --- functions are mapped to symbols
-using Cobham's original characterization of \complexity{FP} with explicit bounds, as mentioned in~\ref{sec:cobham-characterization}.
+% \section{The zoo of arithmetical theories}
+% Historically, the single-sorted equational PV theory~\cite{10.1145/800116.803756} was
+% the first designed to capture polynomial time reasoning.
+% Its language contains one symbol for every function in \complexity{FP} --- functions are mapped to symbols
+% using Cobham's original characterization of \complexity{FP} with explicit bounds, as mentioned in~\ref{sec:cobham-characterization}.
 
-We also have Buss' $S^1_2$ theory. Apparently, to characterize below-polytime classes, a split to two sorts (strings and indices)
-is necessary. This is the approach of Cook and Nguyen 2010, who introduce $V^i$ theories, which we focus on here.
+% We also have Buss' $S^1_2$ theory. Apparently, to characterize below-polytime classes, a split to two sorts (strings and indices)
+% is necessary. This is the approach of Cook and Nguyen 2010, who introduce $V^i$ theories, which we focus on here.
 
-% Paper:
-% Suppose IS12 proves Exists y . A(y, c).
-% Then S12 proves istnieje dowod
-% https://mathweb.ucsd.edu/~sbuss/ResearchWeb/intuitionisticBA/intuitionisticBA_OCR.pdf
-% Tutaj strona 160 (58 pdfa) wykazuje conjecture 3 z powyzszego!:
-% https://doi.org/10.1016/0168-0072(93)90044-E
-% no i Godel encoding jest wazny, bo jego dowod 1 twierdzenia o niezupelnosci
-% to tak naprawde interpreter!
-
-
-\section{IMP~(PV) programming language}
-In MIT reading group notes released in July 2025~\cite{Li2025FeasibleMathematics}, the authors show how the equational theory PV
-can be used to simulate set theory, an imperative programming language, and Hoare semantics for it.
-
-\begin{itemize}
-  \item \textbf{Programmable data structures with internal correctness proofs.} \\
-  Lists and maps are defined within PV or PV-PL together with proofs of their intended properties. Meta-theorems support recursion and induction on lists, analogous to the existing recursion and induction rules over strings.
-
-  \item \textbf{An imperative layer with verifiable functionality.} \\
-  A small language, \textbf{IMP~(PV)}, is introduced with a Hoare-style proof system. Programs written in IMP~(PV) can be compiled into PV functions, and Hoare proofs of functionality can be translated back into proofs in PV.\@
-
-  \item \textbf{Machine-level simulation.} \\
-  Turing machines are simulated by IMP~(PV) programs and hence by PV functions, establishing the corresponding results about the expressiveness of the system.
-
-  \item \textbf{Feasible set operations and reasoning.} \\
-  A finite set theory is developed within PV-PL, allowing operations such as union and intersection on sets encoded by enumeration. Proofs in first-order logic over these finite sets (with quantifiers of the form $\forall x \in S$ and $\exists x \in S$) can be translated into PV proofs.
-
-  \item \textbf{Proof methodology.} \\
-  All arguments are written as ``pseudo-proofs'' in structured natural language, which can be directly translated into proof trees in PV-PL and then into formal PV proofs via the translation theorem.
-\end{itemize}
-
-\noindent
-For precise formal definitions and proofs, see Chapter~4 of the book.
-
-\paragraph{What the language is.}
-\textbf{IMP~(PV)} is a lightweight imperative layer on top of PV\@: expressions are PV terms; commands add assignment, sequencing, conditionals, and a bounded \texttt{for}-loop that iterates by repeatedly applying \(\mathrm{TR}(\cdot)\) to a loop variable until it equals \(\varepsilon\).\@
-All variables are global.
-
-\medskip
-% --- Core syntax (split across lines to avoid overfull boxes)
-\noindent\textbf{Core syntax (only what we need).}
-\[
-\begin{array}{l}
-\text{Expressions: } e \text{ is any PV term.} \\[0.3em]
-\text{Commands: } \text{Cmd} \;::=\; \texttt{skip}
-\;\mid\; \texttt{let } x := e
-\;\mid\; \text{Cmd};\ \text{Cmd} \\[0.25em]
-\hphantom{\text{Commands: } \text{Cmd} \;::=\;} 
-\;\mid\; \texttt{if } e \ \texttt{then}\ c_1\ \texttt{else}\ c_0 \\[0.25em]
-\hphantom{\text{Commands: } \text{Cmd} \;::=\;}
-\;\mid\; \texttt{for } x := e;\ x \neq \varepsilon;\ x := \mathrm{TR}(x)\ \texttt{do } c\,.
-\end{array}
-\]
-Here \( \mathrm{TR} \) is the one-step right-trim on strings/lists, and all variables are global.
-
-\medskip
-\noindent\textbf{Resource discipline.}
-To keep programs within polynomial time we use:
-\begin{enumerate}
-  \item \emph{Read-only loop index:} the index \(x\) of a \texttt{for}-loop is not reassigned inside the loop and is not reused as an inner-loop index.
-  \item \emph{Length cap:} a program is paired with a bound \(\omega\); values exceeding \(|\omega|\) bits are truncated to \(\mathrm{Suf}(y,\omega)\).
-\end{enumerate}
-
-\medskip
-\noindent\textbf{Hoare semantics in PV-PL.}
-A Hoare triple \(\{\,\varphi_1\,\}\ c\ \{\,\varphi_2\,\}\) uses PV-PL formulas \(\varphi_1,\varphi_2\). The rules we rely on are:
-
-\begin{itemize}
-  \item \emph{Consequence:} if \( \mathrm{PV\mbox{-}PL} \vdash \varphi_1 \Rightarrow \varphi'_1 \) and \( \mathrm{PV\mbox{-}PL} \vdash \varphi'_2 \Rightarrow \varphi_2 \), then
-  \[
-    \dfrac{\{\varphi'_1\}\ c\ \{\varphi'_2\}}{\{\varphi_1\}\ c\ \{\varphi_2\}}.
-  \]
-  \item \emph{Skip:} \(\{\varphi\}\ \texttt{skip}\ \{\varphi\}\).
-  \item \emph{Assignment:} \(\{\ \varphi[x/e]\ \}\ \texttt{let }x := e\ \{\ \varphi\ \}\).
-  \item \emph{Sequencing:} from \(\{\varphi_1\}\ c_1\ \{\psi\}\) and \(\{\psi\}\ c_2\ \{\varphi_2\}\) infer \(\{\varphi_1\}\ c_1;c_2\ \{\varphi_2\}\).
-  \item \emph{Conditional:}
-  \[
-  \dfrac{\{\varphi_1 \land \mathrm{LastBit}(e)=1\}\ c_1\ \{\varphi_2\}
-        \qquad
-        \{\varphi_1 \land \mathrm{LastBit}(e)\neq 1\}\ c_0\ \{\varphi_2\}}
-        {\{\varphi_1\}\ \texttt{if }e\ \texttt{then }c_1\ \texttt{else }c_0\ \{\varphi_2\}}.
-  \]
-  \item \emph{For-loop (invariant \(\varphi\)):} for \(i\in\{0,1\}\),
-  \[
-  \dfrac{\{\ \varphi[x/s_i(x)]\ \}\ c\ \{\ \varphi\ \}}
-        {\{\ \varphi[x/e]\ \}\ \texttt{for }x := e;\ x\neq\varepsilon;\ x := \mathrm{TR}(x)\ \texttt{do } c\ \{\ \varphi[x/\varepsilon]\ \}}.
-  \]
-\end{itemize}
-
-\medskip
-\noindent\textbf{Example (length-by-iteration).}
-\[
-\begin{array}{l}
-\texttt{LenITR} := \texttt{let } z := \ell;\ \texttt{let } y := \varepsilon; \\[0.2em]
-\qquad \texttt{for } x := \ell;\ x \neq \varepsilon;\ x := \mathrm{TR}(x)\ \texttt{do } \\
-\qquad\qquad \texttt{if } \mathrm{IsEps}(z)\ \texttt{ then } \\[0.2em]
-\qquad\qquad\qquad \texttt{skip} \\[0.2em]
-\qquad\qquad \texttt{else } \\[0.2em]
-\qquad\qquad\qquad \texttt{let } y := s_0(y); \\[0.2em]
-\qquad\qquad\qquad \texttt{let } z := \mathrm{Tail}(z).
-\end{array}
-\]
-Correctness is expressed as the Hoare triple
-\[
-\{\ \mathrm{IsList}(\ell)=1\ \}\ \texttt{LenITR}\ \{\ y = \mathrm{Len}(\ell)\ \},
-\]
-proved by a loop invariant that relates \(z\), \(y\), and the iterator equalities (details as in the chapter).
+% % Paper:
+% % Suppose IS12 proves Exists y . A(y, c).
+% % Then S12 proves istnieje dowod
+% % https://mathweb.ucsd.edu/~sbuss/ResearchWeb/intuitionisticBA/intuitionisticBA_OCR.pdf
+% % Tutaj strona 160 (58 pdfa) wykazuje conjecture 3 z powyzszego!:
+% % https://doi.org/10.1016/0168-0072(93)90044-E
+% % no i Godel encoding jest wazny, bo jego dowod 1 twierdzenia o niezupelnosci
+% % to tak naprawde interpreter!
 
 
-\medskip
-\noindent\textbf{Compilation back to PV (how commands become functions).}
-Every length-restricted program \((P,\omega)\) compiles to a PV function \(\ensuremath{[P]_{PV}}\).
-The translation uses a tuple \(\pi\) to store all variables, interprets expressions as \(e[x_i/\pi_i]\) followed by \(\mathrm{Suf}(\cdot,\omega)\), maps \texttt{skip} to the identity on \(\pi\), \texttt{let} to tuple update, sequencing to composition, \texttt{if} to a PV conditional, and the \texttt{for}-loop to a PV recursion that mimics one loop step per recursive call.
-The details of each clause and the proof obligations they satisfy are provided in the chapter.
+% \section{IMP~(PV) programming language}
+% In MIT reading group notes released in July 2025~\cite{Li2025FeasibleMathematics}, the authors show how the equational theory PV
+% can be used to simulate set theory, an imperative programming language, and Hoare semantics for it.
 
-\medskip
-\noindent\textbf{Two preservation properties we will cite (not re-prove here).}
-\begin{itemize}
-  \item \emph{Length preservation:} for any \((P,\omega)\), the translation \(\ensuremath{[P]_{PV}}\) enforces \(x_i=\mathrm{Suf}(x_i,\omega)\) at the end for every program variable (proved by structural induction on \(P\)).
-  \item \emph{Proof preservation:} a derivation of \(\{\,\varphi_1\,\}(P,\omega)\{\,\varphi_2\,\}\) yields a PV-PL derivation of the corresponding assertion obtained by substituting variables with tuple components and interpreting \(P\) as \(\ensuremath{[P]_{PV}}\).
-\end{itemize}
-Both statements, and the admissibility of the Hoare rules under this translation, are established in the chapter.
+% \begin{itemize}
+%   \item \textbf{Programmable data structures with internal correctness proofs.} \\
+%   Lists and maps are defined within PV or PV-PL together with proofs of their intended properties. Meta-theorems support recursion and induction on lists, analogous to the existing recursion and induction rules over strings.
 
-\medskip
-\noindent\textbf{Why bounded arithmetic must be in place first.}
-Every step above---the loop rule, the compilation of \texttt{for}, the use of \(\mathrm{TR}\), \(\mathrm{Suf}\), tuple updates, and the truncation invariant---relies on equalities and inductions that are proved \emph{inside} PV/PV-PL.\@
-Thus, implementing the language with its Hoare system requires a solid formalization of this arithmetic (lists/strings, iterators, truncation, and the associated induction principles), so that programs and their proofs are checked against PV-PL rather than an external meta-theory.
-For all formal statements and proofs, we refer to Chapter~4.
+%   \item \textbf{An imperative layer with verifiable functionality.} \\
+%   A small language, \textbf{IMP~(PV)}, is introduced with a Hoare-style proof system. Programs written in IMP~(PV) can be compiled into PV functions, and Hoare proofs of functionality can be translated back into proofs in PV.\@
 
-\section{Definability of functions in \texorpdfstring{$V^0$}{V0}}
-Our ultimate goal is to say that a function $f$ is in C.
-As we observed in~\ref{sec:complete-problems}, \complexityi{AC}{0} reductions are enough for us
-and these are expressed by V0 theory. Now we bring up the definitions that make this precise.
+%   \item \textbf{Machine-level simulation.} \\
+%   Turing machines are simulated by IMP~(PV) programs and hence by PV functions, establishing the corresponding results about the expressiveness of the system.
 
-\begin{definition}[V.4.1 (Two-Sorted Definability, syntactic)]
-Let \(T\) be a theory with vocabulary \(L \supseteq L^2_A\), and let \(\Phi\) be a set of \(L\)-formulas.
+%   \item \textbf{Feasible set operations and reasoning.} \\
+%   A finite set theory is developed within PV-PL, allowing operations such as union and intersection on sets encoded by enumeration. Proofs in first-order logic over these finite sets (with quantifiers of the form $\forall x \in S$ and $\exists x \in S$) can be translated into PV proofs.
 
-\medskip
-A number function \(f\) is said to be definable in \(T\) with respect to \(\Phi\) if there exists a formula
-\(\varphi(x, y, X) \in \Phi\) such that
-\begin{align}
-T &\;\vdash\; \forall x \, \forall X \, \exists! y \, \varphi(x, y, X), \tag{61} \\[4pt]
-y = f(x, X) &\;\leftrightarrow\; \varphi(x, y, X). \tag{62}
-\end{align}
+%   \item \textbf{Proof methodology.} \\
+%   All arguments are written as ``pseudo-proofs'' in structured natural language, which can be directly translated into proof trees in PV-PL and then into formal PV proofs via the translation theorem.
+% \end{itemize}
 
-\medskip
-A string function \(F\) is said to be definable in \(T\) with respect to \(\Phi\) if there exists a formula
-\(\varphi(x, X, Y) \in \Phi\) such that
-\begin{align}
-T &\;\vdash\; \forall x \, \forall X \, \exists! Y \, \varphi(x, X, Y), \tag{63} \\[4pt]
-Y = F(x, X) &\;\leftrightarrow\; \varphi(x, X, Y). \tag{64}
-\end{align}
+% \noindent
+% For precise formal definitions and proofs, see Chapter~4 of the book.
 
-\medskip
-Then \textup{(62)} is a defining axiom for \(f\) and \textup{(64)} is a defining axiom for \(F\).
-We write \(T(f)\) or \(T(F)\) for the theory extending \(T\) by adding \(f\) or \(F\)
-together with its corresponding defining axiom.
-We say that \(f\) or \(F\) is \textit{definable in} \(T\) if it is \(\Phi\)-definable in \(T\)
-for some \(\Phi\).
-\end{definition}
+% \paragraph{What the language is.}
+% \textbf{IMP~(PV)} is a lightweight imperative layer on top of PV\@: expressions are PV terms; commands add assignment, sequencing, conditionals, and a bounded \texttt{for}-loop that iterates by repeatedly applying \(\mathrm{TR}(\cdot)\) to a loop variable until it equals \(\varepsilon\).\@
+% All variables are global.
+
+% \medskip
+% % --- Core syntax (split across lines to avoid overfull boxes)
+% \noindent\textbf{Core syntax (only what we need).}
+% \[
+% \begin{array}{l}
+% \text{Expressions: } e \text{ is any PV term.} \\[0.3em]
+% \text{Commands: } \text{Cmd} \;::=\; \texttt{skip}
+% \;\mid\; \texttt{let } x := e
+% \;\mid\; \text{Cmd};\ \text{Cmd} \\[0.25em]
+% \hphantom{\text{Commands: } \text{Cmd} \;::=\;} 
+% \;\mid\; \texttt{if } e \ \texttt{then}\ c_1\ \texttt{else}\ c_0 \\[0.25em]
+% \hphantom{\text{Commands: } \text{Cmd} \;::=\;}
+% \;\mid\; \texttt{for } x := e;\ x \neq \varepsilon;\ x := \mathrm{TR}(x)\ \texttt{do } c\,.
+% \end{array}
+% \]
+% Here \( \mathrm{TR} \) is the one-step right-trim on strings/lists, and all variables are global.
+
+% \medskip
+% \noindent\textbf{Resource discipline.}
+% To keep programs within polynomial time we use:
+% \begin{enumerate}
+%   \item \emph{Read-only loop index:} the index \(x\) of a \texttt{for}-loop is not reassigned inside the loop and is not reused as an inner-loop index.
+%   \item \emph{Length cap:} a program is paired with a bound \(\omega\); values exceeding \(|\omega|\) bits are truncated to \(\mathrm{Suf}(y,\omega)\).
+% \end{enumerate}
+
+% \medskip
+% \noindent\textbf{Hoare semantics in PV-PL.}
+% A Hoare triple \(\{\,\varphi_1\,\}\ c\ \{\,\varphi_2\,\}\) uses PV-PL formulas \(\varphi_1,\varphi_2\). The rules we rely on are:
+
+% \begin{itemize}
+%   \item \emph{Consequence:} if \( \mathrm{PV\mbox{-}PL} \vdash \varphi_1 \Rightarrow \varphi'_1 \) and \( \mathrm{PV\mbox{-}PL} \vdash \varphi'_2 \Rightarrow \varphi_2 \), then
+%   \[
+%     \dfrac{\{\varphi'_1\}\ c\ \{\varphi'_2\}}{\{\varphi_1\}\ c\ \{\varphi_2\}}.
+%   \]
+%   \item \emph{Skip:} \(\{\varphi\}\ \texttt{skip}\ \{\varphi\}\).
+%   \item \emph{Assignment:} \(\{\ \varphi[x/e]\ \}\ \texttt{let }x := e\ \{\ \varphi\ \}\).
+%   \item \emph{Sequencing:} from \(\{\varphi_1\}\ c_1\ \{\psi\}\) and \(\{\psi\}\ c_2\ \{\varphi_2\}\) infer \(\{\varphi_1\}\ c_1;c_2\ \{\varphi_2\}\).
+%   \item \emph{Conditional:}
+%   \[
+%   \dfrac{\{\varphi_1 \land \mathrm{LastBit}(e)=1\}\ c_1\ \{\varphi_2\}
+%         \qquad
+%         \{\varphi_1 \land \mathrm{LastBit}(e)\neq 1\}\ c_0\ \{\varphi_2\}}
+%         {\{\varphi_1\}\ \texttt{if }e\ \texttt{then }c_1\ \texttt{else }c_0\ \{\varphi_2\}}.
+%   \]
+%   \item \emph{For-loop (invariant \(\varphi\)):} for \(i\in\{0,1\}\),
+%   \[
+%   \dfrac{\{\ \varphi[x/s_i(x)]\ \}\ c\ \{\ \varphi\ \}}
+%         {\{\ \varphi[x/e]\ \}\ \texttt{for }x := e;\ x\neq\varepsilon;\ x := \mathrm{TR}(x)\ \texttt{do } c\ \{\ \varphi[x/\varepsilon]\ \}}.
+%   \]
+% \end{itemize}
+
+% \medskip
+% \noindent\textbf{Example (length-by-iteration).}
+% \[
+% \begin{array}{l}
+% \texttt{LenITR} := \texttt{let } z := \ell;\ \texttt{let } y := \varepsilon; \\[0.2em]
+% \qquad \texttt{for } x := \ell;\ x \neq \varepsilon;\ x := \mathrm{TR}(x)\ \texttt{do } \\
+% \qquad\qquad \texttt{if } \mathrm{IsEps}(z)\ \texttt{ then } \\[0.2em]
+% \qquad\qquad\qquad \texttt{skip} \\[0.2em]
+% \qquad\qquad \texttt{else } \\[0.2em]
+% \qquad\qquad\qquad \texttt{let } y := s_0(y); \\[0.2em]
+% \qquad\qquad\qquad \texttt{let } z := \mathrm{Tail}(z).
+% \end{array}
+% \]
+% Correctness is expressed as the Hoare triple
+% \[
+% \{\ \mathrm{IsList}(\ell)=1\ \}\ \texttt{LenITR}\ \{\ y = \mathrm{Len}(\ell)\ \},
+% \]
+% proved by a loop invariant that relates \(z\), \(y\), and the iterator equalities (details as in the chapter).
 
 
-\begin{definition}[V.4.12] (semantic)
-A string function is said to be \(\Sigma^B_0\)\textit{-definable from a collection} \(L\) of two-sorted functions and relations if it is \(p\)-bounded and its bit graph is represented by a \(\Sigma^B_0(L)\) formula.  
-Similarly, a number function is \(\Sigma^B_0\)\textit{-definable from} \(L\) if it is \(p\)-bounded and its graph is represented by a \(\Sigma^B_0(L)\) formula.
+% \medskip
+% \noindent\textbf{Compilation back to PV (how commands become functions).}
+% Every length-restricted program \((P,\omega)\) compiles to a PV function \(\ensuremath{[P]_{PV}}\).
+% The translation uses a tuple \(\pi\) to store all variables, interprets expressions as \(e[x_i/\pi_i]\) followed by \(\mathrm{Suf}(\cdot,\omega)\), maps \texttt{skip} to the identity on \(\pi\), \texttt{let} to tuple update, sequencing to composition, \texttt{if} to a PV conditional, and the \texttt{for}-loop to a PV recursion that mimics one loop step per recursive call.
+% The details of each clause and the proof obligations they satisfy are provided in the chapter.
 
-\medskip
-This \emph{semantic} notion of \(\Sigma^B_0\)-definability should not be confused with \(\Sigma^B_0\)-definability \emph{in a theory} (Definition~V.4.1), which involves provability.  
-The next result connects these two notions.
-\end{definition}
+% \medskip
+% \noindent\textbf{Two preservation properties we will cite (not re-prove here).}
+% \begin{itemize}
+%   \item \emph{Length preservation:} for any \((P,\omega)\), the translation \(\ensuremath{[P]_{PV}}\) enforces \(x_i=\mathrm{Suf}(x_i,\omega)\) at the end for every program variable (proved by structural induction on \(P\)).
+%   \item \emph{Proof preservation:} a derivation of \(\{\,\varphi_1\,\}(P,\omega)\{\,\varphi_2\,\}\) yields a PV-PL derivation of the corresponding assertion obtained by substituting variables with tuple components and interpreting \(P\) as \(\ensuremath{[P]_{PV}}\).
+% \end{itemize}
+% Both statements, and the admissibility of the Hoare rules under this translation, are established in the chapter.
 
-\begin{corollary}[V.4.13]
-Let \(T\) be a theory over \(L\) that contains \(V^0\), and suppose that \(T\) proves the 
-\(\Sigma^B_0(L)\)\textit{-COMP} axiom scheme.  
-Then any function that is \(\Sigma^B_0\)\textit{-definable from} \(L\) is 
-\(\Sigma^B_0(L)\)\textit{-definable in} \(T\).
-\end{corollary}
+% \medskip
+% \noindent\textbf{Why bounded arithmetic must be in place first.}
+% Every step above---the loop rule, the compilation of \texttt{for}, the use of \(\mathrm{TR}\), \(\mathrm{Suf}\), tuple updates, and the truncation invariant---relies on equalities and inductions that are proved \emph{inside} PV/PV-PL.\@
+% Thus, implementing the language with its Hoare system requires a solid formalization of this arithmetic (lists/strings, iterators, truncation, and the associated induction principles), so that programs and their proofs are checked against PV-PL rather than an external meta-theory.
+% For all formal statements and proofs, we refer to Chapter~4.
+
+% \section{Definability of functions in \texorpdfstring{$V^0$}{V0}}
+% Our ultimate goal is to say that a function $f$ is in C.
+% As we observed in~\ref{sec:complete-problems}, \complexityi{AC}{0} reductions are enough for us
+% and these are expressed by V0 theory. Now we bring up the definitions that make this precise.
+
+% \begin{definition}[V.4.1 (Two-Sorted Definability, syntactic)]
+% Let \(T\) be a theory with vocabulary \(L \supseteq L^2_A\), and let \(\Phi\) be a set of \(L\)-formulas.
+
+% \medskip
+% A number function \(f\) is said to be definable in \(T\) with respect to \(\Phi\) if there exists a formula
+% \(\varphi(x, y, X) \in \Phi\) such that
+% \begin{align}
+% T &\;\vdash\; \forall x \, \forall X \, \exists! y \, \varphi(x, y, X), \tag{61} \\[4pt]
+% y = f(x, X) &\;\leftrightarrow\; \varphi(x, y, X). \tag{62}
+% \end{align}
+
+% \medskip
+% A string function \(F\) is said to be definable in \(T\) with respect to \(\Phi\) if there exists a formula
+% \(\varphi(x, X, Y) \in \Phi\) such that
+% \begin{align}
+% T &\;\vdash\; \forall x \, \forall X \, \exists! Y \, \varphi(x, X, Y), \tag{63} \\[4pt]
+% Y = F(x, X) &\;\leftrightarrow\; \varphi(x, X, Y). \tag{64}
+% \end{align}
+
+% \medskip
+% Then \textup{(62)} is a defining axiom for \(f\) and \textup{(64)} is a defining axiom for \(F\).
+% We write \(T(f)\) or \(T(F)\) for the theory extending \(T\) by adding \(f\) or \(F\)
+% together with its corresponding defining axiom.
+% We say that \(f\) or \(F\) is \textit{definable in} \(T\) if it is \(\Phi\)-definable in \(T\)
+% for some \(\Phi\).
+% \end{definition}
 
 
-% - Corollary V.4.11. Every function in \complexityi{FAC}{0} is ΣB0 -definable in V0.
-\begin{proposition}[V.4.7]
-A string function is \(\Sigma^B_0\)\textit{-bit-definable} if and only if it is in \(\complexityi{FAC}{0}\).
-\end{proposition}
+% \begin{definition}[V.4.12] (semantic)
+% A string function is said to be \(\Sigma^B_0\)\textit{-definable from a collection} \(L\) of two-sorted functions and relations if it is \(p\)-bounded and its bit graph is represented by a \(\Sigma^B_0(L)\) formula.  
+% Similarly, a number function is \(\Sigma^B_0\)\textit{-definable from} \(L\) if it is \(p\)-bounded and its graph is represented by a \(\Sigma^B_0(L)\) formula.
 
-\begin{corollary}[V.2.4]
-\leavevmode
-\end{corollary} 
+% \medskip
+% This \emph{semantic} notion of \(\Sigma^B_0\)-definability should not be confused with \(\Sigma^B_0\)-definability \emph{in a theory} (Definition~V.4.1), which involves provability.  
+% The next result connects these two notions.
+% \end{definition}
 
-
-
-\section{Real-world constructions in weak theories}
-Expander construction in VNC1~\cite{BUSS2020102796}.
-
-\section{Type-theoretical treatment}
-It seems possible to reason about bounded arithmetic in type-theoretical framework.
-The below is inspired by~\cite{Li2025FeasibleMathematics}.
-
-Feasible set theory. The universal and existential quantification over feasible sets
-can be viewed as a “typed” version of Buss’s sharply bounded quantifiers [Bus86],
-as the numbers of elements in sets encoded by lists are bounded by their encoding
-lengths.
+% \begin{corollary}[V.4.13]
+% Let \(T\) be a theory over \(L\) that contains \(V^0\), and suppose that \(T\) proves the 
+% \(\Sigma^B_0(L)\)\textit{-COMP} axiom scheme.  
+% Then any function that is \(\Sigma^B_0\)\textit{-definable from} \(L\) is 
+% \(\Sigma^B_0(L)\)\textit{-definable in} \(T\).
+% \end{corollary}
 
 
-% \section{Reverse mathematics}
-% Bounded reverse mathematics: https://www.cs.toronto.edu/~sacook/banff_survey.pdf
-% Examine reverse mathematics. This resulted from study of how large of sets can mathematics (ZFC) create.
-% \label{sec:aaa}
+% % - Corollary V.4.11. Every function in \complexityi{FAC}{0} is ΣB0 -definable in V0.
+% \begin{proposition}[V.4.7]
+% A string function is \(\Sigma^B_0\)\textit{-bit-definable} if and only if it is in \(\complexityi{FAC}{0}\).
+% \end{proposition}
+
+% \begin{corollary}[V.2.4]
+% \leavevmode
+% \end{corollary} 
+
+
+
+% \section{Real-world constructions in weak theories}
+% Expander construction in VNC1~\cite{BUSS2020102796}.
+
+% \section{Type-theoretical treatment}
+% It seems possible to reason about bounded arithmetic in type-theoretical framework.
+% The below is inspired by~\cite{Li2025FeasibleMathematics}.
+
+% Feasible set theory. The universal and existential quantification over feasible sets
+% can be viewed as a “typed” version of Buss’s sharply bounded quantifiers [Bus86],
+% as the numbers of elements in sets encoded by lists are bounded by their encoding
+% lengths.
+
+
+% % \section{Reverse mathematics}
+% % Bounded reverse mathematics: https://www.cs.toronto.edu/~sacook/banff_survey.pdf
+% % Examine reverse mathematics. This resulted from study of how large of sets can mathematics (ZFC) create.
+% % \label{sec:aaa}
  
-% Find a paper which requires formalization of 'provability in $V^i'$ to construct Hoare semantics
+% % Find a paper which requires formalization of 'provability in $V^i'$ to construct Hoare semantics
 
-% proposition 5.32 a string function is sigma0b-bit-definable iff it is in \complexityi{FAC}{0}
-% follows from def 5.32, corollary 5.17
-% def 5.32:
-% for Phi: set of formulas (e.g. sigma0b)
-% string function F(x, Y) is Phi-bit-definable if is formula phi in Phi and number term t(x, Y) s.t.
-% F(x, Y)(i) iff i < t(x, Y) and phi(i, x, Y)
-% the RHS of this is a bit-defining axiom of F.
+% % proposition 5.32 a string function is sigma0b-bit-definable iff it is in \complexityi{FAC}{0}
+% % follows from def 5.32, corollary 5.17
+% % def 5.32:
+% % for Phi: set of formulas (e.g. sigma0b)
+% % string function F(x, Y) is Phi-bit-definable if is formula phi in Phi and number term t(x, Y) s.t.
+% % F(x, Y)(i) iff i < t(x, Y) and phi(i, x, Y)
+% % the RHS of this is a bit-defining axiom of F.
 
-% corollary 5.17: string function is in \complexityi{FAC}{0} iff is p-bounded
-% and its bit graph is represented by a sigma0b formula
-% the same holds for a  number function, with graph replacing bit-graph
-% proof: follows from sigma0b representation theorem 4.17
+% % corollary 5.17: string function is in \complexityi{FAC}{0} iff is p-bounded
+% % and its bit graph is represented by a sigma0b formula
+% % the same holds for a  number function, with graph replacing bit-graph
+% % proof: follows from sigma0b representation theorem 4.17
 
-% theorem 4.17: relation R(x, X) is in \complexityi{AC}{0} iff it is represented by some Sigma0b formula phi(x,X)
-% proof: like theorem 3.58
+% % theorem 4.17: relation R(x, X) is in \complexityi{AC}{0} iff it is represented by some Sigma0b formula phi(x,X)
+% % proof: like theorem 3.58
 
-% there are functions whose graphs are in \complexityi{AC}{0} (representable by sigma0b formulas),
-% but which do not belong to \complexityi{FAC}{0} (section: proof of witnessing theorem for v0)
+% % there are functions whose graphs are in \complexityi{AC}{0} (representable by sigma0b formulas),
+% % but which do not belong to \complexityi{FAC}{0} (section: proof of witnessing theorem for v0)
 
-% theorem 3.58.
-% one side: compline LTH turing machines to formulas. we're not going to do that.
-% second side: Delta0n subset LTH.
-% bounded quantifiers correspond to exists, forall states in ATM.
-% only interesting case is that `R(x, y, z) iff x*y=z` is in LTH.
-% use corollary 3.60 which shows L subseteq LTH and that multiplication is in L.
+% % theorem 3.58.
+% % one side: compline LTH turing machines to formulas. we're not going to do that.
+% % second side: Delta0n subset LTH.
+% % bounded quantifiers correspond to exists, forall states in ATM.
+% % only interesting case is that `R(x, y, z) iff x*y=z` is in LTH.
+% % use corollary 3.60 which shows L subseteq LTH and that multiplication is in L.
 
-% some intuitionistic logic in lean:
-% https://github.com/DafinaTrufas/Intuitionistic-Logic-Lean
+% % some intuitionistic logic in lean:
+% % https://github.com/DafinaTrufas/Intuitionistic-Logic-Lean
 
-% Bounded arithmetics in Lean:
-% https://github.com/FormalizedFormalLogic/Foundation
+% % Bounded arithmetics in Lean:
+% % https://github.com/FormalizedFormalLogic/Foundation
 
-% hierarchia arytmetyk
-% https://en.wikipedia.org/wiki/Ordinal_analysis
+% % hierarchia arytmetyk
+% % https://en.wikipedia.org/wiki/Ordinal_analysis
 
-% Weak systems of arithmetic:
-% https://golem.ph.utexas.edu/category/2011/10/weak_systems_of_arithmetic.html
+% % Weak systems of arithmetic:
+% % https://golem.ph.utexas.edu/category/2011/10/weak_systems_of_arithmetic.html
 
-% IΔ₀ and linear time hierarchy!
-% Elementary Function Arithmetic = EFA
-% Primitive Recursive Arithmetic = PRA
-% RCA0*
-% IDelta0 + Exp
+% % IΔ₀ and linear time hierarchy!
+% % Elementary Function Arithmetic = EFA
+% % Primitive Recursive Arithmetic = PRA
+% % RCA0*
+% % IDelta0 + Exp
 
-% Primitive recursion:
-% https://ftp.cs.ru.nl/CSI/CompMath.Found/week9.pdf
+% % Primitive recursion:
+% % https://ftp.cs.ru.nl/CSI/CompMath.Found/week9.pdf
 
-% A constructive proof of the Gödel-Rosser incompleteness theorem has been completed using the Coq proof assistant
-% http://r6.ca/Goedel/goedel1.html
+% % A constructive proof of the Gödel-Rosser incompleteness theorem has been completed using the Coq proof assistant
+% % http://r6.ca/Goedel/goedel1.html
 
-% Redukcje w Coq różne:  jest tutaj Ackermann function, PRA
-% https://github.com/rocq-community/hydra-battles
+% % Redukcje w Coq różne:  jest tutaj Ackermann function, PRA
+% % https://github.com/rocq-community/hydra-battles
 
-% Definicje e.g. arytmetyki Q Robinsona:
-% file:///home/maryjane/Downloads/1235421930-2.pdf
+% % Definicje e.g. arytmetyki Q Robinsona:
+% % file:///home/maryjane/Downloads/1235421930-2.pdf
 
-% Coding of sets and sequences, strona 31 pdfa (295):
-% file:///home/maryjane/Downloads/1235421934.pdf
-% Książka:
-% https://projecteuclid.org/eBooks/perspectives-in-logic/Metamathematics-of-First-Order-Arithmetic/toc/pl/1235421926
+% % Coding of sets and sequences, strona 31 pdfa (295):
+% % file:///home/maryjane/Downloads/1235421934.pdf
+% % Książka:
+% % https://projecteuclid.org/eBooks/perspectives-in-logic/Metamathematics-of-First-Order-Arithmetic/toc/pl/1235421926
 
-% Funkcja jest dowodliwa w PA wtedy i tylko wtedy gdy rośnie wystarczająco wolno!
-% https://math.stackexchange.com/questions/4859305/are-there-examples-of-statements-not-provable-in-pa-that-do-not-require-fast-gro?rq=1
-% Czyli funkcje, które są niedowodliwe, a rosną wolno (np. są 0/1), nie mogą być wyrażalne!
+% % Funkcja jest dowodliwa w PA wtedy i tylko wtedy gdy rośnie wystarczająco wolno!
+% % https://math.stackexchange.com/questions/4859305/are-there-examples-of-statements-not-provable-in-pa-that-do-not-require-fast-gro?rq=1
+% % Czyli funkcje, które są niedowodliwe, a rosną wolno (np. są 0/1), nie mogą być wyrażalne!
 
-% https://mathoverflow.net/questions/382179/what-can-i-delta-0-prove
+% % https://mathoverflow.net/questions/382179/what-can-i-delta-0-prove
 
-% Euler's phi function in IDelta0:
-% https://link.springer.com/article/10.1007/BF01375521
+% % Euler's phi function in IDelta0:
+% % https://link.springer.com/article/10.1007/BF01375521
 
 
-% deep vs shallow embeddings:
-% https://people.cs.nott.ac.uk/psztxa/publ/tt-in-tt.pdf
-% https://research-information.bris.ac.uk/ws/portalfiles/portal/330955816/LIPIcs_ITP_2022_28.pdf
-% https://drops.dagstuhl.de/storage/00lipics/lipics-vol237-itp2022/LIPIcs.ITP.2022.28/LIPIcs.ITP.2022.28.pdf
-% https://cstheory.stackexchange.com/questions/1370/shallow-versus-deep-embeddings
+% % deep vs shallow embeddings:
+% % https://people.cs.nott.ac.uk/psztxa/publ/tt-in-tt.pdf
+% % https://research-information.bris.ac.uk/ws/portalfiles/portal/330955816/LIPIcs_ITP_2022_28.pdf
+% % https://drops.dagstuhl.de/storage/00lipics/lipics-vol237-itp2022/LIPIcs.ITP.2022.28/LIPIcs.ITP.2022.28.pdf
+% % https://cstheory.stackexchange.com/questions/1370/shallow-versus-deep-embeddings
