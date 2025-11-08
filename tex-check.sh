@@ -25,19 +25,32 @@ for f in "${files[@]}"; do
 
   # --- Biber validation (.bib only) ---
   if [[ "$f" == *.bib ]]; then
-    warn=$(biber --tool --validate-datamodel --nolog --outfile /dev/null "$f" 2>&1)
+    tmp_log=$(mktemp)
 
-    # Filter out harmless patterns
-    warn_filtered=$(echo "$warn" | grep "WARN" \
-      | grep -v "invalid in data model - ignoring" \
-      | grep -v "Invalid field '[a-z]*' for entrytype '[a-z]*'")
+    biber --tool --validate-datamodel --nolog --outfile /dev/null "$f" >"$tmp_log"
 
-    if [ -n "$warn_filtered" ]; then
+    # show errors unfiltered
+    errs=$(grep -E '(^ERROR\b| ERROR - )' "$tmp_log")
+    if [ -n "$errs" ]; then
+      status="BIBER ERROR"
+      echo "--- biber errors in $f ---" >&2
+      echo "$errs" >&2
+      # fall through to also show warnings if you want
+    fi
+
+    # show warnings, but ignore your chosen patterns
+    warn_filtered=$(
+      grep -E '(^WARN\b| WARN - )' "$tmp_log" \
+      | grep -Ev 'invalid in data model - ignoring|Invalid field '\''.*'\'' for entrytype '\''.*'\'''
+    )
+    if [ -n "$warn_filtered" ] && [ "$status" = "OK" ]; then
       status="BIBER WARN"
       echo "--- biber warnings in $f ---"
       echo "$warn_filtered"
       echo "--------------------------------"
     fi
+
+    rm -f "$tmp_log"
   fi
 
   printf "%-50s  %s\n" "$f" "$status"
