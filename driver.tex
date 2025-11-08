@@ -19,8 +19,18 @@
 \documentclass[en]  {pracamgr}
 %include standalone forest, tikz figures
 \usepackage{standalone}
-% \usepackage{biblatex}
-\usepackage[backend=biber,style=authoryear]{biblatex}
+% Select citation style (CSL sources live under thesis-tex/).
+
+% https://github.com/citation-style-language/styles/blob/2e3e9964846c9a1ad709e6974307b85f70a37f06/apa.csl
+% \PassOptionsToPackage{style=apa}{biblatex} % default APA, see thesis-tex/apa.csl
+
+% https://github.com/citation-style-language/styles/blob/2e3e9964846c9a1ad709e6974307b85f70a37f06/ieee.csl
+% \PassOptionsToPackage{style=ieee}{biblatex} % switch to IEEE, see thesis-tex/ieee.csl
+
+% https://github.com/citation-style-language/styles/blob/2e3e9964846c9a1ad709e6974307b85f70a37f06/chicago-author-date-17th-edition.csl
+\PassOptionsToPackage{style=chicago-author-date-17th-edition}{biblatex}
+
+\usepackage[backend=biber]{biblatex}
 % recommended while using biblatex with babel
 \usepackage{csquotes}
 % make references clickable, hide boxes around links
@@ -174,7 +184,8 @@
 %11.9 Inne nauki matematyczne i informatyczne
 }
 
-%Klasyfikacja tematyczna wedlug AMS (matematyka) lub ACM (informatyka)
+% Klasyfikacja tematyczna wedlug AMS (matematyka) lub ACM (informatyka)
+% ACM: https://www.acm.org/publications/class-2012
 \klasyfikacja{F. Theory of computation\\
   F.3. Logics and meanings of programs\\
   F.3.3. Studies of program constructs}
