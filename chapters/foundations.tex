@@ -2,43 +2,43 @@
 One of the first decisions the designer of a programming language has to make is choosing
 a programming paradigm convenient for writing the programs of their interest.
 In this chapter we try to lift the assumption that computation has to be performed in an imperative manner.
-We investigate if it would make more sense for us to seek the design of e.g.\  a functional
-programming language as opposed to imperative, or maybe we should focus on completely different
+We investigate whether it would make more sense for us to seek the design of e.g.\ a functional
+programming language as opposed to an imperative one, or whether we should focus on a completely different
 paradigm, such as quantum or interactive computation.
 
-A difficulty encountered is that the standard notions of time and space complexity of a program
-don't make sense in models of computations fundamentally different from Turing machines.
+One difficulty is that the standard notions of time and space complexity of a program
+do not carry over directly to models of computation fundamentally different from Turing machines.
 At the same time, computation we usually care about is computation on modern CPUs and GPUs,
 which immediately pushes us towards focusing on imperative or parallel programming paradigms.
 However, as discussed in~\cite{10.1007/978-3-642-27660-6_3}, the notion of an ``algorithm''
-has not crystallized yet and is still expanding. It is the purpose of this chapter
-to explore if we will be able to design programming languages ``\todo{consistency: capturing / expressing} capturing complexity classes'',
-by working in a different paradigm.
-We can foreshadow that the answer is (perhaps surprisingly) positive. Despite
+has not crystallized yet and is still expanding. In this chapter we therefore test whether
+working in alternative paradigms can still lead to programming languages that capture the complexity
+classes of interest, keeping an open mind in case an imperative viewpoint would make such a design impossible.
+We can foreshadow that the answer is (perhaps surprisingly) positive: despite
 complexity classes being defined on Turing machines, the characterizations explored in this work
-are rarely imperative.
+are rarely imperative. Not every non-imperative model is equally mature, though,
+which will influence the directions we pursue in later chapters.
 
 \section{Finite automata and transducers}
-The existing research on finite-state automata didn't turn out to be useful for our work ---
-perhaps because the expressiveness of this model is inherently limited to \todo{consistency}Boolean-valued functions.
-This limitation is lifted by finite-state transducers, which are greatly of our interest.
+The existing research on finite-state automata has not been directly useful for our work ---
+perhaps because the expressiveness of this model is inherently limited to Boolean-valued functions.
+Finite-state transducers lift this limitation and are therefore of particular interest to us.
 In~\cite{bojańczyk2018polyregularfunctions},
-four characterizations are described of the class of \emph{polyregular} functions --- a class of string-to-string
-functions computed by a particular kind of transducer. The definitions described readily
-constitute for the basis of a programming language. Another programming
+four characterizations are given for the class of \emph{polyregular} functions --- a class of string-to-string
+functions computed by a particular kind of transducer. The definitions described there readily
+constitute the basis of a programming language. Another programming
 language for transducers is studied in~\cite{DBLP:conf/fsmnlp/Schmid05}. A particular
 class of string-to-string functions defined using logic, \emph{MSO transductions},
 is characterized to be precisely the class of functions computable by two-way deterministic finite transducers (2DFT)
 in~\cite{engelfriet1999msodefinablestringtransductions}. All of these results
-are of our interest and give us basis of new programming languages.
+are of interest to us and provide basis for new programming languages.
 
-Due to how little is still known about transducers, most of the 
-functions that we would like to compute are not known to be or to not be computable by
-a given flavor of transducer.
-Since writing programs in such a programming language would sometimes be equivalent
-to doing research on transducers, we decided to, for now, not pursue this route and focus
+Because transducer classes remain poorly understood, it is usually unclear whether an arbitrary problem 
+belongs to the class recognized by a given flavor of transducer.
+Writing programs in such a programming language would therefore often be equivalent
+to doing new research on transducers, so for now we focus
 on more well-established classes of functions. A good overview of existing research on
-transducers is in~\cite{muscholl_et_al:LIPIcs.STACS.2019.2}.
+transducers can be found in~\cite{muscholl_et_al:LIPIcs.STACS.2019.2}.
 
 \section{Turing machines}
 This model of computation underpins the imperative programming style.
@@ -73,21 +73,21 @@ of length logarithmic to the size of input, and a special state such that when t
 number on the pointer tape is \(n\), \(n\)-th digit of the input is written to the work tape.
 
 Reasoning about computation in complexity classes such as \(\complexity{L}\) or \(\complexity{P}\) is the same
-for traditional Turing machines and \todo{random/Random}random-access Turing machines. The choice of model starts to matter for machine-dependent
-notions of complexity such as \(\complexity{DTIME(n)}, \complexity{DTIME(n^2)}\) (\emph{fine-grained} complexity classes).
+for traditional Turing machines and random-access Turing machines. The choice of model starts to matter for machine-dependent
+notions of complexity such as \(\complexity{DTIME}(n)\) or \(\complexity{DTIME}(n^2)\) (\emph{fine-grained} complexity classes).
 Due to insufficient existing research on implicit characterizations of
-fine-grained complexity classes, we will not consider them besides brief discussion
-in~\autoref{subsec:fine-grained-reductions}.\footnote{Computation on transducers is a promising way to obtain robust characterizations of these classes --- e.g.
+fine-grained complexity classes, we will not consider them besides a brief discussion
+in~\autoref{subsec:fine-grained-reductions}.\footnote{Computation on transducers is a promising way to obtain robust characterizations of these classes --- e.g.\
 \emph{polyregular} functions are computable in linear time by a kind of transducer~\cite{bojańczyk2018polyregularfunctions}.
-This is not a \emph{characterization}, however, because it is not known to be \complexity{DTIME(\bigO(n))}-complete. } 
-The notion of \(\complexity{DLOGTIME} = \complexity{DTIME(\log{n})}\)-uniformity explored in~\autoref{subsec:dlogtime-uniformity} is also
+This is not a \emph{characterization}, however, because it is not known to be \(\complexity{DTIME}(n)\)-complete. } 
+The notion of \(\complexity{DLOGTIME} = \complexity{DTIME}(\log n)\)-uniformity explored in~\autoref{subsec:dlogtime-uniformity} is also
 only defined for random-access Turing machines.
 
 \section{Circuits}
 Circuits as a model of computation are the theoretical foundation of parallel programming.
 The theoretical implications turn out to not be widely applicable in practice, however.
 In this work, we will mostly use circuits when we need to perform computation in complexity
-lower than the popular, classes such as \(\complexity{L}\) and \(\complexity{P}\).
+lower than the popular classes such as \(\complexity{L}\) and \(\complexity{P}\).
 
 \section{Lambda calculus}
 Lambda calculus underpins functional programming. Typed lambda calculi are known
@@ -96,7 +96,7 @@ Untyped lambda calculi, on the other hand, are close to the recursion-theoretic
 considerations that we will explore in~\autoref{chap:recursion-theory}.
 
 Lambda calculus does
-not however line up cleanly with traditional Turing machine complexity measures.  For instance,
+not, however, line up cleanly with traditional Turing machine complexity measures.  For instance,
 for some representation of strings \(\{0, 1\}^\ast\), \cite[Theorem~3.4]{10.5555/788018.788832}~identifies
 the functions \(\{0, 1\}^\ast \rightarrow \{0, 1\}\) definable in simply typed
 lambda calculus (STLC), with regular languages. But with a different encoding of inputs,
@@ -107,7 +107,7 @@ that if we slightly modify the encoding, the class is yet different.
 For more discussion, see also~\cite{27863}.
 Consequently, it is not obvious how to reason about complexity theory in the language of lambda calculus.
 
-Nevertheless, typed lambda calculi are the basis of one the successful approaches towards our problem of
+Nevertheless, typed lambda calculi are the basis of one of the successful approaches towards our problem of
 characterizing complexity classes syntactically, and will be discussed further in~\autoref{chap:linear-types}.
 
 
@@ -116,7 +116,7 @@ An interesting connection appears when we think of traditional notions of ``comp
 from the point of view of computational complexity. Let's take a look at how Borel sets are defined:
 
 \begin{definition}[Borel sets]
-Let \(X\) be a topological space. The class of Borel sets of \(X\) is the smallest collection of sets such that:\ 
+Let \(X\) be a topological space. The class of Borel sets of \(X\) is the smallest collection of sets such that:
 \begin{enumerate}[label= (\roman*)]
     \item every open subset of \(X\) is Borel;
     \item if \(A\) is Borel, then its complement \(X \setminus A\) is Borel;
@@ -124,36 +124,36 @@ Let \(X\) be a topological space. The class of Borel sets of \(X\) is the smalle
 \end{enumerate}
 \end{definition}
 
-If we pose the operation of taking a complement, and of taking a union, as operations in a programming language,
-could we design a programming language for constructing Borel sets? By itself it might have not turned out to not
-be the most interesting programming language out there. However, thinking about mathematical reasoning
+If we treat taking complements and countable unions as operations in a programming language,
+could we design a language for constructing Borel sets? By itself such a language would probably
+not be the most interesting one. However, thinking about mathematical reasoning
 in terms of a computational process is a very powerful technique. It has been deeply explored
 under the name of Curry-Howard or proofs-as-programs correspondence. For the computational content
 of set theory in particular, an interesting brief discussion is presented in~\cite{Tao2010ComputationalPerspective}.
-For our purposes, an interesting connection appears when we look at the field of descriptive set theory,
+For our purposes, an interesting connection appears when we look at descriptive set theory,
 and in particular theorems about the determinacy of Gale-Stewart games (which we shall not introduce here).
-It is an easy to prove that Gale-Stewart games are determined when the underlying set is open or closed.
-But allowing the underlying set to be more and more complicated (going up the Borel hierarchy), we quickly 
-reach the limits of provability in Zermelo-Fraenkel set theory, with determinacy for Borel sets being a
-difficult theorem to prove, and then with determinacy for analytic and projective sets being
+It is easy to prove that Gale-Stewart games are determined when the underlying set is open or closed.
+Allowing the underlying set to be more and more complicated (going up the Borel hierarchy), we quickly 
+reach the limits of provability in Zermelo-Fraenkel set theory: determinacy for Borel sets is already a
+difficult theorem to prove, and determinacy for analytic and projective sets is
 independent of ZF, yet provable assuming different ``large cardinal axioms''. This leads us to the field of
 \emph{ordinal analysis} --- interestingly, we can measure the strength of a mathematical theory purely
-by the means of a single ordinal, the \emph{proof-theoretic ordinal} of the theory. While incorrect,
-for the sake of the intuition let's assume that we measure the strength of the theory by the
-cardinality of the largest set that it can prove to exist. Then, can we design such mathematical theories
-that if we assume as an axiom the existence of a set of \(n\) elements, then the largest set provable to exist
-in the extended theory will have cardinality \(n^2\) or \(2^n\)?
+by means of a single ordinal, the \emph{proof-theoretic ordinal} of the theory. While the following metaphor is simplistic,
+for the sake of the intuition let us assume that we measure the strength of the theory by the
+cardinality of the largest set that it can prove to exist. Then we can ask whether it is possible to design such mathematical theories
+that, after assuming as an axiom the existence of a set of \(n\) elements, the largest set provable to exist
+in the extended theory will have cardinality \(n^2\) or \(2^n\).
 
-While very far from any notion of ``practical programming languages'', the above considerations
-originated\footnote{It is interesting to note that this interest came from getting to present this topic
+While this line of thought is very far from ``practical programming languages'', these considerations
+inspired\footnote{This line of study grew out of presenting the topic
 at the JAiO master's seminar at the University of Warsaw ---
 slides are available online at~\cite{Balawender2025BorelDeterminacySeminar}.}
-the most promising approach towards it that we study in this work, studied in~\autoref{chap:bounded-arithmetic}.
+the approach that we study in~\autoref{chap:bounded-arithmetic}.
 
 % \section{Models of hypercomputation}
-% \todo[inline]{\begin{itemize}
+% Notes (for future work):
+% \begin{itemize}
 % \item Sequential Time. An algorithm determines a sequence of computational
 % states for each valid input. Specifically, the time is discrete. what if time is not a successor structure? i.e. we can travel back in Time
-% \item Malament-Hogarth spacetime; 
+% \item Malament-Hogarth spacetime.
 % \end{itemize}
-% }
