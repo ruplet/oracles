@@ -1,3 +1,26 @@
+
+% \section{The full picture}
+% States of the process of computation are dots. Computation is arrows between the dots.
+% Since computation is sequential (even parallel programs have some intertwine, which is sequential),
+% this is a linear graph. What programmer does is describe the arrows.
+% The whole graph has bilions of computational steps, which we can't create nor verify.
+% Yet, we want to reason about it.
+% We want to also be able to construct data, e.g. the input.
+% Verification checker has to confirm that if a precondition holds in state S before computation,
+% then it also holds for F(S), which is state after computation. F is the semantics
+% of some programming language function, so we need to have one functional symbol
+% for every possible state function describable.
+
+% The weaker the type system, and the more complicated the function, the less likely
+% it is that it will be able to solve the tautology (by automated theorem proving).
+
+% In functional languages, the syntax to describe data and functions is the same:
+% lambda terms. Verification has to be supplied by the user as types.
+
+% The interpreter is essentialy a proof that for every state, precisely one consecutive state
+% of computation exists.
+
+
 % # Introduction
 % This thesis investigates the problem of certifying computational complexity of standard computer algorithms. The most intuitive solution to it is to formalize a standard computational model (e.g. Turing machines or lambda calculus) and its notion of computational complexity in a proof assistant such as Rocq or Lean. Then, implement the algorithm in such a formalization and prove that it will e.g. execute in polynomial time. This, however, proves to be extremely difficult. The proofs from the area of computational complexity tend to be very "hand-wavy" and making them formal is orders of magnitude more involved than formalizing other areas of mathematics [forster:LIPIcs.CSL.2025.3].
 % As of September 2025, no feasible way of doing that on scale has been discovered.
