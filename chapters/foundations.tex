@@ -1,4 +1,4 @@
-\chapter{Models of computation, programming paradigms and complexity measures}
+\chapter{Models of computation, programming paradigms and complexity measures}\label{chap:foundations}
 One of the first decisions a programming language designer has to make is choosing
 the programming paradigm convenient for writing the programs of interest.
 In the practice of programming, imperative languages
@@ -92,13 +92,13 @@ only defined for random-access Turing machines.
 \section{Circuits}
 Circuits as a model of computation are the theoretical foundation of parallel programming.
 The theoretical implications turn out to not be widely applicable in practice, however.
-In this work, we will mostly use circuits when we need to perform computation in complexity
-lower than \(\complexity{L}\).
+In this work, we will mostly use circuits to reason about very weak complexity.
 
 As we will see in~\autoref{sec:uniformity}, we will almost always want to 
 define a circuit family by a function (of a low complexity) \(n \rightarrow C_n\), computing the description
 of the circuit for a given input size \(n\). If we obtain a language for
-such functions, we will be able to use it to compute circuit families. We will study
+such functions, we will be able to use it to \todo{compute with complexity bound,
+i.e.\ that if the resulting circuit is correct, it will be logspace-uniform ac0}compute circuit families. We will study
 a logical characterization of a variant of \(\complexity{AC}^0\) in~\autoref{sec:vac0}.
 
 A very rich \todo{there is nothing new for me
