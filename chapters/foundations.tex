@@ -67,6 +67,11 @@ Let \(T : \mathbb{N} \to \mathbb{N}\) be some function.  A language \(L\) belong
 We will say that a Turing machine belongs to \(\complexity{DSPACE}(T(n))\) iff it satisfies~\autoref{itm:dspace}.
 \end{definition}
 
+Classical complexity theory therefore already speaks the language of imperative computation:
+time and space are defined directly on Turing machines. Yet surprisingly few elegant, high-level
+imperative languages are known to characterize well-studied complexity classes beyond the trivial ones.
+This scarcity is precisely why much of the work surveyed in later chapters relies on non-imperative paradigms.
+
 \subsection{Random-access Turing machines}
 Random-access Turing machines are Turing machines with a special ``pointer'' tape,
 of length logarithmic to the size of input, and a special state such that when the binary
@@ -89,14 +94,26 @@ The theoretical implications turn out to not be widely applicable in practice, h
 In this work, we will mostly use circuits when we need to perform computation in complexity
 lower than the popular classes such as \(\complexity{L}\) and \(\complexity{P}\).
 
-\section{Lambda calculus}
-Lambda calculus underpins functional programming. Typed lambda calculi are known
-to ease reasoning about the correctness of their programs.
-Untyped lambda calculi, on the other hand, are close to the recursion-theoretic
-considerations that we will explore in~\autoref{chap:recursion-theory}.
+Describing a single circuit is almost trivial: one merely describes the layers gate by gate.
+The real difficulty lies in programming the function \(n \rightarrow C_n\), computing the description
+of the circuit for a given input size \(n\). As we will see in~\ref{sec:uniformity}, the functions in a programming language
+for circuits
+would probably have to generate,
+for each input length, the matching circuit family, which amounts to programming in a language that
+already captures some other complexity class such as \(\complexity{L}\) or \(\complexity{P}\).
+For this reason, in this work we don't seek a language particularly for circuits.
+
+\section{Logic programming and descriptive complexity}
+Logic programming offers strong complexity-theoretic connections
+through the field of descriptive complexity which we explore in more detail in~\cite{chap:descriptive-complexity}.
+
+\section{Typed lambda calculi}
+Lambda calculus underpins functional programming. In this section we focus on typed variants,
+which are known to ease reasoning about the correctness of their programs.
+We defer untyped calculi and general recursion to the next section.
 
 Lambda calculus does
-not, however, line up cleanly with traditional Turing machine complexity measures.  For instance,
+not line up cleanly with traditional Turing machine complexity measures.  For instance,
 for some representation of strings \(\{0, 1\}^\ast\), \cite[Theorem~3.4]{10.5555/788018.788832}~identifies
 the functions \(\{0, 1\}^\ast \rightarrow \{0, 1\}\) definable in simply typed
 lambda calculus (STLC), with regular languages. But with a different encoding of inputs,
@@ -107,9 +124,19 @@ that if we slightly modify the encoding, the class is yet different.
 For more discussion, see also~\cite{27863}.
 Consequently, it is not obvious how to reason about complexity theory in the language of lambda calculus.
 
-Nevertheless, typed lambda calculi are the basis of one of the successful approaches towards our problem of
-characterizing complexity classes syntactically, and will be discussed further in~\autoref{chap:linear-types}.
+Nevertheless, typed lambda calculi have been utilized
+very successfully to syntactically characterize complexity classes.
+Recall that one of the reasons linear logic is studied is the potential
+to reason about resource creation and utilization.
+Concepts from linear logic had been implemented in type theory,
+to transfer the resource interpretation to type systems.
+This will be discussed further in~\autoref{chap:linear-types}.
 
+\section{Recursion and untyped computation}
+Another classical paradigm is that of general recursive functions, or equivalently the untyped
+lambda calculus. Because these systems are Turing complete, the interesting question
+is how to constrain recursion so that the resulting language captures a specific class.
+We treat these ideas in~\autoref{chap:recursion-theory}.
 
 \section{Set theory as inspiration for model of computation}
 An interesting connection appears when we think of traditional notions of ``complexity'' of sets in set theory
