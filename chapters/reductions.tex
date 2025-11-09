@@ -1,80 +1,86 @@
 \chapter{Reductions}\label{chap:reductions}
-% A lot (TODO: which?) of the definitions below are from~\cite{10.5555/520668}.
-
 We introduce the definitions of complexity classes considered in this work.
 
-In~\autoref{sec:decisional-complexity-classes} we introduce standard complexity classes such as \(\complexity{L}\), \(\complexity{P}\)
-and \(\complexity{NP}\). It is important to note that these definitions only talk about the complexity of
-computing \emph{Boolean} functions, i.e.\ functions \(f : \{0,1\}^\ast \to \{0,1\}\). These functions define
-\emph{decision} problems or \emph{languages}.
+In~\autoref{sec:decisional-complexity-classes} we introduce standard complexity classes such as 
+\(\complexity{L}\), \(\complexity{P}\) and \(\complexity{NP}\). It is important to note that these 
+definitions only talk about the complexity of computing \emph{Boolean} functions, i.e.\ functions 
+\(f : \{0,1\}^\ast \to \{0,1\}\). These functions define \emph{decision} problems or \emph{languages}.
 
-It is not obvious whether focusing solely on the complexity of Boolean functions is sufficient to reason about
-the general functions that we want to implement in a practical programming language. 
+It is not at first obvious whether focusing solely on the complexity of Boolean functions is 
+sufficient to reason about the general functions that we want to implement in a practical programming language. 
 As we will see in~\autoref{sec:decisional-and-functional-complexity-classes}, the answer is negative.
-In~\autoref{sec:functional-complexity-classes} we introduce the still standard, but much less talked about, \emph{functional} complexity classes,
-which study functions \(f : \{0,1\}^\ast \to \{0,1\}^\ast\) in general. The results about these classes 
-transfer much better to our interests than results about the decisional complexity classes. As we discuss 
-in~\autoref{chap:recursion-theory}, programming-language-like characterizations of decisional complexity classes 
-are more abundant and by far predate the characterizations of functional complexity classes. It is the latter, 
-however, that is viable for our purposes of designing a programming language.
+In~\autoref{sec:functional-complexity-classes} we introduce the still standard, but much less talked about, 
+\emph{functional} complexity classes,
+that study general functions \(f : \{0,1\}^\ast \to \{0,1\}^\ast\) --- \emph{reductions}. The results
+about these classes  transfer much better to our interests than results about the decisional complexity
+classes. As we discuss  in~\autoref{chap:recursion-theory}, programming-language-like characterizations
+of decisional complexity classes are more abundant and by far predate the characterizations of
+functional complexity classes. It is the latter, however, that is viable for our purposes of
+designing a programming language.
+
+\section{Decisional complexity classes for circuits}
+\begin{definition}[\texorpdfstring{\(\complexity{AC}^i\)}{ACi}]\label{def:complexity-aci}
+    \todo[inline]{Define...}
+\end{definition}
 
 
-\section{Decisional complexity classes}
-\label{sec:decisional-complexity-classes}
+\section{Decisional complexity classes for Turing machines}\label{sec:decisional-complexity-classes}
 We say that a machine decides a language \(L \subseteq \{0,1\}^\ast\) if it computes the 
 characteristic function \(f_L : \{0,1\}^\ast \to \{0,1\}\), where \(f_L(x) = 1 \Leftrightarrow x \in L\).
-Recall the definitions of complexity classes~\autoref{def:turing-dtime} and~\autoref{def:turing-dspace}.
+Recall the definitions of complexity classes \(\complexity{DTIME}(T(n))\)~(\autoref{def:turing-dtime}) and \(\complexity{DSPACE}(T(n))\)~(\autoref{def:turing-dspace}).
 
-\subsection{\complexity{P}}
-\begin{definition}[The class \texorpdfstring{\ensuremath{\complexity{P}}}{P}]
+\begin{definition}[\texorpdfstring{\complexity{L}}{L}]\label{def:complexity-l}
+    \todo[inline]{Define...}
+\end{definition}
+
+% \subsection{\complexity{P}}
+\begin{definition}[\texorpdfstring{\complexity{P}}{P}]\label{def:complexity-p}
+\todo[inline]{This definition should have the same style as NP, FP,FNP\@. This union-style is an outlier.}
 \[
     \complexity{P} = \bigcup_{c \ge 1} \complexity{DTIME}(n^c).
 \]
 In other words, a language is in \(\complexity{P}\) if and only if it can be decided by a deterministic Turing machine that runs in polynomial time.
 \end{definition}
 
-
-
-There are many characterizations of \(\complexity{P}\), and for our purposes they are not equivalent.
-We will study these in~\autoref{sec:alternative-ptime}.
-
-
-\subsubsection{Alternative characterizations of P}
-\label{sec:alternative-ptime}
-For example, in~\cite{bournez_et_al:LIPIcs.MFCS.2019.23}, FP and FNP are characterized by discrete differential equations.
-Similarly, in~\cite{antonelli2025characterizingsmallcircuitclasses}, various complexity classes from \(\complexity{FAC}^0\) to \(\complexity{FAC}^1\)
-have been characterized by discrete ordinary differential equations.
-
-\begin{definition}[Non-standard circuit view of \complexity{P}]
-One can also view \complexity{P} as a polynomial-time uniform family of Boolean circuits \(\{C_n\}_{n \in \mathbb{N}}\).
-Under this view, a language \(L\) is in \complexity{P} iff there exists such a family with:
-\begin{enumerate}[label=(\roman*)]
-    \item each \(C_n\) taking \(n\) input bits and producing one output bit;
-    \item for all \(x \in L\), \(C_{|x|}(x) = 1\);
-    \item for all \(x \notin L\), \(C_{|x|}(x) = 0\).
-\end{enumerate}
-We regard this circuit characterization as non-standard for the purposes of this text.
+\begin{definition}[\texorpdfstring{\complexity{NP}}{NP}]\label{def:complexity-np}
+    \todo[inline]{Define...}
 \end{definition}
 
-\section{Decisional and functional complexity classes}
-\label{sec:decisional-and-functional-complexity-classes}
-Most problems that are considered in complexity theory ask, for a given input, whether it satisfies some property, i.e.\ the return type of the function that solves the problem is a Boolean. Here we list the definitions of some complexity classes that contain solely such decisional problems. These turn out to be the most well-known complexity classes, but they are not the primary interest of this work. Our focus is on more general functions that can return a string, a pair of numbers, or a graph, and not just a Boolean value. After we introduce the decisional complexity classes in this section, we will later use them to define functional complexity classes.
+% \begin{definition}[Non-standard circuit view of \complexity{P}]
+% One can also view \complexity{P} as a polynomial-time uniform family of Boolean circuits \(\{C_n\}_{n \in \mathbb{N}}\).
+% Under this view, a language \(L\) is in \complexity{P} iff there exists such a family with:
+% \begin{enumerate}[label=(\roman*)]
+%     \item each \(C_n\) taking \(n\) input bits and producing one output bit;
+%     \item for all \(x \in L\), \(C_{|x|}(x) = 1\);
+%     \item for all \(x \notin L\), \(C_{|x|}(x) = 0\).
+% \end{enumerate}
+% We regard this circuit characterization as non-standard for the purposes of this text.
+% \end{definition}
 
-
-\subsection{Bibliographical remark}
-The definition of \(\complexity{P}\) is in the style
-of~\cites[Definition~1.13]{10.5555/1540612}[Definition~1.20]{DRAFT10.5555/1540612}.
-
+\section{Decisional and functional complexity classes}\label{sec:decisional-and-functional-complexity-classes}
+% Most problems that are considered in complexity theory ask, for a given input, whether it satisfies 
+% some property, i.e.\ the return type of the function that solves the problem is a Boolean. Here we list 
+% the definitions of some complexity classes that contain solely such decisional problems. These turn out 
+% to be the most well-known complexity classes, but they are not the primary interest of this work. Our focus
+% is on more general functions that can return a string, a pair of numbers, or a graph, and not just a Boolean value.
+% After we introduce the decisional complexity classes in this section, we will later use them to define 
+% functional complexity classes.
 
 
 \section{Functional complexity classes}\label{sec:functional-complexity-classes}
 
-The definition of reductions for search problems is in the style of~\cite{Goebel2011NashComplexity} and~\cite{Goldberg2021SearchTotal}.
-The definition of \(\complexity{FP}\) and \(complexity{FNP}\) is after~\cite[Section 28.10]{Rich2007Automata}.
+\begin{definition}[FL]\label{def:fl}
+    \todo[inline]{this are L-reductions}
+% A binary relation \(P(x, y)\) is in \(\complexity{FP}\) iff there exists a polynomial-time Turing machine
+% that, given an arbitrary input \(x\):
+% \begin{enumerate}[label=(\roman*)]
+%     \item outputs some \(y\) such that \(P(x, y)\) if any exists;
+%     \item signals that no such \(y\) exists otherwise.
+% \end{enumerate}
+\end{definition}
 
-\subsection{FP}
-
-\begin{definition}[FP]
+\begin{definition}[FP]\label{def:fp}
+    \todo[inline]{this are P-reductions}
 A binary relation \(P(x, y)\) is in \(\complexity{FP}\) iff there exists a polynomial-time Turing machine
 that, given an arbitrary input \(x\):
 \begin{enumerate}[label=(\roman*)]
@@ -84,20 +90,67 @@ that, given an arbitrary input \(x\):
 
 \begin{remark}
 Sometimes \(\complexity{FP}\) is defined to be the class of functions computable by polynomial-time Turing machines.
-This style of definition makes it easier to compare with \(\complexity{FNP}\).
+That style of definition makes it less convenient to compare \(\complexity{FP}\) with \(\complexity{FNP}\).
 \end{remark}
 \end{definition}
 
-\subsubsection{\complexity{FP}-completeness}
-\begin{definition}[Polynomial-time reductions for search problems]
-    Let \(\texttt{HardProblem}\), \(\texttt{NewProblem}\) be search problems in \(complexity{FP}\).
-    We say that \(\texttt{HardProblem}\) (many-one) reduces to \(\texttt{NewProblem}\) if there exist
-    polynomial-time computable functions \(f, g\) such that:
-    \[\texttt{NewProblem}(f(x), y) \implies \texttt{HardProblem}(x, g(y))\]
-
-    For a given input \(x\) of \(\texttt{HardProblem}\), we can run \(\texttt{NewProblem}(f(x))\)
-    to obtain some result \(y\), such that \(g(y)\) is the result of \(\texttt{HardProblem}(x)\).
+\subsection{FNP}
+\begin{definition}[FNP]\label{def:fnp}
+A binary relation \(P(x, y)\) is in \(\complexity{FNP}\) iff there exists a polynomial-time nondeterministic Turing machine
+that, given some \(x\):
+\begin{enumerate}[label=(\roman*)]
+    \item outputs some \(y\) such that \(P(x, y)\) if any exists;
+    \item signals that no such \(y\) exists otherwise.
+\end{enumerate}
+\begin{remark}
+Equivalently~\cite[28.10~and~Theorem~28.9]{Rich2007Automata}, a binary relation \(P(x, y)\) is in \(\complexity{FNP}\) iff there exists a polynomial-time Turing machine
+that, given some pair \((x, y)\), decides whether \(P(x, y)\).
+\end{remark}
 \end{definition}
+
+
+\subsubsection{NP vs FNP: PRIMES and TFNP}\label{subsubsec:tfnp}
+\begin{definition}[TFNP]\label{def:tfnp}
+A binary relation \(P(x, y)\) is in \(\complexity{TFNP}\) (total \(\complexity{FNP}\)) iff it is
+in \(\complexity{FNP}\) and for every \(x\) exists at least one \(y\) such that \(P(x, y)\).
+\end{definition}
+
+An interesting example of a problem in \(\complexity{TFNP}\) is \(\texttt{PIGEON}\) defined below,
+for which we mathematically know that the answer exists, but finding it is not trivial.
+
+\begin{definition}[\(\texttt{PIGEON}\)]\label{def:pigeon}
+Given a binary string encoding a Boolean circuit \(C:\{0,1\}^n\!\to\!\{0,1\}^n\), return either
+an input \(x\) such that \(C(x) = 0^n\), or two distinct inputs \(x \neq y\) such that \(C(x) = C(y)\).
+\end{definition}
+
+\begin{remark}\label{remark:}
+    This class will be of our interest in~\autoref{subsec:vac0-php}, where we will discuss mathematical theories
+    so weak that the pigeonhole principle is not their theorem. The intuition behind it is that
+    the computational content of these theories is not strong enough to perform an exhaustive
+    linear search of the whole domain.
+\end{remark}
+
+
+\subsubsection{NP vs FNP:\@ self-reducibility}
+SAT problem is \emph{self-reducible}, i.e.\ we can solve the problem \(\texttt{FSAT}\) of finding a specific
+satisfying assignment with polynomially many calls to the decision procedure \(\texttt{SAT}\). 
+However, some total search problems such as discussed in~\ref{subsubsec:tfnp} are unlikely to
+be self-reducible. This is discussed in slightly more detail in~\cite[Section 1.1]{10.5555/1104410}.
+
+\subsection{\texorpdfstring{\(\complexity{FAC}^i\)}{FACi}}
+\begin{definition}\label{def:faci}
+    \todo[inline]{Define fac}
+\end{definition}
+
+
+
+\subsection{Bibliographical remark}
+The definition of \(\complexity{P}\) is in the style
+of~\cites[Definition~1.13]{10.5555/1540612}[Definition~1.20]{DRAFT10.5555/1540612}.
+The definition of reductions for search problems is in the style of~\cite{Goebel2011NashComplexity} and~\cite{Goldberg2021SearchTotal}.
+The definition of \(\complexity{FP}\) and \(\complexity{FNP}\) is after~\cite[Section 28.10]{Rich2007Automata}.
+\(\complexity{TFNP}\) was first introduced in~\cite{MEGIDDO1991317}.
+The definitions of decisional circuit classes are from~\cite{10.5555/520668}.
 
 \subsubsection{P vs FP}
 These two classes are often identified due to similar properties.
@@ -116,57 +169,6 @@ In turn, as noted in~\cite[discussion after Theorem 8]{doi:10.1142/9789812794499
 \(\complexity{P}^\complexity{NP}\) versus \(\complexity{P}^\complexity{NP}[\log{n}]\) is not known,
 and indeed fails relative to some oracles.
 
-
-\subsection{FNP}
-\begin{definition}[FNP]
-A binary relation \(P(x, y)\) is in \(\complexity{FNP}\) iff there exists a polynomial-time nondeterministic Turing machine
-that, given some \(x\):
-\begin{enumerate}[label=(\roman*)]
-    \item outputs some \(y\) such that \(P(x, y)\) if any exists;
-    \item signals that no such \(y\) exists otherwise.
-\end{enumerate}
-\begin{remark}
-Equivalently~\cite[28.10~and~Theorem~28.9]{Rich2007Automata}, a binary relation \(P(x, y)\) is in \(\complexity{FNP}\) iff there exists a polynomial-time Turing machine
-that, given some pair \((x, y)\), decides whether \(P(x, y)\).
-\end{remark}
-\end{definition}
-
-
-\subsubsection{NP vs FNP: PRIMES and TFNP}\label{subsubsec:tfnp}
-TFNP was introduced in~\cite{MEGIDDO1991317}.
-
-- definition: TFNP is the class of function problems in FNP (defined by a relation R as above) such that R is total
-
-
-- PPP: subclass of TFNP problems that are guaranteed to have a solution because of the Pigeonhole Principle
-- example of a problem in PPP: given a Boolean circuit {0,1}^n -> {0,1}^n, return **either** an input mapped to 0^n, **or**
-  two inputs mapped to the same output
-- the Pigeonhole principle is interesting, because it is usually used only as a pure mathematical result. But it totally makes sense
-  to consider its difficulty as a search problem (given a function from 2n elements to n elements, find collision etc.). Later,
-  while talking about logics corresponding to complexity classes, we will see that if a complexity class is too weak to
-  perform such a search, the corresponding logic cannot prove the theorem of pigeonhole principle. this is very interesting, as it resembles
-  e.g. independence of continuum hypothesis from ZFC, but in a strictly computational setting.
-
-\begin{definition}[\(\texttt{PIGEON}\)]\label{def:pigeon}
-Given a binary string encoding a Boolean circuit \(C:\{0,1\}^n\!\to\!\{0,1\}^n\), return either
-an input \(x\) such that \(C(x) = 0^n\), or two distinct inputs \(x \neq y\) such that \(C(x) = C(y)\).
-\end{definition}
-
-\begin{remark}\label{remark:}
-    This class will be of our interest in~\ref{subsec:vac0-php}, where we will discuss mathematical theories
-    so weak that the pigeonhole principle is not their theorem. The intuition behind it is that
-    the computational content of these theories is not strong enough to perform an exhaustive
-    linear search of the whole domain.
-\end{remark}
-
-
-\subsubsection{NP vs FNP:\@ self-reducibility}
-SAT problem is \emph{self-reducible}, i.e.\ we can solve the problem \(\texttt{FSAT}\) of finding a specific
-satisfying assignment with polynomially many calls to the decision procedure \(\texttt{SAT}\). 
-However, some total search problems such as discussed in~\ref{subsubsec:tfnp} are unlikely to
-be self-reducible. This is discussed in slightly more detail in~\cite[Section 1.1]{10.5555/1104410}.
-
-
 % # About a language for FNP {.allowframebreaks}
 % - NP is characterized by existential second-order logic
 % - what about functional NP?
@@ -179,6 +181,17 @@ be self-reducible. This is discussed in slightly more detail in~\cite[Section 1.
 
 
 \section{Reductions}\label{sec:reductions}
+
+\begin{definition}[Polynomial-time reductions for \complexity{FNP}]
+    Let \(\texttt{HardProblem}\), \(\texttt{NewProblem}\) be search problems in \(complexity{FNP}\).
+    We say that \(\texttt{HardProblem}\) (many-one) reduces to \(\texttt{NewProblem}\) if there exist
+    \(f, g\) in \complexity{FP} such that:
+    \[\texttt{NewProblem}(f(x), y) \implies \texttt{HardProblem}(x, g(y))\]
+
+    For a given input \(x\) of \(\texttt{HardProblem}\), we can run \(\texttt{NewProblem}(f(x))\)
+    to obtain some result \(y\), such that \(g(y)\) is the result of \(\texttt{HardProblem}(x)\).
+\end{definition}
+
 
 \subsection{Fine-grained reductions}\label{subsec:fine-grained-reductions}
 

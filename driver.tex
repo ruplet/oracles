@@ -37,8 +37,7 @@
 ]{biblatex}
 % recommended while using biblatex with babel
 \usepackage{csquotes}
-% make references clickable, hide boxes around links
-\usepackage[hidelinks, pdfpagelabels]{hyperref}
+
 
 % Ensure correct handling and display of accented and non-ASCII characters:
 % - fontenc[T1]: use 8-bit fonts with full Latin alphabet (proper hyphenation, PDF copy/paste)
@@ -53,6 +52,7 @@
 \usepackage{microtype}
 \usepackage{proof}
 \usepackage{enumitem}
+\setlist[enumerate]{label=(\roman*), ref=(\roman*)}
 \usepackage{xspace}
 
 % Package todonotes Warning: The length marginparwidth is less than 2cm and will 
@@ -73,20 +73,43 @@
   prepend={TODO:} % prefix inside note
 }
 
-% theorem-like environments
+\usepackage{amsthm}
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[chapter]
-% \newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
 
 \theoremstyle{definition}
-\newtheorem{example}[theorem]{Example}
-\theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
-\theoremstyle{plain}
-\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{example}[theorem]{Example}
+
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+
+% make references clickable, hide boxes around links
+\usepackage[hidelinks, pdfpagelabels]{hyperref}
+% https://tex.stackexchange.com/a/404990
+% https://mirror.aarnet.edu.au/pub/CTAN/macros/latex/contrib/hyperref/doc/hyperref-doc.html#x1-140004
+% Sectioning names (babel-aware)
+\addto\extrasenglish{%
+  \def\chapterautorefname{Chapter}%
+  \def\sectionautorefname{Section}%
+  \def\subsectionautorefname{Subsection}%
+  \def\subsubsectionautorefname{Subsubsection}%
+}
+
+\providecommand*{\theoremautorefname}{Theorem}
+\providecommand*{\lemmaautorefname}{Lemma}
+\providecommand*{\propositionautorefname}{Proposition}
+\providecommand*{\definitionautorefname}{Definition}
+
+
+% \ref for (i)-(iii)
+% \usepackage[nameinlink]{cleveref}
+% \crefname{enumi}{item}{items}
+% \Crefname{enumi}{Item}{Items}
+
 
 % Workaround for "duplicate destination name{page.i}" on front matter:
 % disable page anchors just for the title pages, then re-enable.
@@ -109,21 +132,7 @@
 
 % \addbibresource{references.bib}
 
-% https://tex.stackexchange.com/a/404990
-% https://mirror.aarnet.edu.au/pub/CTAN/macros/latex/contrib/hyperref/doc/hyperref-doc.html#x1-140004
-\addto\extrasenglish{%
-  \def\chapterautorefname{Chapter}%
-}
-\addto\extrasenglish{%
-  \def\chaptername{Chapter}%
-}
 
-\addto\extrasenglish{%
-  \def\sectionautorefname{Section}%
-}
-\addto\extrasenglish{%
-  \def\sectionname{Section}%
-}
 \usepackage{subcaption}
 \usepackage{listings}
 \lstset{
@@ -163,7 +172,6 @@
 \usepackage{pdflscape}
 
 \usepackage[titletoc]{appendix}
-\usepackage{amsthm}
 
 
 \autor{Paweł Balawender}{429141}
@@ -260,6 +268,7 @@
 %\listoftables
 
 \include{chapters/foundations}
+\include{chapters/descriptive-complexity}
 \include{chapters/reductions}
 \include{chapters/recursion-theory}
 \include{chapters/linear-logic}

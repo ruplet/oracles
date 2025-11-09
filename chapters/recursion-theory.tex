@@ -21,17 +21,17 @@ that later became foundational for ICC\@. An important formal system studied the
 
 \begin{definition}[Primitive recursive functions]
 \label{def:primitive-recursive}
-\(\complexity{PR}\) is the smallest class of functions containing \(\text{(i)}\)--\(\text{(iii)}\) and closed under \(\text{(iv)}\), \(\text{(v)}\).
-\begin{enumerate}[label=(\roman*)]
-\item \textbf{(Constants)} For every \(n\in\mathbb{N}\) and \(k\ge 0\), the \(k\)-ary constant function
+\(\complexity{PR}\) is the smallest class of functions containing~\ref{itm:pra-const}--\ref{itm:pra-proj} and closed under~\ref{itm:pra-comp} and~\ref{itm:pra-rec}.
+\begin{enumerate}[label= (\roman*), ref= (\roman*)]
+\item\label{itm:pra-const}\textbf{(Constants)} For every \(n\in\mathbb{N}\) and \(k\ge 0\), the \(k\)-ary constant function
       \(c_{n}^{(k)}(\vec x)=n\).
-\item \textbf{(Successor)} \(S(x)=x+1\).
-\item \textbf{(Projections)} For \(k\ge 1\) and \(1\le i\le k\),
+\item\label{itm:pra-succ} \textbf{(Successor)} \(S(x)=x+1\).
+\item\label{itm:pra-proj} \textbf{(Projections)} For \(k\ge 1\) and \(1\le i\le k\),
       \(\pi_i^{(k)}(x_1,\dots,x_k)=x_i\).
-\item[(iv)] \textbf{(Composition)} If \(h:\mathbb{N}^m\to\mathbb{N}\) and
+\item\label{itm:pra-comp} \textbf{(Composition)} If \(h:\mathbb{N}^m\to\mathbb{N}\) and
       \(g_1,\dots,g_m:\mathbb{N}^k\to\mathbb{N}\) are in \(\complexity{PR}\), then
       \(f(\vec x)=h\big(g_1(\vec x),\dots,g_m(\vec x)\big)\) is in \(\complexity{PR}\).
-\item[(v)] \textbf{(Primitive recursion)} If \(g:\mathbb{N}^k\to\mathbb{N}\) and
+\item\label{itm:pra-rec} \textbf{(Primitive recursion)} If \(g:\mathbb{N}^k\to\mathbb{N}\) and
       \(h:\mathbb{N}^{k+2}\to\mathbb{N}\) are in \(\complexity{PR}\), then the unique
       \(f:\mathbb{N}^{k+1}\to\mathbb{N}\) is in \(\complexity{PR}\) with:
       \[
