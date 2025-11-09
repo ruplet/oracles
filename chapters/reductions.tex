@@ -42,10 +42,13 @@ We will study these in~\autoref{sec:alternative-ptime}.
 \subsubsection{Alternative characterizations of P}
 \label{sec:alternative-ptime}
 For example, in~\cite{bournez_et_al:LIPIcs.MFCS.2019.23}, FP and FNP are characterized by discrete differential equations.
+Similarly, in~\cite{antonelli2025characterizingsmallcircuitclasses}, various complexity classes from \(\complexity{FAC}^0\) to \(\complexity{FAC}^1\)
+have been characterized by discrete ordinary differential equations.
+
 \begin{definition}[Non-standard circuit view of \complexity{P}]
 One can also view \complexity{P} as a polynomial-time uniform family of Boolean circuits \(\{C_n\}_{n \in \mathbb{N}}\).
 Under this view, a language \(L\) is in \complexity{P} iff there exists such a family with:
-\begin{enumerate}
+\begin{enumerate}[label=(\roman*)]
     \item each \(C_n\) taking \(n\) input bits and producing one output bit;
     \item for all \(x \in L\), \(C_{|x|}(x) = 1\);
     \item for all \(x \notin L\), \(C_{|x|}(x) = 0\).
@@ -66,6 +69,113 @@ of~\cites[Definition~1.13]{10.5555/1540612}[Definition~1.20]{DRAFT10.5555/154061
 
 \section{Functional complexity classes}\label{sec:functional-complexity-classes}
 
+The definition of reductions for search problems is in the style of~\cite{Goebel2011NashComplexity} and~\cite{Goldberg2021SearchTotal}.
+The definition of \(\complexity{FP}\) and \(complexity{FNP}\) is after~\cite[Section 28.10]{Rich2007Automata}.
+
+\subsection{FP}
+
+\begin{definition}[FP]
+A binary relation \(P(x, y)\) is in \(\complexity{FP}\) iff there exists a polynomial-time Turing machine
+that, given an arbitrary input \(x\):
+\begin{enumerate}[label=(\roman*)]
+    \item outputs some \(y\) such that \(P(x, y)\) if any exists;
+    \item signals that no such \(y\) exists otherwise.
+\end{enumerate}
+
+\begin{remark}
+Sometimes \(\complexity{FP}\) is defined to be the class of functions computable by polynomial-time Turing machines.
+This style of definition makes it easier to compare with \(\complexity{FNP}\).
+\end{remark}
+\end{definition}
+
+\subsubsection{\complexity{FP}-completeness}
+\begin{definition}[Polynomial-time reductions for search problems]
+    Let \(\texttt{HardProblem}\), \(\texttt{NewProblem}\) be search problems in \(complexity{FP}\).
+    We say that \(\texttt{HardProblem}\) (many-one) reduces to \(\texttt{NewProblem}\) if there exist
+    polynomial-time computable functions \(f, g\) such that:
+    \[\texttt{NewProblem}(f(x), y) \implies \texttt{HardProblem}(x, g(y))\]
+
+    For a given input \(x\) of \(\texttt{HardProblem}\), we can run \(\texttt{NewProblem}(f(x))\)
+    to obtain some result \(y\), such that \(g(y)\) is the result of \(\texttt{HardProblem}(x)\).
+\end{definition}
+
+\subsubsection{P vs FP}
+These two classes are often identified due to similar properties.
+The notion of completeness for both of them is practically the same despite being differently defined,
+due to the robustness of \(\complexity{FP}\) computations under being repeated for every bit of the output.
+Indeed, even in Stephen Cook's 1982 ACM Turing Award lecture~\cite[Section 6]{10.1145/358141.358144},
+it is not clearly distinguished between
+\(\complexity{P}\)-completeness and \(\complexity{FP}\)-completeness: the 3 proofs cited in this lecture
+as proofs of \(\complexity{FP}\)-completeness of some functions \(f(x)\) only themselves prove the
+\(\complexity{P}\)-completeness of problems of the form ``decide if \(i\)-th bit of the result \(f(x)\) is zero''.
+
+The two classes, however, are not the same.
+In~\cite[Theorem 4.1]{KRENTEL1988490}, it is proved that
+\(\complexity{FP}^{\complexity{SAT}}[\bigO(\log{n})] = \complexity{FP}^{\complexity{SAT}}[n^{\bigO(1)}]\) implies \(\complexity{P}=\complexity{NP}\).
+In turn, as noted in~\cite[discussion after Theorem 8]{doi:10.1142/9789812794499_0029}, the corresponding result for
+\(\complexity{P}^\complexity{NP}\) versus \(\complexity{P}^\complexity{NP}[\log{n}]\) is not known,
+and indeed fails relative to some oracles.
+
+
+\subsection{FNP}
+\begin{definition}[FNP]
+A binary relation \(P(x, y)\) is in \(\complexity{FNP}\) iff there exists a polynomial-time nondeterministic Turing machine
+that, given some \(x\):
+\begin{enumerate}[label=(\roman*)]
+    \item outputs some \(y\) such that \(P(x, y)\) if any exists;
+    \item signals that no such \(y\) exists otherwise.
+\end{enumerate}
+\begin{remark}
+Equivalently~\cite[28.10~and~Theorem~28.9]{Rich2007Automata}, a binary relation \(P(x, y)\) is in \(\complexity{FNP}\) iff there exists a polynomial-time Turing machine
+that, given some pair \((x, y)\), decides whether \(P(x, y)\).
+\end{remark}
+\end{definition}
+
+
+\subsubsection{NP vs FNP: PRIMES and TFNP}\label{subsubsec:tfnp}
+TFNP was introduced in~\cite{MEGIDDO1991317}.
+
+- definition: TFNP is the class of function problems in FNP (defined by a relation R as above) such that R is total
+
+
+- PPP: subclass of TFNP problems that are guaranteed to have a solution because of the Pigeonhole Principle
+- example of a problem in PPP: given a Boolean circuit {0,1}^n -> {0,1}^n, return **either** an input mapped to 0^n, **or**
+  two inputs mapped to the same output
+- the Pigeonhole principle is interesting, because it is usually used only as a pure mathematical result. But it totally makes sense
+  to consider its difficulty as a search problem (given a function from 2n elements to n elements, find collision etc.). Later,
+  while talking about logics corresponding to complexity classes, we will see that if a complexity class is too weak to
+  perform such a search, the corresponding logic cannot prove the theorem of pigeonhole principle. this is very interesting, as it resembles
+  e.g. independence of continuum hypothesis from ZFC, but in a strictly computational setting.
+
+\begin{definition}[\(\texttt{PIGEON}\)]\label{def:pigeon}
+Given a binary string encoding a Boolean circuit \(C:\{0,1\}^n\!\to\!\{0,1\}^n\), return either
+an input \(x\) such that \(C(x) = 0^n\), or two distinct inputs \(x \neq y\) such that \(C(x) = C(y)\).
+\end{definition}
+
+\begin{remark}\label{remark:}
+    This class will be of our interest in~\ref{subsec:vac0-php}, where we will discuss mathematical theories
+    so weak that the pigeonhole principle is not their theorem. The intuition behind it is that
+    the computational content of these theories is not strong enough to perform an exhaustive
+    linear search of the whole domain.
+\end{remark}
+
+
+\subsubsection{NP vs FNP:\@ self-reducibility}
+SAT problem is \emph{self-reducible}, i.e.\ we can solve the problem \(\texttt{FSAT}\) of finding a specific
+satisfying assignment with polynomially many calls to the decision procedure \(\texttt{SAT}\). 
+However, some total search problems such as discussed in~\ref{subsubsec:tfnp} are unlikely to
+be self-reducible. This is discussed in slightly more detail in~\cite[Section 1.1]{10.5555/1104410}.
+
+
+% # About a language for FNP {.allowframebreaks}
+% - NP is characterized by existential second-order logic
+% - what about functional NP?
+% - FSAT (provide a witness for satisfiability) can be PTIME-reduced to SAT:
+% - ,,is phi with x_0=0 satisfiable? if so, x_0=0 ...''
+% - can every NP search problem be reduced to a corresponding NP decision problem?
+% - major open problem. All NP-complete search problems reduce to their decision problems (source: complexity zoo: FNP)
+% - e.g. checking if number is prime is ptime, but factorizing is conjectured to be NP-intermediate [@kabanets]
+
 
 
 \section{Reductions}\label{sec:reductions}
@@ -84,6 +194,27 @@ of~\cites[Definition~1.13]{10.5555/1540612}[Definition~1.20]{DRAFT10.5555/154061
 \begin{itemize}
 \item TODO:\@ Work out the example of a \complexity{DLOGTIME} reduction showing that tree isomorphism for string-represented trees is $\complexityi{NC}{1}$-complete~\cite{694595}.
 \end{itemize}
+
+% \section{Equal classes}
+% # References {.allowframebreaks}
+% 1. REG = dspace(o(log n))
+% https://cs.stackexchange.com/questions/126451/textdspaceo1-textreg-proof/142760#142760
+% https://cs.stackexchange.com/questions/57937/are-all-functions-with-constant-space-complexity-in-reg?noredirect=1&lq=1
+% https://cs.stackexchange.com/questions/126451/textdspaceo1-textreg-proof?noredirect=1&lq=1
+% % AUTHOR = {Shaull (https://cs.stackexchange.com/users/6890/shaull)},
+% @MISC {142760,
+%     TITLE = {$\text{DSPACE}(O(1))=\text{REG}$ Proof?},
+%     author={shaull},
+%     year={2021},
+%     HOWPUBLISHED = {Computer Science Stack Exchange},
+%     NOTE = {URL:https://cs.stackexchange.com/q/142760 (version: 2021-07-28)},
+%     EPRINT = {https://cs.stackexchange.com/q/142760},
+%     URL = {https://cs.stackexchange.com/q/142760}
+% }
+
+
+% 2. FAC0 is enough for reductions:
+% Cook, Nguyen shows that FAC0 is enough for reductions
 
 % We will not realistically capture $\text{TIME}(\bigO(n))$ or anything of this kind,
 % as the field of fine-grained complexity is relatively modern and little or none interesting
