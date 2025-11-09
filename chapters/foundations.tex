@@ -24,20 +24,20 @@ The existing research on finite-state automata has not been directly useful for 
 perhaps because the expressiveness of this model is inherently limited to Boolean-valued functions.
 Finite-state transducers lift this limitation and are therefore of particular interest to us.
 In~\cite{bojańczyk2018polyregularfunctions},
-four characterizations are given for the class of \emph{polyregular} functions --- a class of string-to-string
+four characterizations are given for the class of \emph{polyregular} functions --- a~class of string-to-string
 functions computed by a particular kind of transducer. The definitions described there readily
 constitute the basis of a programming language. Another programming
 language for transducers is studied in~\cite{DBLP:conf/fsmnlp/Schmid05}. A particular
 class of string-to-string functions defined using logic, \emph{MSO transductions},
 is characterized to be precisely the class of functions computable by two-way deterministic finite transducers (2DFT)
 in~\cite{engelfriet1999msodefinablestringtransductions}. All of these results
-are of interest to us and provide basis for new programming languages.
+are of interest to us and provide a basis for new programming languages.
 
 Because transducer classes remain poorly understood, it is usually unclear whether an arbitrary problem 
 belongs to the class recognized by a given flavor of transducer.
 Writing programs in such a programming language would therefore often be equivalent
 to doing new research on transducers, so for now we focus
-on more well-established classes of functions. A good overview of existing research on
+on more well-established classes of functions. A~good overview of existing research on
 transducers can be found in~\cite{muscholl_et_al:LIPIcs.STACS.2019.2}.
 
 \section{Turing machines}
@@ -97,15 +97,14 @@ lower than the popular classes such as \(\complexity{L}\) and \(\complexity{P}\)
 Describing a single circuit is almost trivial: one merely describes the layers gate by gate.
 The real difficulty lies in programming the function \(n \rightarrow C_n\), computing the description
 of the circuit for a given input size \(n\). As we will see in~\ref{sec:uniformity}, the functions in a programming language
-for circuits
-would probably have to generate,
+for circuits would probably have to generate,
 for each input length, the matching circuit family, which amounts to programming in a language that
 already captures some other complexity class such as \(\complexity{L}\) or \(\complexity{P}\).
 For this reason, in this work we don't seek a language particularly for circuits.
 
 \section{Logic programming and descriptive complexity}
-Logic programming offers strong complexity-theoretic connections
-through the field of descriptive complexity which we explore in more detail in~\cite{chap:descriptive-complexity}.
+Logic programming offers strong complexity-theoretic connections,
+primarily through descriptive complexity, which we explore in more detail in~\autoref{chap:descriptive-complexity}.
 
 \section{Typed lambda calculi}
 Lambda calculus underpins functional programming. In this section we focus on typed variants,
@@ -114,11 +113,10 @@ We defer untyped calculi and general recursion to the next section.
 
 Lambda calculus does
 not line up cleanly with traditional Turing machine complexity measures.  For instance,
-for some representation of strings \(\{0, 1\}^\ast\), \cite[Theorem~3.4]{10.5555/788018.788832}~identifies
+for some representation of strings \(\{0, 1\}^\ast\),~\cite[Theorem~3.4]{10.5555/788018.788832} identifies
 the functions \(\{0, 1\}^\ast \rightarrow \{0, 1\}\) definable in simply typed
-lambda calculus (STLC), with regular languages. But with a different encoding of inputs,
-\cite{HILLEBRAND1996117} relates STLC to the whole \(\complexity{ELEMENTARY}\) class. 
-\cite{zakrzewski2007definablefunctionssimplytyped} states that
+lambda calculus (STLC), with regular languages. But with a different encoding of inputs,~\cite{HILLEBRAND1996117} relates STLC to the whole \(\complexity{ELEMENTARY}\) class. 
+Moreover,~\cite{zakrzewski2007definablefunctionssimplytyped} states that
 with a different ``standard'' encoding, STLC instead characterizes extended polynomials, and further shows
 that if we slightly modify the encoding, the class is yet different.
 For more discussion, see also~\cite{27863}.
@@ -128,7 +126,7 @@ Nevertheless, typed lambda calculi have been utilized
 very successfully to syntactically characterize complexity classes.
 Recall that one of the reasons linear logic is studied is the potential
 to reason about resource creation and utilization.
-Concepts from linear logic had been implemented in type theory,
+Concepts from linear logic have been implemented in type theory,
 to transfer the resource interpretation to type systems.
 This will be discussed further in~\autoref{chap:linear-types}.
 
