@@ -1,4 +1,8 @@
 \chapter{Reductions}\label{chap:reductions}
+\todo[inline]{Here we notice that if we want a language for FP, and we have a FP-complete problem, and a language
+for L-reductions (FL), then we have a language for FP!}
+
+
 We introduce the definitions of complexity classes considered in this work.
 
 In~\autoref{sec:decisional-complexity-classes} we introduce standard complexity classes such as 
@@ -18,10 +22,29 @@ of decisional complexity classes are more abundant and by far predate the charac
 functional complexity classes. It is the latter, however, that is viable for our purposes of
 designing a programming language.
 
-\section{Decisional complexity classes for circuits}
-\begin{definition}[\texorpdfstring{\(\complexity{AC}^i\)}{ACi}]\label{def:complexity-aci}
-    \todo[inline]{Define...}
+
+\begin{definition}[Time complexity]\label{def:turing-dtime}
+Let \(T : \mathbb{N} \to \mathbb{N}\) be some function.  A language \(L\) belongs to \(\complexity{DTIME}(T(n))\) iff there exists a deterministic Turing machine that satisfies:
+\begin{enumerate}[label= (\roman*), ref= (\roman*)]
+    \item\label{itm:dtime} for some constant \(c > 0\) and every input \(w \in \{0,1\}^{n}\) it terminates within \(c \cdot T(n)\) steps;
+    \item for every \(w \in L\) the machine outputs \(1\);
+    \item for every \(w \notin L\) the machine outputs \(0\).
+\end{enumerate}
+We will say that a Turing machine belongs to \(\complexity{DTIME}(T(n))\) iff it satisfies~\ref{itm:dtime}.
 \end{definition}
+
+\begin{definition}[Space complexity]\label{def:turing-dspace}
+Let \(T : \mathbb{N} \to \mathbb{N}\) be some function.  A language \(L\) belongs to \(\complexity{DSPACE}(T(n))\) iff there exists a deterministic Turing machine that satisfies:
+\begin{enumerate}[label= (\roman*), ref= (\roman*)]
+    \item\label{itm:dspace} for some constant \(c > 0\) and every input \(w \in \{0,1\}^{n}\) it halts while using at most \(c \cdot T(n)\) work-tape cells;
+    \item for every \(w \in L\) the machine outputs \(1\);
+    \item for every \(w \notin L\) the machine outputs \(0\).
+\end{enumerate}
+We will say that a Turing machine belongs to \(\complexity{DSPACE}(T(n))\) iff it satisfies~\ref{itm:dspace}.
+\end{definition}
+
+
+
 
 
 \section{Decisional complexity classes for Turing machines}\label{sec:decisional-complexity-classes}
@@ -32,6 +55,7 @@ Recall the definitions of complexity classes \(\complexity{DTIME}(T(n))\)~(\auto
 \begin{definition}[\texorpdfstring{\complexity{L}}{L}]\label{def:complexity-l}
     \todo[inline]{Define...}
 \end{definition}
+Overview of problems complete for L:~\cite{COOK1987385}.
 
 % \subsection{\complexity{P}}
 \begin{definition}[\texorpdfstring{\complexity{P}}{P}]\label{def:complexity-p}
@@ -46,6 +70,13 @@ In other words, a language is in \(\complexity{P}\) if and only if it can be dec
     \todo[inline]{Define...}
 \end{definition}
 
+% # Circuit Value Problem
+% - For a given single-tape, polynomial-time Turing machine `M` and input `x`, in [@Kozen2006], there is an explicit construction of a boolean circuit over (0, 1, `and`, `or`, `not`) (with fan-in 2 for `and`, `or` and 1 for `not`), with one output node, such that its value is 1 if and only if machine `M` accepts input `x`. The construction is in LOGSPACE. So CVP is P-complete w.r.t. LOGSPACE-reductions.
+% - This is a good example of a LOGSPACE-reduction, being a good benchmark for the LF programming language and for the circuit description language
+% - The problem is that we can't generate tests for it; we have no database of Turing machines descriptions
+A very good description of a problem complete for P:~\cite{Kozen2006}.
+
+
 % \begin{definition}[Non-standard circuit view of \complexity{P}]
 % One can also view \complexity{P} as a polynomial-time uniform family of Boolean circuits \(\{C_n\}_{n \in \mathbb{N}}\).
 % Under this view, a language \(L\) is in \complexity{P} iff there exists such a family with:
@@ -58,6 +89,13 @@ In other words, a language is in \(\complexity{P}\) if and only if it can be dec
 % \end{definition}
 
 \section{Decisional and functional complexity classes}\label{sec:decisional-and-functional-complexity-classes}
+
+\begin{example}
+    Running time of any Turing machine computing the function \(x \rightarrow 2^x\) for input and output in binary,
+    is exponential. At the same time, given an input \(x, y\), checking if \(y = 2^x\) is easily in polynomial time.
+\end{example}
+A very good discussion of the awkwardness of the definitions is present in~\cite{37813}.
+A more thorough discussion of decision vs search is in~\cite{10.5555/889581}.
 % Most problems that are considered in complexity theory ask, for a given input, whether it satisfies 
 % some property, i.e.\ the return type of the function that solves the problem is a Boolean. Here we list 
 % the definitions of some complexity classes that contain solely such decisional problems. These turn out 
@@ -79,6 +117,9 @@ In other words, a language is in \(\complexity{P}\) if and only if it can be dec
 % \end{enumerate}
 \end{definition}
 
+
+
+
 \begin{definition}[FP]\label{def:fp}
     \todo[inline]{this are P-reductions}
 A binary relation \(P(x, y)\) is in \(\complexity{FP}\) iff there exists a polynomial-time Turing machine
@@ -88,6 +129,19 @@ that, given an arbitrary input \(x\):
     \item signals that no such \(y\) exists otherwise.
 \end{enumerate}
 
+
+
+% Most importantly, FP is a different class - otherwise we can only check if IsZero(Bit_0) etc.
+% Alternative definition of "P on unordered structures" defined in~\autoref{def:inv-P}.
+% - example of a problem in P: Circuit value problem; given a circuit, the inputs and one gate in the circuit, calculate the output of that gate
+% - example of a problem not in P: given two natural numbers in binary, calculate the sum of these numbers
+% - the above problem requires us to output more than one bit. It is not a decision problem - it is a functional problem
+% \section{\complexity{FP}}
+% FP is formally defined as follows:
+% A binary relation P ( x , y ) {\displaystyle P(x,y)} is in FP if and only if there is a deterministic polynomial time algorithm that, given x {\displaystyle x}, either finds some y {\displaystyle y} such that P ( x , y ) {\displaystyle P(x,y)} holds, or signals that no such y {\displaystyle y} exists
+% transducers of polynomial growth are studied in~\cite{10.1145/3531130.3533326}, where also
+% are given pebble, functinal, impearitve and logical models of computation.
+
 \begin{remark}
 Sometimes \(\complexity{FP}\) is defined to be the class of functions computable by polynomial-time Turing machines.
 That style of definition makes it less convenient to compare \(\complexity{FP}\) with \(\complexity{FNP}\).
@@ -95,6 +149,25 @@ That style of definition makes it less convenient to compare \(\complexity{FP}\)
 \end{definition}
 
 \subsection{FNP}
+
+% \section{\complexity{FNP}}
+% Equivalently, Q is FNP if and only
+% if there is a non deterministic polynomial time algorithm that, given an arbitrary input x,
+% can find some y such that (x, y) ∈ Q~\cite{bournez_et_al:LIPIcs.MFCS.2019.23}.
+
+
+% \section{\complexity{FNP}}
+% \begin{itemize}
+% \item TODO: Extract the key points from the discussion at \url{https://cs.stackexchange.com/questions/71617/function-problems-and-fp-subseteq-fnp}.
+% \item TODO: Summarize the insights from \url{https://cstheory.stackexchange.com/questions/37812/what-exactly-are-the-classes-fp-fnp-and-tfnp}.
+% \item TODO: Cross-reference the definitions on \url{https://complexityzoo.net/Complexity_Zoo:F#fp}.
+% \end{itemize}
+
+
+% \section{\complexity{TFNP}}
+% \label{sec:complexity-class-tfnp}
+
+
 \begin{definition}[FNP]\label{def:fnp}
 A binary relation \(P(x, y)\) is in \(\complexity{FNP}\) iff there exists a polynomial-time nondeterministic Turing machine
 that, given some \(x\):
@@ -137,20 +210,12 @@ satisfying assignment with polynomially many calls to the decision procedure \(\
 However, some total search problems such as discussed in~\ref{subsubsec:tfnp} are unlikely to
 be self-reducible. This is discussed in slightly more detail in~\cite[Section 1.1]{10.5555/1104410}.
 
-\subsection{\texorpdfstring{\(\complexity{FAC}^i\)}{FACi}}
-\begin{definition}\label{def:faci}
-    \todo[inline]{Define fac}
-\end{definition}
-
-
-
 \subsection{Bibliographical remark}
 The definition of \(\complexity{P}\) is in the style
 of~\cites[Definition~1.13]{10.5555/1540612}[Definition~1.20]{DRAFT10.5555/1540612}.
 The definition of reductions for search problems is in the style of~\cite{Goebel2011NashComplexity} and~\cite{Goldberg2021SearchTotal}.
 The definition of \(\complexity{FP}\) and \(\complexity{FNP}\) is after~\cite[Section 28.10]{Rich2007Automata}.
 \(\complexity{TFNP}\) was first introduced in~\cite{MEGIDDO1991317}.
-The definitions of decisional circuit classes are from~\cite{10.5555/520668}.
 
 \subsubsection{P vs FP}
 These two classes are often identified due to similar properties.
@@ -169,16 +234,10 @@ In turn, as noted in~\cite[discussion after Theorem 8]{doi:10.1142/9789812794499
 \(\complexity{P}^\complexity{NP}\) versus \(\complexity{P}^\complexity{NP}[\log{n}]\) is not known,
 and indeed fails relative to some oracles.
 
-% # About a language for FNP {.allowframebreaks}
-% - NP is characterized by existential second-order logic
-% - what about functional NP?
-% - FSAT (provide a witness for satisfiability) can be PTIME-reduced to SAT:
-% - ,,is phi with x_0=0 satisfiable? if so, x_0=0 ...''
-% - can every NP search problem be reduced to a corresponding NP decision problem?
-% - major open problem. All NP-complete search problems reduce to their decision problems (source: complexity zoo: FNP)
-% - e.g. checking if number is prime is ptime, but factorizing is conjectured to be NP-intermediate [@kabanets]
 
-
+\subsection{Oracle complexity classes}
+% Historical adnotation: this is whata i wanted from the beginning, oracle-oriented programming
+% there is good evidence it should be possible
 
 \section{Reductions}\label{sec:reductions}
 
@@ -194,41 +253,6 @@ and indeed fails relative to some oracles.
 
 
 \subsection{Fine-grained reductions}\label{subsec:fine-grained-reductions}
-
-\todo[inline]{QL (quasilinear-time functions), NLT (robust complexity class for 
-    \( \complexity{DTIME} (n (\log{n})^{\bigO(1)}) \) 
-    on RAM machines~\cite{10.1007/3-540-51237-3_10})
-}
-
-
-\section{Uniformity}\label{sec:uniformity}
-
-\subsection{\complexity{DLOGTIME}-uniformity}\label{subsec:dlogtime-uniformity}
-\begin{itemize}
-\item TODO:\@ Work out the example of a \complexity{DLOGTIME} reduction showing that tree isomorphism for string-represented trees is $\complexityi{NC}{1}$-complete~\cite{694595}.
-\end{itemize}
-
-% \section{Equal classes}
-% # References {.allowframebreaks}
-% 1. REG = dspace(o(log n))
-% https://cs.stackexchange.com/questions/126451/textdspaceo1-textreg-proof/142760#142760
-% https://cs.stackexchange.com/questions/57937/are-all-functions-with-constant-space-complexity-in-reg?noredirect=1&lq=1
-% https://cs.stackexchange.com/questions/126451/textdspaceo1-textreg-proof?noredirect=1&lq=1
-% % AUTHOR = {Shaull (https://cs.stackexchange.com/users/6890/shaull)},
-% @MISC {142760,
-%     TITLE = {$\text{DSPACE}(O(1))=\text{REG}$ Proof?},
-%     author={shaull},
-%     year={2021},
-%     HOWPUBLISHED = {Computer Science Stack Exchange},
-%     NOTE = {URL:https://cs.stackexchange.com/q/142760 (version: 2021-07-28)},
-%     EPRINT = {https://cs.stackexchange.com/q/142760},
-%     URL = {https://cs.stackexchange.com/q/142760}
-% }
-
-
-% 2. FAC0 is enough for reductions:
-% Cook, Nguyen shows that FAC0 is enough for reductions
-
 % We will not realistically capture $\text{TIME}(\bigO(n))$ or anything of this kind,
 % as the field of fine-grained complexity is relatively modern and little or none interesting
 % characterizations of these classes have been found as of writing this work.
@@ -236,265 +260,27 @@ and indeed fails relative to some oracles.
 % \item TODO: Review Neil D. Jones's ``Constant Time Factors Do Matter'' for its discussion of NLIN-complete problems (\url{https://dl.acm.org/doi/pdf/10.1145/167088.167244}).
 % \item TODO: Summarize the insights from Gurevich and Shelah's ``Nearly Linear Time'' concerning the definition of $\complexity{DTIME}(n)$ and nearly-linear-time-complete problems under QL reductions (\url{https://link.springer.com/content/pdf/10.1007/3-540-51237-3_10.pdf}).
 % \end{itemize}
+\todo[inline]{QL (quasilinear-time functions), NLT (robust complexity class for 
+    \( \complexity{DTIME} (n (\log{n})^{\bigO(1)}) \) 
+    on RAM machines~\cite{10.1007/3-540-51237-3_10})
+}
 
 
-% % TODO: czemu nie moge zrobic po prostu jezyka np. dla problemu P-zupelnego, albo 3SUM-zupelnego,
-% % i do tego jakies proste redukcje, np. L-redukcje? jakie redukcje sa potrzebne dla jakiej klasy?
-% % kiedy wystarczy mi oracle dla problemu decyzyjnego + redukcje?
+\section{Equal classes}
+% L = SL
+
+% classe not equal, but reductions are equal sometimes!
+
+
+we will have stronger, but in arithmetic
+
+
+
 % % - Dla pewnych klas L, FL = L + AC0 redukcje (Cook). Dla innych klas tez?
 % % - mozemy czy nie wielomianowo duzo razy odpalic "czy i-ty bit wyniku to 0? czy 1?" dla grafu funkcji?
 
 
 
-
-% Most importantly, FP is a different class - otherwise we can only check if IsZero(Bit_0) etc.
-% Alternative definition of "P on unordered structures" defined in~\autoref{def:inv-P}.
-
-% \section{\complexity{FP}}
-% FP is formally defined as follows:
-% A binary relation P ( x , y ) {\displaystyle P(x,y)} is in FP if and only if there is a deterministic polynomial time algorithm that, given x {\displaystyle x}, either finds some y {\displaystyle y} such that P ( x , y ) {\displaystyle P(x,y)} holds, or signals that no such y {\displaystyle y} exists
-% transducers of polynomial growth are studied in~\cite{10.1145/3531130.3533326}, where also
-% are given pebble, functinal, impearitve and logical models of computation.
-
-
-% \section{\complexity{FNP}}
-% Equivalently, Q is FNP if and only
-% if there is a non deterministic polynomial time algorithm that, given an arbitrary input x,
-% can find some y such that (x, y) ∈ Q~\cite{bournez_et_al:LIPIcs.MFCS.2019.23}.
-
-
-
-
-% - example of a problem in P: Circuit value problem; given a circuit, the inputs and one gate in the circuit, calculate the output of that gate
-% - example of a problem not in P: given two natural numbers in binary, calculate the sum of these numbers
-% - the above problem requires us to output more than one bit. It is not a decision problem - it is a functional problem
-
-
-
-
-% \subsection{Cicuit complexity classes}
-% The complexity classes in this subsection are \emph{circuit complexity} classes,
-% which means that the computation is done by \emph{boolean circuits}, which we will
-% now introduce. Note that this is a different computational model to Turing machines, finite
-% automata or lambda calculi, and thus comes with its own notion of complexity. The definitions
-% in this subsection are based on~\cite[Definition 5.17]{Immerman1999-IMMDC}.
-
-% \begin{definition}[Boolean circuits]
-% A \emph{boolean circuit} is a finite directed, acyclic graph. The leaf nodes (of indegree zero)
-% represent the input, which here is always a finite binary string. The internal nodes
-% represent logical gates such as AND, OR and NOT gates, in that we say that the value
-% of an internal AND node is 1 if the values of all of its children is 1 etc.
-% For decisional problems we require the circuit to be rooted. A rigorous definition is discussed in~\cite[Definition 2.27]{Immerman1999-IMMDC}.
-% \end{definition}
-
-% \begin{definition}[Words accepted by a circuit]
-% We say that a circuit \emph{accepts} a given binary word iff the value of its root is 1 with values of leaves
-% set according to the input.
-% \end{definition}
-
-% \begin{definition}[Language decided by circuit family]
-% We say that a family $\langle C_n \rangle_{n \in \mathbb{N}}$
-% of boolean circuits decides a language $L$ iff for every $w \in \{0, 1\}^*$, $C_{|w|}$ accepts
-% $w$ iff $w \in L$.
-% \end{definition}
-
-% \begin{definition}[\complexity{NC} circuits (Nick's class)]
-% A boolean circuit is \emph{\complexity{NC}} iff the gates are only binary AND and OR gates.
-% \end{definition}
-
-% \begin{definition}[\complexity{AC} circuits (Alternating circuits)]
-% A boolean circuit is \emph{\complexity{AC}} iff the gates are only unlimited fan-in AND and OR gates.
-% It is a theorem that we can also allow unary NOT gates at leaves only.
-% \end{definition}
-
-% \begin{definition}[\complexity{TC} circuits (Threshold circuits)]
-% A boolean circuit is \emph{\complexity{AC}} iff the gates are only unlimited fan-in Threshold(?) gates.
-% It is a theorem that we can also allow unlimited fan-in AND and OR gates(?).
-% \end{definition}
-
-% \begin{definition}[\complexity{NC[t(n)]_{/poly}}, \complexity{AC[t(n)]_{/poly}}, \complexity{TC[t(n)]_{/poly}}]
-% We define $\complexity{NC[t(n)]_{/poly}}$ to be the class of $\complexity{NC}$ circuits that:
-% \begin{enumerate}
-%    \item have polynomially-many internal nodes w.r.t. $n$, the number of leaves.
-%    \item have depth $\bigO(t(n))$.
-% \end{enumerate}
-% Let $\complexityi{NC_{/poly}}{i} = \complexity{NC[(\log n)^i]_{/poly}}$. We define
-% $\complexity{AC[t(n)]_{/poly}}, \complexity{TC[t(n)]_{/poly}}, \complexityi{AC_{/poly}}{i}, \complexityi{TC_{/poly}}{i}$ analogously.
-
-% In particular, $\complexityi{NC_{/poly}}{0}$, $\complexityi{AC_{/poly}}{0}$, $\complexityi{TC_{/poly}}{0}$ are families of circuits with
-% uniformly constant depth.
-
-% For now we have not talked about how do we generate the consecutive circuits $C_n$.
-% Later in~\autoref{sec:uniformity} we will restrict the family of (some standard) descriptions of the circuits
-% to have to be \emph{computable efficiently} and then we will be able to drop the $_{/poly}$ suffix in our complexity classes.
-% \end{definition}
-
-
-
-% \section{\texorpdfstring{$\complexityi{NC}{i}_{/poly}$}{NC\string^ipoly}}
-
-% \subsection{\complexityi{NC}{0}}
-% For example, each output of an \complexityi{NC}{0} computable function can depend on only finitely many
-% inputs. Thus, \complexityi{NC}{0} can't even compute an AND of all its inputs (in contrast, the unbounded
-% fan-in AND is an \complexityi{AC}{0} function).
-% \paragraph{TODO: Notes on $\complexityi{NC}{0}$.}
-% TODO: Provide an introductory overview of the key references on $\complexityi{NC}{0}$ listed below.
-% \begin{itemize}
-% \item TODO: Summarize the construction of one-way permutations in $\complexityi{NC}{0}$~\cite{10.1016/0020-01908790053-6}.
-% \item TODO: Explain why all sets complete under $\complexityi{AC}{0}$ reductions are already complete under $\complexityi{NC}{0}$ reductions~\cite{10.1145/258533.258671,AGRAWAL1998127}.
-% \item TODO: Describe Immerman's page~81 discussion of addition in $\complexityi{NC}{0}$ and MAJORITY in $\complexityi{NC}{1}$~\cite{Immerman1999-IMMDC}.
-% \item TODO: Detail why addition and subtraction of binary numbers lies in $\complexityi{AC}{0}$~\cite{27676}.
-% \end{itemize}
-
-
-% TODO: Clarify what notion of uniformity should be used for $\complexityi{NC}{0}$, given that \complexity{DLOGTIME} Turing machines can do things that cannot be done by
-% any $\complexityi{NC}{0}$ circuit.
-% \subsection{\complexityi{NC}{1}}
-% \begin{itemize}
-% \item TODO: Present the argument that division is in \complexity{DLOGTIME}-uniform $\complexityi{NC}{1}$~\cite{ITA_2001__35_3_259_0}.
-% \item TODO: use \complexity{DLOGTIME} reductions for $\complexityi{NC}{1}$.
-% \item TODO: Clarify how $U_{E^*}$ reductions relate to $\complexityi{NC}{1}$ and why $U_{E^*}$-uniform $\complexityi{NC}{1}$ equals \complexity{ALOGTIME}~\cite{RUZZO1981365}.
-% \end{itemize}
-% TODO: Confirm that this class is contained in $\complexityi{AC}{i}$.
-
-
-% \section{\texorpdfstring{$\complexityi{AC}{i}$}{AC\string^i}}
-
-% $\complexityi{AC}{i}$ is the class of languages accepted by uniform circuit
-% families of polynomial size and depth $\bigO(\log^i n)$, consisting of unbounded fan-in
-% AND, and OR gates, along with NOT gates.
-
-% Given $x, y, z$: binary representations of natural numbers,
-% it is decidable in uniform \complexityi{AC}{0} if $x + y = z$, but it is not decidable 
-% in \complexityi{AC}{0} if $x * y = z$.
-
-% \subsection{\complexityi{AC}{0}}
-% \begin{itemize}
-% \item TODO: Summarize why addition is in $\complexityi{AC}{0}$~\cite{BussLectureNotes}.
-% \item TODO: Explain the equivalence $\text{FO}[+, *] = \complexity{DLOGTIME}$-uniform $\complexityi{AC}{0}$ (see \url{https://complexityzoo.net/Complexity_Zoo:A#ac0}).
-% \item TODO: Discuss the characterization of \complexity{DLOGTIME}-uniform $\complexityi{AC}{0}$ presented in~\cite{hella2023regularrepresentationsuniformtc0}.
-% \item TODO: Review the definitions of $\complexityi{AC}{0}$, $\complexityi{TC}{0}$, FATC0, and FTC0 provided in~\cite{612309}.
-% \end{itemize}
-% TODO: Document the notions of uniformity of $\complexityi{AC}{0}$ outlined below.
-% \begin{enumerate}
-% \item TODO: $U_{E^*}$-uniformity.
-% \item TODO: uniform iff direct/extended connection language decidable by FO 
-% \item TODO: uniform iff decidable by \complexity{DLOGTIME} random-access tm (checking whether the $i$th bit of the representation of the $n$th circuit is $b$).
-% \end{enumerate}
-
-
-
-% \section{\texorpdfstring{$\complexityi{AC}{i[m]}$}{AC\string^i[m]}}
-% $\complexityi{AC}{i[m]}$ is defined as $\complexityi{AC}{i}$, but in addition unbounded fan-in $\text{MOD}_m$ gates
-% are allowed, which output 1 iff the number of input wires carrying a value of 1 is a
-% multiple of $m$.
-
-% \section{\texorpdfstring{$\complexityi{ACC}{i}$}{\complexity{ACC}\string^i}}
-% $\complexityi{ACC}{i} = \bigcup_m \complexityi{AC}{i[m]}$. $\complexityi{ACC}{0}$ is contained in $\complexityi{TC}{0}$.
-
-% \section{\texorpdfstring{$\complexityi{TC}{i}$}{TC\string^i}}
-% $\complexityi{TC}{i}$ is the class of languages accepted by uniform circuit families 
-% of polynomial size and depth $\bigO(\log^i n)$, consisting of unbounded fan-in MAJORITY
-% gates, along with NOT gates.
-
-% TODO: Check whether $\complexityi{TC}{i}$ is contained in $\complexityi{NC}{i + 1}$.
-% \subsection{\complexityi{TC}{0}}
-% \begin{itemize}
-% \item TODO: Confirm that multiplication is in $\complexityi{TC}{0}$~\cite{BussLectureNotes}, and locate the supporting details in~\cite{doi:10.1137/0213028}.
-% \end{itemize}
-
-
-
-% \section{Functional complexity classes}
-% \label{sec:functional-complexity-classes}
-% When we hear a sentence like ``prime factorization is in \complexity{NP}'', it usually
-% means that the \emph{decisional} version of this problem is decidable in \complexity{NP}.
-
-% But we actually usually want to reason about complexity of \emph{functions},
-% and it appears to not be equivalent. E.g. \ the graph of exponential function is 
-% decidable in polytime, but calculating exponential function is not.
-
-% There is surprisingly little literature on functional complexity classes.
-% An interesting case is \complexity{TFNP}, studied later in~\autoref{sec:complexity-class-tfnp}.
-% Another interesting case are \emph{transductors}.
-
-% \section{Uniformity}
-% TODO: Clarify how \complexity{DLOGTIME}-uniformity, first-order reductions, logspace-uniformity, and $U_{E^*}$ relate, including the role of direct and extended connection languages.
-% TODO: Provide a citation supporting that the choice among these uniformity notions does not affect the arguments below.
-% When we do not say ``poly'', it means the class is uniform. Otherwise: Immerman showed that the class FO is the same as a uniform version
-% of $\complexityi{AC}{0}$. Originally $\complexityi{AC}{0}$ was defined in its nonuniform version, which
-% we shall refer to as $\complexityi{AC}{0}/\text{poly}$. A language in $\complexityi{AC}{0}/\text{poly}$ is specified by
-% a polynomial size bounded depth family $\langle C_n \rangle$ of Boolean circuits, where
-% each circuit $C_n$ has $n$ input bits, and is allowed to have $\neg$-gates, as well as
-% unbounded fan-in $\land$-gates and $\lor$-gates. In the uniform version, the circuit
-% $C_n$ must be specified in a uniform way; for example one could require that
-% $\langle C_n \rangle$ is in FO\@. See also Appendix~A.5.
-
-% We say that a family of circuits in $\complexityi{AC}{0}$ is uniform if the function $n \rightarrow C_n$ is
-% \emph{simple to compute}; there is a variety of notions of uniformity of $\complexityi{AC}{0}$ circuits.
-% TODO: Explore these notions in Chapter~\autoref{chap:reductions}. For the sake of this section we can assume
-% that by $\complexityi{AC}{0}$ we denote the class of circuit families $C_n$, for which there is a 
-% \complexity{LOGSPACE} Turing machine $M$ which on input $0^n$ outputs a \emph{standard representation}
-
-
-
-
-% \section{\complexity{NP}}
-% TODO: Clarify that the reductions used here are precisely the class \complexity{FL} of logspace reductions.
-
-% \section{\complexity{FNP}}
-% \begin{itemize}
-% \item TODO: Extract the key points from the discussion at \url{https://cs.stackexchange.com/questions/71617/function-problems-and-fp-subseteq-fnp}.
-% \item TODO: Summarize the insights from \url{https://cstheory.stackexchange.com/questions/37812/what-exactly-are-the-classes-fp-fnp-and-tfnp}.
-% \item TODO: Cross-reference the definitions on \url{https://complexityzoo.net/Complexity_Zoo:F#fp}.
-% \end{itemize}
-
-
-% \section{\complexity{TFNP}}
-% \label{sec:complexity-class-tfnp}
-
-% \section{\texorpdfstring{$\complexityi{AC}{0}$-reduction}{AC\string^0-reduction}}
-% \label{sec:ac0red}
-% Definition IX.1.1 CN10. We say that a string function F
-% (resp. \  a number function f) is $\complexityi{AC}{0}$-reducible to $L$ if there is a sequence
-% of string functions $F_1, \dots, F_n (n \geqslant 0)$ such that
-% $F_i$ is $\Sigma^B_0$-definable from $L \cup \{F_1, \dots , F_{i-1}\}$, for $i = 1, \dots, n$
-% and F (resp. \ f) is $\Sigma^B_0$-definable from $L \cup \{F_1, \dots , F_{i-1}\}$. A relation R is
-% $\complexityi{AC}{0}$-reducible to $L$ if there is a sequence $F_1, \dots, F_n$ as above, and R is
-% represented by a $\Sigma^B_0(L \cup \{F_1, \dots, F_n\})$ formula.
-
-% In Chapter~2 of~\cite{edbd4873718c414f90d22dadf0dba2b1} there is an extensive discussion about
-% the different subtleties of defining $\complexityi{AC}{0}$ functions and numerous different characterizations
-% of Dlogtime-uniform $\complexityi{AC}{0}$-computable functions.
-
-% first-order/$\complexityi{AC}{0}$ are used for P-completeness.
-
-
-% \section{\texorpdfstring{$\complexityi{NC}{0}$}{NC\string^0}} reductions
-% In~\cite{edbd4873718c414f90d22dadf0dba2b1}, it is shown that, surprisingly, all known \complexity{NP}-complete problems
-% are complete under $\complexityi{NC}{0/poly}$ reductions already. Another candidate for a problem that is \complexity{NP}-complete
-% under poly-time reductions but not under logspace reductions is discussed in~\cite{18631}.
-
-
-% \section{First-order reduction}
-% TODO: Provide the definition of first-order reductions (see Chapter~12.3 of \url{https://link.springer.com/book/10.1007/3-540-28788-4}).
-
-% \section{FO}
-% \begin{itemize}
-% \item TODO: Document why $\text{FO}[+, *] = \text{FO}[\mathrm{BIT}]$.
-% \item TODO: Examine the status of the Crane Beach Conjecture asserting $\text{FO}[<, *] = \text{FO}[\mathrm{BIT}]$.
-% \item TODO: Explain why $\text{FO}[+]$ is less expressive than $\text{FO}[<, *] = \text{FO}[<, /] = \text{FO}[<, \mathrm{COPRIME}]$~\cite{10.1002/malq.200310041}.
-% \item TODO: Review the definition of FO-queries (Definition~1.26 in~\cite{Immerman1999-IMMDC}).
-% \end{itemize}
-% TODO: Describe FO-uniformity via first-order queries $I : \mathrm{STRUC}[ts] \rightarrow \mathrm{STRUC}[tc]$ with $I(0^n) = C_n$ (Definition~5.16 in~\cite{Immerman1999-IMMDC}).
-% TODO: Restate that FO-reductions are defined as first-order queries (Definition~1.26 in~\cite{Immerman1999-IMMDC}).
-% TODO: Include the definition explaining how to represent a circuit.
-
-% \section{First-order projection}
-% TODO: Note that first-order projections (FOPs) are also named in~\cite{Immerman1999-IMMDC}.
-% TODO: Provide Definition~11.7 describing first-order projections.
-% \section{Quantifier-free fo-projections}
-% TODO: Summarize quantifier-free FO-projections (QFPs).
 
 % \section{\complexity{LOGSPACE} reduction}
 % \begin{itemize}
@@ -513,9 +299,6 @@ and indeed fails relative to some oracles.
 % TODO: This means $\complexityi{AC}{0}$ reductions coincide with the class of $\complexityi{FAC}{0}$ functions.
 
 
-% \subsection{Functional complexity classes and completeness}
-% TODO: Determine whether showing $\complexity{L}$-completeness suffices for $\complexity{FL}$-completeness, using the identity $\complexity{FL} = \complexityi{L}{*} = \complexity{L} + \complexityi{NC}{1}$ reductions~\cite[Proposition~4.1]{COOK19852}.
-
 % \section{Which class we will focus on?}
 % \label{sec:classes-of-interest}
 % For chapters about ICC we will focus on \complexity{L} and \complexity{P}, as these are the most abundant reductions,
@@ -524,7 +307,9 @@ and indeed fails relative to some oracles.
 % about characterization of $\complexityi{AC}{0}$-reductions.
 
 
-% \subsection{Semantic and syntactic complexity classes}
+\subsection{Semantic and syntactic complexity classes}
+in~\cite{DBLP:conf/innovations/GoldbergP18}, the authors define a new complexity class \(\complexity{PTFNP \subseteq \complexity{TFNP}}\), for which
+they prove the existence of a complete problem, and call this class ``syntactic''.
 % TODO: Investigate which classes can realistically be characterized, likely excluding \complexity{BPP} and permutation-invariant \complexity{PTIME} (see \url{https://mathoverflow.net/questions/35236/is-there-a-syntactic-characterization-for-bpp-bqp-or-qma}).
 % \begin{itemize}
 

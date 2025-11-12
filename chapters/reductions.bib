@@ -1,14 +1,3 @@
-@book{10.5555/520668,
-author = {Vollmer, Heribert},
-title = {Introduction to Circuit Complexity: A Uniform Approach},
-year = {1999},
-isbn = {3540643109},
-publisher = {Springer-Verlag},
-address = {Berlin, Heidelberg},
-abstract = {From the Publisher:This advanced handbook presents a broad and up-to-date view of the computational complexity theory of Boolean circuits. It combines the algorithmic and the automata-theoretic approaches, and includes an extensive discussion of the literature to facilitate future research.}
-}
-
-
 @article{edbd4873718c414f90d22dadf0dba2b1,
 title = "Reductions in Circuit Complexity: An Isomorphism Theorem and a Gap Theorem",
 abstract = "We show that all sets that are complete for NP under nonuniform AC0 reductions are isomorphic under nonuniform AC0-computable isomorphisms. Furthermore, these sets remain NP-complete even under nonuniform NC0 reductions. More generally, we show two theorems that hold for any complexity class script C sign closed under (uniform) NC1-computable many-one reductions. Gap: The sets that are complete for script C sign under AC0 and NC0 reducibility coincide. Isomorphism: The sets complete for script C sign under AC0 reductions are all isomorphic under isomorphisms computable and invertible by AC0 circuits of depth three. Our Gap Theorem does not hold for strongly uniform reductions; we show that there are Dlogtime-uniform AC0-complete sets for NC1 that are not Dlogtime-uniform NC0-complete.",
@@ -199,23 +188,6 @@ doi = {https://doi.org/10.1016/0022-0000(81)90038-6},
 url = {https://www.sciencedirect.com/science/article/pii/0022000081900386},
 author = {Walter L. Ruzzo},
 abstract = {We argue that uniform circuit complexity introduced by Borodin is a reasonable model of parallel complexity. Three main results are presented. First, we show that alternating Turing machines are also a surprisingly good model of parallel complexity, by showing that simultaneous size/depth of uniform circuits is the same as space/time of alternating Turing machines, with depth and time within a constant factor and likewise log(size) and space. Second, we apply this to characterize NC, the class of polynomial size and polynomial-in-log depth circuits, in terms of tree-size bounded alternating TMs and other models. In particular, this enables us to show that context-free language recognition is in NC. Third, we investigate various definitions of uniform circuit complexity, showing that it is fairly insensitive to the choice of definition.}
-}
-
-
-@article{COOK19852,
-title = {A taxonomy of problems with fast parallel algorithms},
-journal = {Information and Control},
-volume = {64},
-number = {1},
-pages = {2-22},
-year = {1985},
-note = {International Conference on Foundations of Computation Theory},
-issn = {0019-9958},
-doi = {https://doi.org/10.1016/S0019-9958(85)80041-3},
-url = {https://www.sciencedirect.com/science/article/pii/S0019995885800413},
-eprint = {https://web.archive.org/web/20190320200248/https://core.ac.uk/download/pdf/81978561.pdf},
-author = {Stephen A. Cook},
-abstract = {The class NC consists of problems solvable very fast (in time polynomial in log n) in parallel with a feasible (polynomial) number of processors. Many natural problems in NC are known; in this paper an attempt is made to identify important subclasses of NC and give interesting examples in each subclass. The notion of NC1-reducibility is introduced and used throughout (problem R is NC1-reducible to problem S if R can be solved with uniform log-depth circuits using oracles for S). Problems complete with respect to this reducibility are given for many of the subclasses of NC. A general technique, the “parallel greedy algorithm,” is identified and used to show that finding a minimum spanning forest of a graph is reducible to the graph accessibility problem and hence is in NC2 (solvable by uniform Boolean circuits of depth O(log2 n) and polynomial size). The class LOGCFL is given a new characterization in terms of circuit families. The class DET of problems reducible to integer determinants is defined and many examples given. A new problem complete for deterministic polynomial time is given, namely, finding the lexicographically first maximal clique in a graph. This paper is a revised version of S. A. Cook, (1983, in “Proceedings 1983 Intl. Found. Comut. Sci. Conf.,” Lecture Notes in Computer Science Vol. 158, pp. 78–93, Springer-Verlag, Berlin/New York).}
 }
 
 @article{10.1007/BF00289513,
@@ -436,4 +408,95 @@ address = {CAN},
 abstract = {For every binary predicate  R , there is a  search problem Q R  for finding, given x , any  y  such that  R (  x ,  y ) holds.  Q R  is said to be  total  if every instance x  has a solution  y , that is, (\'{y}  x )(\'{y}  y )  R (  x ,  y ) holds. Total search problems are commonplace in computer science, and studying their complexity is therefore an important endeavour. In this dissertation, we present links between the complexity of solving  Q R  and the difficulty of proving the totality of  Q R  in the three logical formalisms: propositional calculus, quantified propositional calculus (QPC), and theories of bounded arithmetic. These links allow logical approaches to the complexity of search problems. We show several links between the complexity of a type-2 total search problem  Q R , where  R  is represented by a first-order existential sentence \'{y}, and the lengths of proofs of the propositional translations of \'{y} in bounded-depth Frege systems and the Nullstellensatz proof system. In particular, we prove the first direct links between reducibilities among type-2 search problems and lengths of propositional proofs. Based on this and the results on propositional proof complexity, we obtain a number of relative separations among the so-called NP-search classes such as Polynomial Local Search (PLS). Some of the relative separations we obtain are new. Let  H  be a QPC proof system and  j  \'{y} 1. We define the S q  j  -witnessing problem for  H  to be: given an  H -proof of a prenex S q  j  -formula  A , and a truth assignment to the free variables of  A , find a witness for the outermost existential quantifiers of  A . These witnessing problems provide a tangible link between the proof lengths in QPC and the complexity of search problems, and we consider them for various parameters. We also introduce and study the new QPC proof systems G *  0  and  G 0, and prove that the S q  1  -witnessing problem for each is complete for  NC  1 -search problems. Our proof involves proving the  TC  0 -versions of Gentzen's midsequent theorem and Herbrand's theorem. We introduce a second-order theory  VNC  1 of bounded arithmetic, and show that the S B  1  -definable functions of  VNC  1 are precisely the  NC  1 -functions. We describe simple translations of every  VNC  1 -proof into a family of polynomial-size G *  0  -proofs. From this and similar translation theorems for other bounded arithmetic theories, we obtain the hardness of the S q  j  -witnessing problem for  H  for various  H  and  j  \'{y} 1.},
 note = {AAINR02726},
 url = {https://eccc.weizmann.ac.il/resources/pdf/morioka.pdf}
+}
+
+
+
+
+@inproceedings{DBLP:conf/innovations/GoldbergP18,
+  author       = {Paul W. Goldberg and
+                  Christos H. Papadimitriou},
+  editor       = {Anna R. Karlin},
+  title        = {Towards a Unified Complexity Theory of Total Functions},
+  booktitle    = {9th Innovations in Theoretical Computer Science Conference, {ITCS}
+                  2018, January 11-14, 2018, Cambridge, MA, {USA}},
+  series       = {LIPIcs},
+  volume       = {94},
+  pages        = {37:1--37:20},
+  publisher    = {Schloss Dagstuhl - Leibniz-Zentrum f{\"{u}}r Informatik},
+  year         = {2018},
+  url          = {https://doi.org/10.4230/LIPIcs.ITCS.2018.37},
+  doi          = {10.4230/LIPICS.ITCS.2018.37},
+  timestamp    = {Tue, 07 May 2024 20:00:54 +0200},
+  biburl       = {https://dblp.org/rec/conf/innovations/GoldbergP18.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+
+@MISC {37813,
+    TITLE = {What exactly are the classes FP, FNP and TFNP?},
+    AUTHOR = {Joshua Grochow (https://cstheory.stackexchange.com/users/129/joshua-grochow)},
+    HOWPUBLISHED = {Theoretical Computer Science Stack Exchange},
+    NOTE = {URL:https://cstheory.stackexchange.com/q/37813 (version: 2017-03-21)},
+    EPRINT = {https://cstheory.stackexchange.com/q/37813},
+    URL = {https://cstheory.stackexchange.com/q/37813}
+}
+
+@techreport{10.5555/889581,
+author = {Bellare, M. and Goldwasser, S.},
+title = {THE COMPLEXITY OF DECISION VERSUS SEARCH},
+year = {1991},
+publisher = {Massachusetts Institute of Technology},
+address = {USA},
+abstract = {A basic question about NP is whether or not search (the problem of finding a witness) reduces in polynomial time to decision (the problem of deciding whether there exists a witness). The fact that search does reduce to decision for SAT and other NP-complete problems (self-reducibility) is among the most well known facts in the theory of computation. But the general question of whether search reduces to decision for every language in NP remains open. We indicate that the answer is negative: under a natural complexity assumption (that deterministic and non-deterministic double exponential time are unequal) we construct a language in NP for which search does not reduce to decision. These ideas extend in a natural way to interactive proofs and program checking to yield negative results about the power of the prover and the complexity of checkers. We present languages in IP for which it is harder for the prover to prove membership to a verifier than it is to decide this membership. Similarly we present languages where checking is harder than computing membership. These results are also under assumptions about double-exponential time separations. Our arguments are simple and direct. We bypass Yao''s notion of coherence which was used to establish previous negative results in program checking, establishing stronger results by different techniques. By demonstrating-under the same assumptions-the existence of a language which is coherent but not checkable we indicate that coherence may not be the right approach to negative results in this area. The connections we establish with double-exponential time classes provide an interesting example of how complexity "high up" can shed light on properties of basic classes like NP and IP.}
+}
+
+
+% removed. add at after uncommenting
+% MISC {142760,
+%    TITLE = {$\text{DSPACE}(O(1))=\text{REG}$ Proof?},
+%    author={shaull},
+%    year={2021},
+%    HOWPUBLISHED = {Computer Science Stack Exchange},
+%    NOTE = {URL:https://cs.stackexchange.com/q/142760 (version: 2021-07-28)},
+%    EPRINT = {https://cs.stackexchange.com/q/142760},
+%    URL = {https://cs.stackexchange.com/q/142760}
+% }
+
+
+@article{COOK1987385,
+title = {Problems complete for deterministic logarithmic space},
+journal = {Journal of Algorithms},
+volume = {8},
+number = {3},
+pages = {385-394},
+year = {1987},
+issn = {0196-6774},
+doi = {https://doi.org/10.1016/0196-6774(87)90018-6},
+url = {https://www.sciencedirect.com/science/article/pii/0196677487900186},
+eprint = {https://web.archive.org/web/20161213142928/https://www.cs.utoronto.ca/~sacook/homepage/cook_mckenzie.pdf},
+author = {Stephen A Cook and Pierre McKenzie},
+abstract = {We exhibit several problems complete for deterministic logarithmic space under NC1 (i.e., log depth) reducibility. The list includes breadth-first search and depth-first search of an undirected tree, connectivity of undirected graphs known to be made up of one or more disjoint cycles, undirected graph acyclicity, and several problems related to representing and to operating with permutations of a finite set.}
+}
+
+@Inbook{Kozen2006,
+author="Kozen, Dexter C.",
+title="The Circuit Value Problem",
+bookTitle="Theory of Computation",
+year="2006",
+publisher="Springer London",
+address="London",
+pages="30--34",
+isbn="978-1-84628-477-9",
+doi="10.1007/1-84628-477-5_6",
+url="https://doi.org/10.1007/1-84628-477-5_6"
+}
+
+@misc{faria2023casestudiesdevelopmentverified,
+      title={Case studies of development of verified programs with Dafny for accessibility assessment}, 
+      author={João Pascoal Faria and Rui Abreu},
+      year={2023},
+      eprint={2301.03224},
+      archivePrefix={arXiv},
+      primaryClass={cs.SE},
+      url={https://arxiv.org/abs/2301.03224}, 
 }

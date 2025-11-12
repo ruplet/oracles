@@ -1,0 +1,184 @@
+@article{KUDLEK1996241,
+title = {Small deterministic Turing machines},
+journal = {Theoretical Computer Science},
+volume = {168},
+number = {2},
+pages = {241-255},
+year = {1996},
+issn = {0304-3975},
+doi = {https://doi.org/10.1016/S0304-3975(96)00078-3},
+url = {https://www.sciencedirect.com/science/article/pii/S0304397596000783},
+author = {Manfred Kudlek}
+}
+
+@article{ROGOZHIN1996215,
+title = {Small universal Turing machines},
+journal = {Theoretical Computer Science},
+volume = {168},
+number = {2},
+pages = {215-240},
+year = {1996},
+issn = {0304-3975},
+doi = {https://doi.org/10.1016/S0304-3975(96)00077-1},
+url = {https://www.sciencedirect.com/science/article/pii/S0304397596000771},
+author = {Yurii Rogozhin},
+abstract = {Let UTM(m, n) be the class of universal Turing machine with m states and n symbols. Universal Turing machines are proved to exist in the following classes: UTM(24,2), UTM(10,3), UTM(7,4), UTM(5,5), UTM(4,6), UTM(3,10) and UTM(2,18).}
+}
+
+@inproceedings{10.1145/3372885.3373816,
+author = {Forster, Yannick and Kunze, Fabian and Wuttke, Maximilian},
+title = {Verified programming of Turing machines in Coq},
+year = {2020},
+isbn = {9781450370974},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3372885.3373816},
+doi = {10.1145/3372885.3373816},
+abstract = {We present a framework for the verified programming of multi-tape Turing machines in Coq. Improving on prior work by Asperti and Ricciotti in Matita, we implement multiple layers of abstraction. The highest layer allows a user to implement nontrivial algorithms as Turing machines and verify their correctness, as well as time and space complexity compositionally. The user can do so without ever mentioning states, symbols on tapes or transition functions: They write programs in an imperative language with registers containing values of encodable data types, and our framework constructs corresponding Turing machines.  As case studies, we verify a translation from multi-tape to single-tape machines as well as a universal Turing machine, both with polynomial time overhead and constant factor space overhead.},
+booktitle = {Proceedings of the 9th ACM SIGPLAN International Conference on Certified Programs and Proofs},
+pages = {114–128},
+numpages = {15},
+keywords = {Coq, Turing machines, universal machine, verification},
+location = {New Orleans, LA, USA},
+series = {CPP 2020}
+}
+
+@InProceedings{10.1007/978-3-642-32621-9_1,
+author="Asperti, Andrea
+and Ricciotti, Wilmer",
+editor="Ong, Luke
+and de Queiroz, Ruy",
+title="Formalizing Turing Machines",
+booktitle="Logic, Language, Information and Computation",
+year="2012",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="1--25",
+abstract="We discuss the formalization, in the Matita Theorem Prover, of a few, basic results on Turing Machines, up to the existence of a (certified) Universal Machine. The work is meant to be a preliminary step towards the creation of a formal repository in Complexity Theory, and is a small piece in our Reverse Complexity program, aiming to a comfortable, machine independent axiomatization of the field.",
+isbn="978-3-642-32621-9"
+}
+
+@InProceedings{10.1007/978-3-642-22863-6_11,
+author="Heraud, Sylvain
+and Nowak, David",
+editor="van Eekelen, Marko
+and Geuvers, Herman
+and Schmaltz, Julien
+and Wiedijk, Freek",
+title="A Formalization of Polytime Functions",
+booktitle="Interactive Theorem Proving",
+year="2011",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="119--134",
+abstract="We present a deep embedding of Bellantoni and Cook's syntactic characterization of polytime functions. We prove formally that it is correct and complete with respect to the original characterization by Cobham that required a bound to be proved manually. Compared to the paper proof by Bellantoni and Cook, we have been careful in making our proof fully contructive so that we obtain more precise bounding polynomials and more efficient translations between the two characterizations. Another difference is that we consider functions on bitstrings instead of functions on positive integers. This latter change is motivated by the application of our formalization in the context of formal security proofs in cryptography. Based on our core formalization, we have started developing a library of polytime functions that can be reused to build more complex ones.",
+isbn="978-3-642-22863-6"
+}
+
+@inproceedings{cakeml-POPL14,
+  author = {Ramana Kumar and
+            Magnus O. Myreen and
+            Michael Norrish and
+            Scott Owens},
+  title = {{CakeML}: A Verified Implementation of {ML}},
+  month = jan,
+  year = 2014,
+  pages = {179--191},
+  publisher = {ACM Press},
+  url = {https://cakeml.org/popl14.pdf},
+  booktitle = {Principles of Programming Languages ({POPL})},
+  doi = {10.1145/2535838.2535841}
+}
+
+@article{10.1145/3747509,
+author = {Seassau, Remy and Yoon, Irene and Madiot, Jean-Marie and Pottier, Fran\c{c}ois},
+title = {Formal Semantics and Program Logics for a Fragment of OCaml},
+year = {2025},
+issue_date = {August 2025},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {9},
+number = {ICFP},
+url = {https://doi.org/10.1145/3747509},
+doi = {10.1145/3747509},
+abstract = {This paper makes a first step towards a formal definition of OCaml and a foundational program verification environment for OCaml. We present a formal definition of OLang, a nontrivial sequential fragment of OCaml, which includes first-class functions, ordinary and extensible algebraic data types, pattern matching, references, exceptions, and effect handlers. We define the dynamic semantics of OLang as a monadic interpreter. This interpreter runs atop a custom monad where computations are internally represented as trees of operations and equipped with a small-step semantics. We define two program logics for OLang. A stateless Hoare Logic allows reasoning about so-called "pure" programs; an Iris-based Separation Logic allows reasoning about arbitrary programs. We present the construction of the two logics as well as some examples of their use.},
+journal = {Proc. ACM Program. Lang.},
+month = aug,
+articleno = {240},
+numpages = {32},
+keywords = {monadic interpreters, operational semantics, separation logic}
+}
+
+@article{Leroy-backend,
+  author = {Xavier Leroy},
+  title = {A formally verified compiler back-end},
+  journal = {Journal of Automated Reasoning},
+  volume = 43,
+  number = 4,
+  pages = {363--446},
+  year = 2009,
+  url = {http://xavierleroy.org/publi/compcert-backend.pdf},
+  urlpublisher = {http://dx.doi.org/10.1007/s10817-009-9155-4},
+  hal = {http://hal.inria.fr/inria-00360768/},
+  pubkind = {journal-int-mono}
+}
+
+@inproceedings{10.5555/1939141.1939161,
+author = {Leino, K. Rustan M.},
+title = {Dafny: an automatic program verifier for functional correctness},
+year = {2010},
+isbn = {3642175104},
+publisher = {Springer-Verlag},
+address = {Berlin, Heidelberg},
+abstract = {Traditionally, the full verification of a program's functional correctness has been obtained with pen and paper or with interactive proof assistants, whereas only reduced verification tasks, such as extended static checking, have enjoyed the automation offered by satisfiability-modulo-theories (SMT) solvers. More recently, powerful SMT solvers and well-designed program verifiers are starting to break that tradition, thus reducing the effort involved in doing full verification.This paper gives a tour of the language and verifier Dafny, which has been used to verify the functional correctness of a number of challenging pointer-based programs. The paper describes the features incorporated in Dafny, illustrating their use by small examples and giving a taste of how they are coded for an SMT solver. As a larger case study, the paper shows the full functional specification of the Schorr-Waite algorithm in Dafny.},
+booktitle = {Proceedings of the 16th International Conference on Logic for Programming, Artificial Intelligence, and Reasoning},
+pages = {348–370},
+numpages = {23},
+location = {Dakar, Senegal},
+series = {LPAR'10}
+}
+
+@inproceedings{boogie11why3,
+  topics = {team},
+  hal = {http://hal.inria.fr/hal-00790310},
+  author = {Fran\c{c}ois Bobot and Jean-Christophe Filli\^atre and
+Claude March\'e and Andrei Paskevich},
+  title = {Why3: Shepherd Your Herd of Provers},
+  booktitle = {Boogie 2011: First International Workshop on Intermediate Verification Languages},
+  year = 2011,
+  address = {Wroc\l{}aw, Poland},
+  month = {8},
+  pages = {53--64},
+  x-international-audience = {yes},
+  x-proceedings = {yes},
+  x-cle-support = {BOOGIE},
+  x-type = {actes_aux},
+  x-support = {article},
+  x-equipes = {demons PROVAL},
+  keywords = {Why3},
+  abstract = {Why3 is the next generation of the
+  Why software verification platform.
+  Why3 clearly separates the purely logical
+  specification part from generation of verification conditions for programs.
+  This article focuses on the former part.
+  Why3 comes with a new enhanced language of
+  logical specification. It features a rich library of
+  proof task transformations that can be chained to produce a suitable
+  input for a large set of theorem provers, including SMT solvers,
+  TPTP provers, as well as interactive proof assistants.}
+}
+
+@article{CIAFFAGLIONE201631,
+title = {Towards Turing computability via coinduction},
+journal = {Science of Computer Programming},
+volume = {126},
+pages = {31-51},
+year = {2016},
+note = {Selected Papers from the 17th Brazilian Symposium on Formal Methods (SBMF 2014)},
+issn = {0167-6423},
+doi = {https://doi.org/10.1016/j.scico.2016.02.004},
+url = {https://www.sciencedirect.com/science/article/pii/S0167642316000484},
+author = {Alberto Ciaffaglione},
+keywords = {Program certification,  proof assistant, Coinductive types},
+abstract = {We adopt corecursion and coinduction to formalize Turing Machines and their operational semantics in the Coq proof assistant. By combining the formal analysis of converging and diverging computations, via big-step and small-step predicates, our approach allows us to certify the correctness of concrete Turing Machines. An immediate application of our methodology is the proof of the undecidability of the halting problem, therefore our effort may be seen as a first step towards the formal development of basic computability theory.}
+}

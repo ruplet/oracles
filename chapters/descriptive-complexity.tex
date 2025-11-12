@@ -1,45 +1,28 @@
-% ============================================
-% Descriptive Complexity Section (LaTeX)
-
-
+\chapter{Descriptive Complexity}\label{chap:descriptive-complexity}
 % TODO: FO(LFP) = Datalog;
 % For example, Datalog is known to capture precisely the same predicates about the input as PTIME
 % \cite[Theorem 4.4]{10.1145/502807.502810}
 
 % TODO: literature review https://plato.stanford.edu/archives/win2017/entries/computational-complexity/#DesCom
 
-% - tekst wymaga dopisania podstaw, definicji
-% - AC^0 vs AC0, pogrubione vs nie
-% - odstepy po punktach
-
-% TUTAJ: po prostu nie używać tego słówka inflationary!
-% powiedzieć że w serii artykułów, autor zdefiniował pewną logikę pierwszego rzędu
-% z operatorem punktu stałego i zliczania
-% - Strona 4 - wokół plusa w nazwach logik raczej nie powinno być spacji. 
-% To wszystko drobnostki. No i trzeba zdefiniować co najmniej czym jest 
-% "counting" w IFP+Counting, czym jest "inflationary" w fixed-point logic oraz podobne rzeczy.
-
-% TUTAJ: też jakoś tak to zapisać żeby po prostu nie trzeba się było wdawać w szczegóły.
-% - Co do "ordered" oraz "basic arithmetic predicates" na dole strony 2, to może warto 
-% gdzieś dodać że od NP to już nie ma znaczenia, bo order można zdefiniować kwantyfikatorem, 
-% a te operacje arytmetyczne też można definiować (co najmniej w P, nie pamiętam czy niżej), 
-% robią one istotną różnicę tylko dla najniższych klas.
-
-% - uzyc szablonu mimuw
-
-% ============================================
-
-\chapter{Descriptive Complexity}\label{chap:descriptive-complexity}
 % \section{Descriptive Complexity: An Overview}
 
-\todo[inline]{glue the below 2 paragraphs}
-Descriptive complexity is a branch of complexity theory that uses sentences in finite model theory
-to describe computational queries.
+% \todo[inline]{glue the below 2 paragraphs}
+% Descriptive complexity is a branch of complexity theory that uses sentences in finite model theory
+% to describe computational queries.
+% In descriptive complexity theory, an object (e.g., a set of graphs) in
+% a complexity class is specified as the set of all finite models of a given
+% formula. In this work, we only consider the case where the object is a language 
+% \(L \subseteq \{0,1\}^*\) and the model is a finite binary string.
 
-In descriptive complexity theory, an object (e.g., a set of graphs) in
-a complexity class is specified as the set of all finite models of a given
-formula. In this work, we only consider the case where the object is a language 
-\(L \subseteq \{0,1\}^*\) and the model is a finite binary string.
+\todo{rewrite, plagiarism form stanford}
+As we have seen, a problem X is taken to be ``complex'' in the sense of computational 
+complexity theory in proportion to how difficult it is to decide algorithmically. On
+the other hand, descriptive complexity takes a problem to be ``complex'' in proportion
+to the logical resources which are required to describe its instances. In other words,
+the descriptive complexity of X is measured according to the sort of formulas
+which is needed to define its instances relative to an appropriate background
+class of finitary structures.
 
 The central problem of descriptive complexity is to characterize a
 complexity class by the \emph{power of logic required to define its problems}.
@@ -50,6 +33,21 @@ the weakest \emph{theory} required to define a function \emph{and prove its corr
 This perspective has led to elegant logical characterizations of many traditional
 complexity classes.
 
+% representation of a problem: bit, +, < *, etc.
+% <!-- IMPORTANT: what is bit? what is <=, +, -.
+% section 1.2 of immerman
+% bit(i, 0) holds iff i is odd.
+% PLUS(i, j, k) meaning i + j = k
+% 2. TIMES(i, j, k) meaning i x j = k
+% 3. BIT(i, j) meaning bit j in the binary representation of i is  -->
+
+% <!-- this PLUS, TIMES seems to be like operations on unary numbers. This is unary numbers because we can only do it up until `n` (because we only have forall x, PLUS(x), PLUS(0), PLUS(1), PLUS(max),...) -->
+
+
+\begin{example}
+
+\end{example}
+
 As an example, Grädel's Theorem in descriptive complexity states that
 \(\complexity{NL}\) is the class of finite models of the second-order Krom formulas
 \cite{GRADEL199235}.
@@ -59,6 +57,7 @@ two literals. The satisfiability problem for Krom formulas, Krom-SAT, is
 complete for \(\complexity{coNL}\) (or equivalently \(\complexity{NL}\), by the Immerman-Szelepcsényi
 Theorem).
 
+% second-order horn formula: https://en.wikipedia.org/wiki/Second-order_propositional_logic
 Similarly, Grädel~\cite{GRADEL199235} shows that second-order Horn formulas
 express precisely the properties decidable in polynomial time.
 A \emph{Horn clause} is a clause with at most one positive literal and any number
@@ -114,6 +113,17 @@ type systems that enforce resource bounds --- particularly those inspired
 by linear logic and implicit computational complexity.
 The results of this exploration are presented in the next chapter.
 
+
+\subsection{Descriptive Complexity for programming languages}
+Syntax is just syntax for logic, and the interpreter
+is a proof of the theorem FOTC=NL. We compile to operational semantics.
+We have Datalog programming language. It tells us that if the only programs
+we wish to write are in NL, we can specify all of them in FOTC and it will be just enough!
+
+
+\subsection{Importance of \texorpdfstring{\complexity{MSO} = \complexity{REG}}{MSO = REG}}\label{subsec:mso-eq-reg}
+\todo[inline]{While the equality is extensionally true, the compilation of mso to dfa is superexponential.}
+
 % -------------------------------------------------
 \subsection{\texorpdfstring{$\mathrm{FO} = \complexityi{AC}{0}$}{FO = AC0} and the Definition of \texorpdfstring{$\complexityi{FAC}{0}$}{FAC0}}
 
@@ -162,18 +172,23 @@ to define functions in \(\complexityi{FAC}{0}\) as those of polynomially bounded
 whose \emph{bit-graphs} lie in \(\complexityi{AC}{0}\).
 That is how we will transition to studying functional complexity classes.
 
-% % -------------------------------------------------
-% \section*{References}
 
-% \bibliographystyle{plain}
-% \bibliography{references}
+\section{fo-reductions, fo-projections, qfop-projections}
+% \section{First-order reduction}
+% TODO: Provide the definition of first-order reductions (see Chapter~12.3 of \url{https://link.springer.com/book/10.1007/3-540-28788-4}).
+% \section{FO}
+% \begin{itemize}
+% \item TODO: Document why $\text{FO}[+, *] = \text{FO}[\mathrm{BIT}]$.
+% \item TODO: Examine the status of the Crane Beach Conjecture asserting $\text{FO}[<, *] = \text{FO}[\mathrm{BIT}]$.
+% \item TODO: Explain why $\text{FO}[+]$ is less expressive than $\text{FO}[<, *] = \text{FO}[<, /] = \text{FO}[<, \mathrm{COPRIME}]$~\cite{10.1002/malq.200310041}.
+% \item TODO: Review the definition of FO-queries (Definition~1.26 in~\cite{Immerman1999-IMMDC}).
+% \end{itemize}
+% TODO: Describe FO-uniformity via first-order queries $I : \mathrm{STRUC}[ts] \rightarrow \mathrm{STRUC}[tc]$ with $I(0^n) = C_n$ (Definition~5.16 in~\cite{Immerman1999-IMMDC}).
+% TODO: Restate that FO-reductions are defined as first-order queries (Definition~1.26 in~\cite{Immerman1999-IMMDC}).
+% TODO: Include the definition explaining how to represent a circuit.
 
-
-% <!-- IMPORTANT: what is bit? what is <=, +, -.
-% section 1.2 of immerman
-% bit(i, 0) holds iff i is odd.
-% PLUS(i, j, k) meaning i + j = k
-% 2. TIMES(i, j, k) meaning i x j = k
-% 3. BIT(i, j) meaning bit j in the binary representation of i is  -->
-
-% <!-- this PLUS, TIMES seems to be like operations on unary numbers. This is unary numbers because we can only do it up until `n` (because we only have forall x, PLUS(x), PLUS(0), PLUS(1), PLUS(max),...) -->
+% \section{First-order projection}
+% TODO: Note that first-order projections (FOPs) are also named in~\cite{Immerman1999-IMMDC}.
+% TODO: Provide Definition~11.7 describing first-order projections.
+% \section{Quantifier-free fo-projections}
+% TODO: Summarize quantifier-free FO-projections (QFPs).

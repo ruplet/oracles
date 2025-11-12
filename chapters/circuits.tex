@@ -1,0 +1,267 @@
+\section{Decisional complexity classes for circuits}
+The definitions of decisional circuit classes are from~\cite{10.5555/520668}.
+
+\subsection{\texorpdfstring{\(\complexity{AC}^i\)}{ACi}}
+\begin{definition}\label{def:aci}
+    \todo[inline]{Define ac}
+\end{definition}
+
+\(U_E\) and \(U_{E^\ast}\)-uniformity is defined in terms of \emph{diret connection language}
+and \emph{extended connection language} in~\cites[Definition~2.24,~Definition~2.43~]{10.5555/520668}.
+There is a very thorough overview of uniformity conditions below NC1 in ~\cite{MIXBARRINGTON1990274}.
+
+\begin{definition}[\texorpdfstring{\(\complexity{AC}^i\)}{ACi}]\label{def:complexity-aci}
+    \todo[inline]{Define...}
+\end{definition}
+
+
+\begin{definition}
+
+\end{definition}
+
+\begin{definition}[\texorpdfstring{\(\complexity{AC}^0_k\)}{AC0 depth k}]\label{def:complexity-ac0-k}
+    This is \complexityi{AC}{0} of depth $k$.
+    Complete problem:\cite{10.1007/BFb0028550}
+\end{definition}
+
+\begin{proposition}
+    for \(k \geqslant 3\), \(\texttt{MAZE}_k\) is complete for non-uniform $\Pi_k$ under p-projections
+    and complete for uniform $\Pi_k$ under \complexity{DLOGTIME}-uniform projections~\cite{10.1007/BFb0028550}.
+\end{proposition}
+
+
+\begin{definition}[Projection of Boolean functions]\label{def:boolean-proj}
+Let $f:\{0,1\}^n\!\to\!\{0,1\}$ and $g:\{0,1\}^m\!\to\!\{0,1\}$.
+We say that $f$ is a \emph{projection} of $g$ if there is a mapping
+$\varsigma : \{y_1, \dots, y_m\} \rightarrow \{0, 1, x_1, \dots, x_n, \neg x_1, \dots, \neg x_n\}$
+such that
+\[
+f(x_1, \dots, x_n) = g\big(\varsigma(y_1),\dots,\varsigma(y_m)\big).
+\]
+\end{definition}
+
+\begin{definition}[p\mbox{-}projection between families]\label{def:boolean-p-proj}
+Let $\mathcal{P}=(P_i)_{i\in\mathbb{N}}$ and $\mathcal{Q}=(Q_j)_{j\in\mathbb{N}}$ be families
+of Boolean functions (each $P_i,Q_j:\{0,1\}^{*}\!\to\!\{0,1\}$, arity arbitrary).
+We say that $\mathcal{P}$ is a \emph{p\mbox{-}projection} of $\mathcal{Q}$, if 
+there exists a polynomial $t:\mathbb{N}\to\mathbb{N}$ such that
+for every $i\in\mathbb{N}$ there is some $j\le t(i)$ with $P_i$ a projection of $Q_j$.
+\end{definition}
+
+\begin{remark}[Why the polynomial bound]
+Unrestricted projection lets a simple $P_i$ be realized only by projecting
+some $Q_j$ at an arbitrarily large index $j$, which makes the comparison vacuous.
+The polynomial bound $j\le t(i)$ enforces an \emph{efficient} correspondence of indices,
+yielding a robust, reduction-like notion. The relation $\preceq_p$ is a preorder;
+modulo $\equiv_p$ it induces a partial order on equivalence classes of families.
+\end{remark}
+
+\section{Bibliographical remark}
+The notions of~\autoref{def:boolean-proj} and~\autoref{def:boolean-p-proj} are from~\cite{10.1145/3149.3158}.
+
+
+
+
+\section{Uniformity}\label{sec:uniformity}
+
+\subsection{\complexity{DLOGTIME}-uniformity}\label{subsec:dlogtime-uniformity}
+\begin{itemize}
+\item TODO:\@ Work out the example of a \complexity{DLOGTIME} reduction showing that tree isomorphism for string-represented trees is $\complexityi{NC}{1}$-complete~\cite{694595}.
+\end{itemize}
+
+
+\subsection{\texorpdfstring{\(\complexity{FAC}^i\)}{FACi}}
+\begin{definition}\label{def:faci}
+    \todo[inline]{Define fac}
+\end{definition}
+
+
+
+\begin{definition}[\(NC^1\)-reductions]
+    ~\cite{COOK19852}.
+\end{definition}
+
+\(\complexity{FL}=\complexity{FL}^\ast\)~\cite[Proposition~4.1]{COOK19852}
+
+% \subsection{Functional complexity classes and completeness}
+% TODO: Determine whether showing $\complexity{L}$-completeness suffices for 
+%$\complexity{FL}$-completeness, using the identity $\complexity{FL} = \complexityi{L}{*} = \complexity{L} + \complexityi{NC}{1}$ 
+%   reductions~\cite[Proposition~4.1]{COOK19852}.
+
+
+% \subsection{Cicuit complexity classes}
+% The complexity classes in this subsection are \emph{circuit complexity} classes,
+% which means that the computation is done by \emph{boolean circuits}, which we will
+% now introduce. Note that this is a different computational model to Turing machines, finite
+% automata or lambda calculi, and thus comes with its own notion of complexity. The definitions
+% in this subsection are based on~\cite[Definition 5.17]{Immerman1999-IMMDC}.
+
+% \begin{definition}[Boolean circuits]
+% A \emph{boolean circuit} is a finite directed, acyclic graph. The leaf nodes (of indegree zero)
+% represent the input, which here is always a finite binary string. The internal nodes
+% represent logical gates such as AND, OR and NOT gates, in that we say that the value
+% of an internal AND node is 1 if the values of all of its children is 1 etc.
+% For decisional problems we require the circuit to be rooted. A rigorous definition is discussed in~\cite[Definition 2.27]{Immerman1999-IMMDC}.
+% \end{definition}
+
+% \begin{definition}[Words accepted by a circuit]
+% We say that a circuit \emph{accepts} a given binary word iff the value of its root is 1 with values of leaves
+% set according to the input.
+% \end{definition}
+
+% \begin{definition}[Language decided by circuit family]
+% We say that a family $\langle C_n \rangle_{n \in \mathbb{N}}$
+% of boolean circuits decides a language $L$ iff for every $w \in \{0, 1\}^*$, $C_{|w|}$ accepts
+% $w$ iff $w \in L$.
+% \end{definition}
+
+% \begin{definition}[\complexity{NC} circuits (Nick's class)]
+% A boolean circuit is \emph{\complexity{NC}} iff the gates are only binary AND and OR gates.
+% \end{definition}
+
+% \begin{definition}[\complexity{AC} circuits (Alternating circuits)]
+% A boolean circuit is \emph{\complexity{AC}} iff the gates are only unlimited fan-in AND and OR gates.
+% It is a theorem that we can also allow unary NOT gates at leaves only.
+% \end{definition}
+
+% \begin{definition}[\complexity{TC} circuits (Threshold circuits)]
+% A boolean circuit is \emph{\complexity{AC}} iff the gates are only unlimited fan-in Threshold(?) gates.
+% It is a theorem that we can also allow unlimited fan-in AND and OR gates(?).
+% \end{definition}
+
+% \begin{definition}[\complexity{NC[t(n)]_{/poly}}, \complexity{AC[t(n)]_{/poly}}, \complexity{TC[t(n)]_{/poly}}]
+% We define $\complexity{NC[t(n)]_{/poly}}$ to be the class of $\complexity{NC}$ circuits that:
+% \begin{enumerate}
+%    \item have polynomially-many internal nodes w.r.t. $n$, the number of leaves.
+%    \item have depth $\bigO(t(n))$.
+% \end{enumerate}
+% Let $\complexityi{NC_{/poly}}{i} = \complexity{NC[(\log n)^i]_{/poly}}$. We define
+% $\complexity{AC[t(n)]_{/poly}}, \complexity{TC[t(n)]_{/poly}}, \complexityi{AC_{/poly}}{i}, \complexityi{TC_{/poly}}{i}$ analogously.
+
+% In particular, $\complexityi{NC_{/poly}}{0}$, $\complexityi{AC_{/poly}}{0}$, $\complexityi{TC_{/poly}}{0}$ are families of circuits with
+% uniformly constant depth.
+
+% For now we have not talked about how do we generate the consecutive circuits $C_n$.
+% Later in~\autoref{sec:uniformity} we will restrict the family of (some standard) descriptions of the circuits
+% to have to be \emph{computable efficiently} and then we will be able to drop the $_{/poly}$ suffix in our complexity classes.
+% \end{definition}
+
+
+
+% \section{\texorpdfstring{$\complexityi{NC}{i}_{/poly}$}{NC\string^ipoly}}
+
+% \subsection{\complexityi{NC}{0}}
+% For example, each output of an \complexityi{NC}{0} computable function can depend on only finitely many
+% inputs. Thus, \complexityi{NC}{0} can't even compute an AND of all its inputs (in contrast, the unbounded
+% fan-in AND is an \complexityi{AC}{0} function).
+% \paragraph{TODO: Notes on $\complexityi{NC}{0}$.}
+% TODO: Provide an introductory overview of the key references on $\complexityi{NC}{0}$ listed below.
+% \begin{itemize}
+% \item TODO: Summarize the construction of one-way permutations in $\complexityi{NC}{0}$~\cite{10.1016/0020-01908790053-6}.
+% \item TODO: Explain why all sets complete under $\complexityi{AC}{0}$ reductions are already complete under $\complexityi{NC}{0}$ reductions~\cite{10.1145/258533.258671,AGRAWAL1998127}.
+% \item TODO: Describe Immerman's page~81 discussion of addition in $\complexityi{NC}{0}$ and MAJORITY in $\complexityi{NC}{1}$~\cite{Immerman1999-IMMDC}.
+% \item TODO: Detail why addition and subtraction of binary numbers lies in $\complexityi{AC}{0}$~\cite{27676}.
+% \end{itemize}
+
+
+% TODO: Clarify what notion of uniformity should be used for $\complexityi{NC}{0}$, given that \complexity{DLOGTIME} Turing machines can do things that cannot be done by
+% any $\complexityi{NC}{0}$ circuit.
+% \subsection{\complexityi{NC}{1}}
+% \begin{itemize}
+% \item TODO: Present the argument that division is in \complexity{DLOGTIME}-uniform $\complexityi{NC}{1}$~\cite{ITA_2001__35_3_259_0}.
+% \item TODO: use \complexity{DLOGTIME} reductions for $\complexityi{NC}{1}$.
+% \item TODO: Clarify how $U_{E^*}$ reductions relate to $\complexityi{NC}{1}$ and why $U_{E^*}$-uniform $\complexityi{NC}{1}$ equals \complexity{ALOGTIME}~\cite{RUZZO1981365}.
+% \end{itemize}
+% TODO: Confirm that this class is contained in $\complexityi{AC}{i}$.
+
+
+% \section{\texorpdfstring{$\complexityi{AC}{i}$}{AC\string^i}}
+
+% $\complexityi{AC}{i}$ is the class of languages accepted by uniform circuit
+% families of polynomial size and depth $\bigO(\log^i n)$, consisting of unbounded fan-in
+% AND, and OR gates, along with NOT gates.
+
+% Given $x, y, z$: binary representations of natural numbers,
+% it is decidable in uniform \complexityi{AC}{0} if $x + y = z$, but it is not decidable 
+% in \complexityi{AC}{0} if $x * y = z$.
+
+% \subsection{\complexityi{AC}{0}}
+% \begin{itemize}
+% \item TODO: Summarize why addition is in $\complexityi{AC}{0}$~\cite{BussLectureNotes}.
+% \item TODO: Explain the equivalence $\text{FO}[+, *] = \complexity{DLOGTIME}$-uniform $\complexityi{AC}{0}$ (see \url{https://complexityzoo.net/Complexity_Zoo:A#ac0}).
+% \item TODO: Discuss the characterization of \complexity{DLOGTIME}-uniform $\complexityi{AC}{0}$ presented in~\cite{hella2023regularrepresentationsuniformtc0}.
+% \item TODO: Review the definitions of $\complexityi{AC}{0}$, $\complexityi{TC}{0}$, FATC0, and FTC0 provided in~\cite{612309}.
+% \end{itemize}
+% TODO: Document the notions of uniformity of $\complexityi{AC}{0}$ outlined below.
+% \begin{enumerate}
+% \item TODO: $U_{E^*}$-uniformity.
+% \item TODO: uniform iff direct/extended connection language decidable by FO 
+% \item TODO: uniform iff decidable by \complexity{DLOGTIME} random-access tm (checking whether the $i$th bit of the representation of the $n$th circuit is $b$).
+% \end{enumerate}
+
+
+
+% \section{\texorpdfstring{$\complexityi{AC}{i[m]}$}{AC\string^i[m]}}
+% $\complexityi{AC}{i[m]}$ is defined as $\complexityi{AC}{i}$, but in addition unbounded fan-in $\text{MOD}_m$ gates
+% are allowed, which output 1 iff the number of input wires carrying a value of 1 is a
+% multiple of $m$.
+
+% \section{\texorpdfstring{$\complexityi{ACC}{i}$}{\complexity{ACC}\string^i}}
+% $\complexityi{ACC}{i} = \bigcup_m \complexityi{AC}{i[m]}$. $\complexityi{ACC}{0}$ is contained in $\complexityi{TC}{0}$.
+
+% \section{\texorpdfstring{$\complexityi{TC}{i}$}{TC\string^i}}
+% $\complexityi{TC}{i}$ is the class of languages accepted by uniform circuit families 
+% of polynomial size and depth $\bigO(\log^i n)$, consisting of unbounded fan-in MAJORITY
+% gates, along with NOT gates.
+
+% TODO: Check whether $\complexityi{TC}{i}$ is contained in $\complexityi{NC}{i + 1}$.
+% \subsection{\complexityi{TC}{0}}
+% \begin{itemize}
+% \item TODO: Confirm that multiplication is in $\complexityi{TC}{0}$~\cite{BussLectureNotes}, and locate the supporting details in~\cite{doi:10.1137/0213028}.
+% \end{itemize}
+
+
+% \section{Uniformity}
+% TODO: Clarify how \complexity{DLOGTIME}-uniformity, first-order reductions, logspace-uniformity, and $U_{E^*}$ relate, including the role of direct and extended connection languages.
+% TODO: Provide a citation supporting that the choice among these uniformity notions does not affect the arguments below.
+% When we do not say ``poly'', it means the class is uniform. Otherwise: Immerman showed that the class FO is the same as a uniform version
+% of $\complexityi{AC}{0}$. Originally $\complexityi{AC}{0}$ was defined in its nonuniform version, which
+% we shall refer to as $\complexityi{AC}{0}/\text{poly}$. A language in $\complexityi{AC}{0}/\text{poly}$ is specified by
+% a polynomial size bounded depth family $\langle C_n \rangle$ of Boolean circuits, where
+% each circuit $C_n$ has $n$ input bits, and is allowed to have $\neg$-gates, as well as
+% unbounded fan-in $\land$-gates and $\lor$-gates. In the uniform version, the circuit
+% $C_n$ must be specified in a uniform way; for example one could require that
+% $\langle C_n \rangle$ is in FO\@. See also Appendix~A.5.
+
+% We say that a family of circuits in $\complexityi{AC}{0}$ is uniform if the function $n \rightarrow C_n$ is
+% \emph{simple to compute}; there is a variety of notions of uniformity of $\complexityi{AC}{0}$ circuits.
+% TODO: Explore these notions in Chapter~\autoref{chap:reductions}. For the sake of this section we can assume
+% that by $\complexityi{AC}{0}$ we denote the class of circuit families $C_n$, for which there is a 
+% \complexity{LOGSPACE} Turing machine $M$ which on input $0^n$ outputs a \emph{standard representation}
+
+
+
+
+
+% \section{\texorpdfstring{$\complexityi{AC}{0}$-reduction}{AC\string^0-reduction}}
+% \label{sec:ac0red}
+% Definition IX.1.1 CN10. We say that a string function F
+% (resp. \  a number function f) is $\complexityi{AC}{0}$-reducible to $L$ if there is a sequence
+% of string functions $F_1, \dots, F_n (n \geqslant 0)$ such that
+% $F_i$ is $\Sigma^B_0$-definable from $L \cup \{F_1, \dots , F_{i-1}\}$, for $i = 1, \dots, n$
+% and F (resp. \ f) is $\Sigma^B_0$-definable from $L \cup \{F_1, \dots , F_{i-1}\}$. A relation R is
+% $\complexityi{AC}{0}$-reducible to $L$ if there is a sequence $F_1, \dots, F_n$ as above, and R is
+% represented by a $\Sigma^B_0(L \cup \{F_1, \dots, F_n\})$ formula.
+
+% In Chapter~2 of~\cite{edbd4873718c414f90d22dadf0dba2b1} there is an extensive discussion about
+% the different subtleties of defining $\complexityi{AC}{0}$ functions and numerous different characterizations
+% of Dlogtime-uniform $\complexityi{AC}{0}$-computable functions.
+
+% first-order/$\complexityi{AC}{0}$ are used for P-completeness.
+
+
+% \section{\texorpdfstring{$\complexityi{NC}{0}$}{NC\string^0}} reductions
+% In~\cite{edbd4873718c414f90d22dadf0dba2b1}, it is shown that, surprisingly, all known \complexity{NP}-complete problems
+% are complete under $\complexityi{NC}{0/poly}$ reductions already. Another candidate for a problem that is \complexity{NP}-complete
+% under poly-time reductions but not under logspace reductions is discussed in~\cite{18631}.
+

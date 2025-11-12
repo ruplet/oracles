@@ -1,6 +1,55 @@
 \chapter{Formalized semantics}\label{chap:formalized-semantics}
-\todo[inline]{In this short chapter, I describe why a language: C++ + mathematical proofs of
-being in complexity, is infeasible. This is because reasonign about Turing machines
-in Coq is a nightmare and I cite resources for it. On the other hand, C++ + just a polynomial
-cutting off the computation after step n is a bad idea, as we can't reason abot the 
-semantics at all}
+\todo[inline]{This is work in progress, ideally should be 1 page long}
+
+The obvious approach would be to require a program in our programming language to be a pair \(F, p\),
+where \(F\) would be e.g.\ a C++ function and \(p\) would be a polynomial bounding the number
+of steps of \(F\) when executed on a normal computer. For at least \todo{careful with three}three
+reasons, such a language would not be satisfactory for us. We will explore them below.
+
+\paragraph{Lack of semantics of programming languages}
+Close to none programming languages have well-defined semantics.
+A famous example of a shortcoming of language definition is \emph{undefined behaviour} in C++.
+For the vast majority of languages, the only reliable semantics
+is the source code of the most popular compiler. There are, however, programming languages
+with formally defined semantics. Most notably, a large fragment of the C programming
+language has been formalized in the CompCert project~\cite{Leroy-backend}\footnote{\url{https://compcert.org/index.html}}.
+CakeML~\cite{cakeml-POPL14}\footnote{\url{https://cakeml.org/}}
+has formal semantics and a proven-correct compiler. A fragment of OCaml has been formalized in~\cite{10.1145/3747509}.
+
+\paragraph{Representation of a proof in computer-verifiable form}
+Creating a \emph{proof asistant} --- a system in which it is convenient to write mathematical proofs, in a way that they can be checked
+by the computer, and the code of the checker is simple enough to be widely believable --- is not an easy task.
+In the last decade, the most popular proof assistants got to the stage where research-level
+reasoning can be transferred to them 
+
+A very interesting class of programming languages rely on automated theorem proving to
+verify user-provided pre- and post-conditions of functions.
+Dafny~\cite{10.5555/1939141.1939161}\footnote{https://dafny.org/} completely relies on SMT-solvers, not allowing
+the user to conduct a mathematical proof. Why3 provides an extensive framework, combining the power of
+SMT-solvers for automation where possible, and allowing the user to prove the implication manually
+where necessary~\cite{boogie11why3}\footnote{https://www.why3.org/}.
+
+\paragraph{Invisible mathematics}
+
+Few examples of concrete Turing machine definitions have been described.
+There are examples provided in\cite{KUDLEK1996241} and~\cite{ROGOZHIN1996215}.
+
+Formally defining Turing machines has been considered in~\cite{10.1007/978-3-642-32621-9_1} and,
+building on top of it,~\cite{10.1145/3372885.3373816}\footnote{This
+describes the origins of a formalization project available at:
+url{https://github.com/uds-psl/coq-library-undecidability}.
+}.
+
+In~\autoref{par:heraud-nowak}, we briefly discuss a formalization of a characterization
+of polynomial-time functions.
+
+\section{Ciaffaglione's formalization of undecidability of HALT}
+Also in ciaffaglione there are some turing machines.
+
+In~\cite{CIAFFAGLIONE201631}, an elegant formalization of the undecidability of the halting problem
+is presented. The proof goes by defining simple Turing machines needed and directly proving
+results about their semantics. The code mentioned in the book, as of November 2025, is not accessible anymore.
+Our version of the original code, refined to a newer Coq version, is available online
+with full installation and verification instructions.
+\todo{ensure code didn't move}\footnote{Code and slides are available at: \url{https://github.com/ruplet/prezentacja-seminarium-1}.}
+The code and its renovation has also been the subject of one seminar presentation.

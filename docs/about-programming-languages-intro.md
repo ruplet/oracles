@@ -61,8 +61,6 @@ Problemy, na które starałem się odpowiedzieć:
    2. **Praca Neergaarda \+ moje odświeżenie kodu**, żeby dało się go odpalić dzisiaj; poprawa, żeby interpreter odzwierciedlał paper; nowy e-mail autora, może nowy paper autora?  
    3. Prace Dal Lago i Schoppa: **IntML (dzięki mnie dodali licencję\!)** \+ moje odświeżenie kodu, może wziąć gotowe programy od Dal Lago?  
    4. Prace Ugo Dal Lago o kolejnych klasach, np. safe tree recursion dla PSPACE  
-5. Circuit complexity: Safe recursive evaluation implies an upper bound on the depth of a corresponding circuit   
-6. Weryfikacja formalna. Praca Forstera i Ciaffaglionego \+ moje poprawki do tego drugiego. Sytuacja w weryfikacji jest kiepska, ale może Dafny przyjdzie z pomocą?
 
 SZERZEJ:
 

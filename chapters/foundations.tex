@@ -1,4 +1,6 @@
 \chapter{Models of computation, programming paradigms and complexity measures}\label{chap:foundations}
+\todo{Perhaps it'd be better if each section of this chapter was introduction to the corresponding
+chapters, and this chapter was removed}
 One of the first decisions a programming language designer has to make is choosing
 the programming paradigm convenient for writing the programs of interest.
 In the practice of programming, imperative languages
@@ -14,10 +16,16 @@ we have to temporarily step away from the imperative mindset. As argued in~\cite
 the very notion of an ``algorithm'' is still evolving, so we shouldn't limit our considerations
 to a single paradigm. This chapter tests whether
 alternative models of computation could be better suited
-to form the basis of languages that capture popular complexity classes.
+to form the basis of languages that capture popular complexity classes. This is studied
+in much more detailed
+in~\cites[Section~1.6.3]{10.5555/1540612}[Section~1.5.2]{DRAFT10.5555/1540612}, where also 
+complexity of random computation,
+quantum computation and computation on \emph{real} Turing machines is considered.
 
-We can foreshadow that the answer is (perhaps surprisingly) positive: even though the complexity classes are defined on Turing machines,
+We can foreshadow that the answer is (perhaps surprisingly) positive: even though the complexity 
+classes are defined on Turing machines,
 the characterizations studied in literature are rarely imperative. 
+
 
 \section{Finite automata and transducers}
 Finite-state transducers compute string-to-string functions and have simple descriptions.
@@ -29,48 +37,38 @@ language for transducers is studied in~\cite{DBLP:conf/fsmnlp/Schmid05}. A parti
 class of string-to-string functions defined using logic, \emph{MSO transductions},
 is characterized to be precisely the class of functions computable by two-way deterministic finite transducers (2DFT)
 in~\cite{engelfriet1999msodefinablestringtransductions}. All of these results
-provide  basis for new programming languages and are therefore more than relevant to our work.
+provide basis for new programming languages and are therefore more than relevant to our work.
+% good picture:
+% https://mimuw.edu.pl/~bojan/slides/slajdomat/teaching/2024transducers/MSO_transductions/?step=11
 
 Because transducer classes remain poorly understood, it is usually unclear whether an arbitrary problem 
-belongs to the class recognized by a given flavor of transducer.
-Writing programs in such a programming language would therefore often be equivalent
-to doing new research on transducers, so for now we focus
-on more well-established classes of functions. A~good overview of existing research on
+belongs to the class recognized by a given flavor of transducer. Since writing programs as transducers
+would rarely be useful for \todo{Ensure I'm consistent with this goal in the work}
+certifying an arbitrary program to be in the desired complexity class,
+for now we focused on other styles of characterization.
+A~good overview of existing research on
 transducers can be found in~\cite{muscholl_et_al:LIPIcs.STACS.2019.2}.
 
 The existing research on finite-state automata has not been directly useful for our work ---
 perhaps because the expressiveness of this model is inherently limited to Boolean-valued functions.
+Yet, we consider some characterization of \complexity{REG}
+in~\autoref{subsec:mso-eq-reg}.
 
 \section{Turing machines}
 This model of computation underpins the imperative programming style.
 There is a variety of flavors of Turing machines, and the details of a specific definition will most
 of the time not affect our considerations in this work. When not explicitly stating otherwise,
 when describing a computational process we will implicitly assume the realization of it on some kind
-of a Turing machine.
+of a Turing machine. As we will see in~\autoref{chap:reductions}, the most popular 
+complexity classes were specifically defined in terms of computation on Turing machines.
+The obvious approach to our task of obtaining certificates of complexity bounds would be to
+start from the bare definition of a Turing machine, and meticulously
+formally proving properties of more and more complex Turing machines.
+Yet, this approach fails miserably, as
+we will have a chance to explore in~\autoref{chap:formalized-semantics}.
 
-\begin{definition}[Time complexity]\label{def:turing-dtime}
-Let \(T : \mathbb{N} \to \mathbb{N}\) be some function.  A language \(L\) belongs to \(\complexity{DTIME}(T(n))\) iff there exists a deterministic Turing machine that satisfies:
-\begin{enumerate}[label= (\roman*), ref= (\roman*)]
-    \item\label{itm:dtime} for some constant \(c > 0\) and every input \(w \in \{0,1\}^{n}\) it terminates within \(c \cdot T(n)\) steps;
-    \item for every \(w \in L\) the machine outputs \(1\);
-    \item for every \(w \notin L\) the machine outputs \(0\).
-\end{enumerate}
-We will say that a Turing machine belongs to \(\complexity{DTIME}(T(n))\) iff it satisfies~\ref{itm:dtime}.
-\end{definition}
-
-\begin{definition}[Space complexity]\label{def:turing-dspace}
-Let \(T : \mathbb{N} \to \mathbb{N}\) be some function.  A language \(L\) belongs to \(\complexity{DSPACE}(T(n))\) iff there exists a deterministic Turing machine that satisfies:
-\begin{enumerate}[label= (\roman*), ref= (\roman*)]
-    \item\label{itm:dspace} for some constant \(c > 0\) and every input \(w \in \{0,1\}^{n}\) it halts while using at most \(c \cdot T(n)\) work-tape cells;
-    \item for every \(w \in L\) the machine outputs \(1\);
-    \item for every \(w \notin L\) the machine outputs \(0\).
-\end{enumerate}
-We will say that a Turing machine belongs to \(\complexity{DSPACE}(T(n))\) iff it satisfies~\ref{itm:dspace}.
-\end{definition}
-
-The most popular complexity classes are directly based on the above notions.
-Yet surprisingly few elegant, high-level
-imperative languages are known to characterize well-studied complexity classes beyond the trivial ones.
+Surprisingly few elegant, high-level imperative languages are known to characterize well-studied
+complexity classes beyond the trivial ones.
 This scarcity is precisely why much of the work surveyed in later chapters relies on non-imperative paradigms.
 
 \subsection{Random-access Turing machines}
@@ -80,12 +78,13 @@ number on the pointer tape is \(n\), \(n\)-th digit of the input is written to t
 
 Reasoning about computation in complexity classes such as \(\complexity{L}\) or \(\complexity{P}\) is the same
 for traditional Turing machines and random-access Turing machines. The choice of model starts to matter for
-notions of complexity such as \(\complexity{DTIME}(n)\) or \(\complexity{DTIME}(n^2)\) (\emph{fine-grained} complexity classes).
+notions of \emph{fine-grained} complexity classes complexity such as \(\complexity{DTIME}(n)\)~\autoref{def:turing-dtime} or \(\complexity{DTIME}(n^2)\).
 Due to insufficient existing research on implicit characterizations of
 fine-grained complexity classes, we will not consider them besides a brief discussion
-in~\autoref{subsec:fine-grained-reductions}. Computation on transducers is a promising way to obtain robust characterizations of these
-classes --- e.g.~\emph{polyregular} functions are computable in linear time by a kind of a transducer~\cite{bojańczyk2018polyregularfunctions}.
-This is not a \emph{characterization}, however, because it is unlikely that every \(\complexity{DTIME}(n)\) function is definable in this language.
+in~\autoref{subsec:fine-grained-reductions}.
+% Computation on transducers is a promising way to obtain 
+% robust characterizations of these classes --- e.g.~\emph{polyregular} functions are
+% computable in linear time by a kind of a transducer~\cite{bojańczyk2018polyregularfunctions}.
 The notion of \(\complexity{DLOGTIME} = \complexity{DTIME}(\log n)\)-uniformity explored in~\autoref{subsec:dlogtime-uniformity} is also
 only defined for random-access Turing machines.
 
@@ -96,21 +95,21 @@ In this work, we will mostly use circuits to reason about very weak complexity.
 
 As we will see in~\autoref{sec:uniformity}, we will almost always want to 
 define a circuit family by a function (of a low complexity) \(n \rightarrow C_n\), computing the description
-of the circuit for a given input size \(n\). If we obtain a language for
-such functions, we will be able to use it to \todo{compute with complexity bound,
-i.e.\ that if the resulting circuit is correct, it will be logspace-uniform ac0}compute circuit families. We will study
-a logical characterization of a variant of \(\complexity{AC}^0\) in~\autoref{sec:vac0}.
+of the circuit for a given input size \(n\). 
+We will mostly study characterizations of circuit families through characterizations
+of the functions of classes used to \emph{generate} those families.
 
 A very rich \todo{there is nothing new for me
 in this paper; i have also a very good literature overview, but scattered around this PDF}
 overview of different characterizations of circuit complexity classes is
 in~\cite{antonelli2025characterizingsmallcircuitclasses}.
+A particular logical characterization of \(\complexity{AC}^0\)~(\autoref{def:aci}) will be important for us in~\autoref{chap:bounded-arithmetic}.
 
 \section{Discrete differential equations}
 An original point of view on computation is to describe functions
 as solutions to discrete differential equations. For example, in~\cite{bournez_et_al:LIPIcs.MFCS.2019.23},
 \(\complexity{FP}\)~(\autoref{def:fp}) and \(\complexity{FNP}\)~(\autoref{def:fnp}) are characterized.
-Characterizations of various circuit classes from
+Characterizations of various circuit complexity classes from
 \(\complexity{FAC}^0\) to \(\complexity{FAC}^1\)~(\autoref{def:faci}) 
 are described in~\cite{antonelli2025characterizingsmallcircuitclasses}.
 
@@ -128,8 +127,8 @@ We treat these ideas in~\autoref{chap:recursion-theory}.
 Typed lambda calculus underpins functional programming. In this section we focus on typed variants,
 unlike in~\autoref{sec:untyped-lambda}.
 
-Lambda calculus does
-not line up cleanly with traditional Turing machine complexity measures.  For instance,
+Lambda calculus does not line up cleanly with traditional Turing
+machine complexity measures.  For instance,
 for some representation of strings \(\{0, 1\}^\ast\),~\cite[Theorem~3.4]{10.5555/788018.788832} identifies
 the functions \(\{0, 1\}^\ast \rightarrow \{0, 1\}\) definable in simply typed
 lambda calculus (STLC), with regular languages. But with a different encoding of inputs,~\cite{HILLEBRAND1996117} relates STLC to the whole \(\complexity{ELEMENTARY}\) class. 
@@ -147,14 +146,15 @@ Concepts from linear logic have been implemented in the theory of type systems
 to transfer the resource interpretation.
 This will be discussed further in~\autoref{chap:linear-types}.
 
+\clearpage
 \section{Set theory as inspiration for model of computation}
 An interesting connection appears when we think of traditional notions of ``complexity'' of sets in set theory
 from the point of view of computational complexity. 
 If we treat taking complements, intersections, countable unions as operations in a programming language,
 perhaps we could design a programming language for constructing sets. By itself such a language would probably
 not be the most interesting one. However, thinking about mathematical reasoning
-in terms of a computational process is a very powerful technique. It has been deeply explored
-under the name of Curry-Howard or proofs-as-programs correspondence.\footnote{A good introduction to the
+in terms of a computational process is a very powerful technique. It has been particulary deeply explored
+for connecting logic and lambda calculus under the name of Curry-Howard or proofs-as-programs correspondence.\footnote{A good introduction to the
 immensely deep topic of proofs-as-programs is~\cite{10.5555/1197021}.} For the computational content
 of set theory in particular, an interesting brief discussion is presented in~\cite{Tao2010ComputationalPerspective}.
 
@@ -164,14 +164,14 @@ an \(F_\sigma\) set is a countable union of closed sets; a \(G_\delta\) set is a
 of open sets. A~few levels higher up the \emph{Boldface hierarchy}, which in a way quantify 
 the complexity of sets, Borel sets are considered:
 
-\begin{definition}[Borel sets]
+\begin{definition*}[Borel sets]
 Let \(X\) be a topological space. The class of Borel sets of \(X\), \(\mathcal{B}(X)\) is the smallest class of sets
 containing every open set of \(X\) and closed under~\ref{itm:borel-comp} and~\ref{itm:borel-union}:
 \begin{enumerate}[label= (\roman*), ref= (\roman*)]
     \item\label{itm:borel-comp} if \(A\) is Borel, then its complement \(X \setminus A\) is Borel;
     \item\label{itm:borel-union} if \(A_n\) is Borel for each \(n \in \mathbb{N}\), then the countable union \(\bigcup_{n \in \mathbb{N}} A_n\) is Borel.
 \end{enumerate}
-\end{definition}
+\end{definition*}
 
 As this is a standard least fixed point definition, it is strikingly similar to
 definitions of classes of recursive functions that we will consider later, e.g.~\autoref{def:primitive-recursive}.
