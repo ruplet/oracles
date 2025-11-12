@@ -1,27 +1,13 @@
-Specification awareness:  
-Should Your Specification Language Be Typed?  
-[https://lamport.azurewebsites.net/pubs/lamport-types.pdf](https://lamport.azurewebsites.net/pubs/lamport-types.pdf)  
-Dafny, WhyML
+- czy potrzebujemy systemu typów w języku programowania? Nie\! To najważniejsze niepoprawne założenie które popełniamy. Potrzebujemy systemu specyfikacji, ale system typów wcale nie musi być najłatwiejszą ani najbardziej wszechstronną metodą umożliwienia użytkownikowi automatycznego rozumowania o cechach programu. Leslie Lamport porusza tę kwestię w swoim artykule ([https://lamport.azurewebsites.net/pubs/lamport-types.pdf](https://lamport.azurewebsites.net/pubs/lamport-types.pdf) ). Ponadto, systemy typów są bardzo trudne do poprawnego zaprojektowania, zrozumienie nawet nieszczególnie silnych systemów wymaga lat doświadczenia  
 
-Modeling effects:  
-Handlers in algebraic effects:  
-[https://dl.acm.org/doi/pdf/10.1145/2500365.2500590](https://dl.acm.org/doi/pdf/10.1145/2500365.2500590)  
-[https://dl.acm.org/doi/pdf/10.1145/3674641](https://dl.acm.org/doi/pdf/10.1145/3674641)
+Specification langs:  
+can use set theory for this\!  
+[https://arxiv.org/pdf/cs/9511102](https://arxiv.org/pdf/cs/9511102)  
 
-Computational models:  
-Hypercomputation:  
-real number turing machine  
-[https://arxiv.org/pdf/gr-qc/0104023](https://arxiv.org/pdf/gr-qc/0104023)  
-[https://arxiv.org/abs/1105.0047](https://arxiv.org/abs/1105.0047)  
-functions computable in HM ([https://cs.stackexchange.com/a/96015](https://cs.stackexchange.com/a/96015) ):  
-[https://en.wikipedia.org/wiki/Hyperarithmetical\_theory](https://en.wikipedia.org/wiki/Hyperarithmetical_theory)  
-is P neq NP a physical property? [https://www.scottaaronson.com/papers/npcomplete.pdf](https://www.scottaaronson.com/papers/npcomplete.pdf) 
+8. a jak się mają inne aksjomaty z matematyki do obliczeń? Implementation of forcing in Coq as a program transformation and show a proof of the negation of CH  \- zrobiłem cały przedmiot Set Theory, żeby zrozumieć forcing
 
-Random complexity classes  
-\#P as safe recursion  
-[https://link.springer.com/article/10.1007/s00153-022-00828-4](https://link.springer.com/article/10.1007/s00153-022-00828-4)
 
-Co to znaczy że logika jest PSPACE-zupełna? Że dowodzenie jest PSPACE-zupełne, bo konstruktywny dowód problem sprawdzenia dowodliwości jest równoważny algorytmowi dowodzącemu
+
 
 Type system  
 What does it mean that a type theory is NP-complete?  
@@ -31,7 +17,6 @@ Well, it does \- but only in the specification component
 If you were to write a program which solves sudoku, how would you write a type  
 which expresses exactly solvable sudoku boards?  
 Trio:
-
 - how difficult is it to check is Sudoku solution is valid (P)  
 - how difficult is it to solve a given sudoku (NP)  
 - how difficult is it to generate a random, solvable Sudoku puzzle \- Boltzmann samplers  

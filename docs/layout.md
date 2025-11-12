@@ -23,30 +23,6 @@ porownanie:
 - kod, ktory dla kazdej z 256 mozliwych wartosci chara zwraca wynik funkcji vs ktory oblicza
 
 
-# Różne wyniki z teorii złożoności
-P vs FP
-TFNP, źródła niekonstruktywności (PPP, PPAD, etc.)
-Morioka: kolorowanie grafu jako przyklad problemu ktory sie nie redukuje
-self-reducibility
-relacje vs funkcje, search problems vs functional problems (cook, nguyen)
-implicit vs explicit characterizations: taki jezyk dla FP, w ktorym program to (Python, polynomial)
-co to znaczy problem FP-zupelny?
-język: problem z FP + AC0-redukcje / L-redukcje = FL-funkcje
-czy Descriptive Complexity dostarcza nam języka dla decyzyjnego P? Co to jest struktura uporzadkowana?
-
-<!-- Some properties of computer programs are so often desirable and so important that the
-designers of modern programming languages have found ways to address them successfully, notably:
-- by passing an array using a `const` pointer in C, we can "guarantee" that when array
-  is not "expected" to be modified by a function, it will actually not be.
-- by using the C++ RAII technique [1], we can practically guarantee that whenever an object is
-  expected by the programmer to be initialized, it actually will be, and that it will not dangle
-  after its lifetime causing a memory leak
-- by using monads carefully in Haskell, we can "guarantee" that a function won't have
-  unexpected side-effects such as writing to stdout -->
-
-[1] - https://en.cppreference.com/w/cpp/language/raii.html
-
-
 1. dlaczego potrzebujemy języka programowania?
    dla "czystego kodu" = argumentu poprawności programu!
    przykład: język programowania = liczba naturalna -> n-ta maszyna Turinga

@@ -1,9 +1,7 @@
 \chapter{Formalized semantics}\label{chap:formalized-semantics}
-\todo[inline]{This is work in progress, ideally should be 1 page long}
-
-The obvious approach would be to require a program in our programming language to be a pair \(F, p\),
-where \(F\) would be e.g.\ a C++ function and \(p\) would be a polynomial bounding the number
-of steps of \(F\) when executed on a normal computer. For at least \todo{careful with three}three
+One approach to certify complexity class of a program would be to require a program in
+our programming language to be accompanied by a polynomial \(p\) bounding the number
+of ``steps'' of \(F\) when executed on a standard computer. For at least \todo{careful with three}three
 reasons, such a language would not be satisfactory for us. We will explore them below.
 
 \paragraph{Lack of semantics of programming languages}
@@ -30,22 +28,18 @@ SMT-solvers for automation where possible, and allowing the user to prove the im
 where necessary~\cite{boogie11why3}\footnote{https://www.why3.org/}.
 
 \paragraph{Invisible mathematics}
-
-Few examples of concrete Turing machine definitions have been described.
-There are examples provided in\cite{KUDLEK1996241} and~\cite{ROGOZHIN1996215}.
+Few examples of concrete Turing machine definitions have been described, as
+working with them directly is greatly time-consuming and not too interesting.
+We list two sources: concrete examples were provided in\cite{KUDLEK1996241} and~\cite{ROGOZHIN1996215}.
 
 Formally defining Turing machines has been considered in~\cite{10.1007/978-3-642-32621-9_1} and,
-building on top of it,~\cite{10.1145/3372885.3373816}\footnote{This
-describes the origins of a formalization project available at:
-url{https://github.com/uds-psl/coq-library-undecidability}.
+building on top of it,~\cite{10.1145/3372885.3373816}\footnote{\url{https://github.com/uds-psl/coq-library-undecidability}.
 }.
 
 In~\autoref{par:heraud-nowak}, we briefly discuss a formalization of a characterization
-of polynomial-time functions.
+of polynomial-time functions which, however, is completely disconnected from any actual computational model.
 
 \section{Ciaffaglione's formalization of undecidability of HALT}
-Also in ciaffaglione there are some turing machines.
-
 In~\cite{CIAFFAGLIONE201631}, an elegant formalization of the undecidability of the halting problem
 is presented. The proof goes by defining simple Turing machines needed and directly proving
 results about their semantics. The code mentioned in the book, as of November 2025, is not accessible anymore.
