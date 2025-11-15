@@ -54,11 +54,11 @@ The resource interpretation is also there.
 In intuitionistic logic and the simply typed $\lambda$-calculus, assumptions in the context $\Gamma$ can be freely duplicated (contraction) or ignored (weakening). This corresponds to programs that can copy or discard variables arbitrarily.
 
 \textbf{Linear logic}, introduced by Girard, restricts these structural rules. In the corresponding $\lambda$-calculus, each variable must be used \emph{exactly once}. This leads to \textbf{linear types}, where values are treated as \emph{resources}:
-\begin{itemize}[nosep]
+\begin{enumerate}[nosep]
   \item A value must be consumed once (no weakening).
   \item A value cannot be duplicated (no contraction).
   \item The order of usage does not matter (exchange is allowed).
-\end{itemize}
+\end{enumerate}
 
 Thus, linear types provide a fine-grained way to model computation where resources (such as memory cells, channels, or tokens) cannot be copied or discarded at will. This perspective opens the door to implicit control of computational complexity, since unrestricted duplication of resources is closely related to uncontrolled growth in computation.
 

@@ -165,20 +165,19 @@ a way other than providing a full mathematical proof on the side.
 Cobham has published this algebra in~\cite{Cobham1964-COBTIC}, suggesting that it captures \complexity{FP}.
 A~proof of that is in~\cite[p. 175 / p. 186 of the PDF]{Odifreddi1999CRT2} and in~\cite[p. 608 / p. 625 of the PDF]{Tourlakis2022Computability}
 
-Other explicit characterizations include the algebraic view of polynomial-time
-functions~\cite{4568079} and, as mentioned above in~\autoref{subsec:explicit}, uniform \(\complexityi{NC}{1}\) from~\cite{COMPTON1990241},
+An important characterization is also with function algebras for decisional \complexity{L} and \complexity{P} in
+Other explicit characterizations include the algebraic view of polynomial-time~\cite{4568079}.
+Also, as mentioned above in~\autoref{subsec:explicit}, uniform \(\complexityi{NC}{1}\) from~\cite{COMPTON1990241},
 and uniform \(\complexity{NC}\) from~\cite{ALLEN19911}.
 
-\section{Implicit Computational Complexity}
-\label{sec:icc}
+\section{Implicit Computational Complexity}\label{sec:icc-rec}
 We can refine the connection given by~\autoref{thm:loop-captures-pr}. As we will see, by carefully modifying the schemes of
 recursion and composition, we can obtain characterizations of complexity classes such as \complexity{L} and \complexity{P}.
 
-The modern study of ICC begins with two breakthroughs:
-\cite{151625}~and~\cite{10.1007/BF01201998}
+The modern study of ICC begins with two breakthroughs:~\cite{151625}~and~\cite{10.1007/BF01201998}
 gave the first implicit characterisations of polynomial-time computable functions.
 Since then, numerous classes have been captured implicitly; see, for
-example, \cite{NIGGL201047}~and~\cite{10.1016/j.ic.2015.12.009}
+example,~\cite{NIGGL201047}~and~\cite{10.1016/j.ic.2015.12.009}
 for overviews of \(\complexity{FPTIME}\) and \(\complexity{FNC}\) characterisations.
 However, the idea of Bellantoni and Cook seemed to best align with being the foundation
 of a practical programming language. Hence, we decided to solely focus on it and its successors.

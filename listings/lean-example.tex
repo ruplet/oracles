@@ -1,0 +1,38 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZhy{}\PYZhy{} D1. x ≠ 0 → ∃ y ≤ x, x = y + 1  (Predecessor)}
+\PY{c+c1}{\PYZhy{}\PYZhy{} proof: induction on x}
+\PY{k+kn}{theorem}\PY{+w}{ }\PY{n}{pred\PYZus{}exists}\PY{+w}{ }\PY{o}{:}
+\PY{+w}{  }\PY{n+nb+bp}{∀}\PY{+w}{ }\PY{o}{\PYZob{}}\PY{n}{x}\PY{+w}{ }\PY{o}{:}\PY{+w}{ }\PY{n}{M}\PY{o}{\PYZcb{}}\PY{o}{,}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n+nb+bp}{≠}\PY{+w}{ }\PY{l+m+mi}{0}\PY{+w}{ }\PY{n+nb+bp}{→}\PY{+w}{ }\PY{n+nb+bp}{∃}\PY{+w}{ }\PY{n}{y}\PY{+w}{ }\PY{n+nb+bp}{≤}\PY{+w}{ }\PY{n}{x}\PY{o}{,}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n+nb+bp}{=}\PY{+w}{ }\PY{n}{y}\PY{+w}{ }\PY{n+nb+bp}{+}\PY{+w}{ }\PY{l+m+mi}{1}\PY{+w}{ }\PY{o}{:=}
+\PY{k}{by}
+\PY{+w}{  }\PY{k}{let}\PY{+w}{ }\PY{n}{ind1}\PY{+w}{ }\PY{o}{:}\PY{+w}{ }\PY{n}{peano}\PY{n+nb+bp}{.}\PY{n}{Formula}\PY{+w}{ }\PY{o}{(}\PY{n}{Vars2}\PY{+w}{ }\PY{n+nb+bp}{.}\PY{n}{y}\PY{+w}{ }\PY{n+nb+bp}{.}\PY{n}{x}\PY{o}{)}\PY{+w}{ }\PY{o}{:=}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n+nb+bp}{=}\PY{n+nb+bp}{\PYZsq{}}\PY{+w}{ }\PY{o}{(}\PY{n}{y}\PY{+w}{ }\PY{n+nb+bp}{+}\PY{+w}{ }\PY{l+m+mi}{1}\PY{o}{)}
+\PY{+w}{  }\PY{k}{let}\PY{+w}{ }\PY{n}{ind2}\PY{+w}{ }\PY{o}{:}\PY{+w}{ }\PY{n}{peano}\PY{n+nb+bp}{.}\PY{n}{Formula}\PY{+w}{ }\PY{o}{(}\PY{n}{Vars1}\PY{+w}{ }\PY{n+nb+bp}{.}\PY{n}{x}\PY{o}{)}\PY{+w}{ }\PY{o}{:=}
+\PY{+w}{    }\PY{o}{(}\PY{n}{Formula}\PY{n+nb+bp}{.}\PY{n}{iBdEx\PYZsq{}}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{o}{(}\PY{n}{display2}\PY{+w}{ }\PY{n+nb+bp}{.}\PY{n}{y}\PY{+w}{ }\PY{n}{ind1}\PY{o}{)}\PY{n+nb+bp}{.}\PY{n}{flip}\PY{o}{)}
+\PY{+w}{  }\PY{k}{let}\PY{+w}{ }\PY{n}{ind}\PY{+w}{ }\PY{o}{:=}\PY{+w}{ }\PY{n}{idelta0}\PY{n+nb+bp}{.}\PY{n}{delta0\PYZus{}induction}\PY{+w}{ }\PY{n+nb+bp}{\PYZdl{}}\PY{+w}{ }\PY{n}{display1}\PY{+w}{ }\PY{n+nb+bp}{\PYZdl{}}\PY{+w}{ }\PY{o}{(}\PY{n}{x}\PY{+w}{ }\PY{n+nb+bp}{≠}\PY{n+nb+bp}{\PYZsq{}}\PY{+w}{ }\PY{l+m+mi}{0}\PY{o}{)}\PY{+w}{ }\PY{n+nb+bp}{⟹}\PY{+w}{ }\PY{n}{ind2}
+
+\PY{+w}{  }\PY{n}{unfold}\PY{+w}{ }\PY{n}{ind2}\PY{+w}{ }\PY{n}{ind1}\PY{+w}{ }\PY{k}{at}\PY{+w}{ }\PY{n}{ind}
+
+\PY{+w}{  }\PY{n}{specialize}\PY{+w}{ }\PY{n}{ind}\PY{+w}{ }\PY{o}{(}\PY{k}{by}
+\PY{+w}{    }\PY{n}{rw}\PY{+w}{ }\PY{o}{[}\PY{n}{IsDelta0}\PY{n+nb+bp}{.}\PY{n}{display1}\PY{o}{]}
+\PY{+w}{    }\PY{c+c1}{\PYZhy{}\PYZhy{} TODO: this lemma can\PYZsq{}t be in @[delta0\PYZus{}simps],}
+\PY{+w}{    }\PY{c+c1}{\PYZhy{}\PYZhy{} as it creates a goal \PYZsq{}φ.IsOpen\PYZsq{} \PYZhy{} which might be not true!}
+\PY{+w}{    }\PY{n}{rw}\PY{+w}{ }\PY{o}{[}\PY{n}{IsDelta0}\PY{n+nb+bp}{.}\PY{n}{of\PYZus{}open}\PY{n+nb+bp}{.}\PY{n}{imp}\PY{o}{]}
+\PY{+w}{    }\PY{n+nb+bp}{·}\PY{+w}{ }\PY{n}{constructor}
+\PY{+w}{      }\PY{n+nb+bp}{·}\PY{+w}{ }\PY{n}{unfold}\PY{+w}{ }\PY{n}{Term}\PY{n+nb+bp}{.}\PY{n}{neq}
+\PY{+w}{        }\PY{n}{rw}\PY{+w}{ }\PY{o}{[}\PY{n}{IsDelta0}\PY{n+nb+bp}{.}\PY{n}{of\PYZus{}open}\PY{n+nb+bp}{.}\PY{n}{not}\PY{o}{]}
+\PY{+w}{        }\PY{n}{constructor}\PY{n+nb+bp}{;}\PY{+w}{ }\PY{n}{constructor}\PY{n+nb+bp}{;}\PY{+w}{ }\PY{n}{constructor}
+\PY{+w}{        }\PY{n}{constructor}\PY{n+nb+bp}{;}\PY{+w}{ }\PY{n}{constructor}
+\PY{+w}{      }\PY{n+nb+bp}{·}\PY{+w}{ }\PY{n}{constructor}
+\PY{+w}{    }\PY{n+nb+bp}{·}\PY{+w}{ }\PY{n}{unfold}\PY{+w}{ }\PY{n}{Term}\PY{n+nb+bp}{.}\PY{n}{neq}
+\PY{+w}{      }\PY{n}{rw}\PY{+w}{ }\PY{o}{[}\PY{n}{IsOpen}\PY{n+nb+bp}{.}\PY{n}{not}\PY{o}{]}
+\PY{+w}{      }\PY{n}{constructor}\PY{n+nb+bp}{;}\PY{+w}{ }\PY{n}{constructor}
+\PY{+w}{  }\PY{o}{)}
+\PY{+w}{  }\PY{n}{simp\PYZus{}induction}\PY{+w}{ }\PY{k}{at}\PY{+w}{ }\PY{n}{ind}
+
+\PY{+w}{  }\PY{n}{apply}\PY{+w}{ }\PY{n}{ind}\PY{+w}{ }\PY{n+nb+bp}{?}\PY{n}{base}\PY{+w}{ }\PY{n+nb+bp}{?}\PY{n}{step}\PY{+w}{ }\PY{n+nb+bp}{\PYZlt{}}\PY{n+nb+bp}{;}\PY{n+nb+bp}{\PYZgt{}}\PY{+w}{ }\PY{n}{clear}\PY{+w}{ }\PY{n}{ind}\PY{+w}{ }\PY{n}{ind1}\PY{+w}{ }\PY{n}{ind2}
+\PY{+w}{  }\PY{n+nb+bp}{·}\PY{+w}{ }\PY{n}{simp}\PY{+w}{ }\PY{n}{only}\PY{+w}{ }\PY{o}{[}\PY{n}{IsEmpty}\PY{n+nb+bp}{.}\PY{n}{forall\PYZus{}iff}\PY{o}{]}
+\PY{+w}{  }\PY{n+nb+bp}{·}\PY{+w}{ }\PY{n}{intro}\PY{+w}{ }\PY{n}{a}\PY{+w}{ }\PY{n}{hind}\PY{+w}{ }\PY{n}{h}
+\PY{+w}{    }\PY{n}{exists}\PY{+w}{ }\PY{n}{a}
+\PY{+w}{    }\PY{n}{constructor}
+\PY{+w}{    }\PY{n+nb+bp}{·}\PY{+w}{ }\PY{n}{exact}\PY{+w}{ }\PY{n}{B8}\PY{+w}{ }\PY{n}{a}\PY{+w}{ }\PY{l+m+mi}{1}
+\PY{+w}{    }\PY{n+nb+bp}{·}\PY{+w}{ }\PY{n}{rfl}
+\end{Verbatim}

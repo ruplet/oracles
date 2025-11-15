@@ -167,7 +167,7 @@ the complexity of sets, Borel sets are considered:
 \begin{definition*}[Borel sets]
 Let \(X\) be a topological space. The class of Borel sets of \(X\), \(\mathcal{B}(X)\) is the smallest class of sets
 containing every open set of \(X\) and closed under~\ref{itm:borel-comp} and~\ref{itm:borel-union}:
-\begin{enumerate}[label= (\roman*), ref= (\roman*)]
+\begin{enumerate}
     \item\label{itm:borel-comp} if \(A\) is Borel, then its complement \(X \setminus A\) is Borel;
     \item\label{itm:borel-union} if \(A_n\) is Borel for each \(n \in \mathbb{N}\), then the countable union \(\bigcup_{n \in \mathbb{N}} A_n\) is Borel.
 \end{enumerate}
@@ -193,9 +193,8 @@ the unprovability of the related pigeonhole principle in the weak theories studi
 Especially the last fact about unprovability is interesting for us in this section,
 as it resembles e.g.\ independence of continuum hypothesis from ZFC, but in a strictly computational setting
 of not being able to perform enough computation in a low complexity class.
-% This is also a hint that going this route, a collection of powerful tools used in logic to prove
-% independence, will become available to us as tools for proving a problem not being solvable
-% in a given complexity class.
+\todo[inline]{(optional) The forcing technique used originally by Cohen to prove the mentioned independence,
+turns out to also be useful for the theory of computation, as discussed in~\autoref{subsec:oracle-forcing}.}
 
 While this line of thought is very far from ``practical programming languages'', these considerations
 inspired\footnote{This line of study grew out of presenting the topic
@@ -206,8 +205,8 @@ the approach that we study in~\autoref{chap:bounded-arithmetic}.
 
 % \section{Models of hypercomputation}
 % Notes (for future work):
-% \begin{itemize}
+% \begin{enumerate}
 % \item Sequential Time. An algorithm determines a sequence of computational
 % states for each valid input. Specifically, the time is discrete. what if time is not a successor structure? i.e. we can travel back in Time
 % \item Malament-Hogarth spacetime.
-% \end{itemize}
+% \end{enumerate}

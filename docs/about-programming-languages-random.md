@@ -7,8 +7,6 @@ can use set theory for this\!
 8. a jak się mają inne aksjomaty z matematyki do obliczeń? Implementation of forcing in Coq as a program transformation and show a proof of the negation of CH  \- zrobiłem cały przedmiot Set Theory, żeby zrozumieć forcing
 
 
-
-
 Type system  
 What does it mean that a type theory is NP-complete?  
 What does it mean that dependent types express universal quantification?  

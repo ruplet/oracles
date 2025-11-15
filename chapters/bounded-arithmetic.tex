@@ -8,6 +8,12 @@
 \subsection{Pigeonhole principle}\label{subsec:vac0-php}
 \todo[inline]{Here we cite the result that \(\texttt{VAC}^0 \nvdash \texttt{PHP}\)}
 
+
+\begin{rawlisting}
+\input{listings/lean-example.tex}
+\caption{Lean example}\label{lst:lean-example}
+\end{rawlisting}
+
 %  Find IDelta0 and that it can't express exp function. Look for
 %  Find Buss' PV theories and Cook's $V^i$ hierachy.
 %  ważne: Cook and Urquhart's theory IPV
@@ -35,7 +41,7 @@
 % In MIT reading group notes released in July 2025~\cite{Li2025FeasibleMathematics}, the authors show how the equational theory PV
 % can be used to simulate set theory, an imperative programming language, and Hoare semantics for it.
 
-% \begin{itemize}
+% \begin{enumerate}
 %   \item \textbf{Programmable data structures with internal correctness proofs.} \\
 %   Lists and maps are defined within PV or PV-PL together with proofs of their intended properties. Meta-theorems support recursion and induction on lists, analogous to the existing recursion and induction rules over strings.
 
@@ -50,7 +56,7 @@
 
 %   \item \textbf{Proof methodology.} \\
 %   All arguments are written as ``pseudo-proofs'' in structured natural language, which can be directly translated into proof trees in PV-PL and then into formal PV proofs via the translation theorem.
-% \end{itemize}
+% \end{enumerate}
 
 % \noindent
 % For precise formal definitions and proofs, see Chapter~4 of the book.
@@ -88,7 +94,7 @@
 % \noindent\textbf{Hoare semantics in PV-PL.}
 % A Hoare triple \(\{\,\varphi_1\,\}\ c\ \{\,\varphi_2\,\}\) uses PV-PL formulas \(\varphi_1,\varphi_2\). The rules we rely on are:
 
-% \begin{itemize}
+% \begin{enumerate}
 %   \item \emph{Consequence:} if \( \mathrm{PV\mbox{-}PL} \vdash \varphi_1 \Rightarrow \varphi'_1 \) and \( \mathrm{PV\mbox{-}PL} \vdash \varphi'_2 \Rightarrow \varphi_2 \), then
 %   \[
 %     \dfrac{\{\varphi'_1\}\ c\ \{\varphi'_2\}}{\{\varphi_1\}\ c\ \{\varphi_2\}}.
@@ -108,7 +114,7 @@
 %   \dfrac{\{\ \varphi[x/s_i(x)]\ \}\ c\ \{\ \varphi\ \}}
 %         {\{\ \varphi[x/e]\ \}\ \texttt{for }x := e;\ x\neq\varepsilon;\ x := \mathrm{TR}(x)\ \texttt{do } c\ \{\ \varphi[x/\varepsilon]\ \}}.
 %   \]
-% \end{itemize}
+% \end{enumerate}
 
 % \medskip
 % \noindent\textbf{Example (length-by-iteration).}
@@ -138,10 +144,10 @@
 
 % \medskip
 % \noindent\textbf{Two preservation properties we will cite (not re-prove here).}
-% \begin{itemize}
+% \begin{enumerate}
 %   \item \emph{Length preservation:} for any \((P,\omega)\), the translation \(\ensuremath{[P]_{PV}}\) enforces \(x_i=\mathrm{Suf}(x_i,\omega)\) at the end for every program variable (proved by structural induction on \(P\)).
 %   \item \emph{Proof preservation:} a derivation of \(\{\,\varphi_1\,\}(P,\omega)\{\,\varphi_2\,\}\) yields a PV-PL derivation of the corresponding assertion obtained by substituting variables with tuple components and interpreting \(P\) as \(\ensuremath{[P]_{PV}}\).
-% \end{itemize}
+% \end{enumerate}
 % Both statements, and the admissibility of the Hoare rules under this translation, are established in the chapter.
 
 % \medskip

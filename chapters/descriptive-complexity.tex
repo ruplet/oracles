@@ -1,52 +1,403 @@
 \chapter{Descriptive Complexity}\label{chap:descriptive-complexity}
-% TODO: FO(LFP) = Datalog;
-% For example, Datalog is known to capture precisely the same predicates about the input as PTIME
-% \cite[Theorem 4.4]{10.1145/502807.502810}
+In the rest of this book, we usually measure complexity of algorithms:
+how much time and memory will a given algorithm need to run to solve a problem of size \(n\)?
+In this chapter we will instead focus on the complexity of defining the problem itself.
 
-% TODO: literature review https://plato.stanford.edu/archives/win2017/entries/computational-complexity/#DesCom
-
-% \section{Descriptive Complexity: An Overview}
-
-% \todo[inline]{glue the below 2 paragraphs}
-% Descriptive complexity is a branch of complexity theory that uses sentences in finite model theory
-% to describe computational queries.
-% In descriptive complexity theory, an object (e.g., a set of graphs) in
-% a complexity class is specified as the set of all finite models of a given
-% formula. In this work, we only consider the case where the object is a language 
-% \(L \subseteq \{0,1\}^*\) and the model is a finite binary string.
-
-\todo{rewrite, plagiarism form stanford}
-As we have seen, a problem X is taken to be ``complex'' in the sense of computational 
-complexity theory in proportion to how difficult it is to decide algorithmically. On
-the other hand, descriptive complexity takes a problem to be ``complex'' in proportion
-to the logical resources which are required to describe its instances. In other words,
-the descriptive complexity of X is measured according to the sort of formulas
-which is needed to define its instances relative to an appropriate background
-class of finitary structures.
-
-The central problem of descriptive complexity is to characterize a
+The central problem of Descriptive Complexity is to characterize a
 complexity class by the \emph{power of logic required to define its problems}.
-This is in contrast to \emph{Implicit Complexity Theory}, discussed later,
+This is in contrast to \emph{Implicit Complexity Theory}, discussed later in~\autoref{sec:icc-rec}
+and~\autoref{sec:icc-linear},
 which seeks the weakest system sufficient to \emph{implement algorithms}
 of the class; and in contrast to \emph{Bounded Arithmetic}, which studies
 the weakest \emph{theory} required to define a function \emph{and prove its correctness}.
 This perspective has led to elegant logical characterizations of many traditional
-complexity classes.
+complexity classes, as we will discuss in~\autoref{sec:descriptive-results}.
 
-% representation of a problem: bit, +, < *, etc.
-% <!-- IMPORTANT: what is bit? what is <=, +, -.
+\begin{remark}
+In Descriptive Complexity, there is no notion of proofs of the sentences that we will study.
+The problem of deciding if a given sentence is a tautology assuming
+a particular proof system, is completely independent of this chapter's considerations,
+and will be studied by us only in~\autoref{chap:bounded-arithmetic}.
+\end{remark}
+
+\section{Preliminaries}
+Most of the results we will talk about in this chapter are from~\cite{Immerman1999-IMMDC}.
+However, the definitions in this section are in the style of~\cite{Cook_Nguyen_2010},
+which is different to the style in~\cite{Immerman1999-IMMDC}.
+The reason is that these definitions are equivalent anyway, and
+results from~\cite{Cook_Nguyen_2010} will be more important for us, as they
+underlie the main content of this work, discussed in~\autoref{chap:bounded-arithmetic}.
+
+Here, we solely focus on single-sorted, first-order languages and don't introduce the similar
+definitions of propositional calculus and second-order logic. The semantics is entirely classical
+(in the sense of classical and intuitionistic logic).
+
+\begin{definition}[First-order vocabulary and syntax]
+A \emph{first-order vocabulary} (or \emph{language}) $\mathcal{L}$ consists of:
+\begin{enumerate}
+  \item For each $n \ge 0$, a (possibly empty) set of $n$-ary \emph{function symbols}.
+        We use $f,g,h,\dots$ as meta-variables for function symbols.
+        A $0$-ary function symbol is called a \emph{constant symbol};
+  \item For each $n \ge 0$, a set of $n$-ary \emph{predicate symbols}, which is
+        nonempty for at least one $n$.
+        We use $P,Q,R,\dots$ as meta-variables for predicate symbols.
+\end{enumerate}
+
+In addition, the following logical symbols are available to build first-order
+terms and formulas:
+\begin{enumerate}
+  \item An infinite set of \emph{variables}. We use $x,y,z,\dots$ and sometimes
+        $a,b,c,\dots$ as meta-variables for variables;
+  \item The connectives $\lnot$, $\land$, $\lor$ (not, and, or) and
+        logical constants $\bot$, $\top$ (False, True);\todo{consistency: semicolon in enumerate}
+  \item The quantifiers $\forall$, $\exists$ (for all, there exists);
+  \item Parentheses $(\, ,\,)$.
+\end{enumerate}
+\end{definition}
+
+% Expressive power of different possibilities
+% \item $\text{FO}[+, *] = \text{FO}[\mathrm{BIT}]: Section~1.2.1 Immerman $.
+% \item $\text{FO}[+]$ is less expressive than $\text{FO}[<, *] = \text{FO}[<, /] = \text{FO}[<, \mathrm{COPRIME}]$~\cite{10.1002/malq.200310041}.
+
+
+
+\begin{definition}[$\mathcal{L}$-terms]
+Let $\mathcal{L}$ be a first-order vocabulary.
+The set of \emph{$\mathcal{L}$-terms} is defined inductively as follows:
+\begin{enumerate}
+  \item Every variable is an $\mathcal{L}$-term;
+  \item If $f$ is an $n$-ary function symbol of $\mathcal{L}$ and
+        $t_1,\dots,t_n$ are $\mathcal{L}$-terms, then
+        \[
+          f(t_1 \dots t_n)
+        \]
+        is an $\mathcal{L}$-term.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[$\mathcal{L}$-formulas]
+Let $\mathcal{L}$ be a first-order vocabulary.
+The set of \emph{first-order formulas in $\mathcal{L}$} (or
+\emph{$\mathcal{L}$-formulas}) is defined
+inductively as follows:
+\begin{enumerate}
+  \item The logical constants $\bot$ and $\top$ are atomic formulas;
+  \item If $P$ is an $n$-ary predicate symbol in $\mathcal{L}$ and
+        $t_1,\dots,t_n$ are $\mathcal{L}$-terms, then
+        \[
+          P(t_1 \dots t_n)
+        \]
+        is an \emph{atomic} $\mathcal{L}$-formula;
+  \item If $A$ and $B$ are $\mathcal{L}$-formulas, then
+        $\lnot A$, $(A \land B)$, and $(A \lor B)$ are $\mathcal{L}$-formulas;
+  \item If $A$ is an $\mathcal{L}$-formula and $x$ is a variable, then
+        $\forall x\,A$ and $\exists x\,A$ are $\mathcal{L}$-formulas.
+\end{enumerate}
+For example,
+\[
+  (\lnot \forall x\,P x \,\lor\, \exists x\,\lnot P x)
+  \quad\text{and}\quad
+  (\forall x\,\lnot P x y \,\land\, \lnot \forall z\,P f y z)
+\]
+are $\mathcal{L}$-formulas (for suitable choices of $P$ and $f$ in $\mathcal{L}$).
+\end{definition}
+
+\begin{definition}[Free and bound variables]\label{def:free-bound}
+Let $A$ be a formula and $x$ a variable.
+An occurrence of $x$ in $A$ is \emph{bound} if it lies within a subformula
+of $A$ of the form $\forall x\,B$ or $\exists x\,B$.
+Any other occurrence of $x$ in $A$ is called \emph{free}.
+\end{definition}
+
+\begin{definition}[Closed terms, closed formulas, sentences]\label{def:closed-sentence}
+A formula is \emph{closed} if it contains no free occurrence of any variable.
+A term is \emph{closed} if it contains no variables at all.
+A closed formula is also called a \emph{sentence}.
+\end{definition}
+
+\begin{definition}[$\mathcal{L}$-structure]\label{def:L-structure}
+Let $\mathcal{L}$ be a first-order vocabulary.
+An \emph{$\mathcal{L}$-structure} $\mathcal{M}$ consists of:
+\begin{enumerate}
+  \item A nonempty set $M$, called the \emph{universe}
+        (Variables are intended to range over $M$.);
+  \item For each $n$-ary function symbol $f$ in $\mathcal{L}$, an associated function
+        \(
+          f^{\mathcal{M}} : M^n \to M
+        \);
+  \item For each $n$-ary predicate symbol $P$ in $\mathcal{L}$, an associated relation
+        \(
+          P^{\mathcal{M}} \subseteq M^n
+        \).
+\end{enumerate}
+\end{definition}
+
+\begin{remark}
+    Note that to ``syntactical'' relations, we assign ``real'' relations defined on
+    the underlying elements of the structure. We will want to treat some of these
+    relations specially, e.g.\ to make sure that the ``\(=\)'' relation is
+    interpreted as the actual equality, or that a designated ``\(\text{PLUS}(x, y, z)\)''
+    relation holds only if the underlying objects are actual natural numbers,
+    for which we have $x + y = z$.
+% Thus the predicate symbol $=$ receives special treatment: it must always be
+% interpreted as actual equality on the universe. We can also consider
+% logics where we don't take the $=$ symbol as granted. For our purposes, however,
+% the things we will be able to say about the class of models of a given formula
+% will be more interesting if we already assume that whenever $p = q$ holds
+% in the structure, then the underlying objects of the universe are also equal
+% (in the meta-mathematical sense).
+\end{remark}
+
+
+\begin{definition}[Object Assignment]
+Let $\mathcal{M}$ be a structure with universe $M$.  
+An \emph{object assignment} \(\sigma\) for $\mathcal{M}$ is a mapping
+from variables to the universe $M$.
+\end{definition}
+
+\begin{remark}
+Notation: Let $x$ be a variable and $m \in M$.  
+We write $\sigma(m/x)$ for the
+assignment that is the same as $\sigma$ except that it maps $x$ to $m$:
+\end{remark}
+
+\begin{definition}[Basic Semantic Definition]
+Let $L$ be a first-order vocabulary, let $\mathcal{M}$ be an $L$-structure
+with universe $M$, and let $\sigma$ be an object assignment for $\mathcal{M}$.
+
+\paragraph{Interpretation of terms.}
+Each $L$-term $t$ is assigned an element $t^{\mathcal{M}}[\sigma] \in M$,
+defined by structural induction on $t$:
+\begin{enumerate}
+  \item For each variable $x$,
+  \(
+    x^{\mathcal{M}}[\sigma] = \sigma(x).
+  \)
+  \item 
+  \(
+    (f t_1 \dots t_n)^{\mathcal{M}}[\sigma]
+      = f^{\mathcal{M}}\bigl(t_1^{\mathcal{M}}[\sigma],\dots,t_n^{\mathcal{M}}[\sigma]\bigr).
+  \)
+\end{enumerate}
+
+\paragraph{Satisfaction of formulas.}
+For an $L$-formula $A$, the relation
+\[
+  \mathcal{M} \models A[\sigma]
+\]
+(read: ``$\mathcal{M}$ satisfies $A$ under $\sigma$'') is defined by structural
+induction on $A$:
+\begin{enumerate}
+  \item $\mathcal{M} \models \top$ and $\mathcal{M} \not\models \bot$.
+  \item For an atomic formula $P t_1 \dots t_n$ (with $P$ an $n$-ary
+        predicate symbol),
+  \[
+    \mathcal{M} \models (P t_1 \dots t_n)[\sigma]
+    \;\;\text{iff}\;\;
+    \bigl\langle t_1^{\mathcal{M}}[\sigma],\dots,t_n^{\mathcal{M}}[\sigma]\bigr\rangle
+    \in P^{\mathcal{M}}.
+  \]
+  \item If $L$ contains $=$, then for terms $s,t$,
+  \[
+    \mathcal{M} \models (s = t)[\sigma]
+    \;\;\text{iff}\;\;
+    s^{\mathcal{M}}[\sigma] = t^{\mathcal{M}}[\sigma].
+  \]
+  \item $\mathcal{M} \models \neg A[\sigma]$ iff $\mathcal{M} \not\models A[\sigma]$.
+  \item $\mathcal{M} \models (A \lor B)[\sigma]$ iff
+        $\mathcal{M} \models A[\sigma]$ or $\mathcal{M} \models B[\sigma]$.
+  \item $\mathcal{M} \models (A \land B)[\sigma]$ iff
+        $\mathcal{M} \models A[\sigma]$ and $\mathcal{M} \models B[\sigma]$.
+  \item $\mathcal{M} \models (\forall x\,A)[\sigma]$ iff
+        $\mathcal{M} \models A[\sigma(m/x)]$ for all $m \in M$.
+  \item $\mathcal{M} \models (\exists x\,A)[\sigma]$ iff
+        $\mathcal{M} \models A[\sigma(m/x)]$ for some $m \in M$.
+\end{enumerate}
+
+\noindent
+If $t$ is a closed term (i.e.\ contains no variables), then $t^{\mathcal{M}}[\sigma]$
+is independent of $\sigma$, and we simply write $t^{\mathcal{M}}$.
+Similarly, if $A$ is a sentence (i.e.\ has no free variables), we often write
+$\mathcal{M} \models A$ instead of $\mathcal{M} \models A[\sigma]$, since
+the choice of $\sigma$ does not matter.
+\end{definition}
+
+
+\begin{example}
+    \todo[inline]{Show example how we define a graph as a logical structure. Point out that
+    the description of the structure goes completely in the meta-theory (in natural language).
+    }
+\end{example}
+\begin{example}
+\todo[inline]{Sentence that holds in even models (unordered)}
+\end{example}
+\begin{example}
+\todo[inline]{Sentence that holds when s, t vertices are connected - unordered data structure}
+\end{example}
+\begin{example}
+\todo[inline]{Sentence that holds in 01* strings of some sort}
+\end{example}
+
+\subsection{Structures considered}
+% IMPORTANT: what is bit? what is <=, +, -.
 % section 1.2 of immerman
 % bit(i, 0) holds iff i is odd.
 % PLUS(i, j, k) meaning i + j = k
 % 2. TIMES(i, j, k) meaning i x j = k
-% 3. BIT(i, j) meaning bit j in the binary representation of i is  -->
+% 3. BIT(i, j) meaning bit j in the binary representation of i is
 
-% <!-- this PLUS, TIMES seems to be like operations on unary numbers. This is unary numbers because we can only do it up until `n` (because we only have forall x, PLUS(x), PLUS(0), PLUS(1), PLUS(max),...) -->
+% this PLUS, TIMES seems to be like operations on unary numbers. 
+% This is unary numbers because we can only do it up until `n` 
+% (because we only have forall x, PLUS(x), PLUS(0), PLUS(1), PLUS(max),...)
+In this chapter, we only study structures that satisfy the following criteria:
+\begin{enumerate}
+    \item \todo[inline]{finish this}
+    \item ordered
+    \item at least 2 elements
+\end{enumerate}
+For discussion on reasonability of these assumptions,
+see~\cite[Proviso~1.14]{Immerman1999-IMMDC} and~\cite[Proviso~1.15]{Immerman1999-IMMDC}.
 
 
-\begin{example}
 
-\end{example}
+\begin{remark}[Ordered and Unordered Structures]
+Question 12.1. Is there a recursively enumerable listing of a set of sentences
+from FO(LFP) that describes exactly all the polynomial-time, order-independent
+boolean queries?
+Fagin's theorem (Theorem 7.8) does not require an ordering because second-order ex-
+istentiallogic is powerful enough to existentially quantify a linear ordering on the universe,
+which the original proof of Fagin's Theorem does.
+
+\paragraph{The Quest for a Logic Capturing \complexity{PTIME}}
+Without an explicit ordering, \(\mathrm{FO[LFP]}\) does \textbf{not} capture
+\(\complexity{PTIME}\)~\cite{Cai1992}.
+The existence of a logic that characterizes \(\complexity{PTIME}\) on
+\emph{unordered structures} remains a major open problem in computer science as of 2025.
+An interesting complexity class is \complexity{inv-P} of permutation-invariant polynomial-time problems.
+A good overview of this problem is~\cite[Chapter 12, The Role of Ordering]{Immerman1999-IMMDC}.
+\end{remark}
+
+
+    
+
+
+
+
+
+
+\section{First-order expressible decisional problems}
+The definition below is from~\cite[Definition~4.24]{Immerman1999-IMMDC}.
+
+\begin{definition}[\texorpdfstring{\(\complexity{FO}[t(n)]\)-complexity}{FO[t (n)]-complexity}]
+Let $\mathcal{L}$ be a vocabulary and let $S$ be an $\mathcal{L}$-structure.  
+We say that $S$ is a member of $\mathrm{FO}[t(n)]$ iff there exist
+
+\todo{will this be roman with my driver.tex settings?}
+\todo{consistency: bar c vs c1, c2,...,ck.}
+\begin{enumerate}
+  \item quantifier-free $\mathcal{L}$-formulas $M_i$ ($0 \le i \le k$);
+  \item a tuple $\bar c$ of constants, and
+  \item a quantifier block
+  \[
+     QB \;=\; (Q_1 x_1 . M_1)\,\dots\,(Q_k x_k . M_k)
+  \]
+\end{enumerate}
+
+such that for all $\mathcal{L}$-structures $\mathcal{A}$,
+\[
+  \mathcal{A} \in S
+  \quad\Longleftrightarrow\quad
+  \mathcal{A} \models \bigl([QB]^{\,t(|A|)} M_0\bigr)(\bar c/\bar x).
+\]
+
+The substitution of constants $\bar c/\bar x$ is needed because the quantifier block
+$QB$ may contain free variables that must be instantiated in order to obtain
+a sentence. Note that even though the expression grows with \(k\),
+the overall number of variables of the formula is constant, as it is a constant
+quantifier block \(QB\) being iterated.
+
+For our purposes, the most important case is \(t(n) = \bigO(1)\), then \(FO[t(n)] = FO[1]\)
+for any input structure size uses exactly the same formula.
+\end{definition}
+
+
+
+
+
+
+
+
+\section{Defining functional problems in logic}
+
+\subsection{\complexity{FO}-reductions}
+Historically, introduced as the class of first-order queries
+in~\cite[Definition~1.26]{IMMERMAN198686}.
+
+\todo[inline]{semantic notion of definability, i.e. a function is definable means}
+its graph is expressible by a formula in some logic.
+
+This characterization will later be used (Definition~V.2.3 in~\cite{Cook_Nguyen_2010})
+to define functions in \(\complexityi{FAC}{0}\) as those of polynomially bounded output length
+whose \emph{bit-graphs} lie in \(\complexityi{AC}{0}\).
+That is how we will transition to studying functional complexity classes.
+
+\subsection{First-Order Projections (fops)}
+
+First-order projections (fops) and quantifier-free projections (qfps) are
+defined in~\cite[Definition~11.7]{Immerman1999-IMMDC}.
+
+The following interesting property of first-order projections, which says that
+there is only one complete problem via first-order projections for each ``nice''
+complexity class.
+Let \(\texttt{C}\) be one of the complexity classes \complexityi{NC}{1}, \complexity{L}, \complexity{NL},
+\complexity{P}, \complexity{NP}, \complexity{PSPACE}.
+Let \(\texttt{A}\) and \(\texttt{B}\) be problems complete for \complexity{C} via fops. Then there is a first-order
+definable isomorphism between \(\texttt{A}\) and \(\texttt{B}\)~\cite[Fact~11.16]{Immerman1999-IMMDC}.
+
+Most of natural NP-complete problems are already complete under fops.
+SAT is NP-complete via fops and, in fact, via qfps~\cite[Proposition~11.10]{Immerman1999-IMMDC}.
+
+There is a problem \(\texttt{S}\) that is \complexity{NP}-complete via first-order
+reductions, but not via fops\cite[Proposition~11.14]{Immerman1999-IMMDC}.
+
+
+% definition of fo-projection, of uniformity and of ac0:definition 6,  https://drops.dagstuhl.de/storage/00lipics/lipics-vol062-csl2016/LIPIcs.CSL.2016.20/LIPIcs.CSL.2016.20.pdf
+
+\subsection{FO transductions}
+Defined e.g.\ in~\cite[Section~2]{nesetril2021structuralpropertiesfirstordertransduction}. They are,
+however, completely different anything we study in this work and are defined as compositions of
+\emph{copying}, \emph{coloring} and \emph{simple interpretations}, which we will not discuss.
+
+\subsection{MSO transductions}
+Defined e.g.\ in~\cite[Section~2]{COURCELLE199453}.\todo[inline]{Write one paragraph about what it is, don't define}
+% https://www.mimuw.edu.pl/~bojan/posts/who-to-cite-mso-transductions
+
+
+
+% TODO: Describe FO-uniformity via first-order queries $I : \mathrm{STRUC}[ts] \rightarrow \mathrm{STRUC}[tc]$ with $I(0^n) = C_n$ (Definition~5.16 in~\cite{Immerman1999-IMMDC}).
+% TODO: Restate that FO-reductions are defined as first-order queries (Definition~1.26 in~\cite{Immerman1999-IMMDC}).
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Results}\label{sec:descriptive-results}
+
+\subsection{FO = AC0}\label{sec:fo-eq-ac0}
+This is stated by~\cite[Corollary~5.32]{Immerman1999-IMMDC}, which is
+implied from~\cite[Theorem~5.22]{Immerman1999-IMMDC} and earlier from~\cite[Theorem~5.2]{Immerman1999-IMMDC}.
+For comparison of their definition of \complexity{FO}-uniform \complexityi{AC}{0} and ours, refer to~\cite[Definition~5.17]{Immerman1999-IMMDC}
+and~\autoref{def:aci}.
+% FO is in AC:~\cite[Lemma~5.4]{Immerman1999-IMMDC}.
+% AC is in FO:~\cite[Lemma~5.3]{Immerman1999-IMMDC} for ind in fo, then~\cite[Lemma~4.25]{Immerman1999-IMMDC}.
 
 As an example, Grädel's Theorem in descriptive complexity states that
 \(\complexity{NL}\) is the class of finite models of the second-order Krom formulas
@@ -72,36 +423,42 @@ Similar results exist for most commonly studied complexity classes:
 For an accessible introduction, see the classical and self-contained reference
 by Immerman~\cite{Immerman1999-IMMDC}.
 
-% -------------------------------------------------
-\subsection{Ordered and Unordered Structures}
-
-Most of the results discussed in this chapter assume that the input is
-given as an \emph{ordered structure}, i.e., for two positions \(x\) and \(y\)
-of the input word, we can test whether \(y\) is to the right of \(x\).
-In fact, many theorems also assume the presence of a \emph{successor relation},
-allowing us to test whether \(y\) is the \emph{immediate} right neighbor of \(x\).
-
-In practice, computers operate on linearly ordered memory
-(via addresses), so the assumption of ordered structures is both natural
-and realistic.
-However, this assumption is \emph{crucial}:
-without an explicit ordering, \(\mathrm{FO[LFP]}\) does \textbf{not} capture
-\(\complexity{PTIME}\)~\cite{Cai1992}.
-The existence of a logic that characterizes \(\complexity{PTIME}\) on
-\emph{unordered structures} remains a major open problem in computer science as of 2025.
-
 Fagin's theorem says that existential second-order logic characterizes
 \(\complexity{NP}\).
 It is worth noting that this theorem does \emph{not} assume order on the input ---
 intuitively, \(\complexity{NP}\) is strong enough to ``guess'' the order relation.
 
-\subsubsection{\complexity{inv-P}}
-\label{def:inv-P}
-TODO: Expand on permutation-invariant \complexity{P} (\complexity{P} on unordered structures).
 
-% -------------------------------------------------
+A concise overview of the classical results is in~\cite[Section~15.1]{Immerman1999-IMMDC},
+where characterizations of \(\complexity{DSPACE}(n^k)\), \complexity{L},
+\complexity{NL}, \complexity{P}, \complexity{NP} and \complexity{PSPACE} are described.
+A characterization of a complexity class \complexity{FO} is also discussed there, which we will introduce
+in this chaper.
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Descriptive Complexity for programming languages}
+Syntax is just syntax for logic, and the interpreter
+is a proof of the theorem FOTC=NL. We compile to operational semantics.
+We have Datalog programming language. It tells us that if the only programs
+we wish to write are in NL, we can specify all of them in FOTC and it will be just enough!
+
+
+\subsection{Importance of \texorpdfstring{\complexity{MSO} = \complexity{REG}}{MSO = REG}}\label{subsec:mso-eq-reg}
+\todo[inline]{While the equality is extensionally true, the compilation of mso to dfa is superexponential.}
+
+
 \subsection{Descriptive Complexity and Type Systems}
-
+Could descriptive complexity be used as specification mechanism of a language?
 After investigating systems within descriptive complexity, we explored
 whether their logical frameworks could be combined with type-theoretic
 approaches to design programming languages that capture complexity classes.
@@ -114,81 +471,7 @@ by linear logic and implicit computational complexity.
 The results of this exploration are presented in the next chapter.
 
 
-\subsection{Descriptive Complexity for programming languages}
-Syntax is just syntax for logic, and the interpreter
-is a proof of the theorem FOTC=NL. We compile to operational semantics.
-We have Datalog programming language. It tells us that if the only programs
-we wish to write are in NL, we can specify all of them in FOTC and it will be just enough!
-
-
-\subsection{Importance of \texorpdfstring{\complexity{MSO} = \complexity{REG}}{MSO = REG}}\label{subsec:mso-eq-reg}
-\todo[inline]{While the equality is extensionally true, the compilation of mso to dfa is superexponential.}
-
-% -------------------------------------------------
-\subsection{\texorpdfstring{$\mathrm{FO} = \complexityi{AC}{0}$}{FO = AC0} and the Definition of \texorpdfstring{$\complexityi{FAC}{0}$}{FAC0}}
-
-Due to their declarative nature, results from descriptive complexity do not
-directly help in designing programming languages.
-However, one result from this field will be important for us in
-Chapter~V (on bounded arithmetic). There, we will study a logical system
-characterizing \(\complexityi{FAC}{0}\): a class of \emph{reductions} (functions) that is very weak,
-yet strong enough to define nontrivial computations.
-The definition of \(\complexityi{FAC}{0}\) will be based on a logical characterization of
-\(\complexityi{AC}{0}\).
-
-A foundational result in descriptive complexity theory is that
-\[
-\mathrm{FO} = \complexityi{AC}{0},
-\]
-i.e., relations definable by a first-order sentence are precisely those
-decidable by \(\complexityi{AC}{0}\) circuits
-(Corollary~5.32 in~\cite{Immerman1999-IMMDC}).%
-\footnote{%
-Under reasonable assumptions, namely:
-FO formulas have access to an order relation on the input structure and to
-basic arithmetic predicates \(+\) and \(\times\);
-\(\complexityi{AC}{0}\) is FO-uniform; and
-all structures considered are ordered and have at least two elements (so that
-\(0\) and \(1\) are distinct).
-See Provisos~1.14 and~1.15 of~\cite{Immerman1999-IMMDC} for details.%
-}
-\footnote{%
-Part of Corollary~5.32 relevant for our purposes refers to Theorem~5.22,
-which states that \(\mathrm{FO}[t(n)] = {\complexity{AC}}[t(n)]\)
-for all polynomially bounded and FO-constructible functions \(t(n)\).
-Here, \(\mathrm{FO}[t(n)]\) denotes formulas with a quantifier block iterated
-\(t(n)\) times (Definition~4.24), and
-{\complexity{AC}}[t(n)] denotes FO-uniform circuits of depth \(\bigO(t(n))\)
-(Definition~5.17).
-For our purposes, \(t(n) = 1\), circuits have depth \(\bigO(1)\),
-and {\complexity{AC}}[t(n)] = \complexityi{AC}{0}.%
-}
-
-\todo[inline]{semantic notion of definability, i.e. a function is definable means}
-its graph is expressible by a formula in some logic.
-
-This characterization will later be used (Definition~V.2.3 in~\cite{Cook_Nguyen_2010})
-to define functions in \(\complexityi{FAC}{0}\) as those of polynomially bounded output length
-whose \emph{bit-graphs} lie in \(\complexityi{AC}{0}\).
-That is how we will transition to studying functional complexity classes.
-
-
-\section{fo-reductions, fo-projections, qfop-projections}
-% \section{First-order reduction}
-% TODO: Provide the definition of first-order reductions (see Chapter~12.3 of \url{https://link.springer.com/book/10.1007/3-540-28788-4}).
-% \section{FO}
-% \begin{itemize}
-% \item TODO: Document why $\text{FO}[+, *] = \text{FO}[\mathrm{BIT}]$.
-% \item TODO: Examine the status of the Crane Beach Conjecture asserting $\text{FO}[<, *] = \text{FO}[\mathrm{BIT}]$.
-% \item TODO: Explain why $\text{FO}[+]$ is less expressive than $\text{FO}[<, *] = \text{FO}[<, /] = \text{FO}[<, \mathrm{COPRIME}]$~\cite{10.1002/malq.200310041}.
-% \item TODO: Review the definition of FO-queries (Definition~1.26 in~\cite{Immerman1999-IMMDC}).
-% \end{itemize}
-% TODO: Describe FO-uniformity via first-order queries $I : \mathrm{STRUC}[ts] \rightarrow \mathrm{STRUC}[tc]$ with $I(0^n) = C_n$ (Definition~5.16 in~\cite{Immerman1999-IMMDC}).
-% TODO: Restate that FO-reductions are defined as first-order queries (Definition~1.26 in~\cite{Immerman1999-IMMDC}).
-% TODO: Include the definition explaining how to represent a circuit.
-
-% \section{First-order projection}
-% TODO: Note that first-order projections (FOPs) are also named in~\cite{Immerman1999-IMMDC}.
-% TODO: Provide Definition~11.7 describing first-order projections.
-% \section{Quantifier-free fo-projections}
-% TODO: Summarize quantifier-free FO-projections (QFPs).
+\subsection{Datalog}
+% TODO: FO(LFP) = Datalog;
+% For example, Datalog is known to capture precisely the same predicates about the input as PTIME
+% \cite[Theorem 4.4]{10.1145/502807.502810}

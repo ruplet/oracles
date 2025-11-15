@@ -1,3 +1,4 @@
+\chapter{Circuits}\label{chap:circuits}
 \section{Decisional complexity classes for circuits}
 The definitions of decisional circuit classes are from~\cite{10.5555/520668}.
 
@@ -5,6 +6,8 @@ The definitions of decisional circuit classes are from~\cite{10.5555/520668}.
 \begin{definition}\label{def:aci}
     \todo[inline]{Define ac}
 \end{definition}
+
+We need \complexity{FO}-uniformity for~\autoref{sec:fo-eq-ac0}.
 
 \(U_E\) and \(U_{E^\ast}\)-uniformity is defined in terms of \emph{diret connection language}
 and \emph{extended connection language} in~\cites[Definition~2.24,~Definition~2.43~]{10.5555/520668}.
@@ -64,10 +67,20 @@ The notions of~\autoref{def:boolean-proj} and~\autoref{def:boolean-p-proj} are f
 
 \section{Uniformity}\label{sec:uniformity}
 
+% KEEP IT logspace-uniform here, but remark that FO-uniformity will be required later when we define FO-queries
+% immerman:
+% Definition 5.16 (Uniform) Let C be a sequence of circuits as in Equation (5.14).
+% Let l' E {l'eo l'thc} be the vocabulary of circuits or threshold circuits. Let / :
+% STRUC[l's] ~ STRUC[l'] be a query such that for all n E N, /(0") = Cn. That
+% is, on input a string of n zero's the query produces circuit n. If / E FO, then C is
+% 80 5. Parallelism
+% afirst-order uniform sequence of circuits. Similarly, if I E L, then Cis logspace
+% uniform. If I E P, then C is polynomial-time uniform, and so on. 
+
 \subsection{\complexity{DLOGTIME}-uniformity}\label{subsec:dlogtime-uniformity}
-\begin{itemize}
+\begin{enumerate}
 \item TODO:\@ Work out the example of a \complexity{DLOGTIME} reduction showing that tree isomorphism for string-represented trees is $\complexityi{NC}{1}$-complete~\cite{694595}.
-\end{itemize}
+\end{enumerate}
 
 
 \subsection{\texorpdfstring{\(\complexity{FAC}^i\)}{FACi}}
@@ -156,22 +169,22 @@ The notions of~\autoref{def:boolean-proj} and~\autoref{def:boolean-p-proj} are f
 % fan-in AND is an \complexityi{AC}{0} function).
 % \paragraph{TODO: Notes on $\complexityi{NC}{0}$.}
 % TODO: Provide an introductory overview of the key references on $\complexityi{NC}{0}$ listed below.
-% \begin{itemize}
+% \begin{enumerate}
 % \item TODO: Summarize the construction of one-way permutations in $\complexityi{NC}{0}$~\cite{10.1016/0020-01908790053-6}.
 % \item TODO: Explain why all sets complete under $\complexityi{AC}{0}$ reductions are already complete under $\complexityi{NC}{0}$ reductions~\cite{10.1145/258533.258671,AGRAWAL1998127}.
 % \item TODO: Describe Immerman's page~81 discussion of addition in $\complexityi{NC}{0}$ and MAJORITY in $\complexityi{NC}{1}$~\cite{Immerman1999-IMMDC}.
 % \item TODO: Detail why addition and subtraction of binary numbers lies in $\complexityi{AC}{0}$~\cite{27676}.
-% \end{itemize}
+% \end{enumerate}
 
 
 % TODO: Clarify what notion of uniformity should be used for $\complexityi{NC}{0}$, given that \complexity{DLOGTIME} Turing machines can do things that cannot be done by
 % any $\complexityi{NC}{0}$ circuit.
 % \subsection{\complexityi{NC}{1}}
-% \begin{itemize}
+% \begin{enumerate}
 % \item TODO: Present the argument that division is in \complexity{DLOGTIME}-uniform $\complexityi{NC}{1}$~\cite{ITA_2001__35_3_259_0}.
 % \item TODO: use \complexity{DLOGTIME} reductions for $\complexityi{NC}{1}$.
 % \item TODO: Clarify how $U_{E^*}$ reductions relate to $\complexityi{NC}{1}$ and why $U_{E^*}$-uniform $\complexityi{NC}{1}$ equals \complexity{ALOGTIME}~\cite{RUZZO1981365}.
-% \end{itemize}
+% \end{enumerate}
 % TODO: Confirm that this class is contained in $\complexityi{AC}{i}$.
 
 
@@ -186,12 +199,12 @@ The notions of~\autoref{def:boolean-proj} and~\autoref{def:boolean-p-proj} are f
 % in \complexityi{AC}{0} if $x * y = z$.
 
 % \subsection{\complexityi{AC}{0}}
-% \begin{itemize}
+% \begin{enumerate}
 % \item TODO: Summarize why addition is in $\complexityi{AC}{0}$~\cite{BussLectureNotes}.
 % \item TODO: Explain the equivalence $\text{FO}[+, *] = \complexity{DLOGTIME}$-uniform $\complexityi{AC}{0}$ (see \url{https://complexityzoo.net/Complexity_Zoo:A#ac0}).
 % \item TODO: Discuss the characterization of \complexity{DLOGTIME}-uniform $\complexityi{AC}{0}$ presented in~\cite{hella2023regularrepresentationsuniformtc0}.
 % \item TODO: Review the definitions of $\complexityi{AC}{0}$, $\complexityi{TC}{0}$, FATC0, and FTC0 provided in~\cite{612309}.
-% \end{itemize}
+% \end{enumerate}
 % TODO: Document the notions of uniformity of $\complexityi{AC}{0}$ outlined below.
 % \begin{enumerate}
 % \item TODO: $U_{E^*}$-uniformity.
@@ -216,9 +229,9 @@ The notions of~\autoref{def:boolean-proj} and~\autoref{def:boolean-p-proj} are f
 
 % TODO: Check whether $\complexityi{TC}{i}$ is contained in $\complexityi{NC}{i + 1}$.
 % \subsection{\complexityi{TC}{0}}
-% \begin{itemize}
+% \begin{enumerate}
 % \item TODO: Confirm that multiplication is in $\complexityi{TC}{0}$~\cite{BussLectureNotes}, and locate the supporting details in~\cite{doi:10.1137/0213028}.
-% \end{itemize}
+% \end{enumerate}
 
 
 % \section{Uniformity}

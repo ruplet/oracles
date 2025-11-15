@@ -1,3 +1,6 @@
+.venv
+_minted-driver
+*.lol
 *.Identifier
 .vscode
 dist-newstyle

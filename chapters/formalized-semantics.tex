@@ -1,49 +1,94 @@
 \chapter{Formalized semantics}\label{chap:formalized-semantics}
-One approach to certify complexity class of a program would be to require a program in
-our programming language to be accompanied by a polynomial \(p\) bounding the number
-of ``steps'' of \(F\) when executed on a standard computer. For at least \todo{careful with three}three
-reasons, such a language would not be satisfactory for us. We will explore them below.
+One approach to certify complexity class of a program would be to simply
+accept an implementation of the algorithm in C++ accompanied by a proof
+that the number
+of ``steps'' of the algorithm when executed on a standard computer is bounded by a polynomial \(p\).
+For at least \todo{careful with three}three
+reasons, such a language would not be satisfactory for us. We explore them in this chapter.
 
-\paragraph{Lack of semantics of programming languages}
-Close to none programming languages have well-defined semantics.
-A famous example of a shortcoming of language definition is \emph{undefined behaviour} in C++.
+\paragraph{Informality of language semantics}
+It is not actually defined how much time will an arbitrary C++ program take to execute.
+A famous shortcoming of C++'s standard is the notion of \emph{undefined behaviour}.
+As it turns out, close to none programming languages have well-defined semantics.
 For the vast majority of languages, the only reliable semantics
 is the source code of the most popular compiler. There are, however, programming languages
 with formally defined semantics. Most notably, a large fragment of the C programming
-language has been formalized in the CompCert project~\cite{Leroy-backend}\footnote{\url{https://compcert.org/index.html}}.
-CakeML~\cite{cakeml-POPL14}\footnote{\url{https://cakeml.org/}}
+language has been formalized in the CompCert project~\cite{Leroy-backend}.
+% \footnote{\url{https://compcert.org/index.html}}
+CakeML~\cite{cakeml-POPL14}
+% \footnote{\url{https://cakeml.org/}}
 has formal semantics and a proven-correct compiler. A fragment of OCaml has been formalized in~\cite{10.1145/3747509}.
 
 \paragraph{Representation of a proof in computer-verifiable form}
-Creating a \emph{proof asistant} --- a system in which it is convenient to write mathematical proofs, in a way that they can be checked
-by the computer, and the code of the checker is simple enough to be widely believable --- is not an easy task.
-In the last decade, the most popular proof assistants got to the stage where research-level
-reasoning can be transferred to them 
+Even if someone gives us a program with a well-defined semantics and the proof required, it is not obvious
+how to check that the proof is correct.
+A system in which it is convenient to write mathematical proofs, in a way that they can be checked
+by the computer, and the code of the checker is simple enough to be widely believable, is called a \emph{proof asistant}.
+The successful projects such as Mizar, Rocq, Lean and Isabelle/HOL took decades of work to be developed.
+Only in the last decade, the most popular proof assistants got to the stage where research-level
+reasoning can be transferred to them \emph{with reasonable overhead}.
 
-A very interesting class of programming languages rely on automated theorem proving to
+In a separate but related field, a very interesting class of programming languages rely on automated theorem proving to
 verify user-provided pre- and post-conditions of functions.
-Dafny~\cite{10.5555/1939141.1939161}\footnote{https://dafny.org/} completely relies on SMT-solvers, not allowing
-the user to conduct a mathematical proof. Why3 provides an extensive framework, combining the power of
-SMT-solvers for automation where possible, and allowing the user to prove the implication manually
-where necessary~\cite{boogie11why3}\footnote{https://www.why3.org/}.
+Dafny~\cite{10.5555/1939141.1939161} (see:~\autoref{lst:dafny-example}) does it by utilizing \emph{SMT-solvers}, not allowing
+% \footnote{https://dafny.org/}
+the user to conduct a mathematical proof manually. Why3~\cite{boogie11why3} provides a comprehensive framework,
+combining the power of
+SMT-solvers for automation where possible, and allowing the user to conduct proofs manually
+where they fail.
+% \footnote{https://www.why3.org/}
 
-\paragraph{Invisible mathematics}
-Few examples of concrete Turing machine definitions have been described, as
-working with them directly is greatly time-consuming and not too interesting.
-We list two sources: concrete examples were provided in\cite{KUDLEK1996241} and~\cite{ROGOZHIN1996215}.
+
+\begin{rawlisting}
+\input{listings/dafny-example.tex}
+\caption{Dafny example}\label{lst:dafny-example}
+\end{rawlisting}
+
+
+\paragraph{Infeasibility of formal proofs about Turing machines}
+Even while operating in the right programming language, and assuming
+trust in the modern proof assistants, we will still not be able to proceed this way.
+The field of computational complexity and computability theory has a reputation of
+being particularly hand-wavy. This naturally generates difficulties when attempting to formalize
+the proofs from these areas. Voluminous discussion on that problem emerged with the
+rise of popularity of proof assistants. The below quote is due to Yannick Forster,
+author of the most successful works on formalizing results about computability:
+\begin{displaycquote}{forster:LIPIcs.CSL.2025.3}
+making these arguments [i.e.\ about Turing machines] formal is several orders of magnitude more involved
+than formalising other areas of mathematics, due to the amount of invisible mathematics (a term
+coined by Andrej Bauer) involved.
+\end{displaycquote}
+
+% \begin{displaycquote}{forster:LIPIcs.CSL.2025.3}
+% Mathematical practice in most areas of mathematics is based on the assumption that proofs could
+% be made fully formal in a chosen foundation in principle. This assumption is backed by partial
+% attempts at formalisation and by full mechanisation of various areas of mathematics in various proof
+% assistants and various foundations. Areas that have been largely neglected for computer-assisted
+% and machine-checked proofs are computability theory and logic: Fundamental results like Gödel's
+% second incompleteness theorem in its stronger forms due to Kleene and Rosser, Löb's theorem, Post's
+% theorem connecting the arithmetical hierarchy and Turing jumps, or the Friedberg-Mu\^cnik theorem
+% solving Post's problem have not or only very recently been re-produced in proof assistants. This is
+% due to the fact that making these arguments formal is several orders of magnitude more involved
+% than formalising other areas of mathematics, due to the amount of invisible mathematics (a term
+% coined by Andrej Bauer) involved.
+% \end{displaycquote}
 
 Formally defining Turing machines has been considered in~\cite{10.1007/978-3-642-32621-9_1} and,
-building on top of it,~\cite{10.1145/3372885.3373816}\footnote{\url{https://github.com/uds-psl/coq-library-undecidability}.
-}.
+building on top of it,~\cite{10.1145/3372885.3373816}\footnote{Part of an ongoing formalization project:
+\url{https://github.com/uds-psl/coq-library-undecidability}.
+}. Besides that, few examples of concrete Turing machine definitions have been described in the literature, as
+working with them directly is greatly time-consuming and not incentivized by academia.
+Interesting concrete examples were provided in\cite{KUDLEK1996241} and~\cite{ROGOZHIN1996215}.
+Alternative approaches are studied as Synthetic~Computability~\cite{BAUER20065}.
 
-In~\autoref{par:heraud-nowak}, we briefly discuss a formalization of a characterization
-of polynomial-time functions which, however, is completely disconnected from any actual computational model.
+In~\autoref{par:heraud-nowak}, we briefly discuss one formalization of \emph{a characterization}
+of polynomial-time functions.
 
 \section{Ciaffaglione's formalization of undecidability of HALT}
 In~\cite{CIAFFAGLIONE201631}, an elegant formalization of the undecidability of the halting problem
 is presented. The proof goes by defining simple Turing machines needed and directly proving
-results about their semantics. The code mentioned in the book, as of November 2025, is not accessible anymore.
-Our version of the original code, refined to a newer Coq version, is available online
-with full installation and verification instructions.
-\todo{ensure code didn't move}\footnote{Code and slides are available at: \url{https://github.com/ruplet/prezentacja-seminarium-1}.}
-The code and its renovation has also been the subject of one seminar presentation.
+results about their semantics.\footnote{As of November 2025, the code referred to in the paper is not accessible anymore.}
+As part of our work, we refined the code to a newer Coq version, fixing the proofs where necessary.
+Full code (also presented on the JAiO seminar) is available online
+with installation and verification instructions.\todo{ensure code didn't move}\footnote{Code and slides are available at: \url{https://github.com/ruplet/prezentacja-seminarium-1}.}
+

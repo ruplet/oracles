@@ -1,5 +1,9 @@
 # Oracle-oriented programming: a proof of concept
 
+
+## Latex compilation
+Install [pygments for Dafny](https://github.com/Locke/pygments-dafny.git).
+
 ## Current TODO
 1. Render `.md` files with random notes (category theory, rubik, sudoku) to GitHub with nice citations!
 

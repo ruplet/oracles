@@ -1,0 +1,23 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kd}{function} \PY{n+nf}{fib}\PY{p}{(}\PY{n}{n}\PY{p}{:} \PY{k+kt}{nat}\PY{p}{)}\PY{p}{:} \PY{k+kt}{nat}
+\PY{p}{\PYZob{}}
+  \PY{k}{if} \PY{n}{n} \PY{o}{==} \PY{l+m+mi}{0} \PY{k}{then} \PY{l+m+mi}{0}
+  \PY{k}{else} \PY{k}{if} \PY{n}{n} \PY{o}{==} \PY{l+m+mi}{1} \PY{k}{then} \PY{l+m+mi}{1}
+  \PY{k}{else} \PY{n}{fib}\PY{p}{(}\PY{n}{n} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{+} \PY{n}{fib}\PY{p}{(}\PY{n}{n} \PY{o}{\PYZhy{}} \PY{l+m+mi}{2}\PY{p}{)}
+\PY{p}{\PYZcb{}}
+\PY{k+kd}{method} \PY{n+nf}{ComputeFib}\PY{p}{(}\PY{n}{n}\PY{p}{:} \PY{k+kt}{nat}\PY{p}{)} \PY{k}{returns} \PY{p}{(}\PY{n}{b}\PY{p}{:} \PY{k+kt}{nat}\PY{p}{)}
+  \PY{k}{ensures} \PY{n}{b} \PY{o}{==} \PY{n}{fib}\PY{p}{(}\PY{n}{n}\PY{p}{)}
+\PY{p}{\PYZob{}}
+  \PY{k+kd}{var} \PY{n}{i} \PY{o}{:=} \PY{l+m+mi}{1}\PY{p}{;}
+  \PY{k+kd}{var} \PY{n}{a} \PY{o}{:=} \PY{l+m+mi}{0}\PY{p}{;}
+  \PY{n}{b} \PY{o}{:=} \PY{l+m+mi}{1}\PY{p}{;}
+  \PY{k}{while} \PY{n}{i} \PY{o}{\PYZlt{}} \PY{n}{n}
+    \PY{k}{invariant} \PY{l+m+mi}{0} \PY{o}{\PYZlt{}} \PY{n}{i} \PY{o}{\PYZlt{}=} \PY{n}{n}
+    \PY{k}{invariant} \PY{n}{a} \PY{o}{==} \PY{n}{fib}\PY{p}{(}\PY{n}{i} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)}
+    \PY{k}{invariant} \PY{n}{b} \PY{o}{==} \PY{n}{fib}\PY{p}{(}\PY{n}{i}\PY{p}{)}
+  \PY{p}{\PYZob{}}
+    \PY{n}{a}\PY{p}{,} \PY{n}{b} \PY{o}{:=} \PY{n}{b}\PY{p}{,} \PY{n}{a} \PY{o}{+} \PY{n}{b}\PY{p}{;}
+    \PY{n}{i} \PY{o}{:=} \PY{n}{i} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{;}
+  \PY{p}{\PYZcb{}}
+\PY{p}{\PYZcb{}}
+\end{Verbatim}

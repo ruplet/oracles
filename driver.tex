@@ -52,8 +52,35 @@
 \usepackage{microtype}
 \usepackage{proof}
 \usepackage{enumitem}
+% https://tex.stackexchange.com/a/119935
 \setlist[enumerate]{label=(\roman*), ref=(\roman*)}
+\setlist[enumerate]{
+  itemsep=2pt,
+  parsep=0pt,
+  topsep=2pt,
+  partopsep=0pt
+}
+
 \usepackage{xspace}
+
+% \usepackage{listings}
+% \usepackage{listingsutf8}
+\usepackage{xcolor}
+\usepackage{fancyvrb}
+\input{listings/pygments-default.tex}
+% this is for nice list of listings, bypassing the listings package because
+% we compile to TeX anyway, not using pygments from latex
+\usepackage{caption}
+% Define a "listing" type (non-verbatim) with its own list:
+\DeclareCaptionType[fileext=lol]{rawlisting}[Listing][List of Listings]
+
+% https://github.com/leanprover/lean4/blob/20e16f1c75b13057e00b4cc5315aac611df766fe/doc/syntax_highlight_in_latex.md
+% \usepackage{fontspec} % this requires lualatex or xelatex
+% \setmonofont{FreeMono}
+% https://lean-lang.org/documentation/latex-syntax-highlighting/
+\usepackage{newunicodechar}
+\input{listings/lean-unicode.tex}
+
 
 % Package todonotes Warning: The length marginparwidth is less than 2cm and will 
 % most likely cause issues with the appearance of inserted todonotes. The issue c
@@ -79,10 +106,10 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
-\newtheorem*{definition*}{Definition}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
+\newtheorem*{definition*}{Definition}
 \newtheorem{example}[theorem]{Example}
 
 \theoremstyle{remark}
@@ -120,6 +147,7 @@
 \apptocmd{\tableofcontents}{\clearpage\hypersetup{pageanchor=true}}{}{}
 \makeatother
 
+\addbibresource{chapters/circuits.bib}
 \addbibresource{chapters/foundations.bib}
 \addbibresource{chapters/reductions.bib}
 \addbibresource{chapters/linear-logic.bib}
@@ -268,14 +296,16 @@
 \tableofcontents
 %\listoffigures
 %\listoftables
+\listofrawlistings{}
 
 \include{chapters/introduction}
 \include{chapters/foundations}
 \include{chapters/formalized-semantics}
-\include{chapters/descriptive-complexity}
 \include{chapters/reductions}
-\include{chapters/recursion-theory}
-\include{chapters/linear-logic}
+% \include{chapters/circuits}
+% \include{chapters/descriptive-complexity}
+% \include{chapters/recursion-theory}
+% \include{chapters/linear-logic}
 \include{chapters/bounded-arithmetic}
 
 \printbibliography[heading=bibintoc]

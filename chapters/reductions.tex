@@ -2,6 +2,8 @@
 \todo[inline]{Here we notice that if we want a language for FP, and we have a FP-complete problem, and a language
 for L-reductions (FL), then we have a language for FP!}
 
+% FL = L* : https://web.archive.org/web/20190320200248/https://core.ac.uk/download/pdf/81978561.pdf
+
 
 We introduce the definitions of complexity classes considered in this work.
 
@@ -24,9 +26,9 @@ designing a programming language.
 
 
 \begin{definition}[Time complexity]\label{def:turing-dtime}
-Let \(T : \mathbb{N} \to \mathbb{N}\) be some function.  A language \(L\) belongs to \(\complexity{DTIME}(T(n))\) iff there exists a deterministic Turing machine that satisfies:
-\begin{enumerate}[label= (\roman*), ref= (\roman*)]
-    \item\label{itm:dtime} for some constant \(c > 0\) and every input \(w \in \{0,1\}^{n}\) it terminates within \(c \cdot T(n)\) steps;
+Let \(T : \mathbb{N} \to \mathbb{N}\) be some function.  A language \(L\) belongs to \(\complexity{DTIME}(T(n))\) iff there exists a deterministic Turing machine that:
+\begin{enumerate}[itemsep=0pt]
+    \item\label{itm:dtime} for some \(c > 0\) and every input \(w \in \{0,1\}^{n}\) terminates within \(c \cdot T(n)\) steps;
     \item for every \(w \in L\) the machine outputs \(1\);
     \item for every \(w \notin L\) the machine outputs \(0\).
 \end{enumerate}
@@ -34,9 +36,10 @@ We will say that a Turing machine belongs to \(\complexity{DTIME}(T(n))\) iff it
 \end{definition}
 
 \begin{definition}[Space complexity]\label{def:turing-dspace}
-Let \(T : \mathbb{N} \to \mathbb{N}\) be some function.  A language \(L\) belongs to \(\complexity{DSPACE}(T(n))\) iff there exists a deterministic Turing machine that satisfies:
-\begin{enumerate}[label= (\roman*), ref= (\roman*)]
-    \item\label{itm:dspace} for some constant \(c > 0\) and every input \(w \in \{0,1\}^{n}\) it halts while using at most \(c \cdot T(n)\) work-tape cells;
+Let \(T : \mathbb{N} \to \mathbb{N}\) be some function.  A language \(L\) belongs to \(\complexity{DSPACE}(T(n))\) iff there exists a deterministic Turing machine that:
+\begin{enumerate}
+    \item\label{itm:dspace} for some \(c > 0\) and every input \(w \in \{0,1\}^{n}\) terminates,
+        at any step using at most \(c \cdot T(n)\) work-tape cells;
     \item for every \(w \in L\) the machine outputs \(1\);
     \item for every \(w \notin L\) the machine outputs \(0\).
 \end{enumerate}
@@ -157,11 +160,11 @@ That style of definition makes it less convenient to compare \(\complexity{FP}\)
 
 
 % \section{\complexity{FNP}}
-% \begin{itemize}
+% \begin{enumerate}
 % \item TODO: Extract the key points from the discussion at \url{https://cs.stackexchange.com/questions/71617/function-problems-and-fp-subseteq-fnp}.
 % \item TODO: Summarize the insights from \url{https://cstheory.stackexchange.com/questions/37812/what-exactly-are-the-classes-fp-fnp-and-tfnp}.
 % \item TODO: Cross-reference the definitions on \url{https://complexityzoo.net/Complexity_Zoo:F#fp}.
-% \end{itemize}
+% \end{enumerate}
 
 
 % \section{\complexity{TFNP}}
@@ -256,10 +259,10 @@ and indeed fails relative to some oracles.
 % We will not realistically capture $\text{TIME}(\bigO(n))$ or anything of this kind,
 % as the field of fine-grained complexity is relatively modern and little or none interesting
 % characterizations of these classes have been found as of writing this work.
-% \begin{itemize}
+% \begin{enumerate}
 % \item TODO: Review Neil D. Jones's ``Constant Time Factors Do Matter'' for its discussion of NLIN-complete problems (\url{https://dl.acm.org/doi/pdf/10.1145/167088.167244}).
 % \item TODO: Summarize the insights from Gurevich and Shelah's ``Nearly Linear Time'' concerning the definition of $\complexity{DTIME}(n)$ and nearly-linear-time-complete problems under QL reductions (\url{https://link.springer.com/content/pdf/10.1007/3-540-51237-3_10.pdf}).
-% \end{itemize}
+% \end{enumerate}
 \todo[inline]{QL (quasilinear-time functions), NLT (robust complexity class for 
     \( \complexity{DTIME} (n (\log{n})^{\bigO(1)}) \) 
     on RAM machines~\cite{10.1007/3-540-51237-3_10})
@@ -283,12 +286,12 @@ we will have stronger, but in arithmetic
 
 
 % \section{\complexity{LOGSPACE} reduction}
-% \begin{itemize}
+% \begin{enumerate}
 % \item TODO: reductions for \complexity{L}: first-order reductions (see~\cite[Section~5.1]{Immerman1999-IMMDC}).
 % \item TODO: Revisit why USTCONN is complete for \complexity{L}.
 % \item TODO: Example programming language characterizing \complexity{L}: finite number of variables each bounded by $n$.
 % \item TODO: Explore the alternative characterization using a finite number of input pointers, relating it to multi-head two-way automata~\cite{423885},~\cite{10.1007/BF00289513}.
-% \end{itemize}
+% \end{enumerate}
 
 % \section{\complexity{P} reduction}
 % TODO: Outline the notion of \complexity{P}-reductions to be used later in this chapter.
@@ -308,10 +311,11 @@ we will have stronger, but in arithmetic
 
 
 \subsection{Semantic and syntactic complexity classes}
-in~\cite{DBLP:conf/innovations/GoldbergP18}, the authors define a new complexity class \(\complexity{PTFNP \subseteq \complexity{TFNP}}\), for which
+in~\cite{DBLP:conf/innovations/GoldbergP18}, the authors define a new complexity class
+\(\complexity{PTFNP \subseteq \complexity{TFNP}}\), for which
 they prove the existence of a complete problem, and call this class ``syntactic''.
 % TODO: Investigate which classes can realistically be characterized, likely excluding \complexity{BPP} and permutation-invariant \complexity{PTIME} (see \url{https://mathoverflow.net/questions/35236/is-there-a-syntactic-characterization-for-bpp-bqp-or-qma}).
-% \begin{itemize}
+% \begin{enumerate}
 
 % \item TODO: Extract key questions and scenarios from Anuj Dawar's ``On Syntactic and Semantic Complexity Classes'' (Spitalfields Day, Isaac Newton Institute, 9 January 2012), including the ``Two Possible Worlds'' discussion (\url{http://web.archive.org/web/20250428195619/https://www.frontiersinai.com/turingfiles/January/Dawar,%20A.pdf}).
 
@@ -330,7 +334,7 @@ they prove the existence of a complete problem, and call this class ``syntactic'
 % %     A good discussion of this problem is present in Anuj Dawar's presentation from 2012: [@dawar2012syntactic].
 
 
-% \end{itemize}
+% \end{enumerate}
 
 % \subsection{Related works on specifically the \complexity{FL} class}
 % Early function algebras for \complexity{FL} appeared in~\cite{10.1145/1008293.1008295} and~\cite{lind1974logspace},
@@ -351,3 +355,16 @@ they prove the existence of a complete problem, and call this class ``syntactic'
 
 % In~\cite{hofmann2006logspace} a good overview of languages for \complexity{FL} is presented,
 % and in~\cite{schoepp2006spaceefficiency}, the history of \complexity{FL} characterizations is traced.
+
+
+\section{Oracle-oriented programming}
+If you use reductions + a single oracle for a difficult problem.
+
+Due to possible quadratic blowup of output size (even for ac0 circuits i think? but maybe not if fo-uniform?),
+it is unsatisfactory for us to have a single complete problem solving e.g. sat in worst-time \(2^n\).
+Because then it gets \(2^{n^2}\) etc., which is bad. Transductions (or fine-grained time complexity classes
+such as dlintime) are a potential nice class for this.
+
+\subsection{Oracle Turing machines and the technique of forcing}\label{subsec:oracle-forcing}
+\todo[inline]{optional. Baker-Gill-Solovay proof uses forcing. }
+% https://cstheory.stackexchange.com/q/14091
