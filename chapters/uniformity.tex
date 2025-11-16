@@ -1,0 +1,91 @@
+\chapter{Uniformity}\label{chap:uniformity}
+In this chapter, we focus on the descriptions of uniformity conditions used for
+families of circuits.
+
+\section{\complexity{FO}-uniformity}
+We need \complexity{FO}-uniformity for~\autoref{sec:fo-eq-ac0}.
+This is defined in~\cite[Definition~5.16]{Immerman1999-IMMDC}.
+% immerman:
+% Definition 5.16 (Uniform) Let C be a sequence of circuits as in Equation (5.14).
+% Let l' E {l'eo l'thc} be the vocabulary of circuits or threshold circuits. Let / :
+% STRUC[l's] ~ STRUC[l'] be a query such that for all n E N, /(0") = Cn. That
+% is, on input a string of n zero's the query produces circuit n. If / E FO, then C is
+% 80 5. Parallelism
+% afirst-order uniform sequence of circuits. Similarly, if I E L, then Cis logspace
+% uniform. If I E P, then C is polynomial-time uniform, and so on. 
+
+
+\section{\compUeAst-uniformity}\label{sec:uniformity-ueast}
+A notion of \(U_E\) and \(U_{E^\ast}\)-uniformity was studied in the early works about uniformity.
+It is defined in terms of \emph{direct connection language}
+and \emph{extended connection language} in~\cites[Definition~2.24,~Definition~2.43~]{10.5555/520668}.
+There is a very thorough overview of uniformity conditions below \complexityi{NC}{1} in~\cite{MIXBARRINGTON1990274}.
+Since then, this notion has been widely displaced by \complexity{DLOGTIME}-uniformity.
+Interesting arguments about why \complexity{DLOGTIME} uniformity is the most reasonable to consider
+are presented in a breakthrogh paper proving that binary integer division is in 
+(\complexity{DLOGTIME}-uniform) \TC{0}~\cite{HESSE2002695}.
+
+\section{\complexity{DLOGTIME}-uniformity}\label{sec:uniform-nc1}
+% barrington:
+%We define a log-time Turing machine to have a read-only input tape of length n,
+% a constant number of read-write work tapes of total length O(log n), and a read-
+% write input address tape of length log n. On a given time step the machine has
+% access to the bit of the input tape denoted by the contents of the address tape (or
+% to the fact that there is no such bit, if the address tape holds too large a number).
+% We will assume (without loss of generality) that the machine always takes the same
+% amount of time on inputs of a given length (this is because some of the work tape
+% can always used as a clock). The following lemma summarizes some useful
+% capabilities of such a machine.
+Source:~\cite[Section~6]{MIXBARRINGTON1990274}.
+% Important: tm can decide formula langugae: {<c, i, y>: |y|=n and ith char of nth formula is c}
+% very important:
+Important: The class \complexity{DLOGTIME}-uniform \complexityi{NC}{1} is equal to \complexity{ALOGTIME}
+and also equal to is \complexityi{NC}{1}-uniform \complexityi{NC}{1}:~\cite[Lemma~6.2]{MIXBARRINGTON1990274}.
+
+There is an example of a concrete \complexity{DLOGTIME}-reduction in~\cite{694595} (showing that tree isomorphism for string-represented trees is $\complexityi{NC}{1}$-complete).
+
+It's mentioned that \(complexity{AC}^0_0 \subseteq \complexity{DLOGTIME} \subseteq \complexity{AC}^0_2\)~\cite[Page~141]{10.5555/114872}
+
+\begin{remark}[Bibliography]\label{remark:bibliography-david-s-johnson}
+We refer to a source that is difficult to access (e.g.\ the above~\cite[Page~141]{10.5555/114872}): this is Chapter 2 ``A Catalog of Complexity Classes'' by
+David S. Johnson~\cite{10.5555/114872.114874},
+which appeared in January 1991 in ``Handbook of theoretical computer science (vol. A): algorithms and complexity'',
+edited by Jan van Leeuwen~\cite{10.5555/114872}.
+\end{remark}
+
+
+% REMOVE THIS? THIS IS FOR P-PROJECTIONS FOR AC0k
+% \begin{definition}[Projection of Boolean functions]\label{def:boolean-proj}
+% Let $f:\{0,1\}^n\!\to\!\{0,1\}$ and $g:\{0,1\}^m\!\to\!\{0,1\}$.
+% We say that $f$ is a \emph{projection} of $g$ if there is a mapping
+% $\varsigma : \{y_1, \dots, y_m\} \rightarrow \{0, 1, x_1, \dots, x_n, \neg x_1, \dots, \neg x_n\}$
+% such that
+% \[
+% f(x_1, \dots, x_n) = g\big(\varsigma(y_1),\dots,\varsigma(y_m)\big).
+% \]
+% \end{definition}
+% \begin{definition}[p\mbox{-}projection between families]\label{def:boolean-p-proj}
+% Let $\mathcal{P}=(P_i)_{i\in\mathbb{N}}$ and $\mathcal{Q}=(Q_j)_{j\in\mathbb{N}}$ be families
+% of Boolean functions (each $P_i,Q_j:\{0,1\}^{*}\!\to\!\{0,1\}$, arity arbitrary).
+% We say that $\mathcal{P}$ is a \emph{p\mbox{-}projection} of $\mathcal{Q}$, if 
+% there exists a polynomial $t:\mathbb{N}\to\mathbb{N}$ such that
+% for every $i\in\mathbb{N}$ there is some $j\le t(i)$ with $P_i$ a projection of $Q_j$.
+% \end{definition}
+% \begin{remark}[Why the polynomial bound]
+% Unrestricted projection lets a simple $P_i$ be realized only by projecting
+% some $Q_j$ at an arbitrarily large index $j$, which makes the comparison vacuous.
+% The polynomial bound $j\le t(i)$ enforces an \emph{efficient} correspondence of indices,
+% yielding a robust, reduction-like notion. The relation $\preceq_p$ is a preorder;
+% modulo $\equiv_p$ it induces a partial order on equivalence classes of families.
+% \end{remark}
+% \section{Bibliographical remark}
+% The notions of~\autoref{def:boolean-proj} and~\autoref{def:boolean-p-proj} are from~\cite{10.1145/3149.3158}.
+% \begin{definition}[\texorpdfstring{\(\complexity{AC}^0_k\)}{AC0 depth k}]\label{def:complexity-ac0-k}
+%     This is \complexityi{AC}{0} of depth $k$.
+%     Complete problem:\cite{10.1007/BFb0028550}
+% \end{definition}
+
+% \begin{proposition}
+%     for \(k \geqslant 3\), \(\texttt{MAZE}_k\) is complete for non-uniform $\Pi_k$ under p-projections
+%     and complete for uniform $\Pi_k$ under \complexity{DLOGTIME}-uniform projections~\cite{10.1007/BFb0028550}.
+% \end{proposition}

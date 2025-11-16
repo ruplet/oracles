@@ -5,8 +5,12 @@ We solely focus on first-order logic and don't introduce the similar
 definitions of propositional calculus and second-order logic. The semantics is entirely classical
 (in the sense of classical or intuitionistic logic). 
 
-In~\autoref{sec:defs-preliminaries-circuits} we exclusively introduce the so-called \emph{non-uniform}
-circuit families, to later consider the different notions of uniformity in~\autoref{chap:circuits}.
+In~\autoref{sec:defs-preliminaries-circuits} we first introduce the so-called \emph{non-uniform}
+circuit families (e.g.\ \FACipoly), then define a weak notion of uniformity and the appropriate
+\emph{uniform} circuit families (e.g.\ \FACi). The notion used in~\autoref{def:logspace-uniformity}
+and the results using it are usually not interesting. However, in this work
+we will not focus too much on that problem. We leave out the complicated
+divagations about the appropriate (i.e.\ much weaker) notions of uniformity to~\autoref{chap:uniformity}.
 
 \begin{remark}[Bibliography]
 The definitions in~\autoref{sec:defs-single-sorted} are in the style of~\cites[Section~2B]{CookNguyenDraft}[Section~II.2]{Cook_Nguyen_2010}.
@@ -19,7 +23,7 @@ The single-sorted definitions differences are mostly negligible and the consiste
 single- and two-sorted logic, is important for~\autoref{chap:bounded-arithmetic}.
 
 Much effort has been put into
-considering different versions of the definitions in~\autoref{sec:decisional-complexity-classes}
+considering different versions of the definitions in~\autoref{sec:preliminaries-turing}
 to keep them consistent
 with the definitions of functional complexity classes studied later in~\autoref{sec:functional-complexity-classes},
 e.g.\ the class \complexity{FNP} defined in~\autoref{def:complexity-fnp}.

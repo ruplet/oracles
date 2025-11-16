@@ -1,45 +1,5 @@
 \section{Classes of binary circuits}\label{sec:defs-preliminaries-circuits}
 
-\newcommand{\ACpoly}[1]{%
-  \texorpdfstring{%
-    \ensuremath{\complexity{AC}^{#1}_{/poly}}%
-  }{AC^{#1}\_/poly}%
-}
-
-\newcommand{\NCpoly}[1]{%
-  \texorpdfstring{%
-    \ensuremath{\complexity{NC}^{#1}_{/poly}}%
-  }{NC^{#1}\_/poly}%
-}
-
-\newcommand{\ACipoly}{\ACpoly{i}}
-\newcommand{\NCipoly}{\NCpoly{i}}
-\newcommand{\TCipoly}{\TCpoly{i}}
-
-\newcommand{\TCpoly}[1]{%
-  \texorpdfstring{%
-    \ensuremath{\complexity{TC}^{#1}_{/poly}}%
-  }{TC^{#1}\_/poly}%
-}
-
-\newcommand{\FNCpoly}[1]{%
-  \texorpdfstring{%
-    \ensuremath{\complexity{FNC}^{#1}_{/poly}}%
-  }{FNC^{#1}\_/poly}%
-}
-\newcommand{\FACpoly}[1]{%
-  \texorpdfstring{%
-    \ensuremath{\complexity{FAC}^{#1}_{/poly}}%
-  }{FAC^{#1}\_/poly}%
-}
-\newcommand{\FTCpoly}[1]{%
-  \texorpdfstring{%
-    \ensuremath{\complexity{FTC}^{#1}_{/poly}}%
-  }{FTC^{#1}\_/poly}%
-}
-\newcommand{\FACipoly}{\FACpoly{i}}
-\newcommand{\FNCipoly}{\FNCpoly{i}}
-\newcommand{\FTCipoly}{\FTCpoly{i}}
 
 \begin{definition}
 \todo[inline]{Define what is a circuit perhaps?}
@@ -71,7 +31,7 @@ circuit classes if there exists a family of circuits
 \end{enumerate}
 
 Note that the condition \(C_n(x)=1\) iff \(x\in L\) requires the circuits
-to have precisely one output node. We lift this requirement in~\autoref{def:faci}.
+to have precisely one output node. We lift this requirement in~\autoref{def:def:aci-faci}.
 % The full hierarchies are:
 % \[
 %   \complexity{AC}_{/poly}
@@ -86,7 +46,7 @@ to have precisely one output node. We lift this requirement in~\autoref{def:faci
 \end{definition}
 
 
-\begin{definition}[\FNCipoly, \FACipoly, \FTCipoly]\label{def:faci}
+\begin{definition}[\FNCipoly, \FACipoly, \FTCipoly]\label{def:faci-poly}
 A function \(F : \{0, 1\}^\ast \rightarrow \{0, 1\}^\ast\) belongs to
 \FNCipoly (resp. \FACipoly, \FTCipoly) iff there exists a family of circuits
 with multiple output nodes
@@ -101,6 +61,18 @@ and additionally \(C_n\) satisfies the class condition~\ref{itm:circ-nc}
 (resp.~\ref{itm:circ-ac},~\ref{itm:circ-tc}) of~\ref{def:ac-nc-tc-poly}.
 \end{definition}
 
+\begin{definition}[\compL-uniform circuit families]\label{def:logspace-uniformity}
+      We say that a family of circuits \(\langle C_n \rangle_{n \in \mathbb{N}}\)
+      is \compL-uniform if there exists a Turing machine operating in space \(\bigO(\log n)\),
+      computing the function \(1^n \to C_n\) for some representation of \(C_n\).
+\end{definition}
+
+\begin{definition}[\NCi, \ACi, \TCi, \FNCi, \FACi, \FTCi]\label{def:aci-faci}
+      A function \(F : \{0, 1\}^\ast \rightarrow \{0, 1\}^\ast\) belongs to
+\FNCi (resp. \FACi, \FTCi) iff there exists a \compL-uniform family of circuits
+satisfying the conditions from~\autoref{def:faci-poly}.
+\end{definition}
+
 
 % \subsection{Cicuit complexity classes}
 % The complexity classes in this subsection are \emph{circuit complexity} classes,
@@ -109,44 +81,6 @@ and additionally \(C_n\) satisfies the class condition~\ref{itm:circ-nc}
 % automata or lambda calculi, and thus comes with its own notion of complexity. The definitions
 % in this subsection are based on~\cite[Definition 5.17]{Immerman1999-IMMDC}.
 
-
-
-% REMOVE THIS? THIS IS FOR P-PROJECTIONS FOR AC0k
-% \begin{definition}[Projection of Boolean functions]\label{def:boolean-proj}
-% Let $f:\{0,1\}^n\!\to\!\{0,1\}$ and $g:\{0,1\}^m\!\to\!\{0,1\}$.
-% We say that $f$ is a \emph{projection} of $g$ if there is a mapping
-% $\varsigma : \{y_1, \dots, y_m\} \rightarrow \{0, 1, x_1, \dots, x_n, \neg x_1, \dots, \neg x_n\}$
-% such that
-% \[
-% f(x_1, \dots, x_n) = g\big(\varsigma(y_1),\dots,\varsigma(y_m)\big).
-% \]
-% \end{definition}
-% \begin{definition}[p\mbox{-}projection between families]\label{def:boolean-p-proj}
-% Let $\mathcal{P}=(P_i)_{i\in\mathbb{N}}$ and $\mathcal{Q}=(Q_j)_{j\in\mathbb{N}}$ be families
-% of Boolean functions (each $P_i,Q_j:\{0,1\}^{*}\!\to\!\{0,1\}$, arity arbitrary).
-% We say that $\mathcal{P}$ is a \emph{p\mbox{-}projection} of $\mathcal{Q}$, if 
-% there exists a polynomial $t:\mathbb{N}\to\mathbb{N}$ such that
-% for every $i\in\mathbb{N}$ there is some $j\le t(i)$ with $P_i$ a projection of $Q_j$.
-% \end{definition}
-% \begin{remark}[Why the polynomial bound]
-% Unrestricted projection lets a simple $P_i$ be realized only by projecting
-% some $Q_j$ at an arbitrarily large index $j$, which makes the comparison vacuous.
-% The polynomial bound $j\le t(i)$ enforces an \emph{efficient} correspondence of indices,
-% yielding a robust, reduction-like notion. The relation $\preceq_p$ is a preorder;
-% modulo $\equiv_p$ it induces a partial order on equivalence classes of families.
-% \end{remark}
-% \section{Bibliographical remark}
-% The notions of~\autoref{def:boolean-proj} and~\autoref{def:boolean-p-proj} are from~\cite{10.1145/3149.3158}.
-% \begin{definition}[\texorpdfstring{\(\complexity{AC}^0_k\)}{AC0 depth k}]\label{def:complexity-ac0-k}
-%     This is \complexityi{AC}{0} of depth $k$.
-%     Complete problem:\cite{10.1007/BFb0028550}
-%     It's mentioned that \(complexity{AC}^0_0 \subseteq \complexity{DLOGTIME} \subseteq \complexity{AC}^0_2\)~\cite[Page~141]{10.5555/114872}
-% \end{definition}
-
-% \begin{proposition}
-%     for \(k \geqslant 3\), \(\texttt{MAZE}_k\) is complete for non-uniform $\Pi_k$ under p-projections
-%     and complete for uniform $\Pi_k$ under \complexity{DLOGTIME}-uniform projections~\cite{10.1007/BFb0028550}.
-% \end{proposition}
 
 
 % \begin{definition}[Words accepted by a circuit]

@@ -1,14 +1,40 @@
 \chapter{Introduction}
 
+\todo[inline]{This will be refined. Now it's just essentials}
+The purpose of this thesis is to find a convenient way of certifying that a given program
+is in some complexity class. We want to do it by defining such a programming language,
+that by definition every program written in it has a given complexity.
+
 \begin{enumerate}
-    \item The purpose of~\autoref{chap:foundations} is to check in what programming paradigm/computation model,
-    it will be the easiest for us to find characterizations. If imperative languages are hard, maybe consider functional.
-    If computational classes for Turign machine are hard to capture, maybe other classes will  be easier to capture?
-    \item The purpose of~\autoref{chap:formalized-semantics} is to examine reasoning about turing machines straight away,
-    without any characterizations
-    \item The purpose of~\autoref{chap:reductions} is to find out which classes we should actually focus on. Perhaps
-    we can get some class from complete problem + reductions. Then we only need language for the lower class.
-    
+    \item The purpose of~\autoref{chap:foundations} (chapter: Models of computation...) is to check in what programming paradigm/computation model,
+    it will be the easiest for us to find characterizations. If imperative languages are hard to reason about, maybe consider functional
+    languages?
+    Also, if computational classes for Turing machines are hard to capture, maybe classes of complexity
+    e.g. for lambda terms or for games (not examined here) will be easier to capture?
+    \item The purpose of~\autoref{chap:formalized-semantics} is to examine reasoning
+    about turing machines straight away, without any characterizations, in Coq. It is way too much work!
+    \item In~\autoref{chap:descriptive-complexity} we study languages (logics) for decisional problems
+        purely in terms of how complex is the specification of the problem. This gives us
+        some characterizations of decisive complexity classes, and we can also
+        define functions by bit-graphs and asking "is k-th bit of output f(x) 0 or 1?" repeatedly.
+    \item The purpose of~\autoref{chap:reductions} is to find out if we can find language for polytime functions
+    by making language for logspace reductions, then adding an oracle for decisional poly-time complete problem.
+    We introduce functional complexity classes, which are crucial for our considerations.
+    Then, going stronger, if we can have a language for FNP from FP + oracle for NP-complete problem.
+    (answer turns out to be NO, as examined in section about TFNP). By the way, \(\complexity{FP}^{\complexity{NP}}\) is
+    exactly what we would get this way, and this is a well-studied complexity class.
+    And going weaker, if we can have language for FL from L-complete problem and circuit reductions.
+    We leave this problem out, and only study circuit reductions/uniformity in appendix.
+    We proceed to try find FL characterization right away in Linear Logic (Ugo Dal Lago IntML)
+    and in Recursion Theory (Neergaard functional language).
+    \item In~\autoref{chap:recursion-theory}, we study simple and cool function algebras
+        that capture FL, and FP. Neergaard implemented a programming language for FL.
+    \item In~\autoref{chap:linear-types}, we study Ugo Dal Lago's linear-types programming
+        language that captures FL and FNL. Briefly! Because introducing linear types is too
+        much overhead
+    \item In~\autoref{chap:bounded-arithmetic}, we study my contribution!
+
+
 \end{enumerate}
 % \section{The full picture}
 % States of the process of computation are dots. Computation is arrows between the dots.

@@ -149,7 +149,7 @@
 \apptocmd{\tableofcontents}{\clearpage\hypersetup{pageanchor=true}}{}{}
 \makeatother
 
-\addbibresource{chapters/circuits.bib}
+\addbibresource{chapters/uniformity.bib}
 \addbibresource{chapters/foundations.bib}
 \addbibresource{chapters/reductions.bib}
 \addbibresource{chapters/linear-logic.bib}
@@ -281,6 +281,115 @@
 \newcommand{\complexityi}[2]{\ensuremath{\mathsf{#1}^{#2}}\xspace}
 
 
+\newcommand{\problem}[1]{%
+  \texorpdfstring{%
+    \ensuremath{\texttt{#1}}%
+  }{#1}%
+}
+
+\newcommand{\compL}{%
+  \texorpdfstring{%
+    \complexity{L}%
+  }{LOGSPACE}%
+}
+\newcommand{\compP}{%
+  \texorpdfstring{%
+    \complexity{P}%
+  }{PTIME}%
+}
+\newcommand{\compFP}{%
+  \texorpdfstring{%
+    \complexity{FP}%
+  }{FPTIME}%
+}
+
+\newcommand{\compUeAst}{%
+  \texorpdfstring{%
+    \ensuremath{\complexity{U}_{E^*}}%
+  }{UE*}%
+}
+
+
+\newcommand{\ACpoly}[1]{%
+  \texorpdfstring{%
+    \ensuremath{\complexity{AC}^{#1}_{/poly}}%
+  }{AC^{#1}\_/poly}%
+}
+\newcommand{\NCpoly}[1]{%
+  \texorpdfstring{%
+    \ensuremath{\complexity{NC}^{#1}_{/poly}}%
+  }{NC^{#1}\_/poly}%
+}
+\newcommand{\TCpoly}[1]{%
+  \texorpdfstring{%
+    \ensuremath{\complexity{TC}^{#1}_{/poly}}%
+  }{TC^{#1}\_/poly}%
+}
+\newcommand{\ACipoly}{\ACpoly{i}}
+\newcommand{\NCipoly}{\NCpoly{i}}
+\newcommand{\TCipoly}{\TCpoly{i}}
+
+\newcommand{\FNCpoly}[1]{%
+  \texorpdfstring{%
+    \ensuremath{\complexity{FNC}^{#1}_{/poly}}%
+  }{FNC^{#1}\_/poly}%
+}
+\newcommand{\FACpoly}[1]{%
+  \texorpdfstring{%
+    \ensuremath{\complexity{FAC}^{#1}_{/poly}}%
+  }{FAC^{#1}\_/poly}%
+}
+\newcommand{\FTCpoly}[1]{%
+  \texorpdfstring{%
+    \ensuremath{\complexity{FTC}^{#1}_{/poly}}%
+  }{FTC^{#1}\_/poly}%
+}
+\newcommand{\FACipoly}{\FACpoly{i}}
+\newcommand{\FNCipoly}{\FNCpoly{i}}
+\newcommand{\FTCipoly}{\FTCpoly{i}}
+
+\newcommand{\AC}[1]{%
+  \texorpdfstring{%
+    \ensuremath{\complexity{AC}^{#1}}%
+  }{AC^{#1}}%
+}
+\newcommand{\NC}[1]{%
+  \texorpdfstring{%
+    \ensuremath{\complexity{NC}^{#1}}%
+  }{NC^{#1}}%
+}
+\newcommand{\TC}[1]{%
+  \texorpdfstring{%
+    \ensuremath{\complexity{TC}^{#1}}%
+  }{TC^{#1}}%
+}
+\newcommand{\ACi}{\AC{i}}
+\newcommand{\NCi}{\NC{i}}
+\newcommand{\TCi}{\TC{i}}
+
+\newcommand{\FAC}[1]{%
+  \texorpdfstring{%
+    \ensuremath{\complexity{FAC}^{#1}}%
+  }{FAC^{#1}}%
+}
+\newcommand{\FNC}[1]{%
+  \texorpdfstring{%
+    \ensuremath{\complexity{FNC}^{#1}}%
+  }{NC^{#1}}%
+}
+\newcommand{\FTC}[1]{%
+  \texorpdfstring{%
+    \ensuremath{\complexity{FTC}^{#1}}%
+  }{FTC^{#1}}%
+}
+\newcommand{\FACi}{\FAC{i}}
+\newcommand{\FNCi}{\FNC{i}}
+\newcommand{\FTCi}{\FTC{i}}
+
+
+
+
+
 % koniec definicji
 
 % \includeonly{chapters/foundations}
@@ -308,20 +417,16 @@
 \include{chapters/preliminaries}
 \include{chapters/foundations}
 \include{chapters/formalized-semantics}
-\include{chapters/reductions}
-\include{chapters/circuits}
 \include{chapters/descriptive-complexity}
+\include{chapters/reductions}
 \include{chapters/recursion-theory}
 \include{chapters/linear-logic}
 \include{chapters/bounded-arithmetic}
 
-\printbibliography[heading=bibintoc]
-% \begin{thebibliography}{99}
-% \addcontentsline{toc}{chapter}{Bibliografia}
+\appendix
+\include{chapters/uniformity}
 
-% \bibitem[Bea65]{beaman} Juliusz Beaman, \textit{Morbidity of the Jolly
-%     function}, Mathematica Absurdica, 117 (1965) 338--9.
-% \end{thebibliography}
+\printbibliography[heading=bibintoc]
 
 \end{document}
 

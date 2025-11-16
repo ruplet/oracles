@@ -1,14 +1,33 @@
 % Important for literature review: https://plato.stanford.edu/archives/win2017/entries/computational-complexity/#BouAri
 \chapter{Bounded arithmetic}\label{chap:bounded-arithmetic}
-\todo[inline]{write this chapter}
+\todo[inline]{Work in progress}
+This was presented at AITP2025. And was the topic of
+my visit of Yannick Forster at INRIA. My source code is here:~\url{https://github.com/ruplet/formalization-of-bounded-arithmetic}.
+The presentations PDFs are also there, and reviews of my abstract from aitp.
+
+
+\begin{definition}[Functional complexity classes]
+    \todo[inline]{Cook slightly differently defines functional complexity classes. He uses his two-sorted logic,
+    and says that function is in FC when its poly-bounded and its graph is in C.
+    }
+\end{definition}
+
+\begin{theorem}\label{thm:fc-is-fac0-closure}
+    We obtain function classes for a few interesting classes (FL, FP, FTC0 etc.) from taking
+    closure of complete problem by
+    FAC0 reductions.~\cite[Section~IX.2.1]{Cook_Nguyen_2010}[Section~9B.1]{CookNguyenDraft}.
+\end{theorem}
 
 % \section{VAC0 and FAC0}
-\section{\(\texttt{VAC}^0\) as a theory for \(\complexity{FAC}^0\)}\label{sec:vac0}
+\section{\complexityi{VAC}{0} as a theory for \complexityi{FAC}{0}}\label{sec:vac0}
 
 \subsection{Pigeonhole principle}\label{subsec:vac0-php}
-\todo[inline]{Here we cite the result that \(\texttt{VAC}^0 \nvdash \texttt{PHP}\)}
+% \todo[inline]{Here we cite the result that }
+\begin{theorem}[Independence of \problem{PHP} from \complexityi{VAC}{0}]
+    \[\texttt{VAC}^0 \nvdash \texttt{PHP}\]
+    This is proved in~\cites[Corollary~7.21]{CookNguyenDraft}[Corollary~VII.2.4]{Cook_Nguyen_2010}.
+\end{theorem}
 
-PHP is proved to be independent from V0 in~\cites[Corollary~7.21]{CookNguyenDraft}[Corollary~VII.2.4]{Cook_Nguyen_2010}.
 
 \begin{rawlisting}
 \input{listings/lean-example.tex}
