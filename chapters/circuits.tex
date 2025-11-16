@@ -18,6 +18,40 @@ There is a very thorough overview of uniformity conditions below NC1 in ~\cite{M
 \end{definition}
 
 
+
+% barrington:
+%We define a log-time Turing machine to have a read-only input tape of length n,
+% a constant number of read-write work tapes of total length O(log n), and a read-
+% write input address tape of length log n. On a given time step the machine has
+% access to the bit of the input tape denoted by the contents of the address tape (or
+% to the fact that there is no such bit, if the address tape holds too large a number).
+% We will assume (without loss of generality) that the machine always takes the same
+% amount of time on inputs of a given length (this is because some of the work tape
+% can always used as a clock). The following lemma summarizes some useful
+% capabilities of such a machine.
+dlogtime uniformity:\cite[Section~6]{MIXBARRINGTON1990274}:
+deterministic log-time tm can decide formula langugae: {<c, i, y>: |y|=n and ith char of nth formula is c}
+very important:
+
+
+The class dlogtime-uniform nc1 is alogtime is nc1-uniform nc1:\cite[Lemma~6.2]{MIXBARRINGTON1990274}.
+
+
+\section{uniform \complexityi{NC}{1} is \complexity{ALOGTIME}}\label{sec:uniform-nc1}
+For low uniformities: MIXBARRINGTON1990274.
+In the below, \(R\) is said to be \(\complexity{NC}^1\)-reducible to \(S\) (written \(R \leqslant S\))
+iff there is a \(\compUeAst\)-uniform family of circuits with oracle nodes for \(S\).
+In the below, \(\complexity{FL}^*\) consists of all problems \(R\) such that \(R \leqslant S\)
+for some \(S\) in \(FL\)~\cite[Page~8]{COOK19852}.
+
+
+Bibliographical remark: we refer to Chapter 2 ``A Catalog of Complexity Classes'' by David S. Johnson~\cite{10.5555/114872.114874},
+which appeared in January 1991 in ``Handbook of theoretical computer science (vol. A): algorithms and complexity'',
+edited by Jan van Leeuwen~\cite{10.5555/114872}.
+
+For probably the first published recognition of the widespread inconsistency of decisional vs functional
+complexity classes in the literature, with examples of inconsistent places see~\cite[Page~131]{10.5555/114872}.
+
 \begin{definition}
 
 \end{definition}
@@ -25,6 +59,7 @@ There is a very thorough overview of uniformity conditions below NC1 in ~\cite{M
 \begin{definition}[\texorpdfstring{\(\complexity{AC}^0_k\)}{AC0 depth k}]\label{def:complexity-ac0-k}
     This is \complexityi{AC}{0} of depth $k$.
     Complete problem:\cite{10.1007/BFb0028550}
+    It's mentioned that \(complexity{AC}^0_0 \subseteq \complexity{DLOGTIME} \subseteq \complexity{AC}^0_2\)~\cite[Page~141]{10.5555/114872}
 \end{definition}
 
 \begin{proposition}
@@ -66,7 +101,8 @@ The notions of~\autoref{def:boolean-proj} and~\autoref{def:boolean-p-proj} are f
 
 
 \section{Uniformity}\label{sec:uniformity}
-
+For an overview of the different uniformity conditions in a state-of-the-art paper, with
+arguments about why \complexity{DLOGTIME} uniformity is the most reasonable to consider, please see\cite{HESSE2002695}.
 % KEEP IT logspace-uniform here, but remark that FO-uniformity will be required later when we define FO-queries
 % immerman:
 % Definition 5.16 (Uniform) Let C be a sequence of circuits as in Equation (5.14).
@@ -77,7 +113,14 @@ The notions of~\autoref{def:boolean-proj} and~\autoref{def:boolean-p-proj} are f
 % afirst-order uniform sequence of circuits. Similarly, if I E L, then Cis logspace
 % uniform. If I E P, then C is polynomial-time uniform, and so on. 
 
+The below is from:~\cite{RUZZO1981365}.
+\begin{definition}[\complexity{DLOGTIME}-uniformity]
+
+\end{definition}
+
 \subsection{\complexity{DLOGTIME}-uniformity}\label{subsec:dlogtime-uniformity}
+
+
 \begin{enumerate}
 \item TODO:\@ Work out the example of a \complexity{DLOGTIME} reduction showing that tree isomorphism for string-represented trees is $\complexityi{NC}{1}$-complete~\cite{694595}.
 \end{enumerate}

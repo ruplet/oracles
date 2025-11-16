@@ -8,11 +8,18 @@
 \subsection{Pigeonhole principle}\label{subsec:vac0-php}
 \todo[inline]{Here we cite the result that \(\texttt{VAC}^0 \nvdash \texttt{PHP}\)}
 
+PHP is proved to be independent from V0 in~\cites[Corollary~7.21]{CookNguyenDraft}[Corollary~VII.2.4]{Cook_Nguyen_2010}.
 
 \begin{rawlisting}
 \input{listings/lean-example.tex}
 \caption{Lean example}\label{lst:lean-example}
 \end{rawlisting}
+
+\section{Complexity of algorithm vs complexity of proof}
+See \cites[Section~IX.7.3]{Cook_Nguyen_2010}[Section~9G.3]{CookNguyenDraft} for
+an open problem whether the recent breakthrough that binary integer division
+is in \complexity{DLOGTIME}-uniform \complexityi{TC}{0}~\cite{HESSE2002695},
+means that it can also be proved in the corresponding VTC0 theory.
 
 %  Find IDelta0 and that it can't express exp function. Look for
 %  Find Buss' PV theories and Cook's $V^i$ hierachy.

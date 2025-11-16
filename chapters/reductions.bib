@@ -448,6 +448,7 @@ year = {1991},
 publisher = {Massachusetts Institute of Technology},
 address = {USA},
 abstract = {A basic question about NP is whether or not search (the problem of finding a witness) reduces in polynomial time to decision (the problem of deciding whether there exists a witness). The fact that search does reduce to decision for SAT and other NP-complete problems (self-reducibility) is among the most well known facts in the theory of computation. But the general question of whether search reduces to decision for every language in NP remains open. We indicate that the answer is negative: under a natural complexity assumption (that deterministic and non-deterministic double exponential time are unequal) we construct a language in NP for which search does not reduce to decision. These ideas extend in a natural way to interactive proofs and program checking to yield negative results about the power of the prover and the complexity of checkers. We present languages in IP for which it is harder for the prover to prove membership to a verifier than it is to decide this membership. Similarly we present languages where checking is harder than computing membership. These results are also under assumptions about double-exponential time separations. Our arguments are simple and direct. We bypass Yao''s notion of coherence which was used to establish previous negative results in program checking, establishing stronger results by different techniques. By demonstrating-under the same assumptions-the existence of a language which is coherent but not checkable we indicate that coherence may not be the right approach to negative results in this area. The connections we establish with double-exponential time classes provide an interesting example of how complexity "high up" can shed light on properties of basic classes like NP and IP.}
+
 }
 
 
@@ -475,7 +476,8 @@ doi = {https://doi.org/10.1016/0196-6774(87)90018-6},
 url = {https://www.sciencedirect.com/science/article/pii/0196677487900186},
 eprint = {https://web.archive.org/web/20161213142928/https://www.cs.utoronto.ca/~sacook/homepage/cook_mckenzie.pdf},
 author = {Stephen A Cook and Pierre McKenzie},
-abstract = {We exhibit several problems complete for deterministic logarithmic space under NC1 (i.e., log depth) reducibility. The list includes breadth-first search and depth-first search of an undirected tree, connectivity of undirected graphs known to be made up of one or more disjoint cycles, undirected graph acyclicity, and several problems related to representing and to operating with permutations of a finite set.}
+abstract = {We exhibit several problems complete for deterministic logarithmic space under NC1 (i.e., log depth) reducibility. The list includes breadth-first search and depth-first search of an undirected tree, connectivity of undirected graphs known to be made up of one or more disjoint cycles, undirected graph acyclicity, and several problems related to representing and to operating with permutations of a finite set.},
+url={http://web.archive.org/web/20250714180631/https://cseweb.ucsd.edu/~mihir/papers/compip.pdf}
 }
 
 @Inbook{Kozen2006,
@@ -499,4 +501,20 @@ url="https://doi.org/10.1007/1-84628-477-5_6"
       archivePrefix={arXiv},
       primaryClass={cs.SE},
       url={https://arxiv.org/abs/2301.03224}, 
+}
+
+@article{COOK19852,
+title = {A taxonomy of problems with fast parallel algorithms},
+journal = {Information and Control},
+volume = {64},
+number = {1},
+pages = {2-22},
+year = {1985},
+note = {International Conference on Foundations of Computation Theory},
+issn = {0019-9958},
+doi = {https://doi.org/10.1016/S0019-9958(85)80041-3},
+url = {https://www.sciencedirect.com/science/article/pii/S0019995885800413},
+eprint = {https://web.archive.org/web/20190320200248/https://core.ac.uk/download/pdf/81978561.pdf},
+author = {Stephen A. Cook},
+abstract = {The class NC consists of problems solvable very fast (in time polynomial in log n) in parallel with a feasible (polynomial) number of processors. Many natural problems in NC are known; in this paper an attempt is made to identify important subclasses of NC and give interesting examples in each subclass. The notion of NC1-reducibility is introduced and used throughout (problem R is NC1-reducible to problem S if R can be solved with uniform log-depth circuits using oracles for S). Problems complete with respect to this reducibility are given for many of the subclasses of NC. A general technique, the “parallel greedy algorithm,” is identified and used to show that finding a minimum spanning forest of a graph is reducible to the graph accessibility problem and hence is in NC2 (solvable by uniform Boolean circuits of depth O(log2 n) and polynomial size). The class LOGCFL is given a new characterization in terms of circuit families. The class DET of problems reducible to integer determinants is defined and many examples given. A new problem complete for deterministic polynomial time is given, namely, finding the lexicographically first maximal clique in a graph. This paper is a revised version of S. A. Cook, (1983, in “Proceedings 1983 Intl. Found. Comut. Sci. Conf.,” Lecture Notes in Computer Science Vol. 158, pp. 78–93, Springer-Verlag, Berlin/New York).}
 }

@@ -1,0 +1,405 @@
+\chapter{Logic preliminaries}
+The definitions in this section are in the style of~\cite{Cook_Nguyen_2010}.
+We will use them in~\autoref{chap:descriptive-complexity} and~\autoref{chap:bounded-arithmetic}.
+Most of the discussed in~\autoref{chap:descriptive-complexity} are from~\cite{Immerman1999-IMMDC},
+where different style of definitions is used.
+However, the differences are rather negligible and by following the style of~\cite{Cook_Nguyen_2010},
+we can introduce single- and two-sorted logic uniformly.
+
+Here, we solely focus on single-sorted, first-order languages and don't introduce the similar
+definitions of propositional calculus and second-order logic. The semantics is entirely classical
+(in the sense of classical and intuitionistic logic).
+
+\section{Single-sorted first-order logic}
+
+\begin{definition}[First-order vocabulary and syntax]
+A \emph{first-order vocabulary} (or \emph{language}) $\mathcal{L}$ consists of:
+\begin{enumerate}
+  \item For each $n \ge 0$, a (possibly empty) set of $n$-ary \emph{function symbols}.
+        We use $f,g,h,\dots$ as meta-variables for function symbols.
+        A $0$-ary function symbol is called a \emph{constant symbol};
+  \item For each $n \ge 0$, a set of $n$-ary \emph{predicate symbols}, which is
+        nonempty for at least one $n$.
+        We use $P,Q,R,\dots$ as meta-variables for predicate symbols.
+\end{enumerate}
+
+In addition, the following logical symbols are available to build first-order
+terms and formulas:
+\begin{enumerate}
+  \item An infinite set of \emph{variables}. We use $x,y,z,\dots$ and sometimes
+        $a,b,c,\dots$ as meta-variables for variables;
+  \item The connectives $\lnot$, $\land$, $\lor$ (not, and, or) and
+        logical constants $\bot$, $\top$ (False, True);\todo{consistency: semicolon in enumerate}
+  \item The quantifiers $\forall$, $\exists$ (for all, there exists);
+  \item Parentheses $(\, ,\,)$.
+\end{enumerate}
+\end{definition}
+
+% Expressive power of different possibilities
+% \item $\text{FO}[+, *] = \text{FO}[\mathrm{BIT}]: Section~1.2.1 Immerman $.
+% \item $\text{FO}[+]$ is less expressive than $\text{FO}[<, *] = \text{FO}[<, /] = \text{FO}[<, \mathrm{COPRIME}]$~\cite{10.1002/malq.200310041}.
+
+
+\begin{definition}[$\mathcal{L}$-terms]
+Let $\mathcal{L}$ be a first-order vocabulary.
+The set of \emph{$\mathcal{L}$-terms} is defined inductively as follows:
+\begin{enumerate}
+  \item Every variable is an $\mathcal{L}$-term;
+  \item If $f$ is an $n$-ary function symbol of $\mathcal{L}$ and
+        $t_1,\dots,t_n$ are $\mathcal{L}$-terms, then
+        \[
+          f(t_1 \dots t_n)
+        \]
+        is an $\mathcal{L}$-term.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[$\mathcal{L}$-formulas]
+Let $\mathcal{L}$ be a first-order vocabulary.
+The set of \emph{first-order formulas in $\mathcal{L}$} (or
+\emph{$\mathcal{L}$-formulas}) is defined
+inductively as follows:
+\begin{enumerate}
+  \item The logical constants $\bot$ and $\top$ are atomic formulas;
+  \item If $P$ is an $n$-ary predicate symbol in $\mathcal{L}$ and
+        $t_1,\dots,t_n$ are $\mathcal{L}$-terms, then
+        \[
+          P(t_1 \dots t_n)
+        \]
+        is an \emph{atomic} $\mathcal{L}$-formula;
+  \item If $A$ and $B$ are $\mathcal{L}$-formulas, then
+        $\lnot A$, $(A \land B)$, and $(A \lor B)$ are $\mathcal{L}$-formulas;
+  \item If $A$ is an $\mathcal{L}$-formula and $x$ is a variable, then
+        $\forall x\,A$ and $\exists x\,A$ are $\mathcal{L}$-formulas.
+\end{enumerate}
+For example,
+\[
+  (\lnot \forall x\,P x \,\lor\, \exists x\,\lnot P x)
+  \quad\text{and}\quad
+  (\forall x\,\lnot P x y \,\land\, \lnot \forall z\,P f y z)
+\]
+are $\mathcal{L}$-formulas (for suitable choices of $P$ and $f$ in $\mathcal{L}$).
+\end{definition}
+
+\begin{definition}[Free and bound variables]\label{def:free-bound}
+Let $A$ be a formula and $x$ a variable.
+An occurrence of $x$ in $A$ is \emph{bound} if it lies within a subformula
+of $A$ of the form $\forall x\,B$ or $\exists x\,B$.
+Any other occurrence of $x$ in $A$ is called \emph{free}.
+\end{definition}
+
+\begin{definition}[Closed terms, closed formulas, sentences]\label{def:closed-sentence}
+A formula is \emph{closed} if it contains no free occurrence of any variable.
+A term is \emph{closed} if it contains no variables at all.
+A closed formula is also called a \emph{sentence}.
+\end{definition}
+
+\begin{definition}[$\mathcal{L}$-structure]\label{def:L-structure}
+Let $\mathcal{L}$ be a first-order vocabulary.
+An \emph{$\mathcal{L}$-structure} $\mathcal{M}$ consists of:
+\begin{enumerate}
+  \item A nonempty set $M$, called the \emph{universe}
+        (Variables are intended to range over $M$.);
+  \item For each $n$-ary function symbol $f$ in $\mathcal{L}$, an associated function
+        \(
+          f^{\mathcal{M}} : M^n \to M
+        \);
+  \item For each $n$-ary predicate symbol $P$ in $\mathcal{L}$, an associated relation
+        \(
+          P^{\mathcal{M}} \subseteq M^n
+        \).
+\end{enumerate}
+\end{definition}
+
+\begin{remark}
+    Note that to ``syntactical'' relations, we assign ``real'' relations defined on
+    the underlying elements of the structure. We will want to treat some of these
+    relations specially, e.g.\ to make sure that the ``\(=\)'' relation is
+    interpreted as the actual equality, or that a designated ``\(\text{PLUS}(x, y, z)\)''
+    relation holds only if the underlying objects are actual natural numbers,
+    for which we have $x + y = z$.
+% Thus the predicate symbol $=$ receives special treatment: it must always be
+% interpreted as actual equality on the universe. We can also consider
+% logics where we don't take the $=$ symbol as granted. For our purposes, however,
+% the things we will be able to say about the class of models of a given formula
+% will be more interesting if we already assume that whenever $p = q$ holds
+% in the structure, then the underlying objects of the universe are also equal
+% (in the meta-mathematical sense).
+\end{remark}
+
+
+\begin{definition}[Object Assignment]
+Let $\mathcal{M}$ be a structure with universe $M$.  
+An \emph{object assignment} \(\sigma\) for $\mathcal{M}$ is a mapping
+from variables to the universe $M$.
+\end{definition}
+
+\begin{remark}
+Notation: Let $x$ be a variable and $m \in M$.  
+We write $\sigma(m/x)$ for the
+assignment that is the same as $\sigma$ except that it maps $x$ to $m$:
+\end{remark}
+
+\begin{definition}[Basic Semantic Definition]
+Let $L$ be a first-order vocabulary, let $\mathcal{M}$ be an $L$-structure
+with universe $M$, and let $\sigma$ be an object assignment for $\mathcal{M}$.
+
+\paragraph{Interpretation of terms.}
+Each $L$-term $t$ is assigned an element $t^{\mathcal{M}}[\sigma] \in M$,
+defined by structural induction on $t$:
+\begin{enumerate}
+  \item For each variable $x$,
+  \(
+    x^{\mathcal{M}}[\sigma] = \sigma(x).
+  \)
+  \item 
+  \(
+    (f t_1 \dots t_n)^{\mathcal{M}}[\sigma]
+      = f^{\mathcal{M}}\bigl(t_1^{\mathcal{M}}[\sigma],\dots,t_n^{\mathcal{M}}[\sigma]\bigr).
+  \)
+\end{enumerate}
+
+\paragraph{Satisfaction of formulas.}
+For an $L$-formula $A$, the relation
+\[
+  \mathcal{M} \models A[\sigma]
+\]
+(read: ``$\mathcal{M}$ satisfies $A$ under $\sigma$'') is defined by structural
+induction on $A$:
+\begin{enumerate}
+  \item $\mathcal{M} \models \top$ and $\mathcal{M} \not\models \bot$.
+  \item For an atomic formula $P t_1 \dots t_n$ (with $P$ an $n$-ary
+        predicate symbol),
+  \[
+    \mathcal{M} \models (P t_1 \dots t_n)[\sigma]
+    \;\;\text{iff}\;\;
+    \bigl\langle t_1^{\mathcal{M}}[\sigma],\dots,t_n^{\mathcal{M}}[\sigma]\bigr\rangle
+    \in P^{\mathcal{M}}.
+  \]
+  \item If $L$ contains $=$, then for terms $s,t$,
+  \[
+    \mathcal{M} \models (s = t)[\sigma]
+    \;\;\text{iff}\;\;
+    s^{\mathcal{M}}[\sigma] = t^{\mathcal{M}}[\sigma].
+  \]
+  \item $\mathcal{M} \models \neg A[\sigma]$ iff $\mathcal{M} \not\models A[\sigma]$.
+  \item $\mathcal{M} \models (A \lor B)[\sigma]$ iff
+        $\mathcal{M} \models A[\sigma]$ or $\mathcal{M} \models B[\sigma]$.
+  \item $\mathcal{M} \models (A \land B)[\sigma]$ iff
+        $\mathcal{M} \models A[\sigma]$ and $\mathcal{M} \models B[\sigma]$.
+  \item $\mathcal{M} \models (\forall x\,A)[\sigma]$ iff
+        $\mathcal{M} \models A[\sigma(m/x)]$ for all $m \in M$.
+  \item $\mathcal{M} \models (\exists x\,A)[\sigma]$ iff
+        $\mathcal{M} \models A[\sigma(m/x)]$ for some $m \in M$.
+\end{enumerate}
+
+\noindent
+If $t$ is a closed term (i.e.\ contains no variables), then $t^{\mathcal{M}}[\sigma]$
+is independent of $\sigma$, and we simply write $t^{\mathcal{M}}$.
+Similarly, if $A$ is a sentence (i.e.\ has no free variables), we often write
+$\mathcal{M} \models A$ instead of $\mathcal{M} \models A[\sigma]$, since
+the choice of $\sigma$ does not matter.
+\end{definition}
+
+
+\begin{example}
+    \todo[inline]{Show example how we define a graph as a logical structure. Point out that
+    the description of the structure goes completely in the meta-theory (in natural language).
+    }
+\end{example}
+\begin{example}
+\todo[inline]{Sentence that holds in even models (unordered)}
+\end{example}
+\begin{example}
+\todo[inline]{Sentence that holds when s, t vertices are connected - unordered data structure}
+\end{example}
+\begin{example}
+\todo[inline]{Sentence that holds in 01* strings of some sort}
+\end{example}
+
+\subsection{Structures considered}
+% IMPORTANT: what is bit? what is <=, +, -.
+% section 1.2 of immerman
+% bit(i, 0) holds iff i is odd.
+% PLUS(i, j, k) meaning i + j = k
+% 2. TIMES(i, j, k) meaning i x j = k
+% 3. BIT(i, j) meaning bit j in the binary representation of i is
+
+% this PLUS, TIMES seems to be like operations on unary numbers. 
+% This is unary numbers because we can only do it up until `n` 
+% (because we only have forall x, PLUS(x), PLUS(0), PLUS(1), PLUS(max),...)
+In this chapter, we only study structures that satisfy the following criteria:
+\begin{enumerate}
+    \item \todo[inline]{finish this}
+    \item ordered
+    \item at least 2 elements
+\end{enumerate}
+For discussion on reasonability of these assumptions,
+see~\cite[Proviso~1.14]{Immerman1999-IMMDC} and~\cite[Proviso~1.15]{Immerman1999-IMMDC}.
+
+
+
+\begin{remark}[Ordered and Unordered Structures]\label{remark:unordered-structures}
+Question 12.1. Is there a recursively enumerable listing of a set of sentences
+from FO(LFP) that describes exactly all the polynomial-time, order-independent
+boolean queries?
+Fagin's theorem (Theorem 7.8) does not require an ordering because second-order ex-
+istentiallogic is powerful enough to existentially quantify a linear ordering on the universe,
+which the original proof of Fagin's Theorem does.
+
+\paragraph{The Quest for a Logic Capturing \complexity{PTIME}}
+Without an explicit ordering, \(\mathrm{FO[LFP]}\) does \textbf{not} capture
+\(\complexity{PTIME}\)~\cite{Cai1992}.
+The existence of a logic that characterizes \(\complexity{PTIME}\) on
+\emph{unordered structures} remains a major open problem in computer science as of 2025.
+An interesting complexity class is \complexity{inv-P} of permutation-invariant polynomial-time problems.
+A good overview of this problem is~\cite[Chapter 12, The Role of Ordering]{Immerman1999-IMMDC}.
+\end{remark}
+% % - permutation-invariant PTIME
+% %     The class `inv-P` of graph permutation-invariant problems decidable in polynomial time, is conjectured
+% %     to not be characterizable this way. This is a restatement of the problem of finding a "logic capturing PTIME on unordered structures".
+% %     A good discussion of this problem is present in Anuj Dawar's presentation from 2012: [@dawar2012syntactic].
+
+
+
+
+\section{Two-sorted first-order logic}
+
+The below are 1-1 from~\cites[Chapter~4]{Cook_Nguyen_2010}[Chapter~4B]{CookNguyenDraft}.
+We don't repeat the definitions of two-sorted terms, formulas and semantics which are
+just generalizations of the single-sorted case.
+
+\begin{definition}[Two-sorted first-order vocabularies]\label{def:two-sorted-vocabulary}
+A \emph{two-sorted first-order vocabulary} (often abbreviated simply as a
+two-sorted language) \(L\) consists of collections of function and predicate
+symbols, much like an ordinary single-sorted vocabulary, but now the
+symbols may accept arguments of either of the two sorts.  Moreover, the
+function symbols come in two varieties:
+\begin{itemize}
+  \item \emph{number-valued} function symbols, whose outputs lie in the
+        number sort; and
+  \item \emph{string-valued} function symbols, whose outputs lie in the
+        string sort.
+\end{itemize}
+
+For any pair \(n,m \in \mathbb{N}\), the vocabulary contains:
+\begin{itemize}
+  \item a set of \((n,m)\)-ary number-function symbols,
+  \item a set of \((n,m)\)-ary string-function symbols, and
+  \item a set of \((n,m)\)-ary predicate symbols.
+\end{itemize}
+A \((0,0)\)-ary function symbol is simply a constant symbol, which may be
+either a constant of the number sort or a constant of the string sort.
+
+We use \(f,g,h,\dots\) as metavariables for number-valued function symbols,
+\(F,G,H,\dots\) for string-function symbols, and \(P,Q,R,\dots\) for predicate
+symbols.
+\end{definition}
+
+\begin{definition}[The language \(L^{2}_{A}\)]\label{def:L2A}
+As an example, consider the following two-sorted extension of the
+arithmetical language \(L_{A}\) (Definition~II.2.3):
+\[
+  L^{2}_{A} \;=\; [\,0,\ 1,\ +,\ \cdot,\ |\,\cdot\,| \;;\ =_{1},\ =_{2},\ \le,\ \in\,].
+\]
+
+Here the symbols \(0,1,+,\cdot,=_{1},\le\) are precisely the number-sort
+symbols of \(L_{A}\) (with \(=_{1}\) corresponding to the usual equality of
+numbers).  
+The symbol \(|X|\) is a number-valued function symbol giving the
+length of a string \(X\).  
+The binary predicate \(\in\) relates a number and a string and is used to
+express membership: intuitively, \(i \in X\) means that the \(i\)-th bit of
+the string \(X\) is \(1\).  
+The symbol \(=_{2}\) denotes equality between objects of the second sort.
+
+For convenience, when \(t\) is a number term, we abbreviate
+\[
+  X(t) \;\coloneqq\; t \in X.
+\]
+Thus \(X(i)\) plays the role of the \(i\)-th bit of the binary string \(X\).
+
+In \(L^{2}_{A}\), the symbols \(+\) and \(\cdot\) each have arity \((2,0)\); the
+length function \(|\cdot|\) has arity \((0,1)\); and the predicate
+\(\in\) has arity \((1,1)\).
+\end{definition}
+
+
+
+\begin{definition}[Bounded formulas]\label{def:bounded-formulas}
+Let \(L\) be a two-sorted vocabulary.  
+If \(x\) is a number variable and \(X\) a string variable that do not occur
+in the \(L\)-number term \(t\), we use the following abbreviations:
+\begin{align*}
+  \exists x \le t\,\varphi
+    &\;\;\text{stands for}\;\;
+      \exists x\, (x \le t \;\wedge\; \varphi), \\[2pt]
+  \forall x \le t\,\varphi
+    &\;\;\text{stands for}\;\;
+      \forall x\, (x \le t \;\to\; \varphi), \\[2pt]
+  \exists X \le t\,\varphi
+    &\;\;\text{stands for}\;\;
+      \exists X\, (\,|X| \le t \;\wedge\; \varphi), \\[2pt]
+  \forall X \le t\,\varphi
+    &\;\;\text{stands for}\;\;
+      \forall X\, (\,|X| \le t \;\to\; \varphi).
+\end{align*}
+
+A quantifier appearing in one of these forms is called \emph{bounded},
+and a \emph{bounded formula} is a formula in which every quantifier is
+bounded.
+\end{definition}
+
+\paragraph{Notation.}
+The expression
+\[
+  \exists x \le t\,\varphi
+\]
+may abbreviate a block of bounded number quantifiers
+\[
+  \exists x_1 \le t_1\;\cdots\;\exists x_k \le t_k\,\varphi
+\]
+for some \(k\), where no variable \(x_i\) occurs in any term \(t_j\)
+(even when \(i < j\)).  
+The same convention applies to \(\forall x \le t\), \(\exists X \le t\), and
+\(\forall X \le t\).
+
+
+\begin{definition}[The \texorpdfstring{$\Sigma^1_{1}(L)$, $\Sigma^B_{i}(L)$, and $\Pi^B_{i}(L)$}{Σ¹₁(L), Σᵢᴮ(L), Πᵢᴮ(L)} formulas]\label{def:SigmaB-PiB-hierarchy}
+Let \(L \supseteq L^{2}_{A}\) be a two-sorted vocabulary.  
+\begin{itemize}
+  \item The class \(\Sigma^{B}_{0}(L) = \Pi^{B}_{0}(L)\) consists of all
+        \(L\)-formulas whose only quantifiers are \emph{bounded number quantifiers}
+        (string variables may occur free).
+
+  \item For \(i \ge 0\), the class \(\Sigma^{B}_{i+1}(L)\) (resp.\ \(\Pi^{B}_{i+1}(L)\))
+        consists of formulas of the form
+        \[
+          \exists X \le t\,\varphi(X)
+          \quad\text{(resp.\ }\forall X \le t\,\varphi(X)\text{)},
+        \]
+        where:
+        \begin{itemize}
+            \item \(X\) is a vector of string variables,
+            \item \(t\) is a tuple of \(L^{2}_{A}\)-terms not involving variables from \(X\),
+            \item \(\varphi\) is a \(\Pi^{B}_{i}(L)\) formula  
+                  (resp.\ a \(\Sigma^{B}_{i}(L)\) formula).
+        \end{itemize}
+
+  \item A \(\Sigma^{1}_{1}(L)\) formula is a formula of the form
+        \[
+          \exists X\,\varphi,
+        \]
+        where \(X\) is a tuple of zero or more string variables and
+        \(\varphi\) is a \(\Sigma^{B}_{0}(L)\) formula.
+\end{itemize}
+
+We usually write \(\Sigma^{B}_{i}\) for \(\Sigma^{B}_{i}(L^{2}_{A})\) and
+\(\Pi^{B}_{i}\) for \(\Pi^{B}_{i}(L^{2}_{A})\).
+\end{definition}
+
+
+\begin{remark}
+Even though we quantify over sets, and even though the authors themselves sometimes call the system
+second-order~\cite{COOK2003193}, the difference is important: we only quantify over ``finite'' sets.
+\end{remark}

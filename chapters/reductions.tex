@@ -1,8 +1,13 @@
 \chapter{Reductions}\label{chap:reductions}
+\newcommand{\compUeAst}{\ensuremath{\complexity{U}_{E^*}}}
+
 \todo[inline]{Here we notice that if we want a language for FP, and we have a FP-complete problem, and a language
 for L-reductions (FL), then we have a language for FP!}
 
-% FL = L* : https://web.archive.org/web/20190320200248/https://core.ac.uk/download/pdf/81978561.pdf
+
+
+In the below, this \compUeAst-uniform \complexityi{NC}{1}-closure (recall~\autoref{sec:uniform-nc1:}) of decisional \complexity{L}:
+\(\complexity{FL} = \complexity{FL}^*\)~\cite[Proposition~4.1]{COOK19852}.
 
 
 We introduce the definitions of complexity classes considered in this work.
@@ -131,6 +136,10 @@ that, given an arbitrary input \(x\):
     \item outputs some \(y\) such that \(P(x, y)\) if any exists;
     \item signals that no such \(y\) exists otherwise.
 \end{enumerate}
+
+Finding the lexicographically first maximal clique in an undirected graph
+is \complexityi{NC}{i}-complete for \complexity{FP~}\cite[Proposition~6.1]{COOK19852}.
+
 
 
 
@@ -323,18 +332,13 @@ they prove the existence of a complete problem, and call this class ``syntactic'
 % % Some of the studied complexity classes remain notoriously difficult to be characterized implicitly. 
 % % The classes for which a characterization exists are called 'syntactic' complexity classes, as opposed to 'semantic'
 % % complexity classes, for which such characterization is conjectured to not exist.
-
-% % - BPP  
-% %     a characterization of which was however studied in [@lago2012higherordercharacterizationprobabilisticpolynomial].
-% %     Despite that, PP has been characterized implicitly by Dal Lago in 2021: $\text{PP}$ [@dallago_et_al:LIPIcs.MFCS.2021.35].
-
-% % - permutation-invariant PTIME
-% %     The class `inv-P` of graph permutation-invariant problems decidable in polynomial time, is conjectured
-% %     to not be characterizable this way. This is a restatement of the problem of finding a "logic capturing PTIME on unordered structures".
-% %     A good discussion of this problem is present in Anuj Dawar's presentation from 2012: [@dawar2012syntactic].
+BPP is thought to be semantic, a (``less implicit'') characterization
+was however studied in \cite{lago2012higherordercharacterizationprobabilisticpolynomial}
 
 
-% \end{enumerate}
+On the other hand, PP has been characterized implicitly by Dal Lago in 2021: \cite{dallago_et_al:LIPIcs.MFCS.2021.35}.
+inv-P we study in~\autoref{remark:unordered-structures}.
+
 
 % \subsection{Related works on specifically the \complexity{FL} class}
 % Early function algebras for \complexity{FL} appeared in~\cite{10.1145/1008293.1008295} and~\cite{lind1974logspace},

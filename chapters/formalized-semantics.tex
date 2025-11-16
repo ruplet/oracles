@@ -73,18 +73,19 @@ coined by Andrej Bauer) involved.
 % coined by Andrej Bauer) involved.
 % \end{displaycquote}
 
-Formally defining Turing machines has been considered in~\cite{10.1007/978-3-642-32621-9_1} and,
+Formally defining Turing machines has mostly been considered in~\cite{10.1007/978-3-642-32621-9_1} and,
 building on top of it,~\cite{10.1145/3372885.3373816}\footnote{Part of an ongoing formalization project:
 \url{https://github.com/uds-psl/coq-library-undecidability}.
 }. Besides that, few examples of concrete Turing machine definitions have been described in the literature, as
 working with them directly is greatly time-consuming and not incentivized by academia.
-Interesting concrete examples were provided in\cite{KUDLEK1996241} and~\cite{ROGOZHIN1996215}.
+Interesting concrete examples were provided in\cite{KUDLEK1996241},~\cite{ROGOZHIN1996215} and in the work
+we discuss in~\autoref{sec:ciaffaglione}.
 Alternative approaches are studied as Synthetic~Computability~\cite{BAUER20065}.
 
 In~\autoref{par:heraud-nowak}, we briefly discuss one formalization of \emph{a characterization}
 of polynomial-time functions.
 
-\section{Ciaffaglione's formalization of undecidability of HALT}
+\section{Ciaffaglione's formalization of undecidability of HALT}\label{sec:ciaffaglione}
 In~\cite{CIAFFAGLIONE201631}, an elegant formalization of the undecidability of the halting problem
 is presented. The proof goes by defining simple Turing machines needed and directly proving
 results about their semantics.\footnote{As of November 2025, the code referred to in the paper is not accessible anymore.}
