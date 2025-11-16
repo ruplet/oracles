@@ -1,0 +1,35 @@
+\chapter{Preliminaries}\label{chap:preliminaries}
+In this chapter we introduce the standard definitions for logic and complexity theory, necessary to
+fix the language we will use in the rest of the work. 
+We solely focus on first-order logic and don't introduce the similar
+definitions of propositional calculus and second-order logic. The semantics is entirely classical
+(in the sense of classical or intuitionistic logic). 
+
+In~\autoref{sec:defs-preliminaries-circuits} we exclusively introduce the so-called \emph{non-uniform}
+circuit families, to later consider the different notions of uniformity in~\autoref{chap:circuits}.
+
+\begin{remark}[Bibliography]
+The definitions in~\autoref{sec:defs-single-sorted} are in the style of~\cites[Section~2B]{CookNguyenDraft}[Section~II.2]{Cook_Nguyen_2010}.
+The definitions in~\autoref{sec:defs-two-sorted} are in the style of~\cites[Section~4B]{CookNguyenDraft}[Section~IV.2]{Cook_Nguyen_2010}.
+We will mostly need them for~\autoref{chap:bounded-arithmetic}, but also for~\autoref{chap:descriptive-complexity} --- 
+the results discussed in the latter are mostly from~\cite{Immerman1999-IMMDC},
+where different style of definitions is used.
+However,~\cite{Immerman1999-IMMDC} doesn't introduce two-sorted logic.
+The single-sorted definitions differences are mostly negligible and the consistent treatment of
+single- and two-sorted logic, is important for~\autoref{chap:bounded-arithmetic}.
+
+Much effort has been put into
+considering different versions of the definitions in~\autoref{sec:decisional-complexity-classes}
+to keep them consistent
+with the definitions of functional complexity classes studied later in~\autoref{sec:functional-complexity-classes},
+e.g.\ the class \complexity{FNP} defined in~\autoref{def:complexity-fnp}.
+These are much less standard, and often have no clear consensus in the literature.
+
+The definitions of decisional circuit classes are from~\cite{10.5555/520668}.
+\end{remark}
+
+
+\input{chapters/preliminaries-single-sorted-logic.tex}
+\input{chapters/preliminaries-two-sorted-logic.tex}
+\input{chapters/preliminaries-turing-complexity.tex}
+\input{chapters/preliminaries-circuits.tex}

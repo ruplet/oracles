@@ -21,6 +21,51 @@ and will be studied by us only in~\autoref{chap:bounded-arithmetic}.
 \end{remark}
 
 
+\subsection{Structures considered}
+% IMPORTANT: what is bit? what is <=, +, -.
+% section 1.2 of immerman
+% bit(i, 0) holds iff i is odd.
+% PLUS(i, j, k) meaning i + j = k
+% 2. TIMES(i, j, k) meaning i x j = k
+% 3. BIT(i, j) meaning bit j in the binary representation of i is
+
+% this PLUS, TIMES seems to be like operations on unary numbers. 
+% This is unary numbers because we can only do it up until `n` 
+% (because we only have forall x, PLUS(x), PLUS(0), PLUS(1), PLUS(max),...)
+In this chapter, we only study structures that satisfy the following criteria:
+\begin{enumerate}
+    \item \todo[inline]{finish this}
+    \item ordered
+    \item at least 2 elements
+\end{enumerate}
+For discussion on reasonability of these assumptions,
+see~\cite[Proviso~1.14]{Immerman1999-IMMDC} and~\cite[Proviso~1.15]{Immerman1999-IMMDC}.
+
+
+
+\begin{remark}[Ordered and Unordered Structures]\label{remark:unordered-structures}
+Question 12.1. Is there a recursively enumerable listing of a set of sentences
+from FO(LFP) that describes exactly all the polynomial-time, order-independent
+boolean queries?
+Fagin's theorem (Theorem 7.8) does not require an ordering because second-order ex-
+istentiallogic is powerful enough to existentially quantify a linear ordering on the universe,
+which the original proof of Fagin's Theorem does.
+
+\paragraph{The Quest for a Logic Capturing \complexity{PTIME}}
+Without an explicit ordering, \(\mathrm{FO[LFP]}\) does \textbf{not} capture
+\(\complexity{PTIME}\)~\cite{Cai1992}.
+The existence of a logic that characterizes \(\complexity{PTIME}\) on
+\emph{unordered structures} remains a major open problem in computer science as of 2025.
+An interesting complexity class is \complexity{inv-P} of permutation-invariant polynomial-time problems.
+A good overview of this problem is~\cite[Chapter 12, The Role of Ordering]{Immerman1999-IMMDC}.
+\end{remark}
+% % - permutation-invariant PTIME
+% %     The class `inv-P` of graph permutation-invariant problems decidable in polynomial time, is conjectured
+% %     to not be characterizable this way. This is a restatement of the problem of finding a "logic capturing PTIME on unordered structures".
+% %     A good discussion of this problem is present in Anuj Dawar's presentation from 2012: [@dawar2012syntactic].
+
+
+
 \section{First-order expressible decisional problems}
 The definition below is from~\cite[Definition~4.24]{Immerman1999-IMMDC}.
 

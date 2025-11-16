@@ -53,8 +53,9 @@
 \usepackage{proof}
 \usepackage{enumitem}
 % https://tex.stackexchange.com/a/119935
-\setlist[enumerate]{label=(\roman*), ref=(\roman*)}
 \setlist[enumerate]{
+  label=(\roman*),
+  ref=(\roman*),
   itemsep=2pt,
   parsep=0pt,
   topsep=2pt,
@@ -111,6 +112,7 @@
 \newtheorem{definition}{Definition}[section]
 \newtheorem*{definition*}{Definition}
 \newtheorem{example}[theorem]{Example}
+\newtheorem{notation}{Notation}
 
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
@@ -155,7 +157,10 @@
 \addbibresource{chapters/descriptive-complexity.bib}
 \addbibresource{chapters/formalized-semantics.bib}
 \addbibresource{chapters/recursion-theory.bib}
-\addbibresource{chapters/logic.bib}
+\addbibresource{chapters/preliminaries-single-sorted-logic.bib}
+\addbibresource{chapters/preliminaries-two-sorted-logic.bib}
+\addbibresource{chapters/preliminaries-turing-complexity.bib}
+\addbibresource{chapters/preliminaries-circuits.bib}
 
 
 \newcommand{\llbracket}{\mathopen{[\![}}
@@ -300,11 +305,11 @@
 \listofrawlistings{}
 
 \include{chapters/introduction}
+\include{chapters/preliminaries}
 \include{chapters/foundations}
 \include{chapters/formalized-semantics}
 \include{chapters/reductions}
 \include{chapters/circuits}
-\include{chapters/logic}
 \include{chapters/descriptive-complexity}
 \include{chapters/recursion-theory}
 \include{chapters/linear-logic}

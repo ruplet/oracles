@@ -4,85 +4,47 @@
 \todo[inline]{Here we notice that if we want a language for FP, and we have a FP-complete problem, and a language
 for L-reductions (FL), then we have a language for FP!}
 
+A thorough overview of complexity classes of functions is described in~\cite{SELMAN1994357}.
 
+
+
+Overview of problems complete for L:~\cite{COOK1987385}.
 
 In the below, this \compUeAst-uniform \complexityi{NC}{1}-closure (recall~\autoref{sec:uniform-nc1:}) of decisional \complexity{L}:
 \(\complexity{FL} = \complexity{FL}^*\)~\cite[Proposition~4.1]{COOK19852}.
 
 
-We introduce the definitions of complexity classes considered in this work.
 
-In~\autoref{sec:decisional-complexity-classes} we introduce standard complexity classes such as 
-\(\complexity{L}\), \(\complexity{P}\) and \(\complexity{NP}\). It is important to note that these 
-definitions only talk about the complexity of computing \emph{Boolean} functions, i.e.\ functions 
-\(f : \{0,1\}^\ast \to \{0,1\}\). These functions define \emph{decision} problems or \emph{languages}.
+FAC0 vs AC0-reduction: Definition IX.1.1: AC0-reductions are Turing reductions
+and are circuits with oracle gates for some problem L!
+Section IX.2.1: if C is relations ac0-reducible to F, then FC is FAC0 closure of F.
 
-It is not at first obvious whether focusing solely on the complexity of Boolean functions is 
-sufficient to reason about the general functions that we want to implement in a practical programming language. 
-As we will see in~\autoref{sec:decisional-and-functional-complexity-classes}, the answer is negative.
-In~\autoref{sec:functional-complexity-classes} we introduce the still standard, but much less talked about, 
-\emph{functional} complexity classes,
-that study general functions \(f : \{0,1\}^\ast \to \{0,1\}^\ast\) --- \emph{reductions}. The results
-about these classes  transfer much better to our interests than results about the decisional complexity
-classes. As we discuss  in~\autoref{chap:recursion-theory}, programming-language-like characterizations
-of decisional complexity classes are more abundant and by far predate the characterizations of
-functional complexity classes. It is the latter, however, that is viable for our purposes of
-designing a programming language.
-
-
-\begin{definition}[Time complexity]\label{def:turing-dtime}
-Let \(T : \mathbb{N} \to \mathbb{N}\) be some function.  A language \(L\) belongs to \(\complexity{DTIME}(T(n))\) iff there exists a deterministic Turing machine that:
-\begin{enumerate}[itemsep=0pt]
-    \item\label{itm:dtime} for some \(c > 0\) and every input \(w \in \{0,1\}^{n}\) terminates within \(c \cdot T(n)\) steps;
-    \item for every \(w \in L\) the machine outputs \(1\);
-    \item for every \(w \notin L\) the machine outputs \(0\).
-\end{enumerate}
-We will say that a Turing machine belongs to \(\complexity{DTIME}(T(n))\) iff it satisfies~\ref{itm:dtime}.
+\begin{definition}[\(NC^1\)-reductions]
+    ~\cite{COOK19852}.
 \end{definition}
-
-\begin{definition}[Space complexity]\label{def:turing-dspace}
-Let \(T : \mathbb{N} \to \mathbb{N}\) be some function.  A language \(L\) belongs to \(\complexity{DSPACE}(T(n))\) iff there exists a deterministic Turing machine that:
-\begin{enumerate}
-    \item\label{itm:dspace} for some \(c > 0\) and every input \(w \in \{0,1\}^{n}\) terminates,
-        at any step using at most \(c \cdot T(n)\) work-tape cells;
-    \item for every \(w \in L\) the machine outputs \(1\);
-    \item for every \(w \notin L\) the machine outputs \(0\).
-\end{enumerate}
-We will say that a Turing machine belongs to \(\complexity{DSPACE}(T(n))\) iff it satisfies~\ref{itm:dspace}.
-\end{definition}
+\(\complexity{FL}=\complexity{FL}^\ast\)~\cite[Proposition~4.1]{COOK19852}
 
 
 
+% \section{\texorpdfstring{$\complexityi{NC}{0}$}{NC\string^0}} reductions
+% In~\cite{edbd4873718c414f90d22dadf0dba2b1}, it is shown that, surprisingly, all known \complexity{NP}-complete problems
+% are complete under $\complexityi{NC}{0/poly}$ reductions already. Another candidate for a problem that is \complexity{NP}-complete
+% under poly-time reductions but not under logspace reductions is discussed in~\cite{18631}.
 
+% \section{\texorpdfstring{$\complexityi{AC}{0}$-reduction}{AC\string^0-reduction}}
+% \label{sec:ac0red}
+% Definition IX.1.1 CN10. We say that a string function F
+% (resp. \  a number function f) is $\complexityi{AC}{0}$-reducible to $L$ if there is a sequence
+% of string functions $F_1, \dots, F_n (n \geqslant 0)$ such that
+% $F_i$ is $\Sigma^B_0$-definable from $L \cup \{F_1, \dots , F_{i-1}\}$, for $i = 1, \dots, n$
+% and F (resp. \ f) is $\Sigma^B_0$-definable from $L \cup \{F_1, \dots , F_{i-1}\}$. A relation R is
+% $\complexityi{AC}{0}$-reducible to $L$ if there is a sequence $F_1, \dots, F_n$ as above, and R is
+% represented by a $\Sigma^B_0(L \cup \{F_1, \dots, F_n\})$ formula.
 
-\section{Decisional complexity classes for Turing machines}\label{sec:decisional-complexity-classes}
-We say that a machine decides a language \(L \subseteq \{0,1\}^\ast\) if it computes the 
-characteristic function \(f_L : \{0,1\}^\ast \to \{0,1\}\), where \(f_L(x) = 1 \Leftrightarrow x \in L\).
-Recall the definitions of complexity classes \(\complexity{DTIME}(T(n))\)~(\autoref{def:turing-dtime}) and \(\complexity{DSPACE}(T(n))\)~(\autoref{def:turing-dspace}).
+% In Chapter~2 of~\cite{edbd4873718c414f90d22dadf0dba2b1} there is an extensive discussion about
+% the different subtleties of defining $\complexityi{AC}{0}$ functions and numerous different characterizations
+% of Dlogtime-uniform $\complexityi{AC}{0}$-computable functions.
 
-\begin{definition}[\texorpdfstring{\complexity{L}}{L}]\label{def:complexity-l}
-    \todo[inline]{Define...}
-\end{definition}
-Overview of problems complete for L:~\cite{COOK1987385}.
-
-% \subsection{\complexity{P}}
-\begin{definition}[\texorpdfstring{\complexity{P}}{P}]\label{def:complexity-p}
-\todo[inline]{This definition should have the same style as NP, FP,FNP\@. This union-style is an outlier.}
-\[
-    \complexity{P} = \bigcup_{c \ge 1} \complexity{DTIME}(n^c).
-\]
-In other words, a language is in \(\complexity{P}\) if and only if it can be decided by a deterministic Turing machine that runs in polynomial time.
-\end{definition}
-
-\begin{definition}[\texorpdfstring{\complexity{NP}}{NP}]\label{def:complexity-np}
-    \todo[inline]{Define...}
-\end{definition}
-
-% # Circuit Value Problem
-% - For a given single-tape, polynomial-time Turing machine `M` and input `x`, in [@Kozen2006], there is an explicit construction of a boolean circuit over (0, 1, `and`, `or`, `not`) (with fan-in 2 for `and`, `or` and 1 for `not`), with one output node, such that its value is 1 if and only if machine `M` accepts input `x`. The construction is in LOGSPACE. So CVP is P-complete w.r.t. LOGSPACE-reductions.
-% - This is a good example of a LOGSPACE-reduction, being a good benchmark for the LF programming language and for the circuit description language
-% - The problem is that we can't generate tests for it; we have no database of Turing machines descriptions
-A very good description of a problem complete for P:~\cite{Kozen2006}.
 
 
 % \begin{definition}[Non-standard circuit view of \complexity{P}]
@@ -115,18 +77,83 @@ A more thorough discussion of decision vs search is in~\cite{10.5555/889581}.
 
 \section{Functional complexity classes}\label{sec:functional-complexity-classes}
 
+
+\begin{definition}[Logspace reductions and \texorpdfstring{NL}{NL}-completeness]\label{def:logspace-and-NL-complete}
+A function \(f : \{0,1\}^{\ast} \to \{0,1\}^{\ast}\) is said to be
+\emph{implicitly logspace computable} if
+\begin{itemize}
+  \item \(f\) is \emph{polynomially bounded}, meaning that there exists a
+        constant \(c > 0\) such that
+        \[
+          |f(x)| \le |x|^{\,c}
+          \qquad\text{for all } x \in \{0,1\}^{\ast},
+        \]
+        and
+  \item the following two languages lie in \(\mathsf{L}\):
+        \[
+          L_{f}
+            = \{\,\langle x,i\rangle \mid f(x)_{i} = 1\,\},
+          \qquad
+          L'_{f}
+            = \{\,\langle x,i\rangle \mid i \le |f(x)|\,\}.
+        \]
+\end{itemize}
+
+In other words, a deterministic \(O(\log |x|)\)-space machine can, given
+\((x,i)\), determine whether \(i\) is within the length of \(f(x)\) and, if so,
+whether the \(i\)-th bit of \(f(x)\) is \(1\).
+
+Source:~\cites[Definition~4.16]{10.5555/1540612}[Definition~4.14]{DRAFT10.5555/1540612}.
+\end{definition}
+% # Circuit Value Problem
+% - For a given single-tape, polynomial-time Turing machine `M` and input `x`, in [@Kozen2006], there is an explicit construction of a boolean circuit over (0, 1, `and`, `or`, `not`) (with fan-in 2 for `and`, `or` and 1 for `not`), with one output node, such that its value is 1 if and only if machine `M` accepts input `x`. The construction is in LOGSPACE. So CVP is P-complete w.r.t. LOGSPACE-reductions.
+% - This is a good example of a LOGSPACE-reduction, being a good benchmark for the LF programming language and for the circuit description language
+% - The problem is that we can't generate tests for it; we have no database of Turing machines descriptions
+A detailed description of a problem complete for P and logspace-reductions to it is in~\cite{Kozen2006}.
+P-completeness is~\cites[Definition~6.25]{DRAFT10.5555/1540612}[Definition~6.28]{10.5555/1540612}.
+
 \begin{definition}[FL]\label{def:fl}
-    \todo[inline]{this are L-reductions}
-% A binary relation \(P(x, y)\) is in \(\complexity{FP}\) iff there exists a polynomial-time Turing machine
-% that, given an arbitrary input \(x\):
-% \begin{enumerate}[label=(\roman*)]
-%     \item outputs some \(y\) such that \(P(x, y)\) if any exists;
-%     \item signals that no such \(y\) exists otherwise.
-% \end{enumerate}
+    
 \end{definition}
 
 
 
+
+
+
+Let FP be the class of all problems realized (see Sect. 2) by functions
+computable in polynomial time on a deterministic Turing machine. \cite{COOK19852}.
+
+
+Definition of FP is also in~\cites[Section~17.2]{10.5555/1540612}[Section~9.1]{DRAFT10.5555/1540612}.
+\(\mathsf{FP}\) consists of all functions
+\[
+  f : \{0,1\}^{\ast} \to \{0,1\}^{\ast}
+\]
+that are computable by a deterministic polynomial-time Turing machine.
+In contrast to decision problems (which output a single bit), functions
+in \(\mathsf{FP}\) may produce outputs of arbitrary polynomial length.
+
+
+
+\begin{definition}[Reductions, NP-hardness, and NP-completeness]\label{def:NP-hard-NP-complete}
+Let \(A,B \subseteq \{0,1\}^{\ast}\) be languages.  
+We say that \(A\) is \emph{polynomial-time Karp reducible} to \(B\),
+written \(A \leq_{\mathrm{p}} B\), if there exists a polynomial-time
+computable function
+\[
+  f : \{0,1\}^{\ast} \to \{0,1\}^{\ast}
+\]
+such that for every input \(x \in \{0,1\}^{\ast}\),
+\[
+  x \in A
+  \;\Longleftrightarrow\;
+  f(x) \in B.
+\]
+In this case, the function \(f\) is called a \emph{polynomial-time reduction}
+from \(A\) to \(B\).
+Also Karp reductions (or many-one):~\cites[Definition~2.7]{10.5555/1540612}[Definition~2.7]{DRAFT10.5555/1540612}.
+\end{definition}
 
 \begin{definition}[FP]\label{def:fp}
     \todo[inline]{this are P-reductions}
@@ -139,7 +166,6 @@ that, given an arbitrary input \(x\):
 
 Finding the lexicographically first maximal clique in an undirected graph
 is \complexityi{NC}{i}-complete for \complexity{FP~}\cite[Proposition~6.1]{COOK19852}.
-
 
 
 
@@ -160,38 +186,49 @@ That style of definition makes it less convenient to compare \(\complexity{FP}\)
 \end{remark}
 \end{definition}
 
+
+
+
+
+
+
+
+
+
 \subsection{FNP}
 
-% \section{\complexity{FNP}}
-% Equivalently, Q is FNP if and only
-% if there is a non deterministic polynomial time algorithm that, given an arbitrary input x,
-% can find some y such that (x, y) ∈ Q~\cite{bournez_et_al:LIPIcs.MFCS.2019.23}.
+This gets tricky. For extensive discussion on the different definitions, see~\cite{37812},~\cite{71617}.
+In Papadimitriou's book, it's defined yet anotherwise, as a class function problems for \complexity{NP},
+not using a specific computational model.
+
+\begin{definition}[The class \texorpdfstring{\complexity{FNP}}{FNP}]\label{def:complexity-fnp}
+A binary relation \(P(x, y)\) belongs to \(\complexity{FNP}\) if there exist:
+\begin{itemize}
+  \item a polynomial \(p : \mathbb{N} \to \mathbb{N}\) such that if for a given \(x\) exists a solution \(y\) such
+  that \(P(x, y)\), then there also exist a ``short'' solution \(y'\) such that
+  \(P(x, y')\) and \(|y'| \leqslant p(|x|)\);
+  \item a deterministic polynomial-time Turing machine \(M\)
+        (a \emph{verifier}), 
+        such that for every input pair \((x, y)\),
+        \[
+            P(x, y)
+            \;\Longleftrightarrow\;
+            M(x, y) = 1.
+            \]
+\end{itemize}
+
+This definition is in style of~\cite[28.10~and~Theorem~28.9]{Rich2007Automata}.
+
+There is a more intuitive definition using non-deterministic Turing machines which we don't introduce here,
+that a relation $P$ is in \complexity{FNP} iff there is a non-deterministic polynomial-time
+algorithm that, given an arbitrary input $x$,
+can find some $y$ such that $P(x, y)$ or signal that it doesn't exist~\cite{bournez_et_al:LIPIcs.MFCS.2019.23}.
 
 
-% \section{\complexity{FNP}}
-% \begin{enumerate}
-% \item TODO: Extract the key points from the discussion at \url{https://cs.stackexchange.com/questions/71617/function-problems-and-fp-subseteq-fnp}.
-% \item TODO: Summarize the insights from \url{https://cstheory.stackexchange.com/questions/37812/what-exactly-are-the-classes-fp-fnp-and-tfnp}.
-% \item TODO: Cross-reference the definitions on \url{https://complexityzoo.net/Complexity_Zoo:F#fp}.
-% \end{enumerate}
 
-
-% \section{\complexity{TFNP}}
-% \label{sec:complexity-class-tfnp}
-
-
-\begin{definition}[FNP]\label{def:fnp}
-A binary relation \(P(x, y)\) is in \(\complexity{FNP}\) iff there exists a polynomial-time nondeterministic Turing machine
-that, given some \(x\):
-\begin{enumerate}[label=(\roman*)]
-    \item outputs some \(y\) such that \(P(x, y)\) if any exists;
-    \item signals that no such \(y\) exists otherwise.
-\end{enumerate}
-\begin{remark}
-Equivalently~\cite[28.10~and~Theorem~28.9]{Rich2007Automata}, a binary relation \(P(x, y)\) is in \(\complexity{FNP}\) iff there exists a polynomial-time Turing machine
-that, given some pair \((x, y)\), decides whether \(P(x, y)\).
-\end{remark}
 \end{definition}
+
+
 
 
 \subsubsection{NP vs FNP: PRIMES and TFNP}\label{subsubsec:tfnp}
@@ -223,8 +260,6 @@ However, some total search problems such as discussed in~\ref{subsubsec:tfnp} ar
 be self-reducible. This is discussed in slightly more detail in~\cite[Section 1.1]{10.5555/1104410}.
 
 \subsection{Bibliographical remark}
-The definition of \(\complexity{P}\) is in the style
-of~\cites[Definition~1.13]{10.5555/1540612}[Definition~1.20]{DRAFT10.5555/1540612}.
 The definition of reductions for search problems is in the style of~\cite{Goebel2011NashComplexity} and~\cite{Goldberg2021SearchTotal}.
 The definition of \(\complexity{FP}\) and \(\complexity{FNP}\) is after~\cite[Section 28.10]{Rich2007Automata}.
 \(\complexity{TFNP}\) was first introduced in~\cite{MEGIDDO1991317}.
@@ -245,6 +280,18 @@ In~\cite[Theorem 4.1]{KRENTEL1988490}, it is proved that
 In turn, as noted in~\cite[discussion after Theorem 8]{doi:10.1142/9789812794499_0029}, the corresponding result for
 \(\complexity{P}^\complexity{NP}\) versus \(\complexity{P}^\complexity{NP}[\log{n}]\) is not known,
 and indeed fails relative to some oracles.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \subsection{Oracle complexity classes}
@@ -325,7 +372,6 @@ in~\cite{DBLP:conf/innovations/GoldbergP18}, the authors define a new complexity
 they prove the existence of a complete problem, and call this class ``syntactic''.
 % TODO: Investigate which classes can realistically be characterized, likely excluding \complexity{BPP} and permutation-invariant \complexity{PTIME} (see \url{https://mathoverflow.net/questions/35236/is-there-a-syntactic-characterization-for-bpp-bqp-or-qma}).
 % \begin{enumerate}
-
 % \item TODO: Extract key questions and scenarios from Anuj Dawar's ``On Syntactic and Semantic Complexity Classes'' (Spitalfields Day, Isaac Newton Institute, 9 January 2012), including the ``Two Possible Worlds'' discussion (\url{http://web.archive.org/web/20250428195619/https://www.frontiersinai.com/turingfiles/January/Dawar,%20A.pdf}).
 
 % % ## Classes (conjectured) impossible to be captured syntactically
@@ -333,10 +379,10 @@ they prove the existence of a complete problem, and call this class ``syntactic'
 % % The classes for which a characterization exists are called 'syntactic' complexity classes, as opposed to 'semantic'
 % % complexity classes, for which such characterization is conjectured to not exist.
 BPP is thought to be semantic, a (``less implicit'') characterization
-was however studied in \cite{lago2012higherordercharacterizationprobabilisticpolynomial}
+was however studied in~\cite{lago2012higherordercharacterizationprobabilisticpolynomial}
 
 
-On the other hand, PP has been characterized implicitly by Dal Lago in 2021: \cite{dallago_et_al:LIPIcs.MFCS.2021.35}.
+On the other hand, PP has been characterized implicitly by Dal Lago in 2021:~\cite{dallago_et_al:LIPIcs.MFCS.2021.35}.
 inv-P we study in~\autoref{remark:unordered-structures}.
 
 

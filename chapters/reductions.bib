@@ -256,25 +256,6 @@ location = {Haifa, Israel},
 series = {LICS '22}
 }
 
-@book{DRAFT10.5555/1540612,
-author = {Arora, Sanjeev and Barak, Boaz},
-title = {Computational Complexity: A Modern Approach},
-year = {2007},
-address = {USA},
-url = {https://theory.cs.princeton.edu/complexity/book.pdf},
-}
-
-@book{10.5555/1540612,
-author = {Arora, Sanjeev and Barak, Boaz},
-title = {Computational Complexity: A Modern Approach},
-year = {2009},
-isbn = {0521424267},
-publisher = {Cambridge University Press},
-address = {USA},
-edition = {1st},
-abstract = {This beginning graduate textbook describes both recent achievements and classical results of computational complexity theory. Requiring essentially no background apart from mathematical maturity, the book can be used as a reference for self-study for anyone interested in complexity, including physicists, mathematicians, and other scientists, as well as a textbook for a variety of courses and seminars. More than 300 exercises are included with a selected hint set.}
-}
-
 
 @InProceedings{10.1007/3-540-51237-3_10,
 author="Gurevich, Yuri
@@ -517,4 +498,36 @@ url = {https://www.sciencedirect.com/science/article/pii/S0019995885800413},
 eprint = {https://web.archive.org/web/20190320200248/https://core.ac.uk/download/pdf/81978561.pdf},
 author = {Stephen A. Cook},
 abstract = {The class NC consists of problems solvable very fast (in time polynomial in log n) in parallel with a feasible (polynomial) number of processors. Many natural problems in NC are known; in this paper an attempt is made to identify important subclasses of NC and give interesting examples in each subclass. The notion of NC1-reducibility is introduced and used throughout (problem R is NC1-reducible to problem S if R can be solved with uniform log-depth circuits using oracles for S). Problems complete with respect to this reducibility are given for many of the subclasses of NC. A general technique, the “parallel greedy algorithm,” is identified and used to show that finding a minimum spanning forest of a graph is reducible to the graph accessibility problem and hence is in NC2 (solvable by uniform Boolean circuits of depth O(log2 n) and polynomial size). The class LOGCFL is given a new characterization in terms of circuit families. The class DET of problems reducible to integer determinants is defined and many examples given. A new problem complete for deterministic polynomial time is given, namely, finding the lexicographically first maximal clique in a graph. This paper is a revised version of S. A. Cook, (1983, in “Proceedings 1983 Intl. Found. Comut. Sci. Conf.,” Lecture Notes in Computer Science Vol. 158, pp. 78–93, Springer-Verlag, Berlin/New York).}
+}
+
+@MISC {37812,
+    TITLE = {What exactly are the classes FP, FNP and TFNP?},
+    AUTHOR = {Auberon (https://cstheory.stackexchange.com/users/37790/auberon)},
+    HOWPUBLISHED = {Theoretical Computer Science Stack Exchange},
+    NOTE = {URL:https://cstheory.stackexchange.com/q/37812 (version: 2020-06-17)},
+    EPRINT = {https://cstheory.stackexchange.com/q/37812},
+    URL = {https://cstheory.stackexchange.com/q/37812}
+}
+
+@MISC {71617,
+    TITLE = {Function problems and $FP \subseteq FNP$},
+    AUTHOR = {Auberon (https://cs.stackexchange.com/users/26862/auberon)},
+    HOWPUBLISHED = {Computer Science Stack Exchange},
+    NOTE = {URL:https://cs.stackexchange.com/q/71617 (version: 2017-03-16)},
+    EPRINT = {https://cs.stackexchange.com/q/71617},
+    URL = {https://cs.stackexchange.com/q/71617}
+}
+
+@article{SELMAN1994357,
+title = {A taxonomy of complexity classes of functions},
+journal = {Journal of Computer and System Sciences},
+volume = {48},
+number = {2},
+pages = {357-381},
+year = {1994},
+issn = {0022-0000},
+doi = {https://doi.org/10.1016/S0022-0000(05)80009-1},
+url = {https://www.sciencedirect.com/science/article/pii/S0022000005800091},
+author = {Alan L. Selman},
+abstract = {This paper comprises a systematic comparison of several complexity classes of functions that are computed nondeterministically in polynomial time or with an oracle in NP. There are three components to this work:•A taxonomy is presented that demonstrates all known inclusion relations of these classes. For (nearly) each inclusion that is not shown to hold, evidence is presented to indicate that the inclusion is false. As an example, consider FewPF, the class of multivalued functions that are nondeterministically computable in polynomial time such that for each x there is a polyomial bound on the number of distinct output values of f(x). We show that FewPF ⊆c PFNPtt. However, we show PFNPtt ⊆ FewPF if and only if NP = co-NP, and thus PFNPtt ⊆ FewPF is likely to be false.•Whereas it is known that PNP(O(log n)) = PNPtt ⊆ PNP, we show that PFNP(O(log n)) = PFNPtt implies P = FewP and R = NP. Also, we show that PFNPtt = PFNP if and only if PNPtt = PNP.•We show that if every nondeterministic polynomial-time multivalued function has a single-valued nondeterministic refinement (equivalently, if every honest function that is computable in polynomial-time can be inverted by a single-valued nondeterministic function), then there exists a disjoint pair of NP-complete sets such that every separator is NP-hard. The latter is a previously studied open problem that is closely related to investigations on promise problems. This result motivates a study of reductions between partial multivalued functions.}
 }

@@ -1,0 +1,140 @@
+\section{Two-sorted first-order logic}\label{sec:defs-two-sorted}
+We don't repeat the definitions of two-sorted terms, formulas and semantics which are
+just generalizations of the single-sorted case. For the details, refer
+to~\cites[Section~4B]{CookNguyenDraft}[Section~IV.2]{Cook_Nguyen_2010}.
+
+\begin{definition}[Two-sorted first-order vocabularies]\label{def:two-sorted-vocabulary}
+A \emph{two-sorted first-order vocabulary} (often abbreviated simply as a
+two-sorted language) \(\mathcal{L}\) consists of collections of function and predicate
+symbols, much like an ordinary single-sorted vocabulary, but now the
+symbols may accept arguments of either of the two sorts.  Moreover, the
+function symbols come in two varieties:
+\begin{enumerate}
+  \item \emph{number-valued} function symbols, whose outputs lie in the
+        number sort; and
+  \item \emph{string-valued} function symbols, whose outputs lie in the
+        string sort.
+\end{enumerate}
+
+For any pair \(n,m \in \mathbb{N}\), the vocabulary contains:
+\begin{enumerate}
+  \item a set of \((n,m)\)-ary number-function symbols,
+  \item a set of \((n,m)\)-ary string-function symbols, and
+  \item a set of \((n,m)\)-ary predicate symbols.
+\end{enumerate}
+A \((0,0)\)-ary function symbol is simply a constant symbol, which may be
+either a constant of the number sort or a constant of the string sort.
+
+We use \(f,g,h,\dots\) as metavariables for number-valued function symbols,
+\(F,G,H,\dots\) for string-function symbols, and \(P,Q,R,\dots\) for predicate
+symbols.
+\end{definition}
+
+\begin{definition}[The language \(\mathcal{L}^{2}_{A}\)]\label{def:L2A}
+As an example, consider the following two-sorted extension of the
+arithmetical language \(\mathcal{L}_{A}\)~(\autoref{def:LA}):
+\[
+  \mathcal{L}^{2}_{A} \;=\; [\,0,\ 1,\ +,\ \cdot,\ |\cdot| \;;\ =_{1},\ =_{2},\ \le,\ \in\,].
+\]
+
+Here the symbols \(0,1,+,\cdot,=_{1},\le\) are
+symbols of \(\mathcal{L}_{A}\) (with \(=_{1}\) corresponding to the usual equality of
+numbers).  
+The symbol \(|X|\) is a number-valued function symbol giving the
+length of a string \(X\).  
+The binary predicate \(\in\) relates a number and a string and is used to
+express membership: intuitively, \(i \in X\) means that the \(i\)-th bit of
+the string \(X\) is \(1\).  
+The symbol \(=_{2}\) denotes equality between objects of the second sort.
+
+For convenience, when \(t\) is a number term, we abbreviate
+\[
+  X(t) \;\coloneqq\; t \in X.
+\]
+Thus \(X(i)\) plays the role of the \(i\)-th bit of the binary string \(X\).
+
+In \(\mathcal{L}^{2}_{A}\), the symbols \(+\) and \(\cdot\) each have arity \((2,0)\); the
+length function \(|\cdot|\) has arity \((0,1)\); and the predicate
+\(\in\) has arity \((1,1)\).
+\end{definition}
+
+
+
+\begin{notation}[Bounded formulas]\label{def:bounded-formulas}
+Let \(\mathcal{L}\) be a two-sorted vocabulary.  
+If \(x\) is a number variable and \(X\) a string variable that do not occur
+in the \(\mathcal{L}\)-number term \(t\), we use the following abbreviations:
+\begin{align*}
+  \exists x \le t\,\varphi
+    &\;\;\text{stands for}\;\;
+      \exists x\, (x \le t \;\wedge\; \varphi), \\[2pt]
+  \forall x \le t\,\varphi
+    &\;\;\text{stands for}\;\;
+      \forall x\, (x \le t \;\to\; \varphi), \\[2pt]
+  \exists X \le t\,\varphi
+    &\;\;\text{stands for}\;\;
+      \exists X\, (\,|X| \le t \;\wedge\; \varphi), \\[2pt]
+  \forall X \le t\,\varphi
+    &\;\;\text{stands for}\;\;
+      \forall X\, (\,|X| \le t \;\to\; \varphi).
+\end{align*}
+
+A quantifier appearing in one of these forms is called \emph{bounded},
+and a \emph{bounded formula} is a formula in which every quantifier is
+bounded.
+\end{notation}
+
+
+\paragraph{Notation.}
+The expression
+\(\exists \vec{x} \le \vec{t}\,\varphi\)
+abbreviates a block of bounded number quantifiers
+\(\exists x_1 \le t_1\;\cdots\;\exists x_k \le t_k\,\varphi\)
+for some \(k\), where no variable \(x_i\) occurs in any term \(t_j\)
+(even when \(i < j\)).  
+The same convention applies to \(\forall \vec{x} \le \vec{t}\), \(\exists \vec{X} \le \vec{t}\), and
+\(\forall \vec{X} \le \vec{t}\).
+
+
+\begin{definition}[The \texorpdfstring{$\Sigma^1_{1}(\mathcal{L})$, $\Sigma^B_{i}(\mathcal{L})$,
+  and $\Pi^B_{i}(\mathcal{L})$}{Σ¹₁(L), Σᵢᴮ(L), Πᵢᴮ(L)} formulas]\label{def:SigmaB-PiB-hierarchy}
+Let \(\mathcal{L} \supseteq \mathcal{L}^{2}_{A}\) be a two-sorted vocabulary.  
+\begin{enumerate}
+  \item The class \(\Sigma^{B}_{0}(\mathcal{L}) = \Pi^{B}_{0}(\mathcal{L})\) consists of all
+        \(L\)-formulas whose only quantifiers are \emph{bounded number quantifiers}
+        (string variables may occur free).
+
+  \item For \(i \ge 0\), the class \(\Sigma^{B}_{i+1}(\mathcal{L})\) (resp.\ \(\Pi^{B}_{i+1}(\mathcal{L})\))
+        consists of formulas of the form
+        \[
+          \exists \vec{X} \le \vec{t}\,\varphi(\vec{X})
+          \quad\text{(resp.\ }\forall \vec{X} \le \vec{t}\,\varphi(\vec{X})\text{)},
+        \]
+        where:
+        \begin{enumerate}
+            \item \(\vec{X}\) is a vector of string variables,
+            \item \(\vec{t}\) is a vector of \(\mathcal{L}^{2}_{A}\)-terms not involving variables from \(\vec{X}\),
+            \item \(\varphi\) is a \(\Pi^{B}_{i}(\mathcal{L})\) formula  
+                  (resp.\ a \(\Sigma^{B}_{i}(\mathcal{L})\) formula).
+        \end{enumerate}
+
+  \item A \(\Sigma^{1}_{1}(\mathcal{L})\) formula is a formula of the form
+        \(
+          \exists \vec{X}\,\varphi,
+        \)
+        where \(\vec{X}\) is a vector of zero or more string variables and
+        \(\varphi\) is a \(\Sigma^{B}_{0}(\mathcal{L})\) formula.
+\end{enumerate}
+
+We usually write \(\Sigma^{B}_{i}\) for \(\Sigma^{B}_{i}(\mathcal{L}^{2}_{A})\) and
+\(\Pi^{B}_{i}\) for \(\Pi^{B}_{i}(\mathcal{L}^{2}_{A})\).
+\end{definition}
+
+
+\begin{remark}
+There is a subtle difference between two-sorted first-order logic and second-order logic.
+Even though here we quantify over sets like in monadic second-order logic, and despite
+the authors themselves sometimes call the system
+second-order~\cite{COOK2003193}, the difference is important: we only quantify over ``finite'' sets,
+and the system is two-sorted first-order~\cite{COOK2003193}.
+\end{remark}

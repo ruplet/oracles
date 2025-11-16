@@ -1,0 +1,104 @@
+\section{Decisional Turing machine complexity classes}\label{sec:decisional-complexity-classes}
+
+In this section we introduce standard complexity classes such as 
+\(\complexity{L}\), \(\complexity{P}\) and \(\complexity{NP}\). It is important to note that these 
+definitions only talk about the complexity of solving \emph{decisional} problems,
+i.e.\ computing functions \(f : \{0,1\}^\ast \to \{0,1\}\).
+
+It is not at first obvious whether focusing solely on the complexity of Boolean functions is 
+sufficient to reason about the general functions that we want to implement in a practical programming language. 
+As we will see in~\autoref{sec:decisional-and-functional-complexity-classes}, the answer is negative.
+In~\autoref{sec:functional-complexity-classes} we introduce the still standard, but much less talked about, 
+\emph{functional} complexity classes,
+that study general functions \(f : \{0,1\}^\ast \to \{0,1\}^\ast\), in complexity theory usually
+used to define \emph{reductions}. The results
+about these classes  transfer much better to our interests than results about the decisional complexity
+classes. As we discuss  in~\autoref{chap:recursion-theory}, programming-language-like characterizations
+of decisional complexity classes are far more abundant and predate the characterizations of
+functional complexity classes. It is the latter, however, that is viable for our purposes of
+designing a programming language.
+
+\begin{definition}[Computing a function~{\cites[Definition~1.3]{10.5555/1540612}[Definition~1.4]{DRAFT10.5555/1540612}}]
+Let~\(f : \{0,1\}^{\ast} \to \{0,1\}^{\ast}\) and \(T : \mathbb{N} \to \mathbb{N}\) be functions, and let
+\(M\) be a Turing machine.  
+\begin{enumerate}
+  \item We say that \(M\) \emph{computes} \(f\) if, for every input
+        \(x \in \{0,1\}^{\ast}\), when \(M\) is started in its initial configuration
+        on input \(x\), it eventually halts with the string \(f(x)\) written on its
+        output tape.
+
+  \item We say that \(M\) computes \(f\) in time \(T(n)\) if, for every
+        input \(x\), the computation of \(M\) on input \(x\) halts within
+        at most \(T(|x|)\) steps.
+\end{enumerate}
+\end{definition}
+
+\begin{notation}
+    We say that a machine \emph{decides} a language \(L \subseteq \{0, 1\}^\ast\) iff it computes
+    the function \(f_L: \{0, 1\}^\ast \rightarrow \{0, 1\}\), where \(f_L(x) = 1 \iff x \in L\).
+\end{notation}
+
+\begin{definition}[Time complexity~{\cites[Definition~1.19]{DRAFT10.5555/1540612}[Definition~1.12]{10.5555/1540612}}]\label{def:turing-dtime}
+\hfill\\
+Let~\(T~:~\mathbb{N} \to \mathbb{N}\) be a function.
+We define \(\mathsf{DTIME}(T(n))\) to be the class of all Boolean
+functions that are computable by some deterministic
+Turing machine running in at most \(c \cdot T(n)\) steps on every input of
+length \(n\), for some constant \(c > 0\).
+\end{definition}
+
+\begin{definition}[Space complexity~{\cites[Definition~4.1]{DRAFT10.5555/1540612}[Definition~4.1]{10.5555/1540612}}]\label{def:turing-dspace}
+\hfill\\
+Let~\(S~:~\mathbb{N} \to \mathbb{N}\) be a function and let
+\(L \subseteq \{0,1\}^{\ast}\) be a language.  
+% \begin{enumerate}
+%   \item 
+  We say that \(L \in \complexity{SPACE}(S(n))\) iff there exist a constant
+        \(c > 0\) and a deterministic Turing machine \(M\) deciding \(L\) such that,
+        on every input of length \(n\), the machine \(M\) visits at most
+        \(c \cdot S(n)\) distinct cells on its read--write work tapes
+        (the input tape is read-only and does not count toward the space
+        bound).
+
+%   \item Likewise, \(L \in \complexity{NSPACE}(S(n))\) if there exist a constant
+%         \(c > 0\) and a nondeterministic Turing machine \(M\) deciding \(L\) such
+%         that, for every input of length \(n\) and for every computation branch,
+%         \(M\) uses no more than \(c \cdot S(n)\) nonblank work-tape cells.
+% \end{enumerate}
+\end{definition}
+
+
+\begin{definition}[Logarithmic space~{\cites[Definition~4.5]{10.5555/1540612}[Definition~4.5]{DRAFT10.5555/1540612}}]\label{def:complexity-l}
+\[
+    \complexity{L} = \complexity{DSPACE}(\log n).
+\]
+\end{definition}
+
+
+\begin{definition}[Polynomial time~{\cites[Definition~1.13]{10.5555/1540612}[Definition~1.20]{DRAFT10.5555/1540612}}]\label{def:complexity-p}
+\[
+    \complexity{P} = \bigcup_{c \ge 1} \complexity{DTIME}(n^c).
+\]
+\end{definition}
+
+
+
+\begin{definition}[The class \texorpdfstring{\complexity{NP}}{NP}{~\cites[Definition~2.1]{10.5555/1540612}[Definition~2.1]{DRAFT10.5555/1540612}}]\label{def:complexity-np}
+\hfill\\
+A~language~\(L \subseteq \{0,1\}^{\ast}\) belongs to \(\complexity{NP}\) if there exist
+\begin{enumerate}
+  \item a polynomial \(p : \mathbb{N} \to \mathbb{N}\) (bounding the length of a certificate), and
+  \item a deterministic polynomial-time Turing machine \(M\)
+        (called a \emph{verifier} for \(L\)),
+\end{enumerate}
+such that for every input string \(x \in \{0,1\}^{\ast}\),
+\[
+  x \in L
+  \;\Longleftrightarrow\;
+  \exists\,u \in \{0,1\}^{\,p(|x|)} \ \text{with}\ M(x,u) = 1.
+\]
+
+Whenever \(x \in L\) and a string \(u \in \{0,1\}^{p(|x|)}\) satisfies \(M(x,u)=1\),
+the string \(u\) is called a \emph{certificate} (or \emph{witness}) for \(x\)
+with respect to the language \(L\) and the verifier~\(M\).
+\end{definition}
