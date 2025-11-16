@@ -36,6 +36,19 @@ that by definition every program written in it has a given complexity.
 
 
 \end{enumerate}
+
+% - a program documented to perform some computation and return a result should not run into an
+%   infinite loop
+% - a program implementing an O(n)-time algorithm, and documented to execute in O(n) should not
+%   need O(n^2) time to run by an accident in the implementation.
+% - thoughtfully written (i.e. "clean") code should convince the user reading it that
+%   it does what it is documented to. One way this is typically done is including parts of proof
+%   of correctness in the documentation. Another way is declaring a function to have a particular type
+%   and ensuring the user can quickly verify the implementation type-checks.
+
+
+
+
 % \section{The full picture}
 % States of the process of computation are dots. Computation is arrows between the dots.
 % Since computation is sequential (even parallel programs have some intertwine, which is sequential),

@@ -39,6 +39,14 @@ See \cites[Section~IX.7.3]{Cook_Nguyen_2010}[Section~9G.3]{CookNguyenDraft} for
 an open problem whether the recent breakthrough that binary integer division
 is in \complexity{DLOGTIME}-uniform \complexityi{TC}{0}~\cite{HESSE2002695},
 means that it can also be proved in the corresponding VTC0 theory.
+% Weźmy język programowania odpowiadający RCA0.  
+% Nie możemy w nim zapisać WKL.  
+% Ale teoria pierwszego rzędu RCA0 jest równa teorii pierwszego rzędu WKL0.  
+% Czyli jeśli użytkownik może zapytać nas tylko o program spełniający specyfikację pierwszego rzędu, nie potrzebujemy w języku programowania prymitywu ‘WKL’. Natomiast jeśli użytkownik wymaga od nas spełniania specyfikacji drugiego rzędu, to już będą istniały programy, w których będziemy musieli zastosować WKL, a jednocześnie nie możemy go w RCA0 udowodnić \- potrzebujemy, żeby twórca kompilatora dodał nam go jako blackbox
+
+% a tak w ogole slaby lemat Koniga jest dowodzony przez istnienie ciągu (0, 0, 0, …), jako nieskonczonego elementu drzewa binarnego 2^omega, {0,1}^omega
+
+
 
 %  Find IDelta0 and that it can't express exp function. Look for
 %  Find Buss' PV theories and Cook's $V^i$ hierachy.
@@ -339,3 +347,32 @@ means that it can also be proved in the corresponding VTC0 theory.
 % % https://research-information.bris.ac.uk/ws/portalfiles/portal/330955816/LIPIcs_ITP_2022_28.pdf
 % % https://drops.dagstuhl.de/storage/00lipics/lipics-vol237-itp2022/LIPIcs.ITP.2022.28/LIPIcs.ITP.2022.28.pdf
 % % https://cstheory.stackexchange.com/questions/1370/shallow-versus-deep-embeddings
+
+
+
+
+
+% # Reverse mathematics and bounded arithmetics
+
+%  connection with descriptive: chapter IV.1 of the book by Cook and Nguyen [@Cook_Nguyen_2010] 
+% If we can limit mathematics to not use axiom of choice (and study what we can and cannot prove after the restriction), why
+% not limit computer science to not use full recursion? 
+
+% In 1985 Sam Buss PhD thesis was released [@buss1985bounded] introducing Bounded arithmetic.
+
+% Very good book released in 2010b by Stephen Cook: [https://www.karlin.mff.cuni.cz/~krajicek/cook-nguyen.pdf](https://www.karlin.mff.cuni.cz/~krajicek/cook-nguyen.pdf). 
+
+% Good text from July 2025: [https://eccc.weizmann.ac.il/report/2025/086/](https://eccc.weizmann.ac.il/report/2025/086/).
+
+% Plase take a look at the following characterization of AC^0 functions:
+
+% Corollary V.5.2 ($\Sigma^1_1$-Definability Theorem for $V_0$)
+% A function is in \textbf{FAC}$^{0}$ if and only if it is $\Sigma_1^1$-definable in $V_0$, which is also equivalent to being $\Sigma_1^B$-definable in $V_0$, and further equivalent to being $\Sigma_0^B$-definable in $V_0$.
+
+% $$f \in \mathsf{FAC}^0 \iff f \text{ is } \Sigma^1_1\text{-definable in } V_0 \iff f \text{ is } \Sigma^B_1\text{-definable in } V_0 \iff f \text{ is } \Sigma^B_0\text{-definable in } V_0.$$
+
+% This is all based on characterizations of the similar form.
+
+% My work on formalizing bounded arithmetic is here: [https://github.com/ruplet/formalization-of-bounded-arithmetic](https://github.com/ruplet/formalization-of-bounded-arithmetic) - in this repo there is also my presentation from AITP, the abstract and the reviews it received.
+
+% This is also the subject of my visit at INRIA, beginning 8th September 2025.

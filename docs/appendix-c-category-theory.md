@@ -5,8 +5,8 @@ title: Practical programming languages expressing complexity classes
 link-citations: true
 csl: ieee.csl
 bibliography: references.bib
-# random-category-theory.md: chapters/appendix-c-category-theory.md
-# 	$(PANDOC) @(PANDOC_FLAGS) -t markdown-citations preface.md $^ -o $@
+# header-includes:
+# - \usepackage{proof}
 ---
 
 
