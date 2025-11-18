@@ -13,6 +13,7 @@ pygmentize -S default -f latex > pygments-default.tex
 
 python -m pygments -x -l "dafnylexer.py:DafnyLexer" -f latex -O encoding=utf8 -o dafny-example.tex dafny-example.dfy
 python -m pygments -x -l "lean.py:Lean4Lexer" -f latex -O encoding=utf8 -o lean-example.tex lean-example.lean
+python -m pygments -l prolog -f latex -O encoding=utf8 -o prolog-example.tex prolog-example.pl
 ```
 
 Take a look at how do I then include the resulting `.tex` in my project.

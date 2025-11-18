@@ -1,0 +1,18 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZpc{} Run at: https://swish.swi\PYZhy{}prolog.org/}
+\PY{n+nf}{succ}\PY{p}{(}\PY{l+s+sAtom}{bit1}\PY{p}{,} \PY{l+s+sAtom}{bit2}\PY{p}{)}\PY{p}{.}
+\PY{n+nf}{succ}\PY{p}{(}\PY{l+s+sAtom}{bit2}\PY{p}{,} \PY{l+s+sAtom}{bit3}\PY{p}{)}\PY{p}{.}
+\PY{n+nf}{succ}\PY{p}{(}\PY{l+s+sAtom}{bit3}\PY{p}{,} \PY{l+s+sAtom}{bit4}\PY{p}{)}\PY{p}{.}
+\PY{n+nf}{succ}\PY{p}{(}\PY{l+s+sAtom}{bit4}\PY{p}{,} \PY{l+s+sAtom}{bit5}\PY{p}{)}\PY{p}{.}
+
+\PY{n+nf}{zero}\PY{p}{(}\PY{l+s+sAtom}{bit1}\PY{p}{)}\PY{p}{.}
+\PY{n+nf}{zero}\PY{p}{(}\PY{l+s+sAtom}{bit3}\PY{p}{)}\PY{p}{.}
+\PY{n+nf}{one}\PY{p}{(}\PY{l+s+sAtom}{bit2}\PY{p}{)}\PY{p}{.}
+\PY{n+nf}{one}\PY{p}{(}\PY{l+s+sAtom}{bit4}\PY{p}{)}\PY{p}{.}
+\PY{n+nf}{one}\PY{p}{(}\PY{l+s+sAtom}{bit5}\PY{p}{)}\PY{p}{.}
+
+\PY{n+nf}{exists\PYZus{}1}  \PY{o}{:\PYZhy{}} \PY{n+nf}{one}\PY{p}{(}\PY{n+nv}{X}\PY{p}{)}\PY{p}{.} 							  \PY{c+c1}{\PYZpc{} true}
+\PY{n+nf}{exists\PYZus{}00} \PY{o}{:\PYZhy{}} \PY{n+nf}{succ}\PY{p}{(}\PY{n+nv}{X}\PY{p}{,} \PY{n+nv}{Y}\PY{p}{)}\PY{p}{,} \PY{n+nf}{zero}\PY{p}{(}\PY{n+nv}{X}\PY{p}{)}\PY{p}{,} \PY{n+nf}{zero}\PY{p}{(}\PY{n+nv}{Y}\PY{p}{)}\PY{p}{.}        \PY{c+c1}{\PYZpc{} false}
+\PY{n+nf}{no\PYZus{}00}     \PY{o}{:\PYZhy{}} \PY{l+s+sAtom}{\PYZbs{}+} \PY{p}{(} \PY{n+nf}{succ}\PY{p}{(}\PY{n+nv}{X}\PY{p}{,} \PY{n+nv}{Y}\PY{p}{)}\PY{p}{,} \PY{n+nf}{zero}\PY{p}{(}\PY{n+nv}{X}\PY{p}{)}\PY{p}{,} \PY{n+nf}{zero}\PY{p}{(}\PY{n+nv}{Y}\PY{p}{)} \PY{p}{)}\PY{p}{.} \PY{c+c1}{\PYZpc{} true}
+\PY{n+nf}{no\PYZus{}11}     \PY{o}{:\PYZhy{}} \PY{l+s+sAtom}{\PYZbs{}+} \PY{p}{(} \PY{n+nf}{succ}\PY{p}{(}\PY{n+nv}{X}\PY{p}{,} \PY{n+nv}{Y}\PY{p}{)}\PY{p}{,} \PY{n+nf}{one}\PY{p}{(}\PY{n+nv}{X}\PY{p}{)}\PY{p}{,} \PY{n+nf}{one}\PY{p}{(}\PY{n+nv}{Y}\PY{p}{)} \PY{p}{)}\PY{p}{.}   \PY{c+c1}{\PYZpc{} false}
+\end{Verbatim}

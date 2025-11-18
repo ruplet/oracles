@@ -6,33 +6,46 @@ is in some complexity class. We want to do it by defining such a programming lan
 that by definition every program written in it has a given complexity.
 
 \begin{enumerate}
-    \item The purpose of~\autoref{chap:foundations} (chapter: Models of computation...) is to check in what programming paradigm/computation model,
-    it will be the easiest for us to find characterizations. If imperative languages are hard to reason about, maybe consider functional
-    languages?
-    Also, if computational classes for Turing machines are hard to capture, maybe classes of complexity
-    e.g. for lambda terms or for games (not examined here) will be easier to capture?
-    \item The purpose of~\autoref{chap:formalized-semantics} is to examine reasoning
-    about turing machines straight away, without any characterizations, in Coq. It is way too much work!
-    \item In~\autoref{chap:descriptive-complexity} we study languages (logics) for decisional problems
+    \item First, we check if imperative programming is best for capturing complexity classes in~\autoref{chap:foundations}.
+        (E.g. think about language with only for i=1..n loops, i.e. primitive recursion)
+        It turns out it is not - what are the better paradigms (computation models) for our problem?
+    \item Then, we check why can't we actually just certify complexity by proving
+    in Coq that a given C++ program operates in time \(\bigO(n^2)\):~\autoref{chap:formalized-semantics}.
+    \item In~\autoref{chap:descriptive-complexity} we study logics (which are also a form of syntax) 
+        that characterize decisional complexity classes 
         purely in terms of how complex is the specification of the problem. This gives us
-        some characterizations of decisive complexity classes, and we can also
-        define functions by bit-graphs and asking "is k-th bit of output f(x) 0 or 1?" repeatedly.
-    \item The purpose of~\autoref{chap:reductions} is to find out if we can find language for polytime functions
-    by making language for logspace reductions, then adding an oracle for decisional poly-time complete problem.
-    We introduce functional complexity classes, which are crucial for our considerations.
-    Then, going stronger, if we can have a language for FNP from FP + oracle for NP-complete problem.
-    (answer turns out to be NO, as examined in section about TFNP). By the way, \(\complexity{FP}^{\complexity{NP}}\) is
-    exactly what we would get this way, and this is a well-studied complexity class.
-    And going weaker, if we can have language for FL from L-complete problem and circuit reductions.
-    We leave this problem out, and only study circuit reductions/uniformity in appendix.
+        some characterizations of decisive complexity classes, and we can also sometimes
+        define functions by asking "is k-th bit of output f(x) 0 or 1?" repeatedly.
+    \item The purpose of~\autoref{chap:reductions} is to check decisive complexity classes
+    are enouguh for us, or do we need to really distinguish e.g. NP and FNP. Turns out,
+    sometimes we have to! But: we can obtain e.g. FL from L and NC1 reductions. This
+    leads us to a new paradigm, that I named my Github repo after (on 16 November 2023!):
+    having a simpler languauge for reductions, and using an oracle for e.g. P-complete problem.
+    We can get FL, FP and most important circuit complexity classes like functional AC0 etc. this way.
+    But obtaining a language for these NC1 reductions is not that easy neither!
+    We leave the problem of circuit reductions/uniformity to appendix.    
     We proceed to try find FL characterization right away in Linear Logic (Ugo Dal Lago IntML)
     and in Recursion Theory (Neergaard functional language).
     \item In~\autoref{chap:recursion-theory}, we study simple and cool function algebras
         that capture FL, and FP. Neergaard implemented a programming language for FL.
+        I obtained his code from 20 years ago (he sent me zip on Linkedin), and refreshed it.
+        The author in one of his works declares that it doesn't look possible to add 'pair' type
+        to this language!
     \item In~\autoref{chap:linear-types}, we study Ugo Dal Lago's linear-types programming
         language that captures FL and FNL. Briefly! Because introducing linear types is too
-        much overhead
-    \item In~\autoref{chap:bounded-arithmetic}, we study my contribution!
+        much overhead.
+    \item In~\autoref{chap:bounded-arithmetic}, we study my contribution! I noticed
+    that it is feasible to extract computational content from proofs conducted
+    in bounded arithmetic (file Extraction.lean in my repo\footnote{\url{https://github.com/ruplet/formalization-of-bounded-arithmetic}})
+    And you get guarantees on the computational complexity of code exported
+    in this way. So, if you prove a theorem that a function is total (forall x, we can find y) in bounded arithmetic,
+    (and you didnt use proof by contradiction too heavily),
+    you can convert it to a program with certified complexity. Then, the most difficult part - 
+    I analyzed multiple tools(\footnote{\url{https://github.com/ruplet/formalization-of-bounded-arithmetic/blob/main/presentation-seminar-sliwowica/seminar-presentation.pdf}})
+    and found a way to define bounded arithmetic in lean in such a way that
+    it inter-operates with mathlib + is ``believable'' (not too much my own machinery).
+    I presented at aitp, and had a visit at inria where i tested their tool designed to 
+    formalize proof-theory in Rocq (difficult to use due, not enough engineering put in their system).
 
 
 \end{enumerate}

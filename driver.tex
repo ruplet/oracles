@@ -101,22 +101,6 @@
   prepend={TODO:} % prefix inside note
 }
 
-\usepackage{amsthm}
-\theoremstyle{plain}
-\newtheorem{theorem}{Theorem}[chapter]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
-
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}[section]
-\newtheorem*{definition*}{Definition}
-\newtheorem{example}[theorem]{Example}
-\newtheorem{notation}{Notation}
-
-\theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
-
 % make references clickable, hide boxes around links
 \usepackage[hidelinks, pdfpagelabels]{hyperref}
 % https://tex.stackexchange.com/a/404990
@@ -129,16 +113,41 @@
   \def\subsubsectionautorefname{Subsubsection}%
 }
 
-\providecommand*{\theoremautorefname}{Theorem}
-\providecommand*{\lemmaautorefname}{Lemma}
-\providecommand*{\propositionautorefname}{Proposition}
+% ?https://tex.stackexchange.com/a/240948 i think this didnt help
+% chat suggests using this to fix \autoref displaying an example as a 'Theorem'
+\usepackage{amsthm}
+\usepackage{aliascnt}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
+% \theoremstyle{plain}
+% \newtheorem{lemma}[theorem]{Lemma}
+% \newtheorem{proposition}[theorem]{Proposition}
+% \newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\providecommand*{\remarkautorefname}{Remark}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
 \providecommand*{\definitionautorefname}{Definition}
 
+\theoremstyle{definition}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\providecommand*{\exampleautorefname}{Example}
 
-% \ref for (i)-(iii)
-% \usepackage[nameinlink]{cleveref}
-% \crefname{enumi}{item}{items}
-% \Crefname{enumi}{Item}{Items}
+\theoremstyle{definition}
+\newtheorem*{definition*}{Definition}
+
+\theoremstyle{definition}
+\newtheorem{notation}{Notation}
+\providecommand*{\notationautorefname}{Notation}
+
 
 
 % Workaround for "duplicate destination name{page.i}" on front matter:
@@ -277,8 +286,16 @@
 
 % We will not use `complexity' CTAN package, because it is wacky
 % https://tex.stackexchange.com/q/391604
-\newcommand{\complexity}[1]{\ensuremath{\mathsf{#1}}\xspace}
-\newcommand{\complexityi}[2]{\ensuremath{\mathsf{#1}^{#2}}\xspace}
+\newcommand{\complexity}[1]{%
+  \texorpdfstring{%
+    \ensuremath{\mathsf{#1}}\xspace%
+  }{#1}%
+}
+\newcommand{\complexityi}[2]{%
+  \texorpdfstring{%
+    \ensuremath{\mathsf{#1}^{#2}}\xspace%
+  }{#1#2}%
+}
 
 
 \newcommand{\problem}[1]{%
