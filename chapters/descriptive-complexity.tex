@@ -44,7 +44,7 @@ This is the intuition behind the languages designed for querying databases. To f
 logic and computation, consider the following
 
 \begin{definition}[Language of binary strings]
-  Define the vocabulary \(\tau_\leqslant\) to contain only the unary relations \(\mathsf{Zero(x)}, \mathsf{One(x)}\) and
+  Define the vocabulary \(\tau_\leqslant\) to contain only the unary relations \(\mathsf{Zero}(x), \mathsf{One}(x)\) and
   the binary relations \(=, \leqslant\). Intuitively, \(x \leqslant y\) means that memory cell $x$ comes before
   memory cell $y$. As we can represent most of the real-world structures of interest as some binary
   string on a computer, this simple vocabulary already allows us to ask interesting questions.
@@ -65,7 +65,7 @@ logic and computation, consider the following
   
   We define the language \(L_\phi\) to be \emph{generated} by a first-order sentence $\phi \in \complexity{FO_\leqslant}$
   iff
-  \[\mathcal{M}_w \models \phi \;\Longleftrightarrow\; w \in L\]
+  \[\mathcal{M}_w \models \phi \;\Longleftrightarrow\; w \in L_\phi.\]
 \end{definition}
 
 Let's also define a logic, where elements of the universe are treated not as memory cells, but as natural numbers.
@@ -74,20 +74,20 @@ Let's also define a logic, where elements of the universe are treated not as mem
   \complexity{FO_{\mathsf{BIT}}} is the class of sentences of first-order logic with the following vocabulary:
   \begin{enumerate}
   \item constants $0, 1, \mathsf{max}$ 
-  \item binary relations $\mathsf{BIT}, \mathsf{SUCC}, \leqslant, =$
+  \item binary relations $\mathsf{BIT}, \mathsf{SUCC}, \leqslant, =$ 
   \end{enumerate}
 
   From now on, whenever talking about the semantics of any such sentence, we will require
   the elements of the universe to be interpreted as actual natural numbers $0, 1, \dots$;
   the equality and order to be interpreted as the actual equality and order on the elements of the model;
   $0, 1, \mathsf{max}$ to be interpreted as the minimum, second and maximum elements under $\leqslant$;
-  \(\mathsf{BIT}(x, y)\) to hold iff bit $j$ in the binary representation of $i$ is 1.
+  \(\mathsf{BIT}(x, y)\) to hold iff bit $y$ in the binary representation of $x$ is 1.
 
   \begin{remark}
   Note that it is a completely different definition to~\autoref{def:fo-order}. However,
   as hinted in~\autoref{remark:fo-wo-bit}, the expressive power of \complexity{FO_{\mathsf{BIT}}} without
-  \(\mathsf{BIT}\) for our purposes is the same as \complexity{FO_\leqslant} and we will
-  not discuss these subtleties here.\todo{tutaj blefuję, nie mam cytowania na to ze to jest to samo}
+  \(\mathsf{BIT}\) for our purposes is \todo{tutaj blefuję, nie mam cytowania na to ze to jest to samo}the same as \complexity{FO_\leqslant} and we will
+  not discuss these subtleties here.
   \end{remark}
 \end{definition}
 

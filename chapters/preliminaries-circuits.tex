@@ -16,17 +16,17 @@ circuit classes if there exists a family of circuits
     \item\label{itm:circ-size} every circuit \(C_n\) has polynomially many gates w.r.t. \(n\);
     \item\label{itm:circ-depth} every circuit \(C_n\) has depth \(\bigO((\log n)^i)\);
     \item\label{itm:circ-nc} \(L \in \NCpoly{i}\) (Nick's class)  
-          if each \(C_n\) uses only fan-in~2 \(\wedge\)-, fain-in~2 \(\vee\)-gates
+          if each \(C_n\) uses only fan-in~2 \(\wedge\)-, fan-in~2 \(\vee\)-gates
           and fan-in~1 \(\neg\)-gates;
 
   \item\label{itm:circ-ac} \(L \in \ACpoly{i}\)  (Alternating circuits)
         if each \(C_n\) uses  
-        unbounded fan-in \(\wedge\)-, unbounded fain-in \(\vee\)-gates and
+        unbounded fan-in \(\wedge\)-, unbounded fan-in \(\vee\)-gates and
         fan-in~1 \(\neg\)-gates;
 
   \item \label{itm:circ-tc}\(L \in \TCpoly{i}\)  (Threshold circuits)
-        if each \(C_n\) uses unbounded fan-in \(\wedge\)-, unbounded fain-in \(\vee\)-gates,
-        fain-in~1 \(\neg\)-gates and unbounded fain-in \emph{majority} gates
+        if each \(C_n\) uses unbounded fan-in \(\wedge\)-, unbounded fan-in \(\vee\)-gates,
+        fan-in~1 \(\neg\)-gates and unbounded fan-in \emph{majority} gates
         (i.e.\ a gate that outputs 1 iff at least half of its inputs are one).
 \end{enumerate}
 
@@ -161,4 +161,3 @@ satisfying the conditions from~\autoref{def:faci-poly}.
 % \begin{enumerate}
 % \item TODO: Confirm that multiplication is in $\complexityi{TC}{0}$~\cite{BussLectureNotes}, and locate the supporting details in~\cite{doi:10.1137/0213028}.
 % \end{enumerate}
-
