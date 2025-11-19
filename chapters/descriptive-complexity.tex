@@ -23,7 +23,7 @@ and will be studied by us only in~\autoref{chap:bounded-arithmetic}.
 \end{remark}
 
 \begin{example}\label{exm:logic-simple-model}
-.Consider a vocabulary \(\mathcal{L}\) consisting of unary relations \(\mathsf{Zero}(x), \mathsf{One}(x)\) and binary relations
+Consider a vocabulary \(\mathcal{L}\) consisting of unary relations \(\mathsf{Zero}(x), \mathsf{One}(x)\) and binary relations
 \(\mathsf{=}, \mathsf{\leqslant}\). If we think of positions in a binary string as elements of the universe,
 we can define e.g. for a string \(01011\) an \(\mathcal{L}\)-structure \(\mathcal{M}\) with:
 \begin{enumerate}
@@ -32,8 +32,8 @@ we can define e.g. for a string \(01011\) an \(\mathcal{L}\)-structure \(\mathca
 \end{enumerate}
 
 Now, we can reason about the original binary string using logic.
-The formula  \(\exists x, \mathsf{One}(x)\) is true in \(\mathcal{M}\). However, the formula
-\(\forall x, \mathsf{Zero}(x)\) is not.
+The formula  \(\exists x \ldotp \mathsf{One}(x)\) is true in \(\mathcal{M}\). However, the formula
+\(\forall x \ldotp \mathsf{Zero}(x)\) is not.
 \todo{is this insightful or another question?}
 It is insightful to analyze in general what kind of logical formulas are true in \(\mathcal{M}\).
 \end{example}
@@ -312,8 +312,8 @@ of complexity \complexity{P} that will check for us if \(w \models \phi\) for an
 There is a huge leap of faith, however --- just that the machine \emph{exists} and runs fast,
 we can't conclude that we will ever be able to actually use it. We have to inspect
 the proof of such a theorem and tell if we can compute the description itself of such a machine,
-and how fast we can do it. An illustrative example is infeasability of using the below theorem
-to design a programming language for \complexity{DFA}\todo{dfa undefined..} automatas:
+and how fast we can do it. An illustrative example is infeasibility of using the below theorem
+to design a programming language for finite automata:
 
 \begin{theorem}[{\cite[Theorem~1.36]{Immerman1999-IMMDC}}~Büchi-Elgot theorem]
   For the alphabet \(\Sigma := \{0, 1\}\),
@@ -347,7 +347,7 @@ for a demonstration how can we transfer our considerations from~\autoref{exm:log
 \subsection{Datalog}
 Datalog is a programming language that uses the paradigm of logic programming, similarly to Prolog.
 Unlike Prolog, however, it \emph{captures} the complexity class of \compP~\cite[Theorem~4.4]{10.1145/502807.502810}.
-That is, is is a language such that any query definable in it will be checkable in \compP{} for a given model.
+That is, it is a language such that any query definable in it will be checkable in \compP{} for a given model.
 We have not investigated the subtleties of Datalog's implementation and whether the complexity doesn't blow up
 somewhere.
 
