@@ -5,20 +5,20 @@ In this section we introduce standard complexity classes such as
 classes only contain \emph{decision} problems, only require
 i.e.\ computing a function \(f : \{0,1\}^\ast \to \{0,1\}\).
 
-\begin{definition}[Computing a function~{\cites[Definition~1.3]{10.5555/1540612}[Definition~1.4]{DRAFT10.5555/1540612}}]
-Let~\(f : \{0,1\}^{\ast} \to \{0,1\}^{\ast}\) and \(T : \mathbb{N} \to \mathbb{N}\) be functions, and let
-\(M\) be a Turing machine.  
-\begin{enumerate}
-  \item We say that \(M\) \emph{computes} \(f\) if, for every input
-        \(x \in \{0,1\}^{\ast}\), when \(M\) is started in its initial configuration
-        on input \(x\), it eventually halts with the string \(f(x)\) written on its
-        output tape.
+% \begin{definition}[Computing a function~{\cites[Definition~1.3]{10.5555/1540612}[Definition~1.4]{DRAFT10.5555/1540612}}]
+% Let~\(f : \{0,1\}^{\ast} \to \{0,1\}^{\ast}\) and \(T : \mathbb{N} \to \mathbb{N}\) be functions, and let
+% \(M\) be a Turing machine.  
+% \begin{enumerate}
+%   \item We say that \(M\) \emph{computes} \(f\) if, for every input
+%         \(x \in \{0,1\}^{\ast}\), when \(M\) is started in its initial configuration
+%         on input \(x\), it eventually halts with the string \(f(x)\) written on its
+%         output tape.
 
-  \item We say that \(M\) computes \(f\) in time \(T(n)\) if, for every
-        input \(x\), the computation of \(M\) on input \(x\) halts within
-        at most \(T(|x|)\) steps.
-\end{enumerate}
-\end{definition}
+%   \item We say that \(M\) computes \(f\) in time \(T(n)\) if, for every
+%         input \(x\), the computation of \(M\) on input \(x\) halts within
+%         at most \(T(|x|)\) steps.
+% \end{enumerate}
+% \end{definition}
 
 \begin{notation}
     We say that a machine \emph{decides} a language \(L \subseteq \{0, 1\}^\ast\) iff it computes
