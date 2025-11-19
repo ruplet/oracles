@@ -22,7 +22,7 @@ that later became foundational for ICC\@. An important formal system studied the
 \begin{definition}[Primitive recursive functions]
 \label{def:primitive-recursive}
 \(\complexity{PR}\) is the smallest class of functions containing~\ref{itm:pra-const}--\ref{itm:pra-proj} and closed under~\ref{itm:pra-comp} and~\ref{itm:pra-rec}.
-\begin{enumerate}[label= (\roman*), ref= (\roman*)]
+\begin{enumerate}
 \item\label{itm:pra-const}\textbf{(Constants)} For every \(n\in\mathbb{N}\) and \(k\ge 0\), the \(k\)-ary constant function
       \(c_{n}^{(k)}(\vec x)=n\).
 \item\label{itm:pra-succ} \textbf{(Successor)} \(S(x)=x+1\).
@@ -147,7 +147,7 @@ Here \(S_0(y)=2y\) and \(S_1(y)=2y+1\) append a binary digit to \(y\).
 \begin{definition}[Cobham's algebra for \complexity{FP}]
 \label{def:cobham}
 The class of polynomial-time computable functions is the smallest class \(\mathcal{C}\) of functions such that:
-\begin{enumerate}[label=(\roman*)]
+\begin{enumerate}
 \item \(\mathcal{C}\) contains the initial functions (as in~\autoref{def:primitive-recursive}: constants, successor, projections), the~binary successor functions \(S_0(x)=2x\) and \(S_1(x)=2x+1\), and the weak exponential \((x,y)\mapsto x^{\lvert y\rvert}\).
 \item \(\mathcal{C}\) is closed under composition.
 \item \(\mathcal{C}\) is closed under bounded primitive recursion on binary notation as in Definition~\autoref{def:bounded-binary-primitive-recursion}.
@@ -203,7 +203,7 @@ For an integer \(x\), let \(|x|\) denote its binary length
 The class \(\mathcal{B}\) is the smallest class of functions on non-negative
 integers that contains \((\textup{i})\)--\((\textup{v})\) and is closed under
 \((\textup{vi})\)--\((\textup{vii})\).
-\begin{enumerate}[label=(\roman*)]
+\begin{enumerate}
   \item \textbf{(Constant)} \(0(;)=0\).
   \item \textbf{(Projection)} for \(m,n\ge 0\) and \(1\le j\le m+n\),
         \[
@@ -270,7 +270,7 @@ write \(yb = 2y + b\); for \(\delta \in \mathbb{N}\), put \(\texttt{shift}(y, \d
 \begin{definition}[Neergaard's \(BC_\varepsilon^{-}\) algebra]\label{def:bc-eps}
 The class \(BC_\varepsilon^{-}\) is the smallest class of functions that contains the initial functions \((\textup{i})\)--\((\textup{v})\) as defined in~\autoref{def:bellantoni-cook} and is closed under
 the below schemes of safe composition and safe recursion:
-\begin{enumerate}[label= (\roman*)]
+\begin{enumerate}
   
   \item \textbf{(Safe affine composition)}\
       Let \((h_i)_{i=1}^M\), \((g_i)_{i=1}^N\), \(f\) be functions in \(BC_\varepsilon^{-}\) such that

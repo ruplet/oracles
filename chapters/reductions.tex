@@ -2,8 +2,8 @@
 \chapter{Reductions}\label{chap:reductions}
 Plenty of theorems of the form ``problem $P$ is \emph{complete} for class $C$ under
 reductions in class $R$'' have been described in the literature. In this chapter
-we analyze when are they useful to capture complexity classes syntactically,
-and when they don't suffice.
+we analyze when such reductions help capture complexity classes syntactically
+and when they fall short.
 
 \begin{definition}[Circuit Value Problem (\problem{CVP})]
   Given a representation of a Boolean circuit on input, compute its output.
@@ -52,7 +52,7 @@ A more thorough discussion of decision vs search is in~\cite{10.5555/889581}.
 \paragraph{Exponential-length output}
 The difference between \compP{} and \compFP{} is obvious when we look at the below example:
 \begin{example}
-    Running time of any Turing machine computing the function \(x \rightarrow 2^x\) for input and output in binary,
+    Running time of any Turing machine computing the function \(x \to 2^x\) for input and output in binary,
     is exponential. At the same time, given an input \(x, y\), checking if \(y = 2^x\) is easily in polynomial time.
 \end{example}
 This problem is, however, usually artificially mitigated by requiring the length \(|f(x)|\)
@@ -106,8 +106,8 @@ problems with that property are \emph{self-reducible}.
 
 However, some search problems are unlikely to be self-reducible.
 A good example is the problem of integer factorization, which
-is still, as of November 2025, conjectured to not be in \compP even despite
-the recent breakthrough in which \problem{PRIME} was proved to be in \compP.
+is still, as of November 2025, conjectured to not be in \compP{} even despite
+the breakthrough result from 2002 in which \problem{PRIME} (decide if $n$ is prime) was proved to be in \compP~\cite{b68c33ca-3366-3b13-8901-69e76cc88da6}.
 A particularly important class of such problems is considered in~\ref{subsubsec:tfnp}.
 But first, let's define the classes \complexity{FP} and \complexity{FNP}.
 
@@ -134,7 +134,7 @@ in \(\mathsf{FP}\) may produce outputs of arbitrary polynomial length.
 
 A binary relation \(P(x, y)\) is in \(\complexity{FP}\) iff there exists a polynomial-time Turing machine
 that, given an arbitrary input \(x\):
-\begin{enumerate}[label=(\roman*)]
+\begin{enumerate}
     \item outputs some \(y\) such that \(P(x, y)\) if any exists;
     \item signals that no such \(y\) exists otherwise.
 \end{enumerate}
@@ -217,11 +217,11 @@ not in terms of a specific computational model.
 A binary relation \(P(x, y)\) is in \(\complexity{FNP}\) if there exist:
 \begin{enumerate}
   \item a polynomial \(p : \mathbb{N} \to \mathbb{N}\) such that if for a given \(x\) exists a solution \(y\) such
-  that \(P(x, y)\), then there also exist a ``short'' solution \(y'\) such that
+  that \(P(x, y)\), then there also exists a ``short'' solution \(y'\) such that
   \(P(x, y')\) and \(|y'| \leqslant p(|x|)\);
   \item a deterministic polynomial-time Turing machine \(M\)
         (a \emph{verifier}), 
-        such that for every input pair \((x, y)\),
+        such that for every input pair \((x, y)\),\todo{consistency: iff vs Longleftrightarrow}
         \[
             P(x, y)
             \;\Longleftrightarrow\;
@@ -261,7 +261,7 @@ an input \(x\) such that \(C(x) = 0^n\), or two distinct inputs \(x \neq y\) suc
 \end{definition}
 
 \begin{remark}\label{remark:link-pigeonhole}
-    This class will be of our interest in~\autoref{subsec:vac0-php}, where we will discuss mathematical theories
+    This problem will be of our interest in~\autoref{subsec:vac0-php}, where we will discuss mathematical theories
     so weak that the pigeonhole principle is not their theorem. The intuition behind it is that
     the computational content of these theories is not strong enough to perform an exhaustive
     linear search of the whole domain.
@@ -305,15 +305,12 @@ The class \complexity{TFNP} is discussed in yet more detail in~\cite[Section 1.1
 % the different subtleties of defining $\complexityi{AC}{0}$ functions and numerous different characterizations
 % of Dlogtime-uniform $\complexityi{AC}{0}$-computable functions.
 
-\begin{definition}
-  \todo[inline]{I really don't want to introduce circuit reductions... skipping it.}
-\end{definition}
-
 
 \subsection{Language for FL}
+\todo[inline]{I really don't want to introduce circuit reductions... skipping it.}
 
 \begin{theorem}[{\cite[Proposition~4.1]{COOK19852}}]\label{thm:fl-is-l-red}
-  We obtain precisely the class \complexity{FL} from the closure of \compL under \complexityi{NC}{1} circuit reductions,
+  We obtain precisely the class \complexity{FL} from the closure of \compL{} under \complexityi{NC}{1} circuit reductions,
   symbolically: \(\complexity{FL} = \complexity{L}^\ast\)
   
   \begin{remark}
@@ -323,7 +320,7 @@ The class \complexity{TFNP} is discussed in yet more detail in~\cite[Section 1.1
   \end{remark}
 \end{theorem}
 
-An overview of problems complete for \compL is present in~\cite{COOK1987385}.
+An overview of problems complete for \compL{} is present in~\cite{COOK1987385}.
 
 \subsection{Language for \complexity{FP}}
 We can derive an analogous result to~\autoref{thm:fl-is-l-red} for the class \complexity{FP}.
@@ -339,7 +336,7 @@ We are discussing it here, postponing the considerations to~\autoref{thm:fc-is-f
 % language and for the circuit description language
 % - The problem is that we can't generate tests for it; we have no database of Turing machines descriptions
 The notion of \compP-completeness is defined formally e.g.\ in~\cites[Definition~6.25]{DRAFT10.5555/1540612}[Definition~6.28]{10.5555/1540612}.
-A very detailed description of one problem complete for \compP under \compL-reductions is in~\cite{Kozen2006}.
+A very detailed description of one problem complete for \compP{} under \compL-reductions is in~\cite{Kozen2006}.
 
 \subsection{Not-a-Language for \complexity{FNP}}
 There is a relatively agreed-upon notion of reductions between \complexity{FNP} problems:
@@ -366,11 +363,11 @@ However, as it turns out, not all complexity classes studied have known
 complete problems.
 The classes for which a complete problem exists are called ``syntactic'' complexity classes,
 as opposed to ``semantic'', e.g.~in~\cite{DBLP:conf/innovations/GoldbergP18}, the authors define a new complexity class
-\(\complexity{PTFNP \subseteq \complexity{TFNP}}\), for which
+\(\complexity{PTFNP} \subseteq \complexity{TFNP}\), for which
 they prove the existence of a complete problem, and then call this class ``syntactic''.
 
 An interesting discussion of this problem, centered around the class \complexity{inv-P}
-we discussed in~\autoref{remark:unordered-structures}, is present in~\cite{dawar2012syntactic}.
+we discussed in~\autoref{subsec:unordered-structures}, is present in~\cite{dawar2012syntactic}.
 For the class \complexity{BPP}, some discussion is in~\cite{35236}.
 Despite that, a ``less implicit'' characterization of BPP was studied in~\cite{lago2012higherordercharacterizationprobabilisticpolynomial}.
 
@@ -393,6 +390,7 @@ complexity classes in the literature, with examples of inconsistent places see~\
 
 
 \section{Oracle-oriented programming}
+\todo[inline]{unfinished, but this should explain why this chapter is important; another style of programming}
 If you use reductions + a single oracle for a difficult problem, you can get
 a powerful programming language. This would be a new, nice paradigm that I aimed to
 realize.
