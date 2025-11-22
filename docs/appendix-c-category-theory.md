@@ -68,3 +68,43 @@ We don't explore this connection further.
 
 - Term algebras are initial objects in the category of algebras over a given signature
 > https://en.wikipedia.org/wiki/Term_algebra#:~:text=From%20a%20category%20theory%20perspective,all%20algebras%20in%20the%20category.
+
+
+
+
+
+@MISC {3074,
+    TITLE = {A category of NP-complete problems?},
+    AUTHOR = {Paul Allen Grubbs (https://cstheory.stackexchange.com/users/2267/paul-allen-grubbs)},
+    HOWPUBLISHED = {Theoretical Computer Science Stack Exchange},
+    NOTE = {URL:https://cstheory.stackexchange.com/q/3074 (version: 2010-11-17)},
+    EPRINT = {https://cstheory.stackexchange.com/q/3074},
+    URL = {https://cstheory.stackexchange.com/q/3074}
+}
+
+@MISC {3422,
+    TITLE = {A category of NP-complete problems?},
+    AUTHOR = {Neel Krishnaswami (https://cstheory.stackexchange.com/users/657/neel-krishnaswami)},
+    HOWPUBLISHED = {Theoretical Computer Science Stack Exchange},
+    NOTE = {URL:https://cstheory.stackexchange.com/q/3422 (version: 2010-11-30)},
+    EPRINT = {https://cstheory.stackexchange.com/q/3422},
+    URL = {https://cstheory.stackexchange.com/q/3422}
+}
+
+@misc{nlab:computational_trilogy,
+  author = {{nLab authors}},
+  title = {computational trilogy},
+  howpublished = {\url{https://ncatlab.org/nlab/show/computational+trilogy}},
+  note = {\href{https://ncatlab.org/nlab/revision/computational+trilogy/42}{Revision 42}},
+  month = aug,
+  year = 2025
+}
+
+@misc{nlab:relation_between_type_theory_and_category_theory,
+  author = {{nLab authors}},
+  title = {relation between type theory and category theory},
+  howpublished = {\url{https://ncatlab.org/nlab/show/relation+between+type+theory+and+category+theory}},
+  note = {\href{https://ncatlab.org/nlab/revision/relation+between+type+theory+and+category+theory/92}{Revision 92}},
+  month = aug,
+  year = 2025
+}
