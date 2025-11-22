@@ -66,10 +66,10 @@ inductively as follows:
           P(t_1,\dots,t_n)
         \]
         is an \emph{atomic} $\mathcal{L}$-formula;
-  \item If $A$ and $B$ are $\mathcal{L}$-formulas, then
-        $\lnot A$, $(A \land B)$, and $(A \lor B)$ are $\mathcal{L}$-formulas;
-  \item If $A$ is an $\mathcal{L}$-formula and $x$ is a variable, then
-        $\forall x\,A$ and $\exists x\,A$ are $\mathcal{L}$-formulas.
+  \item If $\varphi$ and $\psi$ are $\mathcal{L}$-formulas, then
+        $\lnot \varphi$, $(\varphi \land \psi)$, and $(\varphi \lor \psi)$ are $\mathcal{L}$-formulas;
+  \item If $\varphi$ is an $\mathcal{L}$-formula and $x$ is a variable, then
+        $\forall x\ldotp \varphi$ and $\exists x\ldotp \varphi$ are $\mathcal{L}$-formulas.
 \end{enumerate}
 % Przykład pod 2.1.3: wcześniej było P(t1,...,tn) z nawiasami a tutaj Px bez nawiasów.
 % Niech będzie spójnie. W "Pfyz" nie wiadomo czy y,z idą do f czy do P. Z arności P wynika,
@@ -77,11 +77,11 @@ inductively as follows:
 % (obecnie nie mogą obie formuły na raz być L-formułami dla żadnego L, bo raz P unarne a raz binarne).
 For example,
 \[
-  (\lnot \forall x\,P x \,\lor\, \exists x\,\lnot P x)
+  (\lnot \forall x\ldotp P(x) \,\lor\, \exists x\ldotp \lnot P(x))
   \quad\text{and}\quad
-  (\forall x\,\lnot P x y \,\land\, \lnot \forall z\,P f y z)
+  (\forall x\ldotp \lnot Q(x,f(y)) \,\land\, \lnot \forall z\ldotp Q(f(y),z))
 \]
-are $\mathcal{L}$-formulas (for suitable choices of $P$ and $f$ in $\mathcal{L}$).
+are $\mathcal{L}$-formulas (for suitable choices of $P$, $Q$, and $f$ in $\mathcal{L}$).
 \end{definition}
 
 \begin{definition}[The language of arithmetic]\label{def:LA}
@@ -95,10 +95,10 @@ We will write these symbols in infix form.
 \end{definition}
 
 \begin{definition}[Free and bound variables]\label{def:free-bound}
-Let $A$ be a formula and $x$ a variable.
-An occurrence of $x$ in $A$ is \emph{bound} if it lies within a subformula
-of $A$ of the form $\forall x\,B$ or $\exists x\,B$.
-Any other occurrence of $x$ in $A$ is called \emph{free}.
+Let $\varphi$ be a formula and $x$ a variable.
+An occurrence of $x$ in $\varphi$ is \emph{bound} if it lies within a subformula
+of $\varphi$ of the form $\forall x\ldotp \psi$ or $\exists x\ldotp \psi$.
+Any other occurrence of $x$ in $\varphi$ is called \emph{free}.
 \end{definition}
 
 \begin{definition}[Closed terms, closed formulas, sentences]\label{def:closed-sentence}
@@ -112,7 +112,7 @@ Let $\mathcal{L}$ be a first-order vocabulary.
 An \emph{$\mathcal{L}$-structure} $\mathcal{M}$ consists of:
 \begin{enumerate}
   \item A nonempty set $M$, called the \emph{universe}
-        (Variables are intended to range over $M$);
+        (variables are intended to range over $M$);
   \item For each $n$-ary function symbol $f$ in $\mathcal{L}$, an associated function
         \(
           f^{\mathcal{M}} : M^n \to M
@@ -166,6 +166,7 @@ defined by structural induction on $t$:
   \(
     x^{\mathcal{M}}[\sigma] = \sigma(x).
   \)
+  % TODO: In particular, we only work with semantics in which the distinguished predicate symbol $=$ is interpreted as genuine equality on $M$; we do not consider variants where it could denote another equivalence relation.
   \item 
   \(
     (f t_1 \dots t_n)^{\mathcal{M}}[\sigma]
@@ -174,14 +175,14 @@ defined by structural induction on $t$:
 \end{enumerate}
 
 \paragraph{Satisfaction of formulas.}
-For an $\mathcal{L}$-formula $A$, the relation
+For an $\mathcal{L}$-formula $\varphi$, the relation
 \[
-  \mathcal{M} \models A[\sigma]
+  \mathcal{M} \models \varphi[\sigma]
 \]
-(read: ``$\mathcal{M}$ satisfies $A$ under $\sigma$'') is defined by structural
-induction on $A$:
+(read: ``$\mathcal{M}$ satisfies $\varphi$ under $\sigma$'') is defined by structural
+induction on $\varphi$:
 \begin{enumerate}
-  \item $\mathcal{M} \models \top$ and $\mathcal{M} \not\models \bot$.
+  \item $\mathcal{M} \models \top[\sigma]$ and $\mathcal{M} \not\models \bot[\sigma]$.
   \item For an atomic formula $P t_1 \dots t_n$ (with $P$ an $n$-ary
         predicate symbol),
   \[
@@ -196,21 +197,21 @@ induction on $A$:
     \;\;\text{iff}\;\;
     s^{\mathcal{M}}[\sigma] = t^{\mathcal{M}}[\sigma].
   \]
-  \item $\mathcal{M} \models \neg A[\sigma]$ iff $\mathcal{M} \not\models A[\sigma]$.
-  \item $\mathcal{M} \models (A \lor B)[\sigma]$ iff
-        $\mathcal{M} \models A[\sigma]$ or $\mathcal{M} \models B[\sigma]$.
-  \item $\mathcal{M} \models (A \land B)[\sigma]$ iff
-        $\mathcal{M} \models A[\sigma]$ and $\mathcal{M} \models B[\sigma]$.
-  \item $\mathcal{M} \models (\forall x\,A)[\sigma]$ iff
-        $\mathcal{M} \models A[\sigma(m/x)]$ for all $m \in M$.
-  \item $\mathcal{M} \models (\exists x\,A)[\sigma]$ iff
-        $\mathcal{M} \models A[\sigma(m/x)]$ for some $m \in M$.
+  \item $\mathcal{M} \models \neg \varphi[\sigma]$ iff $\mathcal{M} \not\models \varphi[\sigma]$.
+  \item $\mathcal{M} \models (\varphi \lor \psi)[\sigma]$ iff
+        $\mathcal{M} \models \varphi[\sigma]$ or $\mathcal{M} \models \psi[\sigma]$.
+  \item $\mathcal{M} \models (\varphi \land \psi)[\sigma]$ iff
+        $\mathcal{M} \models \varphi[\sigma]$ and $\mathcal{M} \models \psi[\sigma]$.
+  \item $\mathcal{M} \models (\forall x\ldotp \varphi)[\sigma]$ iff
+        $\mathcal{M} \models \varphi[\sigma(m/x)]$ for all $m \in M$.
+  \item $\mathcal{M} \models (\exists x\ldotp \varphi)[\sigma]$ iff
+        $\mathcal{M} \models \varphi[\sigma(m/x)]$ for some $m \in M$.
 \end{enumerate}
 
 \noindent
 If $t$ is a closed term, then $t^{\mathcal{M}}[\sigma]$
 is independent of $\sigma$, and we simply write $t^{\mathcal{M}}$.
-Similarly, if $A$ is a sentence, we often write
-$\mathcal{M} \models A$ instead of $\mathcal{M} \models A[\sigma]$, since
+Similarly, if $\varphi$ is a sentence, we often write
+$\mathcal{M} \models \varphi$ instead of $\mathcal{M} \models \varphi[\sigma]$, since
 the choice of $\sigma$ does not matter.
 \end{definition}

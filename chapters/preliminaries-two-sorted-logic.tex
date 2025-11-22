@@ -86,18 +86,18 @@ Let \(\mathcal{L}\) be a two-sorted vocabulary.
 If \(x\) is a number variable and \(X\) a string variable that do not occur
 in the \(\mathcal{L}\)-number term \(t\), we use the following abbreviations:
 \begin{align*}
-  \exists x \le t\,\varphi
+  \exists x \le t\ldotp \varphi
     &\;\;\text{stands for}\;\;
-      \exists x\, (x \le t \;\wedge\; \varphi), \\[2pt]
-  \forall x \le t\,\varphi
+      \exists x\ldotp (x \le t \;\wedge\; \varphi), \\[2pt]
+  \forall x \le t\ldotp \varphi
     &\;\;\text{stands for}\;\;
-      \forall x\, (x \le t \;\to\; \varphi), \\[2pt]
-  \exists X \le t\,\varphi
+      \forall x\ldotp (x \le t \;\to\; \varphi), \\[2pt]
+  \exists X \le t\ldotp \varphi
     &\;\;\text{stands for}\;\;
-      \exists X\, (\,|X| \le t \;\wedge\; \varphi), \\[2pt]
-  \forall X \le t\,\varphi
+      \exists X\ldotp (\,|X| \le t \;\wedge\; \varphi), \\[2pt]
+  \forall X \le t\ldotp \varphi
     &\;\;\text{stands for}\;\;
-      \forall X\, (\,|X| \le t \;\to\; \varphi).
+      \forall X\ldotp (\,|X| \le t \;\to\; \varphi).
 \end{align*}
 
 A quantifier appearing in one of these forms is called \emph{bounded},
@@ -108,9 +108,9 @@ bounded.
 
 \paragraph{Notation.}
 The expression
-\(\exists \vec{x} \le \vec{t}\,\varphi\)
+\(\exists \vec{x} \le \vec{t}\ldotp \varphi\)
 abbreviates a block of bounded number quantifiers
-\(\exists x_1 \le t_1\;\cdots\;\exists x_k \le t_k\,\varphi\)
+\(\exists x_1 \le t_1\ldotp \cdots \exists x_k \le t_k\ldotp \varphi\)
 for some \(k\), where no variable \(x_i\) occurs in any term \(t_j\)
 (even when \(i < j\)).  
 The same convention applies to \(\forall \vec{x} \le \vec{t}\), \(\exists \vec{X} \le \vec{t}\), and
@@ -125,14 +125,14 @@ Let \(\mathcal{L} \supseteq \mathcal{L}^{2}_{A}\) be a two-sorted vocabulary.
 % Warto to napisać wprost jeszcze raz pod spodem.
 \begin{enumerate}
   \item The class \(\Sigma^{B}_{0}(\mathcal{L}) = \Pi^{B}_{0}(\mathcal{L})\) consists of all
-        \(L\)-formulas whose only quantifiers are \emph{bounded number quantifiers}
+        \(\mathcal{L}\)-formulas whose only quantifiers are \emph{bounded number quantifiers}
         (string variables may occur free).
 
   \item For \(i \ge 0\), the class \(\Sigma^{B}_{i+1}(\mathcal{L})\) (resp.\ \(\Pi^{B}_{i+1}(\mathcal{L})\))
         consists of formulas of the form
         \[
-          \exists \vec{X} \le \vec{t}\,\varphi(\vec{X})
-          \quad\text{(resp.\ }\forall \vec{X} \le \vec{t}\,\varphi(\vec{X})\text{)},
+          \exists \vec{X} \le \vec{t}\ldotp \varphi(\vec{X})
+          \quad\text{(resp.\ }\forall \vec{X} \le \vec{t}\ldotp \varphi(\vec{X})\text{)},
         \]
         where:
         \begin{enumerate}
@@ -147,7 +147,7 @@ Let \(\mathcal{L} \supseteq \mathcal{L}^{2}_{A}\) be a two-sorted vocabulary.
 
   \item A \(\Sigma^{1}_{1}(\mathcal{L})\) formula is a formula of the form
         \(
-          \exists \vec{X}\,\varphi,
+          \exists \vec{X}\ldotp \varphi,
         \)
         where \(\vec{X}\) is a vector of zero or more string variables and
         \(\varphi\) is a \(\Sigma^{B}_{0}(\mathcal{L})\) formula.
