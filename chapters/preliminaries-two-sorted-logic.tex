@@ -1,7 +1,24 @@
 \section{Two-sorted first-order logic}\label{sec:defs-two-sorted}
-We don't repeat the definitions of two-sorted terms, formulas and semantics which are
-just generalizations of the single-sorted case. For the details, refer
-to~\cites[Section~4B]{CookNguyenDraft}[Section~IV.2]{Cook_Nguyen_2010}.
+% Sec. 2.2: Akapit 1 sugeruje, jakbyśmy nic nie mówili o logice 2-sortowej, a zaraz po nim miało nastąpić coś
+% innego. Przeformułuj, aby był jaśniejszy (w stylu "pomijamy rzeczy podobne, a wypiszemy tylko różnice").
+
+% Ponadto rozdziały 2.1 i 2.2 mają zupełnie inny charakter. W 2.1 jest logika nad dowolną sygnaturą, a w 2.2
+% konkretnie liczby i napisy. Pasuje coś powiedzieć na początku 2.2 - że choć logikę 2-sortową można ogólnie
+% definiować dla dowolnych sortów, to my piszemy tylko o tych konkretnych, liczby i napisy.
+
+% I też właśnie trzeba konkretnie napisać, że sorty to liczby i napisy, przed Def. 2.2.1 - bo teraz w środku
+% tej definicji nagle się pojawia coś o napisach i liczbach i nie wiadomo o co chodzi.
+
+
+
+Two-sorted first-order logic extends the single-sorted setting in a routine way, so we only record
+the additions that we use later.  A systematic presentation can be found
+in~\cites[Section~4B]{CookNguyenDraft}[Section~IV.2]{Cook_Nguyen_2010}.
+In principle one could work with arbitrary pairs of sorts, but in this thesis we instantiate the
+framework to the familiar number sort (ranging over $\mathbb{N}$) and string sort (ranging over
+finite binary strings).  The goal of this section is therefore to emphasise what changes when we
+move from the definitions of \autoref{sec:defs-single-sorted} to this concrete two-sorted
+setting.
 
 \begin{definition}[Two-sorted first-order vocabularies]\label{def:two-sorted-vocabulary}
 A \emph{two-sorted first-order vocabulary} (often abbreviated simply as a
@@ -29,6 +46,10 @@ We use \(f,g,h,\dots\) as metavariables for number-valued function symbols,
 \(F,G,H,\dots\) for string-function symbols, and \(P,Q,R,\dots\) for predicate
 symbols.
 \end{definition}
+
+% TODO: TUTAJ DOPISAC REMARK ZE TO BEDZIE JAKO AKSJOMAT!
+% Okolice Def. 2.2.2: Implicite zakładamy związek między |X| oraz t\in X, więc nie dowolna struktura tylko
+% coś w stylu że nie zachodzi t\in X dla liczb >= |X|.
 
 \begin{definition}[The language \(\mathcal{L}^{2}_{A}\)]\label{def:L2A}
 As an example, consider the following two-sorted extension of the
@@ -99,6 +120,9 @@ The same convention applies to \(\forall \vec{x} \le \vec{t}\), \(\exists \vec{X
 \begin{definition}[The \texorpdfstring{$\Sigma^1_{1}(\mathcal{L})$, $\Sigma^B_{i}(\mathcal{L})$,
   and $\Pi^B_{i}(\mathcal{L})$}{Σ¹₁(L), Σᵢᴮ(L), Πᵢᴮ(L)} formulas]\label{def:SigmaB-PiB-hierarchy}
 Let \(\mathcal{L} \supseteq \mathcal{L}^{2}_{A}\) be a two-sorted vocabulary.  
+% Druga potencjalna modyfikacja to dopuszczenie kwantyfikatorów po liczbach między tymi po napisach.
+% Obecnie w ogóle nie może być kwantyfikatora po napisie wewnątrz takiego po liczbie. To istotne?
+% Warto to napisać wprost jeszcze raz pod spodem.
 \begin{enumerate}
   \item The class \(\Sigma^{B}_{0}(\mathcal{L}) = \Pi^{B}_{0}(\mathcal{L})\) consists of all
         \(L\)-formulas whose only quantifiers are \emph{bounded number quantifiers}
@@ -113,6 +137,9 @@ Let \(\mathcal{L} \supseteq \mathcal{L}^{2}_{A}\) be a two-sorted vocabulary.
         where:
         \begin{enumerate}
             \item \(\vec{X}\) is a vector of string variables,
+            % TODO: Def. 2.2.3 (ii) - "not involving variables from X" -
+            % nasuwa się pytanie co by było, gdybyśmy dopuścili? Nic by się nie zmieniło.
+            % Więc warto gdzieś tam dopisać, że to tylko założenie dla porządku, które nic nie zmienia.
             \item \(\vec{t}\) is a vector of \(\mathcal{L}^{2}_{A}\)-terms not involving variables from \(\vec{X}\),
             \item \(\varphi\) is a \(\Pi^{B}_{i}(\mathcal{L})\) formula  
                   (resp.\ a \(\Sigma^{B}_{i}(\mathcal{L})\) formula).
@@ -132,9 +159,13 @@ We usually write \(\Sigma^{B}_{i}\) for \(\Sigma^{B}_{i}(\mathcal{L}^{2}_{A})\) 
 
 
 \begin{remark}
-There is a subtle difference between two-sorted first-order logic and second-order logic.
-Even though here we quantify over sets like in monadic second-order logic, and despite
-the authors themselves sometimes call the system
-second-order~\cite{COOK2003193}, the difference is important: we only quantify over ``finite'' sets,
-and the system is two-sorted first-order~\cite{COOK2003193}.
+The formalism described above coincides with the usual weak monadic second-order logic (WMSO) on
+words.  We phrase it as a two-sorted first-order system only to match the presentation
+in~\cite{CookNguyenDraft,Cook_Nguyen_2010}, but in practice we freely identify it with WMSO and use
+that terminology when convenient, following the convention in~\cite{COOK2003193}.
+% Ostatnie zdanie rozdziału, o MSO: w MSO na słowach skończonych też kwantyfikujemy po zbiorach skończonych.
+% Więc oprócz tego, że zbiory są skończone warto napisać, że "pomimo iż liczby są z nieskończonego zbioru
+% liczb naturalnych" (w sumie też nigdzie nie jest napisane, że to liczby naturalne, a nie całkowite,
+% wymierne, czy jeszcze jakieś inne).
+% W tym kontekście używa się często nazwy WMSO (weak MSO) - czy ona nie byłaby odpowiednia?
 \end{remark}

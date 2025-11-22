@@ -45,8 +45,8 @@ that later became foundational for ICC\@. An important formal system studied the
 \begin{example}[Addition]
 Define \(\mathrm{Add}:\mathbb{N}^2\to\mathbb{N}\) by primitive recursion:
 \[
-\mathrm{Add}(0,y)=y, \qquad
-\mathrm{Add}(S(x),y)=S\big(\mathrm{Add}(x,y)\big).
+\mathrm{Add}(0,x)=x, \qquad
+\mathrm{Add}(S(y),x)=S\big(\mathrm{Add}(y,x)\big).
 \]
 \end{example}
 
@@ -87,7 +87,7 @@ For the details of the historical origins, consult~\cite{Adams2011}.
 Before the seminal works that founded the field of Implicit Complexity, many characterizations
 of complexity classes had been known already. All of them suffered at least one of the two problems:
 either it only characterized a class of relations in a given complexity (as opposed to functions),
-or the characterization wasn't purely syntactic. We will refer to the latter of beign ``explicit''
+or the characterization wasn't purely syntactic. We will refer to the latter of being ``explicit''
 instead of ``implicit''.
 
 \subsection{Characterizations of classes of relations}
@@ -196,6 +196,7 @@ We write \(f(\vec{x};\vec{a})\), with normal inputs \(\vec{x}\) to the left of
 the semicolon and safe inputs \(\vec{a}\) to the right.
 The computation is performed on non-negative integers; proofs transfer to
 general binary strings (e.g.\ starting with a zero)~\cite{10.1007/BF01201998}.
+\todo{dont define |x|, it already appeared in previous subsection}
 For an integer \(x\), let \(|x|\) denote its binary length
 \(\lceil \log_2(x+1)\rceil\); for vectors use component-wise notation.
 
@@ -241,7 +242,8 @@ integers that contains \((\textup{i})\)--\((\textup{v})\) and is closed under
 \end{enumerate}
 
 \paragraph{Intuition.}
-Safe outputs never flow into a normal position.
+% Strona 18, linia 1: "Safe outputs" - chyba raczej "Safe arguments" (?)
+Data from safe arguments, never flow as function output into a normal position when the functions are composed.
 
 Functions in \(\mathcal{B}\) can perform arbitrary polynomial-time computation
 on their normal inputs.
@@ -269,7 +271,7 @@ write \(yb = 2y + b\); for \(\delta \in \mathbb{N}\), put \(\texttt{shift}(y, \d
 
 \begin{definition}[Neergaard's \(BC_\varepsilon^{-}\) algebra]\label{def:bc-eps}
 The class \(BC_\varepsilon^{-}\) is the smallest class of functions that contains the initial functions \((\textup{i})\)--\((\textup{v})\) as defined in~\autoref{def:bellantoni-cook} and is closed under
-the below schemes of safe composition and safe recursion:
+the following schemes of safe composition and safe recursion:
 \begin{enumerate}
   
   \item \textbf{(Safe affine composition)}\
@@ -285,6 +287,8 @@ the below schemes of safe composition and safe recursion:
         \]
         where \((\vec{y}_1,\dots,\vec{y}_N)\) partitions the safe inputs into
         disjoint subtuples; the concatenation \(\sum \vec{y}_i\) is equal to \(\vec{y}\).
+        \todo{fix this definition because now its like BC}
+      %   Def. 2.3.2 (ii) - W definicji rekurencji jakieś argumenty miały być chyba niewidoczne dla jakiejś funkcji - zdaje się, że h_b nie powinien widzieć y. Bo teraz definicja jest jak w Bellantoni-Cook (z dokładnością do obecności shift).
   \item \textbf{(Safe affine course-of-value recursion)}\
         let \(g,h_0,h_1,d_0,d_1\in BC_\varepsilon^{-}\). Their course-of-value
         recursion produces \(f\) given by
