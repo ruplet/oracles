@@ -3,17 +3,17 @@
 In mathematics we typically assume some (pretty strong) foundational axioms we rely on
 to prove theorems. If we choose set theory as the foundation (as we usually do), a debatable
 concept is whether we should use the axiom of choice or not. More popularly in computer science,
-we often want to be explicit about using the Kőnig's
+we often want to be explicit about using Kőnig's
 lemma\footnote{note that Kőnig's lemma is a form of countable choice from finite sets.}
 and Ramsey's theorem.
-If we think of the the concept
+If we think of the concept
 we introduced in~\autoref{chap:reductions} (i.e.\ writing a program in a language in which calls
 of the computation-heavy oracle are explicit), we would often ask ourselves the same question ---
 can we write the program without relying on that function, i.e.\ write the program in a lower complexity?
 It turns out the similarity is not a coincidence,
-and the mathematical theories we should study to explore this connection further are called \emph{bounded arithmetics}.
+and to explore this connection further we need to study the theories of \emph{bounded arithmetic}.
 
-We will start by looking at interesting theorems about one of such theories, just after
+We will start by looking at interesting theorems about one such theory, just after
 introducing the necessary definitions.
 
 \section{Single-sorted logic and \IDeltaZero}
@@ -70,7 +70,6 @@ Let $\Phi$ be a set of formulas. The \emph{$\Phi$-IND axioms} are all formulas o
 \begin{equation}\label{eq:Phi-IND}
 \bigl(\varphi(0)\ \land\ \forall x\,(\varphi(x)\rightarrow \varphi(x+1))\bigr)
 \ \rightarrow\ \forall z\,\varphi(z),
-\tag{10}
 \end{equation}
 where $\varphi$ ranges over formulas in $\Phi$.  Note that $\varphi(x)$ may have free
 variables other than~$x$.
@@ -86,7 +85,7 @@ to certain sets of formulas.
 \end{definition}
 
 \begin{definition}[{\cite[Definition~III.1.7]{Cook_Nguyen_2010}} \IOPEN, \IDeltaZero, \ISigmaOne]
-Let $\mathrm{OPEN}$ be the set of \emph{open} (i.e., quantifier-free) formulas, let $\Delta_{0}$
+Let $\mathrm{OPEN}$ be the set of \emph{open} (i.e.\ quantifier-free) formulas, let $\Delta_{0}$
 be the set of \emph{bounded} formulas, and let $\Sigma_{1}$ be the set of formulas
 of the form $\exists \vec{x}\,\varphi$, where $\varphi$ is bounded and $\vec{x}$ is a
 (possibly empty) tuple of variables.  
@@ -159,31 +158,30 @@ We will now introduce the core notion of arithmetic --- what does it mean to \em
 
 \begin{definition}[{\cite[Definition~III.3.2]{Cook_Nguyen_2010}} Predicates and Functions definable in a Theory]
     Let $\mathcal{T}$ be a theory with vocabulary $\mathcal{L}$, and let $\Phi$ be a set of $\mathcal{L}$-formulas.
-\begin{enumerate}[label=\textup{(\alph*)}]
-\item
-A predicate symbol $P(x)\notin \mathcal{L}$ is \emph{$\Phi$-definable in $\mathcal{T}$} if there exists
-an $\mathcal{L}$-formula $\varphi(x)\in\Phi$ such that
-\begin{equation}\label{eq:defining-predicate}
-P(x)\;\leftrightarrow\;\varphi(x).
-\tag{23}
-\end{equation}
 
-\item
-A function symbol $f(x)\notin \mathcal{L}$ is \emph{$\Phi$-definable in $\mathcal{T}$} if there exists
-a formula $\varphi(x,y)\in\Phi$ such that
-\begin{equation}\label{eq:unique-existence}
-T \vdash \forall x\,\exists! y\,\varphi(x,y),
-\tag{24}
-\end{equation}
-and moreover
-\begin{equation}\label{eq:defining-function}
-y=f(x)\;\leftrightarrow\;\varphi(x,y).
-\tag{25}
-\end{equation}
+\begin{enumerate}
+    \item
+    A predicate symbol $P(x)\notin \mathcal{L}$ is \emph{$\Phi$-definable in $\mathcal{T}$} if there exists
+    an $\mathcal{L}$-formula $\varphi(x)\in\Phi$ such that
+    \begin{equation}\label{eq:defining-predicate}
+    P(x)\;\leftrightarrow\;\varphi(x).
+    \end{equation}
+
+    \item
+    A function symbol $f(x)\notin \mathcal{L}$ is \emph{$\Phi$-definable in $\mathcal{T}$} if there exists
+    a formula $\varphi(x,y)\in\Phi$ such that
+    \begin{equation}\label{eq:unique-existence}
+    \mathcal{T} \vdash \forall x\,\exists! y\,\varphi(x,y),
+    \end{equation}
+    and moreover
+    \begin{equation}\label{eq:defining-function}
+    y=f(x)\;\leftrightarrow\;\varphi(x,y).
+    \end{equation}
 \end{enumerate}
-We call \eqref{eq:defining-predicate} a \emph{defining axiom} for $P(x)$ and
-\eqref{eq:defining-function} a \emph{defining axiom} for $f(x)$.
-A symbol is \emph{definable in $\mathcal{T}$} if it is $\Phi$-definable in $\mathcal{T}$ for some $\Phi$.
+
+    We call \eqref{eq:defining-predicate} a \emph{defining axiom} for $P(x)$ and
+    \eqref{eq:defining-function} a \emph{defining axiom} for $f(x)$.
+    A symbol is \emph{definable in $\mathcal{T}$} if it is $\Phi$-definable in $\mathcal{T}$ for some $\Phi$.
 \end{definition}
 
 \begin{definition}
@@ -275,7 +273,6 @@ Let $\Phi$ be a set of formulas. The \emph{comprehension axiom scheme for $\Phi$
 denoted $\Phi\text{-}\mathrm{COMP}$, consists of all formulas of the form
 \begin{equation}\label{eq:Phi-COMP}
 \exists X \le y\;\forall z<y\;\bigl(X(z)\leftrightarrow \varphi(z)\bigr),
-\tag{48}
 \end{equation}
 where $\varphi(z)\in\Phi$ and $X$ does not occur free in $\varphi(z)$.
 In \eqref{eq:Phi-COMP}, the formula $\varphi(z)$ may have free variables of both
@@ -288,7 +285,6 @@ $\Phi$ is one of the classes $\Sigma^{B}_{i}$.
 % we will sometimes use standard set-theoretic notation to describe~$X$:
 % \begin{equation}\label{eq:set-notation}
 % X=\{\,z : z<y \land \varphi(z)\,\}.
-% \tag{49}
 % \end{equation}
 % \end{notation}
 
@@ -325,7 +321,7 @@ Note that there are no explicit induction axioms for $\mathrm{V}^{i}$.
     Note that $\len{\squarequotes[4]{S}}$ is the same as our
     interpretation of $S$ inside of the theory: $\len{S} = \max(S) + 1$ or $0$ if $S$ empty.
     
-    We will write $\unary{x}$ to denote unary representation of $x$, i.e. $1^{\len{x}}$
+    We will write $\unary{x}$ to denote unary representation of $x$, i.e.\ $1^{\len{x}}$
     and $\binary{x}$ to denote binary representation.
     The ultimate input to the Turing machine deciding if $R(\vec{x}, \vec{X})$
     for $\len{\vec{x}}= n, \len{\vec{X}} = N, \len{X_i}=N_i$ is:
@@ -364,7 +360,7 @@ The corresponding \emph{function class} $\complexity{FC}$ consists of:
 \end{enumerate}
 
 Note that the classes \complexityi{FAC}{0}, \complexity{FP}, \complexity{FL} are defined in a different way
-that we have used earlier. However, the difference will not matter in this work.
+to what we have used earlier. However, the difference will not matter in this work.
 \end{definition}
 
 
@@ -394,9 +390,10 @@ By adding a single axiom to the theory of \compVZero, we can obtain arithmetical
 in which the functions that we can define and prove correct are precisely the functions
 from a given complexity class $\complexity{C} = \complexityi{FTC}{0}, \complexityi{FNC}{1}, \complexity{FL}, \complexity{FP}$.
 
-This way, we obtain theories that foster both certifiation of complexity of an algorithm (if the proof of
-correctness itself is feasible, see~\autoref{subsec:complexity-alg-proof})
-and enable to prove theorems about the correctness of functions defined.
+This way, we obtain theories with very nice properties. They foster certification of complexity
+of an algorithm (if the proof of
+correctness itself is feasible, see~\autoref{subsec:complexity-alg-proof}).
+At the same time, they enable us to prove theorems about the correctness of functions defined.
 In~\cite{buss2025logspaceconstructiveprooflsl}, the authors formalize the breakthrough
 result \(\complexity{L}=\complexity{SL}\) of~\cite{10.1145/1391289.1391291} inside of the weak
 theory of bounded arithmetic~\complexity{VL}.
@@ -416,7 +413,7 @@ of the axiom (corresponding to the problem) from the theory (corresponding to th
 Even when an algorithm is simple, it seems to not always be trivial to ``feasibly'' prove
 that it computes the correct result. In our setting, this results in knowing that
 a problem can be solved in a complexity class $\complexity{C}$, but not knowing if the corresponding
-function can be defined in the theory $\complexity{VC}$ (i.e. proved total and correct).
+function can be defined in the theory $\complexity{VC}$ (i.e.\ proved total and correct).
 See \cites[Section~IX.7.3]{Cook_Nguyen_2010}[Section~9G.3]{CookNguyenDraft} for
 an open problem whether the breakthrough result that binary integer division
 is in \complexity{DLOGTIME}-uniform \complexityi{TC}{0}~\cite{HESSE2002695},
@@ -441,7 +438,7 @@ Note that this problem apparently has been solved (affirmatively) in~\cite{Jerab
 
 \begin{remark}[Bibliography]
 The field of bounded arithmetic was initiated by Samuel Buss in his PhD thesis:~\cite{Buss1986}, in which
-the theories $\mathrm{S}^1_2$ were introduce to capture reasoning about the polynomial-time hierarchy \complexity{PH}
+the theories $\mathrm{S}^1_2$ were introduced to capture reasoning about the polynomial-time hierarchy \complexity{PH}
 (not introduced in our thesis).
 The first theory designed to capture polynomial time reasoning was the
 equational theory $\mathrm{PV}$ (as in: polynomially-verifiable [proofs])
@@ -468,10 +465,10 @@ refer to~\cite{Ngu08}.
 
 \section{Programming language}
 \todo[inline]{In progress}
-Now, we want to formalize these arithmetic so that a computer can check our programs and ensure we didn't
-go out of a given complexity at any point. I.e.\ to actually program on a computer and not in paper.
+Now, we want to formalize these arithmetical theories so that a computer can check our programs and ensure we didn't
+go out of a given complexity at any point.
 With such a programming language (and a formalization of arithmetic in general),
-we are able to readily transfer a huge amount of results from paper to computer.
+we will be able to readily transfer a huge amount of results from paper to computer.
 
 We have two goals for formalization:
 \begin{enumerate}
@@ -484,7 +481,7 @@ A formalization of consistency of Peano arithmetic in Coq was presented in~\cite
 A formalization of the so-called \emph{Hydra battles} related to unprovability in Peano arithmetic
 was shown in~\cite{casteran:hal-03404668}. There is an impressive ongoing project of formalization
 of bounded arithmetic in the model-theoretical style in the Lean
-community.\footnote{\url{https://github.com/FormalizedFormalLogic/Foundation}}Their approach doesn't
+community.\footnote{\url{https://github.com/FormalizedFormalLogic/Foundation}} Their approach doesn't
 align with our goal of certifying complexity, as their focus is on other arithmetical theories, which differ
 significantly from what we need. Somehow related, some work on intuitionistic logic in Lean has also been done
 in~\cite{Trufa__2024} even though Lean is not a natural environment for intuitionistic thinking, as it
@@ -493,12 +490,12 @@ assumes classical axioms very deeply in its standard libraries, unlike Rocq whic
 
 An idea for a programming language based on bounded arithmetic was discussed
 in~\cite{Li2025FeasibleMathematics}. The language they discuss is $\mathrm{IMP}~(\complexity{PV})$,
-based on the equational theory $\complexity{PV}$ which is different to (and less interesting than)
+based on the equational theory $\complexity{PV}$ which is different from (and less interesting than)
 the theories we have discussed. There, the authors show how to design an imperative programming language
 with Hoare logic as the verification mechanism (a.k.a. a type system). Note that for their concept
 to be implementable in practice, a \emph{formalization} of $\complexity{PV}$ is necessary.
 
-\todo[inline]{Say how i use curry-howard correspondce to extract code from proofs as introduced in chapter linear logic}
+\todo[inline]{Say how i use curry-howard correspondence to extract code from proofs as introduced in chapter linear logic}
 
 
 % design:
