@@ -1,40 +1,524 @@
-% Tym niemniej nadal nie załapałem jak to
-% właściwie jest formalizowane, gdzie właściwie jest wymuszane że dowód jest tylko z bounded arithmetic.
-% No i z tymi funkcjami też nie jest jasne o co chodzi, przynajmniej z tego co jest napisane na slajdach.
-% Bo aby w ogóle pytać czy funkcja jest zdefiniowana dla każdego x, to trzeba ją najpierw zdefiniować -
-% a jak ją zdefiujemy, to znaczy że jest zdefiniowana. No ale zakładam że definicja "na wejściu" to
-% jakaś własność rozważanej funkcji, w stylu tego co jest napisane dla "x div y".
-
-
-% Important for literature review: https://plato.stanford.edu/archives/win2017/entries/computational-complexity/#BouAri
 \chapter{Bounded arithmetic}\label{chap:bounded-arithmetic}
-\todo[inline]{Work in progress}
-This was presented at AITP2025. And was the topic of
-my visit of Yannick Forster at INRIA. My source code is here:~\url{https://github.com/ruplet/formalization-of-bounded-arithmetic}.
-The presentations PDFs are also there, and reviews of my abstract from aitp.
 
+In mathematics we typically assume some (pretty strong) foundational axioms we rely on
+to prove theorems. If we choose set theory as the foundation (as we usually do), a debatable
+concept is whether we should use the axiom of choice or not. More popularly in computer science,
+we often want to be explicit about using the Kőnig's
+lemma\footnote{note that Kőnig's lemma is a form of countable choice from finite sets.}
+and Ramsey's theorem.
+If we think of the the concept
+we introduced in~\autoref{chap:reductions} (i.e.\ writing a program in a language in which calls
+of the computation-heavy oracle are explicit), we would often ask ourselves the same question ---
+can we write the program without relying on that function, i.e.\ write the program in a lower complexity?
+It turns out the similarity is not a coincidence,
+and the mathematical theories we should study to explore this connection further are called \emph{bounded arithmetics}.
 
-\begin{definition}[Functional complexity classes]
-    \todo[inline]{Cook slightly differently defines functional complexity classes. He uses his two-sorted logic,
-    and says that function is in FC when its poly-bounded and its graph is in C.
-    }
+We will start by looking at interesting theorems about one of such theories, just after
+introducing the necessary definitions.
+
+\section{Single-sorted logic and \IDeltaZero}
+
+\begin{definition}[{\cite[Definition~III.1.1]{Cook_Nguyen_2010}}]
+A \emph{theory} over a vocabulary $\mathcal{L}$ is a set $\mathcal{T}$ of $\mathcal{L}$-formulas that is closed
+under logical consequence and under universal closure.
+
+Note that we have not defined ``logical consequence'', which refers to a particular \emph{proof system}
+(also named \emph{proof calculus}). We will not define proof systems for logic in this work.
+For those interested, we will just mention that
+all the results discussed in this chapter assume standard Gentzen-style proof calculus for classical logic,
+$\mathrm{LK}$~\cite[Section~II.2.3]{Cook_Nguyen_2010} for single-sorted logic
+and $\mathrm{LK}^2$~\cite[Section~IV.4]{Cook_Nguyen_2010} for two-sorted logic.
 \end{definition}
 
-\begin{theorem}\label{thm:fc-is-fac0-closure}
-    We obtain function classes for a few interesting classes (FL, FP, FTC0 etc.) from taking
-    closure of complete problem by
-    FAC0 reductions.~\cite[Section~IX.2.1]{Cook_Nguyen_2010}[Section~9B.1]{CookNguyenDraft}.
+\begin{definition}[{\cite[Definition~II.2.3]{Cook_Nguyen_2010}}]
+The vocabulary of arithmetic is
+\[
+\mathcal{L}_A = \langle 0,1,+,\cdot\ ;\ =,\le \rangle .
+\]
+Here $0,1$ are constant symbols; $+$ and $\cdot$ are binary function symbols; and
+$=$ and $\le$ are binary predicate symbols. We will implicitly assume the
+standard interpretation of these symbols as the appropriate functions on natural numbers
+whenever talking about the semantics of $\mathcal{L}_A$-formulas.
+\end{definition}
+
+\begin{definition}[{\cite[Figure~1]{Cook_Nguyen_2010}} Axioms 1-BASIC of Peano arithmetic]
+    \[
+\begin{array}{@{}l l@{}}
+\mathrm{B1.}\; x + 1 \neq 0
+&
+\mathrm{B5.}\; x \cdot 0 = 0
+\\[2pt]
+\mathrm{B2.}\; x + 1 = y + 1 \rightarrow x = y
+&
+\mathrm{B6.}\; x \cdot (y + 1) = (x \cdot y) + x
+\\[2pt]
+\mathrm{B3.}\; x + 0 = x
+&
+\mathrm{B7.}\; (x \le y \land y \le x) \rightarrow x = y
+\\[2pt]
+\mathrm{B4.}\; x + (y + 1) = (x + y) + 1
+&
+\mathrm{B8.}\; x \le x + y
+\\[6pt]
+\multicolumn{2}{@{}l@{}}{\text{C.}\; 0 + 1 = 1}
+\end{array}
+\]
+\end{definition}
+
+\begin{definition}[{\cite[Definition~III.1.4]{Cook_Nguyen_2010}} Induction Scheme]
+Let $\Phi$ be a set of formulas. The \emph{$\Phi$-IND axioms} are all formulas of the form
+\begin{equation}\label{eq:Phi-IND}
+\bigl(\varphi(0)\ \land\ \forall x\,(\varphi(x)\rightarrow \varphi(x+1))\bigr)
+\ \rightarrow\ \forall z\,\varphi(z),
+\tag{10}
+\end{equation}
+where $\varphi$ ranges over formulas in $\Phi$.  Note that $\varphi(x)$ may have free
+variables other than~$x$.
+\end{definition}
+
+\begin{definition}[{\cite[Definition~III.1.5]{Cook_Nguyen_2010}} Peano Arithmetic]
+The theory $\arithPA$ has as axioms $\mathrm{B1},\ldots,\mathrm{B8}$, together with the $\Phi$-IND axioms,
+where $\Phi$ is the set of all $\mathcal{L}_A$-formulas.
+
+Peano Arithmetic is a powerful theory capable of formalizing the major theorems of
+number theory. We define subsystems of $\arithPA$ by restricting the induction axioms
+to certain sets of formulas. 
+\end{definition}
+
+\begin{definition}[{\cite[Definition~III.1.7]{Cook_Nguyen_2010}} \IOPEN, \IDeltaZero, \ISigmaOne]
+Let $\mathrm{OPEN}$ be the set of \emph{open} (i.e., quantifier-free) formulas, let $\Delta_{0}$
+be the set of \emph{bounded} formulas, and let $\Sigma_{1}$ be the set of formulas
+of the form $\exists \vec{x}\,\varphi$, where $\varphi$ is bounded and $\vec{x}$ is a
+(possibly empty) tuple of variables.  
+
+The theories $\IOPEN$, $\IDeltaZero$, and $\ISigmaOne$ are the subsystems of $\arithPA$
+obtained by restricting the induction scheme so that $\Phi$ is $\mathrm{OPEN}$, $\Delta_{0}$,
+and $\Sigma_{1}$, respectively.
+\end{definition}
+
+\begin{lemma}[{\cite[Example~III.1.8]{Cook_Nguyen_2010}}]
+The following formulas (and their universal closures) are theorems of $\IOPEN$:
+\[
+\begin{array}{@{}l l@{}}
+\mathrm{O1.}\; (x+y)+z = x+(y+z)
+& \text{(Associativity of $+$)} \\[2pt]
+\mathrm{O2.}\; x+y = y+x
+& \text{(Commutativity of $+$)} \\[2pt]
+\mathrm{O3.}\; x\cdot (y+z) = (x\cdot y)+(x\cdot z)
+& \text{(Distributive law)} \\[2pt]
+\mathrm{O4.}\; (x\cdot y)\cdot z = x\cdot (y\cdot z)
+& \text{(Associativity of $\cdot$)} \\[2pt]
+\mathrm{O5.}\; x\cdot y = y\cdot x
+& \text{(Commutativity of $\cdot$)} \\[2pt]
+\mathrm{O6.}\; x+z = y+z \rightarrow x=y
+& \text{(Cancellation for $+$)} \\[2pt]
+\mathrm{O7.}\; 0 \le x
+& \\[2pt]
+\mathrm{O8.}\; x \le 0 \rightarrow x=0
+& \\[2pt]
+\mathrm{O9.}\; x \le x
+& \\[2pt]
+\mathrm{O10.}\; x \neq x+1
+&
+\end{array}
+\]
+\end{lemma}
+
+\begin{lemma}[{\cite[Example~III.1.9]{Cook_Nguyen_2010}}]
+The following formulas (and their universal closures) are theorems of $\IDeltaZero$:
+\[
+\begin{array}{@{}l l@{}}
+\mathrm{D1.}\; x\neq 0 \rightarrow \exists y\le x\,(x=y+1)
+& \text{(Predecessor)} \\[2pt]
+\mathrm{D2.}\; \exists z\,\bigl(x+z=y \,\lor\, y+z=x\bigr)
+& \\[2pt]
+\mathrm{D3.}\; x\le y \leftrightarrow \exists z\,(x+z=y)
+& \\[2pt]
+\mathrm{D4.}\; (x\le y \land y\le z) \rightarrow x\le z
+& \text{(Transitivity)} \\[2pt]
+\mathrm{D5.}\; x\le y \lor y\le x
+& \text{(Total order)} \\[2pt]
+\mathrm{D6.}\; x\le y \leftrightarrow x+z \le y+z
+& \\[2pt]
+\mathrm{D7.}\; x\le y \rightarrow x\cdot z \le y\cdot z
+& \\[2pt]
+\mathrm{D8.}\; x\le y+1 \leftrightarrow (x\le y \lor x=y+1)
+& \text{(Discreteness 1)} \\[2pt]
+\mathrm{D9.}\; x<y \leftrightarrow x+1\le y
+& \text{(Discreteness 2)} \\[2pt]
+\mathrm{D10.}\; x\cdot z = y\cdot z \land z\neq 0 \rightarrow x=y
+& \text{(Cancellation for $\cdot$)}
+\end{array}
+\]
+\end{lemma}
+
+Using the above lemmas as building blocks, we can prove quite a few nontrivial theorems.
+We will now introduce the core notion of arithmetic --- what does it mean to \emph{define} a function
+\emph{in a theory}.
+
+
+\begin{definition}[{\cite[Definition~III.3.2]{Cook_Nguyen_2010}} Predicates and Functions definable in a Theory]
+    Let $\mathcal{T}$ be a theory with vocabulary $\mathcal{L}$, and let $\Phi$ be a set of $\mathcal{L}$-formulas.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item
+A predicate symbol $P(x)\notin \mathcal{L}$ is \emph{$\Phi$-definable in $\mathcal{T}$} if there exists
+an $\mathcal{L}$-formula $\varphi(x)\in\Phi$ such that
+\begin{equation}\label{eq:defining-predicate}
+P(x)\;\leftrightarrow\;\varphi(x).
+\tag{23}
+\end{equation}
+
+\item
+A function symbol $f(x)\notin \mathcal{L}$ is \emph{$\Phi$-definable in $\mathcal{T}$} if there exists
+a formula $\varphi(x,y)\in\Phi$ such that
+\begin{equation}\label{eq:unique-existence}
+T \vdash \forall x\,\exists! y\,\varphi(x,y),
+\tag{24}
+\end{equation}
+and moreover
+\begin{equation}\label{eq:defining-function}
+y=f(x)\;\leftrightarrow\;\varphi(x,y).
+\tag{25}
+\end{equation}
+\end{enumerate}
+We call \eqref{eq:defining-predicate} a \emph{defining axiom} for $P(x)$ and
+\eqref{eq:defining-function} a \emph{defining axiom} for $f(x)$.
+A symbol is \emph{definable in $\mathcal{T}$} if it is $\Phi$-definable in $\mathcal{T}$ for some $\Phi$.
+\end{definition}
+
+\begin{definition}
+    We will say that a function is \emph{provably total} in $\mathcal{T}$ iff it
+    is $\Sigma_1$-definable in $\mathcal{T}$.
+\end{definition}
+
+
+In~\cite[Section~III.3]{Cook_Nguyen_2010} it is argued that: functions $\lfloor x/y \rfloor,\;\big \lfloor \sqrt{x} \big \rfloor,
+\;\max(0, x - y),\;x\!\!\mod y$ are definable in \IDeltaZero; relation $x \mid y$ is definable in \IDeltaZero{},
+and, interestingly, the relation $\;\exp(x, y)$ where $\exp(x, y)$ iff $y = 2^x$, is also definable in \IDeltaZero{}.
+We don't introduce the specific logical formula defining the relation $\exp(x, y)$, as it is complicated and discussed
+in~\cite[Section~III.3]{Cook_Nguyen_2010}.
+For a different point of view to these problems, e.g.\ in~\cite{Jumelet1995} it is shown
+that Euler's $\varphi$ function is provably total in \IDeltaZero{}.
+However, the limits of expressive power of \IDeltaZero{} are low.
+
+\begin{theorem}[{\cite[Section~III.2]{Cook_Nguyen_2010}}]
+\[
+\IDeltaZero \nvdash \forall x\,\exists y\,\exp(x,y).
+\]
+Note that $\arithPA$ easily proves $\forall  x\,\exists y\,\exp(x,y)$.
 \end{theorem}
 
-% \section{VAC0 and FAC0}
-\section{\complexityi{VAC}{0} as a theory for \complexityi{FAC}{0}}\label{sec:vac0}
+It is interesting to study the theory $\IDeltaZero + \exp$ of $\IDeltaZero$ axioms with an additional axiom
+stating that the exponential function is definable. As it turns out, this theory enables us to
+reason about syntactic constructs such as coding of sets and sequences or context-free
+grammar parsing~\cite[Chapter~V,~Section~3]{HajekPudlak1993Metamathematics}
+\footnote{note that they use the name $\mathrm{I}\Sigma_0 + \Omega_1$ instead of $\IDeltaZero + \exp$ which is the same.}.
 
-\subsection{Pigeonhole principle}\label{subsec:vac0-php}
-% \todo[inline]{Here we cite the result that }
-\begin{theorem}[Independence of \problem{PHP} from \complexityi{VAC}{0}]
-    \[\texttt{VAC}^0 \nvdash \texttt{PHP}\]
-    This is proved in~\cites[Corollary~7.21]{CookNguyenDraft}[Corollary~VII.2.4]{Cook_Nguyen_2010}.
+% In~\cite{Buchholz1987ProvablyCF} is is shown that a function to not be provably total in Peano
+% arithmetic requires it to be growing too fast. An intuition behind it for the sake of our
+% thesis is that functions that are difficult to \emph{prove correct}, but grow slowly (in particular,
+% solve decisional problems and only output a boolean value), must have graphs that are not
+% easily definable by a logical sentence.
+
+It turns out that a function is $\Sigma_1$-definable in \IDeltaZero{} iff it is in \complexity{FLTH}, functional
+version of linear-time hierarchy~\cite[Theorem~III.4.8]{Cook_Nguyen_2010}; for the definition of \complexity{LTH},
+refer to~\cite[Section~III.4.1]{Cook_Nguyen_2010} --- as this complexity class is far from what we call ``feasible''
+in this work, we don't introduce the details here. Instead, we will now introduce a theory with a good
+computational complexity characterization.
+
+\section{Two-sorted logic and \compVZero}\label{sec:theory-v0}
+
+\begin{definition}[Axioms of 2-BASIC]
+\[
+\begin{array}{@{}l l@{}}
+\mathrm{B1.}\; x + 1 \neq 0
+&
+\mathrm{B7.}\; (x \le y \land y \le x) \rightarrow x = y
+\\[2pt]
+\mathrm{B2.}\; x + 1 = y + 1 \rightarrow x = y
+&
+\mathrm{B8.}\; x \le x + y
+\\[2pt]
+\mathrm{B3.}\; x + 0 = x
+&
+\mathrm{B9.}\; 0 \le x
+\\[2pt]
+\mathrm{B4.}\; x + (y + 1) = (x + y) + 1
+&
+\mathrm{B10.}\; x \le y \lor y \le x
+\\[2pt]
+\mathrm{B5.}\; x \cdot 0 = 0
+&
+\mathrm{B11.}\; x \le y \leftrightarrow x < y + 1
+\\[2pt]
+\mathrm{B6.}\; x \cdot (y + 1) = (x \cdot y) + x
+&
+\mathrm{B12.}\; x \neq 0 \rightarrow \exists y \le x\, (y + 1 = x)
+\\[6pt]
+\text{L1.}\; X(y) \rightarrow y < \len{X}
+&
+\text{L2.}\; y + 1 = \len{X} \rightarrow X(y)
+\\[6pt]
+\multicolumn{2}{@{}l@{}}{
+\text{SE.}\;
+\bigl(\len{X} = \len{Y} \land \forall i < \len{X}\, (X(i) \leftrightarrow Y(i))\bigr)
+\rightarrow X = Y
+}
+\end{array}
+\]
+
+\end{definition}
+
+
+\begin{definition}[Comprehension Axiom]\label{def:V.1.2}
+Let $\Phi$ be a set of formulas. The \emph{comprehension axiom scheme for $\Phi$},
+denoted $\Phi\text{-}\mathrm{COMP}$, consists of all formulas of the form
+\begin{equation}\label{eq:Phi-COMP}
+\exists X \le y\;\forall z<y\;\bigl(X(z)\leftrightarrow \varphi(z)\bigr),
+\tag{48}
+\end{equation}
+where $\varphi(z)\in\Phi$ and $X$ does not occur free in $\varphi(z)$.
+In \eqref{eq:Phi-COMP}, the formula $\varphi(z)$ may have free variables of both
+sorts in addition to~$z$.  We are mainly interested in the cases where
+$\Phi$ is one of the classes $\Sigma^{B}_{i}$.
+\end{definition}
+
+% \begin{notation}\label{not:V.1.2}
+% Since \eqref{eq:Phi-COMP} asserts the existence of a finite set $X$ of numbers,
+% we will sometimes use standard set-theoretic notation to describe~$X$:
+% \begin{equation}\label{eq:set-notation}
+% X=\{\,z : z<y \land \varphi(z)\,\}.
+% \tag{49}
+% \end{equation}
+% \end{notation}
+
+\begin{definition}[$V^{i}$]\label{def:arith-vi}
+For $i\ge 0$, the theory $V^{i}$ has vocabulary $\mathcal{L}^{2}_{A}$ and is axiomatized by
+2-BASIC together with $\Sigma^{B}_{i}\text{-}\mathrm{COMP}$.
+
+Note that there are no explicit induction axioms for $\mathrm{V}^{i}$.
+\end{definition}
+
+\begin{theorem}[{\cite[Corollary~V.1.8]{Cook_Nguyen_2010}}]
+    Induction is provable in $\mathrm{V}^{i}$. Induction for $\Delta_0$ formulas
+    is a theorem of \compVZero.
+
+    Note that this implies that any theorem $\varphi$ provable in \IDeltaZero{} is also
+    provable in \compVZero.
 \end{theorem}
+
+\begin{theorem}[{\cite[Theorem~V.1.9]{Cook_Nguyen_2010}}]
+    For every formula $\varphi$ in the vocabulary $\mathcal{L}_A$ of single-sorted arithmetic,
+    if $\compVZero \vdash \varphi$, then also $\IDeltaZero \vdash \varphi$.
+    In other words, \compVZero{} is a \emph{conservative extension} of \IDeltaZero.
+\end{theorem}
+
+\begin{remark}[{\cite[Section~IV.3]{Cook_Nguyen_2010}} Two-sorted complexity classes]
+    When operating in two-sorted logic, we need to redefine what does it mean for a relation to be in a complexity
+    class. We will think of numerical arguments $x_i$ of a relation $R(\vec{x}, \vec{X})$ to be passed to
+    the deciding Turing machine in unary representation. The string arguments $X_i$ representing finite sets
+    of numbers are passed as follows. For a string argument $S$ define $S(i) = 1$ when $i \in S$, 0 otherwise.
+    Then the representation $\squarequotes[4]{S}$ of $S$, when the largest member of $S$ is $n$, is defined as
+    the following concatenation of bits:
+    \[\squarequotes[4]{S} = S(n)S(n - 1) \dots S(1)S(0)\]
+    If $S$ is empty then $\squarequotes[4]{S}$ is the empty string.
+    Note that $\len{\squarequotes[4]{S}}$ is the same as our
+    interpretation of $S$ inside of the theory: $\len{S} = \max(S) + 1$ or $0$ if $S$ empty.
+    
+    We will write $\unary{x}$ to denote unary representation of $x$, i.e. $1^{\len{x}}$
+    and $\binary{x}$ to denote binary representation.
+    The ultimate input to the Turing machine deciding if $R(\vec{x}, \vec{X})$
+    for $\len{\vec{x}}= n, \len{\vec{X}} = N, \len{X_i}=N_i$ is:
+
+    \[
+    \unary{n}\;0 \quad \unary{x_1}\;0\;\unary{x_2}\;0\;\dots\;0\;\unary{x_n}\;0\quad\unary{N}
+    \; 0 \quad
+    \unary{N_1}\;0\;\squarequotes[5][7]{X_1}\;0\;\dots\;0\;\unary{N_N}\;0\;\squarequotes[5][7]{X_N}
+    \]
+
+
+    Note that a purely numerical relation $R(x)$ is in two-sorted polynomial time iff it is computed
+    in time $2^{\bigO(n)}$ for $n = \len{\binary{x}}$. The notion of polynomial-time complexity for
+    relations with only string arguments $R(\vec{X})$ coincides with our standard intuition.
+\end{remark}
+
+\begin{definition}[{\cite[Definition~V.2.1]{Cook_Nguyen_2010}}]
+A number function $f$ or string function $F$ is
+(\emph{$p$-bounded}) iff there exists a polynomial $p(x,y)$ such that, for all
+inputs $x,Y$,
+\[
+f(x,Y)\ \le\ p\bigl(x,\lvert Y\rvert\bigr)
+\qquad\text{or}\qquad
+\lvert F(x,Y)\rvert\ \le\ p\bigl(x,\lvert Y\rvert\bigr),
+\]
+respectively.
+\end{definition}
+
+
+\begin{definition}[{\cite[Definition~V.2.3]{Cook_Nguyen_2010}} Two-sorted functional complexity classes]
+Let $\complexity{C}$ be a two-sorted complexity class of relations.  
+The corresponding \emph{function class} $\complexity{FC}$ consists of:
+\begin{enumerate}
+\item all $p$-bounded number functions whose graphs belong to $\complexity{C}$, and
+\item all $p$-bounded string functions whose bit graphs belong to $\complexity{C}$.
+\end{enumerate}
+
+Note that the classes \complexityi{FAC}{0}, \complexity{FP}, \complexity{FL} are defined in a different way
+that we have used earlier. However, the difference will not matter in this work.
+\end{definition}
+
+
+We don't repeat the definitions of definability in a theory
+for the two-sorted case~\cite[Definition~V.4.1]{Cook_Nguyen_2010}.
+Recall the definition of $\Sigma_0^B$ formulas~(\autoref{def:SigmaB-PiB-hierarchy}).
+
+\begin{theorem}[{\cite[Corollary~V.5.3]{Cook_Nguyen_2010}}]
+    A function is in \FACZero{} iff it is $\Sigma_0^B$-definable in \compVZero.
+\end{theorem}
+
+\begin{definition}
+    The theory \complexity{VC} for a complexity class $\complexity{C}$ has vocabulary $\mathcal{L}^2_A$
+    and is axiomatized
+    by the axioms of \compVZero and one additional axiom depending on the choice of the class $\complexity{C}$.
+    The additional axiom can be thought of adding an oracle for a $C$-complete problem to \compVZero.
+    We skip the (lengthy) technicalities of~\cite[Definition~IX.2.1]{Cook_Nguyen_2010}.
+\end{definition}
+
+The below theorem is the central result of our interest in this thesis.
+
+\begin{theorem}[{\cite[Theorem~IX.2.3]{Cook_Nguyen_2010}}]
+    A function is provably total in \complexity{VC} iff it is in \complexity{FC}.
+\end{theorem}
+
+By adding a single axiom to the theory of \compVZero, we can obtain arithmetical hierarchies
+in which the functions that we can define and prove correct are precisely the functions
+from a given complexity class $\complexity{C} = \complexityi{FTC}{0}, \complexityi{FNC}{1}, \complexity{FL}, \complexity{FP}$.
+
+This way, we obtain theories that foster both certifiation of complexity of an algorithm (if the proof of
+correctness itself is feasible, see~\autoref{subsec:complexity-alg-proof})
+and enable to prove theorems about the correctness of functions defined.
+In~\cite{buss2025logspaceconstructiveprooflsl}, the authors formalize the breakthrough
+result \(\complexity{L}=\complexity{SL}\) of~\cite{10.1145/1391289.1391291} inside of the weak
+theory of bounded arithmetic~\complexity{VL}.
+The complexity of computational content of proofs of the Discrete Jordan Curve Theorem is
+examined in~\cite{10.1145/2071368.2071377}.
+Expander construction in \complexityi{VNC}{1} was conducted in~\cite{BUSS2020102796}.
+
+Another elegant property of these theories is that the proof of a problem
+not being solvable in a given complexity is exactly a proof of independence
+of the axiom (corresponding to the problem) from the theory (corresponding to the complexity class).
+
+\begin{theorem}[{\cites[Corollary~7.21]{CookNguyenDraft}[Corollary~VII.2.4]{Cook_Nguyen_2010}}~Independence of \problem{PHP} from \complexityi{VAC}{0}]\label{subsec:vac0-php}
+    \[\complexityi{VAC}{0} \nvdash \problem{PHP}\]
+\end{theorem}
+
+\subsection{Complexity of algorithm vs complexity of proof}\label{subsec:complexity-alg-proof}
+Even when an algorithm is simple, it seems to not always be trivial to ``feasibly'' prove
+that it computes the correct result. In our setting, this results in knowing that
+a problem can be solved in a complexity class $\complexity{C}$, but not knowing if the corresponding
+function can be defined in the theory $\complexity{VC}$ (i.e. proved total and correct).
+See \cites[Section~IX.7.3]{Cook_Nguyen_2010}[Section~9G.3]{CookNguyenDraft} for
+an open problem whether the breakthrough result that binary integer division
+is in \complexity{DLOGTIME}-uniform \complexityi{TC}{0}~\cite{HESSE2002695},
+means that it can also be proved in the corresponding \complexityi{VTC}{0} theory.
+Note that this problem apparently has been solved (affirmatively) in~\cite{Jerabek2022}.
+
+
+% \begin{definition}[V.4.12] (semantic)
+% A string function is said to be \(\Sigma^B_0\)\textit{-definable from a collection} \(L\) of
+% two-sorted functions and relations if it is \(p\)-bounded and its bit graph is represented by
+% a \(\Sigma^B_0(L)\) formula.  
+% Similarly, a number function is \(\Sigma^B_0\)\textit{-definable from} \(L\) if it is \(p\)-bounded
+% and its graph is represented by a \(\Sigma^B_0(L)\) formula.
+% \medskip
+% This \emph{semantic} notion of \(\Sigma^B_0\)-definability should not be confused with \(\Sigma^B_0\)-definability \emph{in a theory} (Definition~V.4.1), which involves provability.  
+% The next result connects these two notions.
+% \end{definition}
+
+% there are functions whose graphs are in \complexityi{AC}{0} (representable by sigma0b formulas),
+% but which do not belong to \complexityi{FAC}{0} (section: proof of witnessing theorem for v0)
+
+
+\begin{remark}[Bibliography]
+The field of bounded arithmetic was initiated by Samuel Buss in his PhD thesis:~\cite{Buss1986}, in which
+the theories $\mathrm{S}^1_2$ were introduce to capture reasoning about the polynomial-time hierarchy \complexity{PH}
+(not introduced in our thesis).
+The first theory designed to capture polynomial time reasoning was the
+equational theory $\mathrm{PV}$ (as in: polynomially-verifiable [proofs])
+theory from~\cite{10.1145/800116.803756}.
+The two-sorted logic language for capturing complexity classes has been introduced by Zambella in~\cite{00d3b11b-ff1c-386f-a929-6943478c4a28}.
+Despite the theories being designed to reason about computation, they are theories of classical logic,
+which might come off as worrying given our considerations from \todo[inline]{sec: chapter icc, section intuit. logic}.
+Intuitionistic counterparts such as $\mathrm{IS}^1_2$ for $\mathrm{S}^1_2$ and $\mathrm{IPV}$ for $\mathrm{PV}$
+have also been studied. However, much less is known about their expressive power.
+For the relation of $\mathrm{IS}^1_2$ and $\mathrm{S}^1_2$, please see~\cite{10.1007/3-540-16486-3_91}. In
+particular,~\cite[Conjecture~3]{10.1007/3-540-16486-3_91} asks: if $\mathrm{IS}^1_2 \vdash \exists y \ldotp \phi(y, c)$,
+then is it true that there is a function $f$, provably correct in $\mathrm{S}^1_2$, such that $f$ \emph{computes}
+the Gödel encoding of that $\mathrm{IS}^1_2$ proof? In~\cite[Corollary~8.19]{COOK1993103}, that conjecture
+is answered affirmatively. The intuitionistic version $\mathrm{IPV}$ of the theory $\mathrm{PV}$ is discussed
+in some detail in~\cite{COOK1993103}.
+
+For a good introduction to \emph{bounded reverse mathematics},
+with a very thorough overview of arithmetical theories corresponding to complexity classes below \compFP,
+refer to~\cite{Ngu08}.
+\end{remark}
+
+
+
+
+\section{Programming language}
+\todo[inline]{In progress}
+Now, we want to formalize these arithmetic so that a computer can check our programs and ensure we didn't
+go out of a given complexity at any point. I.e.\ to actually program on a computer and not in paper.
+With such a programming language (and a formalization of arithmetic in general),
+we are able to readily transfer a huge amount of results from paper to computer.
+
+We have two goals for formalization:
+\begin{enumerate}
+    \item for logicians to believe us the formalization is sound
+    \item to be able to extract code with certified complexity from proofs
+\end{enumerate}
+
+There is very little work available on the formalization of arithmetic.
+A formalization of consistency of Peano arithmetic in Coq was presented in~\cite{O_Connor_2005}.
+A formalization of the so-called \emph{Hydra battles} related to unprovability in Peano arithmetic
+was shown in~\cite{casteran:hal-03404668}. There is an impressive ongoing project of formalization
+of bounded arithmetic in the model-theoretical style in the Lean
+community.\footnote{\url{https://github.com/FormalizedFormalLogic/Foundation}}Their approach doesn't
+align with our goal of certifying complexity, as their focus is on other arithmetical theories, which differ
+significantly from what we need. Somehow related, some work on intuitionistic logic in Lean has also been done
+in~\cite{Trufa__2024} even though Lean is not a natural environment for intuitionistic thinking, as it
+assumes classical axioms very deeply in its standard libraries, unlike Rocq which is constructive by heart.
+
+
+An idea for a programming language based on bounded arithmetic was discussed
+in~\cite{Li2025FeasibleMathematics}. The language they discuss is $\mathrm{IMP}~(\complexity{PV})$,
+based on the equational theory $\complexity{PV}$ which is different to (and less interesting than)
+the theories we have discussed. There, the authors show how to design an imperative programming language
+with Hoare logic as the verification mechanism (a.k.a. a type system). Note that for their concept
+to be implementable in practice, a \emph{formalization} of $\complexity{PV}$ is necessary.
+
+
+% design:
+% deep embedding of proof theory vs going with model theory: rocq internship
+% proof relevance/irrelevance vs "extension of a theory" / actually defining new functions in theory
+% for formalizing V0: go with single-sorted interpretation, or modify Mathlib
+% for formalizing anything: separate Ex and All vs set Ex phi = !All x !phi
+
+% This was presented at AITP2025. And was the topic of
+% my visit of Yannick Forster at INRIA. My source code is here:~\url{https://github.com/ruplet/formalization-of-bounded-arithmetic}.
+% The presentations PDFs are also there, and reviews of my abstract from aitp.
+
+% deep vs shallow embeddings:
+% https://people.cs.nott.ac.uk/psztxa/publ/tt-in-tt.pdf
+% https://research-information.bris.ac.uk/ws/portalfiles/portal/330955816/LIPIcs_ITP_2022_28.pdf
+% https://drops.dagstuhl.de/storage/00lipics/lipics-vol237-itp2022/LIPIcs.ITP.2022.28/LIPIcs.ITP.2022.28.pdf
+% https://cstheory.stackexchange.com/questions/1370/shallow-versus-deep-embeddings
+% My work on formalizing bounded arithmetic is here: [https://github.com/ruplet/formalization-of-bounded-arithmetic](https://github.com/ruplet/formalization-of-bounded-arithmetic) - in this repo there is also my presentation from AITP, the abstract and the reviews it received.
+% This is also the subject of my visit at INRIA, beginning 8th September 2025.
+
+
+
 
 
 \begin{rawlisting}
@@ -42,345 +526,4 @@ The presentations PDFs are also there, and reviews of my abstract from aitp.
 \caption{Lean example}\label{lst:lean-example}
 \end{rawlisting}
 
-\section{Complexity of algorithm vs complexity of proof}
-See \cites[Section~IX.7.3]{Cook_Nguyen_2010}[Section~9G.3]{CookNguyenDraft} for
-an open problem whether the recent breakthrough that binary integer division
-is in \complexity{DLOGTIME}-uniform \complexityi{TC}{0}~\cite{HESSE2002695},
-means that it can also be proved in the corresponding VTC0 theory.
-% Weźmy język programowania odpowiadający RCA0.  
-% Nie możemy w nim zapisać WKL.  
-% Ale teoria pierwszego rzędu RCA0 jest równa teorii pierwszego rzędu WKL0.  
-% Czyli jeśli użytkownik może zapytać nas tylko o program spełniający specyfikację pierwszego rzędu, nie potrzebujemy w języku programowania prymitywu ‘WKL’. Natomiast jeśli użytkownik wymaga od nas spełniania specyfikacji drugiego rzędu, to już będą istniały programy, w których będziemy musieli zastosować WKL, a jednocześnie nie możemy go w RCA0 udowodnić \- potrzebujemy, żeby twórca kompilatora dodał nam go jako blackbox
 
-% a tak w ogole slaby lemat Koniga jest dowodzony przez istnienie ciągu (0, 0, 0, …), jako nieskonczonego elementu drzewa binarnego 2^omega, {0,1}^omega
-
-
-
-%  Find IDelta0 and that it can't express exp function. Look for
-%  Find Buss' PV theories and Cook's $V^i$ hierachy.
-%  ważne: Cook and Urquhart's theory IPV
-
-% \section{The zoo of arithmetical theories}
-% Historically, the single-sorted equational PV theory~\cite{10.1145/800116.803756} was
-% the first designed to capture polynomial time reasoning.
-% Its language contains one symbol for every function in \complexity{FP} --- functions are mapped to symbols
-% using Cobham's original characterization of \complexity{FP} with explicit bounds, as mentioned in~\autoref{sec:cobham-characterization}.
-
-% We also have Buss' $S^1_2$ theory. Apparently, to characterize below-polytime classes, a split to two sorts (strings and indices)
-% is necessary. This is the approach of Cook and Nguyen 2010, who introduce $V^i$ theories, which we focus on here.
-
-% % Paper:
-% % Suppose IS12 proves Exists y . A(y, c).
-% % Then S12 proves istnieje dowod
-% % https://mathweb.ucsd.edu/~sbuss/ResearchWeb/intuitionisticBA/intuitionisticBA_OCR.pdf
-% % Tutaj strona 160 (58 pdfa) wykazuje conjecture 3 z powyzszego!:
-% % https://doi.org/10.1016/0168-0072(93)90044-E
-% % no i Godel encoding jest wazny, bo jego dowod 1 twierdzenia o niezupelnosci
-% % to tak naprawde interpreter!
-
-
-% \section{IMP~(PV) programming language}
-% In MIT reading group notes released in July 2025~\cite{Li2025FeasibleMathematics}, the authors show how the equational theory PV
-% can be used to simulate set theory, an imperative programming language, and Hoare semantics for it.
-
-% \begin{enumerate}
-%   \item \textbf{Programmable data structures with internal correctness proofs.} \\
-%   Lists and maps are defined within PV or PV-PL together with proofs of their intended properties. Meta-theorems support recursion and induction on lists, analogous to the existing recursion and induction rules over strings.
-
-%   \item \textbf{An imperative layer with verifiable functionality.} \\
-%   A small language, \textbf{IMP~(PV)}, is introduced with a Hoare-style proof system. Programs written in IMP~(PV) can be compiled into PV functions, and Hoare proofs of functionality can be translated back into proofs in PV.\@
-
-%   \item \textbf{Machine-level simulation.} \\
-%   Turing machines are simulated by IMP~(PV) programs and hence by PV functions, establishing the corresponding results about the expressiveness of the system.
-
-%   \item \textbf{Feasible set operations and reasoning.} \\
-%   A finite set theory is developed within PV-PL, allowing operations such as union and intersection on sets encoded by enumeration. Proofs in first-order logic over these finite sets (with quantifiers of the form $\forall x \in S$ and $\exists x \in S$) can be translated into PV proofs.
-
-%   \item \textbf{Proof methodology.} \\
-%   All arguments are written as ``pseudo-proofs'' in structured natural language, which can be directly translated into proof trees in PV-PL and then into formal PV proofs via the translation theorem.
-% \end{enumerate}
-
-% \noindent
-% For precise formal definitions and proofs, see Chapter~4 of the book.
-
-% \paragraph{What the language is.}
-% \textbf{IMP~(PV)} is a lightweight imperative layer on top of PV\@: expressions are PV terms; commands add assignment, sequencing, conditionals, and a bounded \texttt{for}-loop that iterates by repeatedly applying \(\mathrm{TR}(\cdot)\) to a loop variable until it equals \(\varepsilon\).\@
-% All variables are global.
-
-% \medskip
-% % --- Core syntax (split across lines to avoid overfull boxes)
-% \noindent\textbf{Core syntax (only what we need).}
-% \[
-% \begin{array}{l}
-% \text{Expressions: } e \text{ is any PV term.} \\[0.3em]
-% \text{Commands: } \text{Cmd} \;::=\; \texttt{skip}
-% \;\mid\; \texttt{let } x := e
-% \;\mid\; \text{Cmd};\ \text{Cmd} \\[0.25em]
-% \hphantom{\text{Commands: } \text{Cmd} \;::=\;} 
-% \;\mid\; \texttt{if } e \ \texttt{then}\ c_1\ \texttt{else}\ c_0 \\[0.25em]
-% \hphantom{\text{Commands: } \text{Cmd} \;::=\;}
-% \;\mid\; \texttt{for } x := e;\ x \neq \varepsilon;\ x := \mathrm{TR}(x)\ \texttt{do } c\,.
-% \end{array}
-% \]
-% Here \( \mathrm{TR} \) is the one-step right-trim on strings/lists, and all variables are global.
-
-% \medskip
-% \noindent\textbf{Resource discipline.}
-% To keep programs within polynomial time we use:
-% \begin{enumerate}
-%   \item \emph{Read-only loop index:} the index \(x\) of a \texttt{for}-loop is not reassigned inside the loop and is not reused as an inner-loop index.
-%   \item \emph{Length cap:} a program is paired with a bound \(\omega\); values exceeding \(|\omega|\) bits are truncated to \(\mathrm{Suf}(y,\omega)\).
-% \end{enumerate}
-
-% \medskip
-% \noindent\textbf{Hoare semantics in PV-PL.}
-% A Hoare triple \(\{\,\varphi_1\,\}\ c\ \{\,\varphi_2\,\}\) uses PV-PL formulas \(\varphi_1,\varphi_2\). The rules we rely on are:
-
-% \begin{enumerate}
-%   \item \emph{Consequence:} if \( \mathrm{PV\mbox{-}PL} \vdash \varphi_1 \Rightarrow \varphi'_1 \) and \( \mathrm{PV\mbox{-}PL} \vdash \varphi'_2 \Rightarrow \varphi_2 \), then
-%   \[
-%     \dfrac{\{\varphi'_1\}\ c\ \{\varphi'_2\}}{\{\varphi_1\}\ c\ \{\varphi_2\}}.
-%   \]
-%   \item \emph{Skip:} \(\{\varphi\}\ \texttt{skip}\ \{\varphi\}\).
-%   \item \emph{Assignment:} \(\{\ \varphi[x/e]\ \}\ \texttt{let }x := e\ \{\ \varphi\ \}\).
-%   \item \emph{Sequencing:} from \(\{\varphi_1\}\ c_1\ \{\psi\}\) and \(\{\psi\}\ c_2\ \{\varphi_2\}\) infer \(\{\varphi_1\}\ c_1;c_2\ \{\varphi_2\}\).
-%   \item \emph{Conditional:}
-%   \[
-%   \dfrac{\{\varphi_1 \land \mathrm{LastBit}(e)=1\}\ c_1\ \{\varphi_2\}
-%         \qquad
-%         \{\varphi_1 \land \mathrm{LastBit}(e)\neq 1\}\ c_0\ \{\varphi_2\}}
-%         {\{\varphi_1\}\ \texttt{if }e\ \texttt{then }c_1\ \texttt{else }c_0\ \{\varphi_2\}}.
-%   \]
-%   \item \emph{For-loop (invariant \(\varphi\)):} for \(i\in\{0,1\}\),
-%   \[
-%   \dfrac{\{\ \varphi[x/s_i(x)]\ \}\ c\ \{\ \varphi\ \}}
-%         {\{\ \varphi[x/e]\ \}\ \texttt{for }x := e;\ x\neq\varepsilon;\ x := \mathrm{TR}(x)\ \texttt{do } c\ \{\ \varphi[x/\varepsilon]\ \}}.
-%   \]
-% \end{enumerate}
-
-% \medskip
-% \noindent\textbf{Example (length-by-iteration).}
-% \[
-% \begin{array}{l}
-% \texttt{LenITR} := \texttt{let } z := \ell;\ \texttt{let } y := \varepsilon; \\[0.2em]
-% \qquad \texttt{for } x := \ell;\ x \neq \varepsilon;\ x := \mathrm{TR}(x)\ \texttt{do } \\
-% \qquad\qquad \texttt{if } \mathrm{IsEps}(z)\ \texttt{ then } \\[0.2em]
-% \qquad\qquad\qquad \texttt{skip} \\[0.2em]
-% \qquad\qquad \texttt{else } \\[0.2em]
-% \qquad\qquad\qquad \texttt{let } y := s_0(y); \\[0.2em]
-% \qquad\qquad\qquad \texttt{let } z := \mathrm{Tail}(z).
-% \end{array}
-% \]
-% Correctness is expressed as the Hoare triple
-% \[
-% \{\ \mathrm{IsList}(\ell)=1\ \}\ \texttt{LenITR}\ \{\ y = \mathrm{Len}(\ell)\ \},
-% \]
-% proved by a loop invariant that relates \(z\), \(y\), and the iterator equalities (details as in the chapter).
-
-
-% \medskip
-% \noindent\textbf{Compilation back to PV (how commands become functions).}
-% Every length-restricted program \((P,\omega)\) compiles to a PV function \(\ensuremath{[P]_{PV}}\).
-% The translation uses a tuple \(\pi\) to store all variables, interprets expressions as \(e[x_i/\pi_i]\) followed by \(\mathrm{Suf}(\cdot,\omega)\), maps \texttt{skip} to the identity on \(\pi\), \texttt{let} to tuple update, sequencing to composition, \texttt{if} to a PV conditional, and the \texttt{for}-loop to a PV recursion that mimics one loop step per recursive call.
-% The details of each clause and the proof obligations they satisfy are provided in the chapter.
-
-% \medskip
-% \noindent\textbf{Two preservation properties we will cite (not re-prove here).}
-% \begin{enumerate}
-%   \item \emph{Length preservation:} for any \((P,\omega)\), the translation \(\ensuremath{[P]_{PV}}\) enforces \(x_i=\mathrm{Suf}(x_i,\omega)\) at the end for every program variable (proved by structural induction on \(P\)).
-%   \item \emph{Proof preservation:} a derivation of \(\{\,\varphi_1\,\}(P,\omega)\{\,\varphi_2\,\}\) yields a PV-PL derivation of the corresponding assertion obtained by substituting variables with tuple components and interpreting \(P\) as \(\ensuremath{[P]_{PV}}\).
-% \end{enumerate}
-% Both statements, and the admissibility of the Hoare rules under this translation, are established in the chapter.
-
-% \medskip
-% \noindent\textbf{Why bounded arithmetic must be in place first.}
-% Every step above---the loop rule, the compilation of \texttt{for}, the use of \(\mathrm{TR}\), \(\mathrm{Suf}\), tuple updates, and the truncation invariant---relies on equalities and inductions that are proved \emph{inside} PV/PV-PL.\@
-% Thus, implementing the language with its Hoare system requires a solid formalization of this arithmetic (lists/strings, iterators, truncation, and the associated induction principles), so that programs and their proofs are checked against PV-PL rather than an external meta-theory.
-% For all formal statements and proofs, we refer to Chapter~4.
-
-% \section{Definability of functions in \texorpdfstring{$V^0$}{V0}}
-% Our ultimate goal is to say that a function $f$ is in C.
-% As we observed in~\autoref{sec:complete-problems}, \complexityi{AC}{0} reductions are enough for us
-% and these are expressed by V0 theory. Now we bring up the definitions that make this precise.
-
-% \begin{definition}[V.4.1 (Two-Sorted Definability, syntactic)]
-% Let \(T\) be a theory with vocabulary \(L \supseteq L^2_A\), and let \(\Phi\) be a set of \(L\)-formulas.
-
-% \medskip
-% A number function \(f\) is said to be definable in \(T\) with respect to \(\Phi\) if there exists a formula
-% \(\varphi(x, y, X) \in \Phi\) such that
-% \begin{align}
-% T &\;\vdash\; \forall x \, \forall X \, \exists! y \, \varphi(x, y, X), \tag{61} \\[4pt]
-% y = f(x, X) &\;\leftrightarrow\; \varphi(x, y, X). \tag{62}
-% \end{align}
-
-% \medskip
-% A string function \(F\) is said to be definable in \(T\) with respect to \(\Phi\) if there exists a formula
-% \(\varphi(x, X, Y) \in \Phi\) such that
-% \begin{align}
-% T &\;\vdash\; \forall x \, \forall X \, \exists! Y \, \varphi(x, X, Y), \tag{63} \\[4pt]
-% Y = F(x, X) &\;\leftrightarrow\; \varphi(x, X, Y). \tag{64}
-% \end{align}
-
-% \medskip
-% Then \textup{(62)} is a defining axiom for \(f\) and \textup{(64)} is a defining axiom for \(F\).
-% We write \(T(f)\) or \(T(F)\) for the theory extending \(T\) by adding \(f\) or \(F\)
-% together with its corresponding defining axiom.
-% We say that \(f\) or \(F\) is \textit{definable in} \(T\) if it is \(\Phi\)-definable in \(T\)
-% for some \(\Phi\).
-% \end{definition}
-
-
-% \begin{definition}[V.4.12] (semantic)
-% A string function is said to be \(\Sigma^B_0\)\textit{-definable from a collection} \(L\) of two-sorted functions and relations if it is \(p\)-bounded and its bit graph is represented by a \(\Sigma^B_0(L)\) formula.  
-% Similarly, a number function is \(\Sigma^B_0\)\textit{-definable from} \(L\) if it is \(p\)-bounded and its graph is represented by a \(\Sigma^B_0(L)\) formula.
-
-% \medskip
-% This \emph{semantic} notion of \(\Sigma^B_0\)-definability should not be confused with \(\Sigma^B_0\)-definability \emph{in a theory} (Definition~V.4.1), which involves provability.  
-% The next result connects these two notions.
-% \end{definition}
-
-% \begin{corollary}[V.4.13]
-% Let \(T\) be a theory over \(L\) that contains \(V^0\), and suppose that \(T\) proves the 
-% \(\Sigma^B_0(L)\)\textit{-COMP} axiom scheme.  
-% Then any function that is \(\Sigma^B_0\)\textit{-definable from} \(L\) is 
-% \(\Sigma^B_0(L)\)\textit{-definable in} \(T\).
-% \end{corollary}
-
-
-% % - Corollary V.4.11. Every function in \complexityi{FAC}{0} is ΣB0 -definable in V0.
-% \begin{proposition}[V.4.7]
-% A string function is \(\Sigma^B_0\)\textit{-bit-definable} if and only if it is in \(\complexityi{FAC}{0}\).
-% \end{proposition}
-
-% \begin{corollary}[V.2.4]
-% \leavevmode
-% \end{corollary} 
-
-
-
-% \section{Real-world constructions in weak theories}
-% Expander construction in VNC1~\cite{BUSS2020102796}.
-
-% \section{Type-theoretical treatment}
-% It seems possible to reason about bounded arithmetic in type-theoretical framework.
-% The below is inspired by~\cite{Li2025FeasibleMathematics}.
-
-% Feasible set theory. The universal and existential quantification over feasible sets
-% can be viewed as a “typed” version of Buss’s sharply bounded quantifiers [Bus86],
-% as the numbers of elements in sets encoded by lists are bounded by their encoding
-% lengths.
-
-
-% % \section{Reverse mathematics}
-% % Bounded reverse mathematics: https://www.cs.toronto.edu/~sacook/banff_survey.pdf
-% % Examine reverse mathematics. This resulted from study of how large of sets can mathematics (ZFC) create.
-% % \label{sec:aaa}
- 
-% % Find a paper which requires formalization of 'provability in $V^i'$ to construct Hoare semantics
-
-% % proposition 5.32 a string function is sigma0b-bit-definable iff it is in \complexityi{FAC}{0}
-% % follows from def 5.32, corollary 5.17
-% % def 5.32:
-% % for Phi: set of formulas (e.g. sigma0b)
-% % string function F(x, Y) is Phi-bit-definable if is formula phi in Phi and number term t(x, Y) s.t.
-% % F(x, Y)(i) iff i < t(x, Y) and phi(i, x, Y)
-% % the RHS of this is a bit-defining axiom of F.
-
-% % corollary 5.17: string function is in \complexityi{FAC}{0} iff is p-bounded
-% % and its bit graph is represented by a sigma0b formula
-% % the same holds for a  number function, with graph replacing bit-graph
-% % proof: follows from sigma0b representation theorem 4.17
-
-% % theorem 4.17: relation R(x, X) is in \complexityi{AC}{0} iff it is represented by some Sigma0b formula phi(x,X)
-% % proof: like theorem 3.58
-
-% % there are functions whose graphs are in \complexityi{AC}{0} (representable by sigma0b formulas),
-% % but which do not belong to \complexityi{FAC}{0} (section: proof of witnessing theorem for v0)
-
-% % theorem 3.58.
-% % one side: compline LTH turing machines to formulas. we're not going to do that.
-% % second side: Delta0n subset LTH.
-% % bounded quantifiers correspond to exists, forall states in ATM.
-% % only interesting case is that `R(x, y, z) iff x*y=z` is in LTH.
-% % use corollary 3.60 which shows L subseteq LTH and that multiplication is in L.
-
-% % some intuitionistic logic in lean:
-% % https://github.com/DafinaTrufas/Intuitionistic-Logic-Lean
-
-% % Bounded arithmetics in Lean:
-% % https://github.com/FormalizedFormalLogic/Foundation
-
-% % hierarchia arytmetyk
-% % https://en.wikipedia.org/wiki/Ordinal_analysis
-
-% % Weak systems of arithmetic:
-% % https://golem.ph.utexas.edu/category/2011/10/weak_systems_of_arithmetic.html
-
-% % IΔ₀ and linear time hierarchy!
-% % Elementary Function Arithmetic = EFA
-% % Primitive Recursive Arithmetic = PRA
-% % RCA0*
-% % IDelta0 + Exp
-
-% % Primitive recursion:
-% % https://ftp.cs.ru.nl/CSI/CompMath.Found/week9.pdf
-
-% % A constructive proof of the Gödel-Rosser incompleteness theorem has been completed using the Coq proof assistant
-% % http://r6.ca/Goedel/goedel1.html
-
-% % Redukcje w Coq różne:  jest tutaj Ackermann function, PRA
-% % https://github.com/rocq-community/hydra-battles
-
-% % Definicje e.g. arytmetyki Q Robinsona:
-% % file:///home/maryjane/Downloads/1235421930-2.pdf
-
-% % Coding of sets and sequences, strona 31 pdfa (295):
-% % file:///home/maryjane/Downloads/1235421934.pdf
-% % Książka:
-% % https://projecteuclid.org/eBooks/perspectives-in-logic/Metamathematics-of-First-Order-Arithmetic/toc/pl/1235421926
-
-% % Funkcja jest dowodliwa w PA wtedy i tylko wtedy gdy rośnie wystarczająco wolno!
-% % https://math.stackexchange.com/questions/4859305/are-there-examples-of-statements-not-provable-in-pa-that-do-not-require-fast-gro?rq=1
-% % Czyli funkcje, które są niedowodliwe, a rosną wolno (np. są 0/1), nie mogą być wyrażalne!
-
-% % https://mathoverflow.net/questions/382179/what-can-i-delta-0-prove
-
-% % Euler's phi function in IDelta0:
-% % https://link.springer.com/article/10.1007/BF01375521
-
-
-% % deep vs shallow embeddings:
-% % https://people.cs.nott.ac.uk/psztxa/publ/tt-in-tt.pdf
-% % https://research-information.bris.ac.uk/ws/portalfiles/portal/330955816/LIPIcs_ITP_2022_28.pdf
-% % https://drops.dagstuhl.de/storage/00lipics/lipics-vol237-itp2022/LIPIcs.ITP.2022.28/LIPIcs.ITP.2022.28.pdf
-% % https://cstheory.stackexchange.com/questions/1370/shallow-versus-deep-embeddings
-
-
-
-
-
-% # Reverse mathematics and bounded arithmetics
-
-%  connection with descriptive: chapter IV.1 of the book by Cook and Nguyen [@Cook_Nguyen_2010] 
-% If we can limit mathematics to not use axiom of choice (and study what we can and cannot prove after the restriction), why
-% not limit computer science to not use full recursion? 
-
-% In 1985 Sam Buss PhD thesis was released \cite{Buss1986} introducing Bounded arithmetic.
-
-% Very good book released in 2010b by Stephen Cook: [https://www.karlin.mff.cuni.cz/~krajicek/cook-nguyen.pdf](https://www.karlin.mff.cuni.cz/~krajicek/cook-nguyen.pdf). 
-
-% Good text from July 2025: [https://eccc.weizmann.ac.il/report/2025/086/](https://eccc.weizmann.ac.il/report/2025/086/).
-
-% Plase take a look at the following characterization of AC^0 functions:
-
-% Corollary V.5.2 ($\Sigma^1_1$-Definability Theorem for $V_0$)
-% A function is in \textbf{FAC}$^{0}$ if and only if it is $\Sigma_1^1$-definable in $V_0$, which is also equivalent to being $\Sigma_1^B$-definable in $V_0$, and further equivalent to being $\Sigma_0^B$-definable in $V_0$.
-
-% $$f \in \mathsf{FAC}^0 \iff f \text{ is } \Sigma^1_1\text{-definable in } V_0 \iff f \text{ is } \Sigma^B_1\text{-definable in } V_0 \iff f \text{ is } \Sigma^B_0\text{-definable in } V_0.$$
-
-% This is all based on characterizations of the similar form.
-
-% My work on formalizing bounded arithmetic is here: [https://github.com/ruplet/formalization-of-bounded-arithmetic](https://github.com/ruplet/formalization-of-bounded-arithmetic) - in this repo there is also my presentation from AITP, the abstract and the reviews it received.
-
-% This is also the subject of my visit at INRIA, beginning 8th September 2025.

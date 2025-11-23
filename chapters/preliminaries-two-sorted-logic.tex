@@ -48,8 +48,8 @@ symbols.
 \end{definition}
 
 % TODO: TUTAJ DOPISAC REMARK ZE TO BEDZIE JAKO AKSJOMAT!
-% Okolice Def. 2.2.2: Implicite zakładamy związek między |X| oraz t\in X, więc nie dowolna struktura tylko
-% coś w stylu że nie zachodzi t\in X dla liczb >= |X|.
+% Okolice Def. 2.2.2: Implicite zakładamy związek między \vec{X} oraz t\in X, więc nie dowolna struktura tylko
+% coś w stylu że nie zachodzi t\in X dla liczb >= \vec{X}.
 
 \begin{definition}[The language \(\mathcal{L}^{2}_{A}\)]\label{def:L2A}
 As an example, consider the following two-sorted extension of the
@@ -61,7 +61,7 @@ arithmetical language \(\mathcal{L}_{A}\)~(\autoref{def:LA}):
 Here the symbols \(0,1,+,\cdot,=_{1},\le\) are
 symbols of \(\mathcal{L}_{A}\) (with \(=_{1}\) corresponding to the usual equality of
 numbers).  
-The symbol \(|X|\) is a number-valued function symbol giving the
+The symbol \(\vec{X}\) is a number-valued function symbol giving the
 length of a string \(X\).  
 The binary predicate \(\in\) relates a number and a string and is used to
 express membership: intuitively, \(i \in X\) means that the \(i\)-th bit of
@@ -94,10 +94,10 @@ in the \(\mathcal{L}\)-number term \(t\), we use the following abbreviations:
       \forall x\ldotp (x \le t \;\to\; \varphi), \\[2pt]
   \exists X \le t\ldotp \varphi
     &\;\;\text{stands for}\;\;
-      \exists X\ldotp (\,|X| \le t \;\wedge\; \varphi), \\[2pt]
+      \exists X\ldotp (\,\vec{X} \le t \;\wedge\; \varphi), \\[2pt]
   \forall X \le t\ldotp \varphi
     &\;\;\text{stands for}\;\;
-      \forall X\ldotp (\,|X| \le t \;\to\; \varphi).
+      \forall X\ldotp (\,\vec{X} \le t \;\to\; \varphi).
 \end{align*}
 
 A quantifier appearing in one of these forms is called \emph{bounded},

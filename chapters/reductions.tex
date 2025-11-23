@@ -55,7 +55,7 @@ The difference between \compP{} and \compFP{} is obvious when we look at the bel
     Running time of any Turing machine computing the function \(x \to 2^x\) for input and output in binary,
     is exponential. At the same time, given an input \(x, y\), checking if \(y = 2^x\) is easily in polynomial time.
 \end{example}
-This problem is, however, usually artificially mitigated by requiring the length \(|f(x)|\)
+This problem is, however, usually artificially mitigated by requiring the length \(\len{f(x)}\)
 of the function's output to be polynomially bounded as in~\autoref{def:logspace-reductions}.
 
 
@@ -71,7 +71,7 @@ A function \(f : \{0,1\}^{\ast} \to \{0,1\}^{\ast}\) is said to be
   \item \(f\) is \emph{polynomially bounded}, meaning that there exists a
         constant \(c > 0\) such that
         \[
-          |f(x)| \le |x|^{\,c}
+          \len{f(x)} \le \len{x}^{\,c}
           \qquad\text{for all } x \in \{0,1\}^{\ast},
         \]
         and
@@ -81,11 +81,11 @@ A function \(f : \{0,1\}^{\ast} \to \{0,1\}^{\ast}\) is said to be
             = \{\,\langle x,i\rangle \mid f(x)_{i} = 1\,\},
           \qquad
           L'_{f}
-            = \{\,\langle x,i\rangle \mid i \le |f(x)|\,\}.
+            = \{\,\langle x,i\rangle \mid i \le \len{f(x)}\,\}.
         \]
 \end{enumerate}
 
-In other words, a deterministic \(\bigO(\log |x|)\)-space machine can, given
+In other words, a deterministic \(\bigO(\log \len{x})\)-space machine can, given
 \((x,i)\), determine whether \(i\) is within the length of \(f(x)\) and, if so,
 whether the \(i\)-th bit of \(f(x)\) is \(1\).
 
@@ -218,7 +218,7 @@ A binary relation \(P(x, y)\) is in \(\complexity{FNP}\) if there exist:
 \begin{enumerate}
   \item a polynomial \(p : \mathbb{N} \to \mathbb{N}\) such that if for a given \(x\) exists a solution \(y\) such
   that \(P(x, y)\), then there also exists a ``short'' solution \(y'\) such that
-  \(P(x, y')\) and \(|y'| \leqslant p(|x|)\);
+  \(P(x, y')\) and \(\len{y'} \leqslant p(\len{x})\);
   \item a deterministic polynomial-time Turing machine \(M\)
         (a \emph{verifier}), 
         such that for every input pair \((x, y)\),\todo{consistency: iff vs Longleftrightarrow}

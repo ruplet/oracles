@@ -120,8 +120,8 @@
 
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
 % \theoremstyle{plain}
-% \newtheorem{lemma}[theorem]{Lemma}
 % \newtheorem{proposition}[theorem]{Proposition}
 % \newtheorem{corollary}[theorem]{Corollary}
 
@@ -286,6 +286,38 @@
 
 % We will not use `complexity' CTAN package, because it is wacky
 % https://tex.stackexchange.com/q/391604
+
+\newcommand{\compVZero}{%
+  \texorpdfstring{%
+    \ensuremath{\mathrm{V}^0}\xspace%
+  }{V0}%
+}
+
+\newcommand{\IDeltaZero}{%
+  \texorpdfstring{%
+    \ensuremath{\mathrm{I}\Delta_0}\xspace%
+  }{IDelta0}%
+}
+
+\newcommand{\IOPEN}{%
+  \texorpdfstring{%
+    \ensuremath{\mathrm{IOPEN}}\xspace%
+  }{IOPEN}%
+}
+
+\newcommand{\ISigmaOne}{%
+  \texorpdfstring{%
+    \ensuremath{\mathrm{I}\Sigma_1}\xspace%
+  }{ISigma1}%
+}
+
+\newcommand{\arithPA}{%
+  \texorpdfstring{%
+    \ensuremath{\mathrm{PA}}\xspace%
+  }{PA}%
+}
+
+
 \newcommand{\complexity}[1]{%
   \texorpdfstring{%
     \ensuremath{\mathsf{#1}}\xspace%
@@ -402,8 +434,34 @@
 \newcommand{\FACi}{\FAC{i}}
 \newcommand{\FNCi}{\FNC{i}}
 \newcommand{\FTCi}{\FTC{i}}
+\newcommand{\FACZero}{\FAC{0}}
 
 
+
+% https://tex.stackexchange.com/a/408965
+% \newcommand{\squarequotes}[2][0]{{%
+%   {\vphantom{#2}}^{\ulcorner}\kern-\scriptspace{}
+%   \mspace{-#1mu}%
+%   {{}#2}^{\urcorner}%
+% }}
+% chat version
+\usepackage{xparse}
+% usage: \squarequotes[<left mu>][<right mu>]{...}
+\NewDocumentCommand{\squarequotes}{O{0} O{0} m}{%
+  \vphantom{#3}%
+  {}^{\mathopen{\ulcorner}}\mkern-#1mu%
+  #3%
+  \mkern-#2mu{}^{\mathclose{\urcorner}}%
+}
+
+
+% length / cardinality bars
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\len}{\lvert}{\rvert}
+
+% base-1 (unary) and base-2 (binary) numeral notation
+\newcommand{\unary}[1]{\ensuremath{(#1)_{1}}}
+\newcommand{\binary}[1]{\ensuremath{(#1)_{2}}}
 
 
 

@@ -156,9 +156,9 @@ The class of polynomial-time computable functions is the smallest class \(\mathc
 
 This formulation, due to Cobham~\cite{Cobham1964-COBTIC}, hides the polynomial bounds that are explicit in other
 presentations. The recursion parameter is the binary representation of the argument, so a definition of~\(f(\vec x,y)\)
-unfolds only \(\mathcal{O}(|y|)\) many steps, which is polynomial in the input size.
+unfolds only \(\mathcal{O}(\len{y})\) many steps, which is polynomial in the input size.
 Moreover, the side condition \(f(\vec x,y)\le s(\vec x,y)\) forces every intermediate value to stay within
-numbers of the form \(2^{p(|\vec x|,|y|)}\) for some polynomial \(p\), hence their binary length remains polynomially bounded.
+numbers of the form \(2^{p(\len{\vec x},\len{y})}\) for some polynomial \(p\), hence their binary length remains polynomially bounded.
 When writing a function in this style, it is unclear how to certify that \(f(\vec x, y) \le s(\vec x, y)\) holds in
 a way other than providing a full mathematical proof on the side.
 
@@ -197,7 +197,7 @@ the semicolon and safe inputs \(\vec{a}\) to the right.
 The computation is performed on non-negative integers; proofs transfer to
 general binary strings (e.g.\ starting with a zero)~\cite{10.1007/BF01201998}.
 \todo{dont define |x|, it already appeared in previous subsection}
-For an integer \(x\), let \(|x|\) denote its binary length
+For an integer \(x\), let \(\len{x}\) denote its binary length
 \(\lceil \log_2(x+1)\rceil\); for vectors use component-wise notation.
 
 \begin{definition}[Bellantoni-Cook algebra]\label{def:bellantoni-cook}
@@ -301,7 +301,7 @@ the following schemes of safe composition and safe recursion:
         \end{aligned}
         \]
         where \(b\in\{0,1\}\) and
-        \(\delta_b = \bigl|d_b(y,\vec{x};\,)\bigr|\) depends only on the normal
+        \(\delta_b = \len{ d_b(y,\vec{x};\,) }\) depends only on the normal
         part \((y,\vec{x})\). 
 \end{enumerate}
 \end{definition}

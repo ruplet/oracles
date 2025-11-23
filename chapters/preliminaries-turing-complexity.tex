@@ -82,10 +82,10 @@ such that for every input string \(x \in \{0,1\}^{\ast}\),
 \[
   x \in L
   \;\Longleftrightarrow\;
-  \exists\,u \in \{0,1\}^{\,p(|x|)} \ \text{with}\ M(x,u) = 1.
+  \exists\,u \in \{0,1\}^{\,p(\len{x})} \ \text{with}\ M(x,u) = 1.
 \]
 
-Whenever \(x \in L\) and a string \(u \in \{0,1\}^{p(|x|)}\) satisfies \(M(x,u)=1\),
+Whenever \(x \in L\) and a string \(u \in \{0,1\}^{p(\len{x})}\) satisfies \(M(x,u)=1\),
 the string \(u\) is called a \emph{certificate} (or \emph{witness}) for \(x\)
 with respect to the language \(L\) and the verifier~\(M\).
 \end{definition}

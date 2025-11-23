@@ -81,3 +81,202 @@ author = {William Hesse and Eric Allender and David A. {Mix Barrington}},
 keywords = {Division, Iterated multiplication, Uniform threshold circuits, Circuit complexity, Chinese remainder representation, Computation in abelian groups},
 abstract = {It has been known since the mid-1980s (SIAM J. Comput. 15 (1986) 994; SIAM J. Comput. 21 (1992) 896) that integer division can be performed by poly-time uniform constant-depth circuits of Majority gates; equivalently, the division problem lies in P-uniform TC0. Recently, this was improved to L-uniform TC0 (RAIRO Theoret. Inform. Appl. 35 (2001) 259), but it remained unknown whether division can be performed by DLOGTIME-uniform TC0 circuits. The DLOGTIME uniformity condition is regarded by many as being the most natural notion of uniformity to apply to small circuit complexity classes such as TC0; DLOGTIME-uniform TC0 is also known as FOM, because it corresponds to first-order logic with Majority quantifiers, in the setting of finite model theory. Integer division has been the outstanding example of a natural problem known to be in a P-uniform circuit complexity class, but not known to be in its DLOGTIME-uniform version. We show that indeed division is in DLOGTIME-uniform TC0. First we show that division lies in the complexity class FOM+POW obtained by augmenting FOM with a predicate for powering modulo small primes. Then we show that the predicate POW itself lies in FOM. (In fact, it lies in FO, or DLOGTIME-uniform AC0.) The essential idea in the fast parallel computation of division and related problems is that of Chinese remainder representation (CRR)—storing a number in the form of its residues modulo many small primes. The fact that CRR operations can be carried out in log space has interesting implications for small space classes. We define two versions of s(n) space for s(n)=o(logn): dspace(s(n)) as the traditional version where the worktape begins blank, and DSPACE(s(n)) where the space bound is established by endmarkers before the computation starts. We present a new translational lemma characterizing the unary languages in the DSPACE classes. It is known (Theoret. Comput. Sci. 3 (1976) 213) that {0n : n is prime} ∉dspace(loglogn). We show that if this can be improved to {0n:n is prime} ∉DSPACE(loglogn), it follows that L≠NP.}
 }
+
+%unofficial
+@book{HajekPudlak1993Metamathematics,
+  title        = {Metamathematics of First-Order Arithmetic},
+  author       = {H{\'a}jek, Petr and Pudl{\'a}k, Pavel},
+  series       = {Perspectives in Mathematical Logic},
+  publisher    = {Springer-Verlag},
+  address      = {Berlin, Heidelberg},
+  year         = {1993},
+  edition      = {1},
+  isbn         = {978-3-540-63648-9},
+  issn         = {0172-6641},
+  pages        = {XIV+460},
+  note         = {Softcover reprint published 17 March 1998. Part of the Springer Book Archive.},
+  url = {https://projecteuclid.org/eBooks/perspectives-in-logic/Metamathematics-of-First-Order-Arithmetic/toc/pl/1235421926}
+}
+
+
+
+@misc{buss2025logspaceconstructiveprooflsl,
+      title={A Logspace Constructive Proof of L=SL}, 
+      author={Sam Buss and Anant Dhayal and Valentine Kabanets and Antonina Kolokolova and Sasank Mouli},
+      year={2025},
+      eprint={2511.12011},
+      archivePrefix={arXiv},
+      primaryClass={cs.LO},
+      url={https://arxiv.org/abs/2511.12011}, 
+}
+
+@article{10.1145/1391289.1391291,
+author = {Reingold, Omer},
+title = {Undirected connectivity in log-space},
+year = {2008},
+issue_date = {September 2008},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {55},
+number = {4},
+issn = {0004-5411},
+url = {https://doi.org/10.1145/1391289.1391291},
+doi = {10.1145/1391289.1391291},
+abstract = {We present a deterministic, log-space algorithm that solves st-connectivity in undirected graphs. The previous bound on the space complexity of undirected st-connectivity was log4/3(⋅) obtained by Armoni, Ta-Shma, Wigderson and Zhou (JACM 2000). As undirected st-connectivity is complete for the class of problems solvable by symmetric, nondeterministic, log-space computations (the class SL), this algorithm implies that SL = L (where L is the class of problems solvable by deterministic log-space computations). Independent of our work (and using different techniques), Trifonov (STOC 2005) has presented an O(log n log log n)-space, deterministic algorithm for undirected st-connectivity.Our algorithm also implies a way to construct in log-space a fixed sequence of directions that guides a deterministic walk through all of the vertices of any connected graph. Specifically, we give log-space constructible universal-traversal sequences for graphs with restricted labeling and log-space constructible universal-exploration sequences for general graphs.},
+journal = {J. ACM},
+month = sep,
+articleno = {17},
+numpages = {24},
+keywords = {Derandomization, bounded space algorithms, pseudorandom generator}
+}
+
+@inbook{O_Connor_2005,
+   title={Essential Incompleteness of Arithmetic Verified by Coq},
+   ISBN={9783540318200},
+   ISSN={1611-3349},
+   url={http://dx.doi.org/10.1007/11541868_16},
+   DOI={10.1007/11541868_16},
+   booktitle={Theorem Proving in Higher Order Logics},
+   publisher={Springer Berlin Heidelberg},
+   author={O'Connor, Russell},
+   year={2005},
+   pages={245-260}
+}
+
+@inproceedings{casteran:hal-03404668,
+  TITLE = {{Hydras \& Co.: Formalized mathematics in Coq for inspiration and entertainment}},
+  AUTHOR = {Cast{\'e}ran, Pierre and Damour, J{\'e}r{\'e}my and Palmskog, Karl and Pit-Claudel, Cl{\'e}ment and Zimmermann, Th{\'e}o},
+  URL = {https://hal.science/hal-03404668},
+  BOOKTITLE = {{Journ{\'e}es Francophones des Langages Applicatifs: JFLA 2022}},
+  ADDRESS = {St-M{\'e}dard d'Excideuil, France},
+  YEAR = {2022},
+  MONTH = Jun,
+  PDF = {https://hal.science/hal-03404668v2/file/paper%20%281%29.pdf},
+  HAL_ID = {hal-03404668},
+  HAL_VERSION = {v2},
+}
+
+% unofficial
+@article{Jumelet1995,
+  author  = {Jumelet, Marc},
+  title   = {Euler's $\varphi$-function in the context of $\mathrm{I}\Delta_{0}$},
+  journal = {Archive for Mathematical Logic},
+  year    = {1995},
+  volume  = {34},
+  number  = {3},
+  pages   = {197--209},
+  month   = jun,
+  doi     = {10.1007/BF01375521},
+  url     = {http://web.archive.org/web/20240910062630/https://dspace.library.uu.nl/bitstream/handle/1874/27697/preprint108.pdf?sequence=1&isAllowed=y},
+  issn    = {1432-0665},
+  abstract= {It is demonstrated that we can represent Euler's $\varphi$-function by means of a $\Delta_{0}$-formula in such a way that the theory $\mathrm{I}\Delta_{0}$ proves the recursion equations that are characteristic for this function.}
+}
+
+@inproceedings{Buchholz1987ProvablyCF,
+  title={Provably computable functions and the fast growing hierarchy},
+  author={Wilfried Buchholz and Stan Wainer},
+  year={1987},
+  url={http://web.archive.org/web/20250409175452/https://epub.ub.uni-muenchen.de/3843/1/3843.pdf}
+}
+
+@InProceedings{10.1007/3-540-16486-3_91,
+author="Buss, Samuel R.",
+editor="Selman, Alan L.",
+title="The polynomial hierarchy and intuitionistic Bounded Arithmetic",
+booktitle="Structure in Complexity Theory",
+year="1986",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="77--103",
+abstract="Intuitionistic theories IS2iof Bounded Arithmetic are introduced and it is shown that the definable functions of IS2iare precisely the □ipfunctions of the polynomial hierarchy. This is an extension of earlier work on the classical Bounded Arithmetic and was first conjectured by S. Cook. In contrast to the classical theories of Bounded Arithmetic where $\Sigma$ib-definable functions are of interest, our results for intuitionistic theories concern all the definable functions.",
+isbn="978-3-540-39825-7"
+}
+
+
+@article{COOK1993103,
+title = {Functional interpretations of feasibly constructive arithmetic},
+journal = {Annals of Pure and Applied Logic},
+volume = {63},
+number = {2},
+pages = {103-200},
+year = {1993},
+issn = {0168-0072},
+doi = {https://doi.org/10.1016/0168-0072(93)90044-E},
+url = {https://www.sciencedirect.com/science/article/pii/016800729390044E},
+author = {Stephen Cook and Alasdair Urquhart},
+abstract = {A notion of feasible function of finite type based on the typed lambda calculus is introduced which generalizes the familiar type 1 polynomial-time functions. An intuitionistic theory IPVω is presented for reasoning about these functions. Interpretations for IPVω are developed both in the style of Kreisel's modified realizability and Gödel's Dialectica interpretation. Applications include alternative proofs for Buss's results concerning the classical first-order system S12 and its intuitionistic counterpart IS12 as well as proofs of some of Buss's conjectures concerning IS12, and a proof that IS12 cannot prove that extended Frege systems are not polynomially bounded.}
+}
+
+@article{10.1145/2071368.2071377,
+author = {Nguyen, Phuong and Cook, Stephen},
+title = {The Complexity of Proving the Discrete Jordan Curve Theorem},
+year = {2012},
+issue_date = {January 2012},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {13},
+number = {1},
+issn = {1529-3785},
+url = {https://doi.org/10.1145/2071368.2071377},
+doi = {10.1145/2071368.2071377},
+abstract = {The Jordan curve theorem (JCT) states that a simple closed curve divides the plane into exactly two connected regions. We formalize and prove the theorem in the context of grid graphs, under different input settings, in theories of bounded arithmetic that correspond to small complexity classes. The theory V0(2) (corresponding to AC0(2)) proves that any set of edges that form disjoint cycles divides the grid into at least two regions. The theory V0 (corresponding to AC0) proves that any sequence of edges that form a simple closed curve divides the grid into exactly two regions. As a consequence, the Hex tautologies and the st-connectivity tautologies have polynomial size AC0(2)-Frege-proofs, which improves results of Buss which only apply to the stronger proof system TC0-Frege.},
+journal = {ACM Trans. Comput. Logic},
+month = 1,
+articleno = {9},
+numpages = {24},
+keywords = {Jordan curve theorem, bounded arithmetic, bounded reverse mathematics}
+}
+
+@phdthesis{Ngu08,
+  author       = {Nguyen, Phuong},
+  title        = {Bounded Reverse Mathematics},
+  school       = {Graduate Department of Computer Science, University of Toronto},
+  year         = {2008},
+  type         = {PhD thesis},
+  url          = {https://eccc.weizmann.ac.il/static/books/Bounded_Reverse_Mathematics/},
+  note         = {Electronic Colloquium on Computational Complexity (ECCC) Books, Lectures and Surveys},
+}
+
+
+% from RIS
+@article{Jerabek2022,
+  author   = {Je{\v{r}}{\'a}bek, Emil},
+  title    = {Iterated Multiplication in $VTC^{0}$},
+  journal  = {Archive for Mathematical Logic},
+  year     = {2022},
+  volume   = {61},
+  number   = {5},
+  pages    = {705--767},
+  month    = 7,
+  doi      = {10.1007/s00153-021-00810-6},
+  url      = {https://doi.org/10.1007/s00153-021-00810-6},
+  issn     = {1432-0665},
+  abstract = {We show that $VTC^{0}$, the basic theory of bounded arithmetic corresponding to the complexity class $\mathrm{TC}^{0}$, proves the $IMUL$ axiom expressing the totality of iterated multiplication satisfying its recursive definition, by formalizing a suitable version of the $\mathrm{TC}^{0}$ iterated multiplication algorithm by Hesse, Allender, and Barrington. As a consequence, $VTC^{0}$ can also prove the integer division axiom, and (by our previous results) the $RSUV$-translation of induction and minimization for sharply bounded formulas. Similar consequences hold for the related theories $\Delta^b_1\text{-}CR$ and $C^0_2$. As a side result, we also prove that there is a well-behaved $\Delta_0$ definition of modular powering in $I\Delta_0 + WPHP(\Delta_0)$.}
+}
+
+@article{00d3b11b-ff1c-386f-a929-6943478c4a28,
+ ISSN = {00224812},
+ URL = {http://www.jstor.org/stable/2275794},
+ abstract = {We characterize the collapse of Buss' bounded arithmetic in terms of the provable collapse of the polynomial time hierarchy. We include also some general model-theoretical investigations on fragments of bounded arithmetic.},
+ author = {Domenico Zambella},
+ journal = {The Journal of Symbolic Logic},
+ number = {3},
+ pages = {942--966},
+ publisher = {Association for Symbolic Logic},
+ title = {Notes on Polynomially Bounded Arithmetic},
+ urldate = {2025-11-23},
+ volume = {61},
+ year = {1996}
+}
+
+@article{Trufa__2024,
+   title={Intuitionistic Propositional Logic in Lean},
+   volume={410},
+   ISSN={2075-2180},
+   url={http://dx.doi.org/10.4204/EPTCS.410.9},
+   DOI={10.4204/eptcs.410.9},
+   journal={Electronic Proceedings in Theoretical Computer Science},
+   publisher={Open Publishing Association},
+   author={Trufaş, Dafina},
+   year={2024},
+   month=oct, pages={133–149} }
