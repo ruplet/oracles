@@ -11,8 +11,8 @@
 
 
 
-Two-sorted first-order logic extends the single-sorted setting in a routine way, so we only record
-the additions that we use later.  A systematic presentation can be found
+Two-sorted first-order logic extends the single-sorted setting in a routine way. We will only record
+the differences and skip the analogous definitions.  A systematic presentation can be found
 in~\cites[Section~4B]{CookNguyenDraft}[Section~IV.2]{Cook_Nguyen_2010}.
 In principle one could work with arbitrary pairs of sorts, but in this thesis we instantiate the
 framework to the familiar number sort (ranging over $\mathbb{N}$) and string sort (ranging over
@@ -73,6 +73,12 @@ For convenience, when \(t\) is a number term, we abbreviate
   X(t) \;\coloneqq\; t \in X.
 \]
 Thus \(X(i)\) plays the role of the \(i\)-th bit of the binary string \(X\).
+\begin{remark}
+Note that \(X(i)\) and $\len{X}$ intuitively should be somehow related. 
+We don't set any implicit assumptions on the models
+we will consider. The necessary conditions will be fixed by the axiomatic system
+from~\autoref{def:two-basic}.
+\end{remark}
 
 In \(\mathcal{L}^{2}_{A}\), the symbols \(+\) and \(\cdot\) each have arity \((2,0)\); the
 length function \(|\cdot|\) has arity \((0,1)\); and the predicate

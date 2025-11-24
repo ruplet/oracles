@@ -68,8 +68,8 @@ whenever talking about the semantics of $\mathcal{L}_A$-formulas.
 \begin{definition}[{\cite[Definition~III.1.4]{Cook_Nguyen_2010}} Induction Scheme]
 Let $\Phi$ be a set of formulas. The \emph{$\Phi$-IND axioms} are all formulas of the form
 \begin{equation}\label{eq:Phi-IND}
-\bigl(\varphi(0)\ \land\ \forall x\,(\varphi(x)\rightarrow \varphi(x+1))\bigr)
-\ \rightarrow\ \forall z\,\varphi(z),
+\bigl(\varphi(0)\ \land\ \forall x \ldotp (\varphi(x)\rightarrow \varphi(x+1))\bigr)
+\ \rightarrow\ \forall z \ldotp \varphi(z),
 \end{equation}
 where $\varphi$ ranges over formulas in $\Phi$.  Note that $\varphi(x)$ may have free
 variables other than~$x$.
@@ -87,7 +87,7 @@ to certain sets of formulas.
 \begin{definition}[{\cite[Definition~III.1.7]{Cook_Nguyen_2010}} \IOPEN, \IDeltaZero, \ISigmaOne]
 Let $\mathrm{OPEN}$ be the set of \emph{open} (i.e.\ quantifier-free) formulas, let $\Delta_{0}$
 be the set of \emph{bounded} formulas, and let $\Sigma_{1}$ be the set of formulas
-of the form $\exists \vec{x}\,\varphi$, where $\varphi$ is bounded and $\vec{x}$ is a
+of the form $\exists \vec{x} \ldotp \varphi$, where $\varphi$ is bounded and $\vec{x}$ is a
 (possibly empty) tuple of variables.  
 
 The theories $\IOPEN$, $\IDeltaZero$, and $\ISigmaOne$ are the subsystems of $\arithPA$
@@ -127,11 +127,11 @@ The following formulas (and their universal closures) are theorems of $\IOPEN$:
 The following formulas (and their universal closures) are theorems of $\IDeltaZero$:
 \[
 \begin{array}{@{}l l@{}}
-\mathrm{D1.}\; x\neq 0 \rightarrow \exists y\le x\,(x=y+1)
+\mathrm{D1.}\; x\neq 0 \rightarrow \exists y\le x \ldotp (x=y+1)
 & \text{(Predecessor)} \\[2pt]
-\mathrm{D2.}\; \exists z\,\bigl(x+z=y \,\lor\, y+z=x\bigr)
+\mathrm{D2.}\; \exists z \ldotp \bigl(x+z=y \,\lor\, y+z=x\bigr)
 & \\[2pt]
-\mathrm{D3.}\; x\le y \leftrightarrow \exists z\,(x+z=y)
+\mathrm{D3.}\; x\le y \leftrightarrow \exists z \ldotp (x+z=y)
 & \\[2pt]
 \mathrm{D4.}\; (x\le y \land y\le z) \rightarrow x\le z
 & \text{(Transitivity)} \\[2pt]
@@ -171,7 +171,7 @@ P(x)\;\leftrightarrow\;\varphi(x).
     a function symbol $f(x)\notin \mathcal{L}$ is \emph{$\Phi$-definable in $\mathcal{T}$} if there exists
     a formula $\varphi(x,y)\in\Phi$ such that
     \begin{equation}\label{eq:unique-existence}
-    \mathcal{T} \vdash \forall x\,\exists! y\,\varphi(x,y),
+    \mathcal{T} \vdash \forall x \ldotp \exists! y \ldotp \varphi(x,y),
     \end{equation}
     and moreover
 \begin{equation}\label{eq:defining-function}
@@ -201,9 +201,9 @@ However, the limits of expressive power of \IDeltaZero{} are low.
 
 \begin{theorem}[{\cite[Section~III.2]{Cook_Nguyen_2010}}]
 \[
-\IDeltaZero \nvdash \forall x\,\exists y\,\exp(x,y).
+\IDeltaZero \nvdash \forall x\,\exists y \ldotp \exp(x,y).
 \]
-Note that $\arithPA$ easily proves $\forall  x\,\exists y\,\exp(x,y)$.
+Note that $\arithPA$ easily proves $\forall  x \ldotp \exists y \ldotp \exp(x,y)$.
 \end{theorem}
 
 It is interesting to study the theory $\IDeltaZero + \exp$ of $\IDeltaZero$ axioms with an additional axiom
@@ -226,7 +226,7 @@ computational complexity characterization.
 
 \section{Two-sorted logic and \compVZero}\label{sec:theory-v0}
 
-\begin{definition}[Axioms of 2-BASIC]
+\begin{definition}[Axioms of 2-BASIC]\label{def:two-basic}
 \[
 \begin{array}{@{}l l@{}}
 \mathrm{B1.}\; x + 1 \neq 0
@@ -251,7 +251,7 @@ computational complexity characterization.
 \\[2pt]
 \mathrm{B6.}\; x \cdot (y + 1) = (x \cdot y) + x
 &
-\mathrm{B12.}\; x \neq 0 \rightarrow \exists y \le x\, (y + 1 = x)
+\mathrm{B12.}\; x \neq 0 \rightarrow \exists y \le x \ldotp (y + 1 = x)
 \\[6pt]
 \text{L1.}\; X(y) \rightarrow y < \len{X}
 &
@@ -259,7 +259,7 @@ computational complexity characterization.
 \\[6pt]
 \multicolumn{2}{@{}l@{}}{
 \text{SE.}\;
-\bigl(\len{X} = \len{Y} \land \forall i < \len{X}\, (X(i) \leftrightarrow Y(i))\bigr)
+\bigl(\len{X} = \len{Y} \land \forall i < \len{X} \ldotp (X(i) \leftrightarrow Y(i))\bigr)
 \rightarrow X = Y
 }
 \end{array}
@@ -272,7 +272,7 @@ computational complexity characterization.
 Let $\Phi$ be a set of formulas. The \emph{comprehension axiom scheme for $\Phi$},
 denoted $\Phi\text{-}\mathrm{COMP}$, consists of all formulas of the form
 \begin{equation}\label{eq:Phi-COMP}
-\exists X \le y\;\forall z<y\;\bigl(X(z)\leftrightarrow \varphi(z)\bigr),
+\exists X \le y \ldotp \forall z<y \ldotp \bigl(X(z)\leftrightarrow \varphi(z)\bigr),
 \end{equation}
 where $\varphi(z)\in\Phi$ and $X$ does not occur free in $\varphi(z)$.
 In \eqref{eq:Phi-COMP}, the formula $\varphi(z)$ may have free variables of both
