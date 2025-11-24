@@ -161,22 +161,22 @@ We will now introduce the core notion of arithmetic --- what does it mean to \em
 
 \begin{enumerate}
     \item
-    A predicate symbol $P(x)\notin \mathcal{L}$ is \emph{$\Phi$-definable in $\mathcal{T}$} if there exists
+    a predicate symbol $P(x)\notin \mathcal{L}$ is \emph{$\Phi$-definable in $\mathcal{T}$} if there exists
     an $\mathcal{L}$-formula $\varphi(x)\in\Phi$ such that
-    \begin{equation}\label{eq:defining-predicate}
-    P(x)\;\leftrightarrow\;\varphi(x).
-    \end{equation}
+\begin{equation}\label{eq:defining-predicate}
+P(x)\;\leftrightarrow\;\varphi(x).
+\end{equation};
 
     \item
-    A function symbol $f(x)\notin \mathcal{L}$ is \emph{$\Phi$-definable in $\mathcal{T}$} if there exists
+    a function symbol $f(x)\notin \mathcal{L}$ is \emph{$\Phi$-definable in $\mathcal{T}$} if there exists
     a formula $\varphi(x,y)\in\Phi$ such that
     \begin{equation}\label{eq:unique-existence}
     \mathcal{T} \vdash \forall x\,\exists! y\,\varphi(x,y),
     \end{equation}
     and moreover
-    \begin{equation}\label{eq:defining-function}
-    y=f(x)\;\leftrightarrow\;\varphi(x,y).
-    \end{equation}
+\begin{equation}\label{eq:defining-function}
+y=f(x)\;\leftrightarrow\;\varphi(x,y).
+\end{equation}.
 \end{enumerate}
 
     We call \eqref{eq:defining-predicate} a \emph{defining axiom} for $P(x)$ and
@@ -355,7 +355,7 @@ respectively.
 Let $\complexity{C}$ be a two-sorted complexity class of relations.  
 The corresponding \emph{function class} $\complexity{FC}$ consists of:
 \begin{enumerate}
-\item all $p$-bounded number functions whose graphs belong to $\complexity{C}$, and
+\item all $p$-bounded number functions whose graphs belong to $\complexity{C}$; and
 \item all $p$-bounded string functions whose bit graphs belong to $\complexity{C}$.
 \end{enumerate}
 
@@ -472,8 +472,8 @@ we will be able to readily transfer a huge amount of results from paper to compu
 
 We have two goals for formalization:
 \begin{enumerate}
-    \item for logicians to believe us the formalization is sound
-    \item to be able to extract code with certified complexity from proofs
+    \item for logicians to believe us the formalization is sound;
+    \item to be able to extract code with certified complexity from proofs.
 \end{enumerate}
 
 There is very little work available on the formalization of arithmetic.
@@ -524,5 +524,3 @@ to be implementable in practice, a \emph{formalization} of $\complexity{PV}$ is 
 \input{listings/lean-example.tex}
 \caption{Lean example}\label{lst:lean-example}
 \end{rawlisting}
-
-

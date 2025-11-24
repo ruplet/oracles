@@ -35,8 +35,8 @@ function symbols come in two varieties:
 
 For any pair \(n,m \in \mathbb{N}\), the vocabulary contains:
 \begin{enumerate}
-  \item a set of \((n,m)\)-ary number-function symbols,
-  \item a set of \((n,m)\)-ary string-function symbols, and
+  \item a set of \((n,m)\)-ary number-function symbols;
+  \item a set of \((n,m)\)-ary string-function symbols; and
   \item a set of \((n,m)\)-ary predicate symbols.
 \end{enumerate}
 A \((0,0)\)-ary function symbol is simply a constant symbol, which may be
@@ -124,11 +124,11 @@ Let \(\mathcal{L} \supseteq \mathcal{L}^{2}_{A}\) be a two-sorted vocabulary.
 % Obecnie w ogóle nie może być kwantyfikatora po napisie wewnątrz takiego po liczbie. To istotne?
 % Warto to napisać wprost jeszcze raz pod spodem.
 \begin{enumerate}
-  \item The class \(\Sigma^{B}_{0}(\mathcal{L}) = \Pi^{B}_{0}(\mathcal{L})\) consists of all
+  \item the class \(\Sigma^{B}_{0}(\mathcal{L}) = \Pi^{B}_{0}(\mathcal{L})\) consists of all
         \(\mathcal{L}\)-formulas whose only quantifiers are \emph{bounded number quantifiers}
-        (string variables may occur free).
+        (string variables may occur free);
 
-  \item For \(i \ge 0\), the class \(\Sigma^{B}_{i+1}(\mathcal{L})\) (resp.\ \(\Pi^{B}_{i+1}(\mathcal{L})\))
+  \item for \(i \ge 0\), the class \(\Sigma^{B}_{i+1}(\mathcal{L})\) (resp.\ \(\Pi^{B}_{i+1}(\mathcal{L})\))
         consists of formulas of the form
         \[
           \exists \vec{X} \le \vec{t}\ldotp \varphi(\vec{X})
@@ -136,16 +136,16 @@ Let \(\mathcal{L} \supseteq \mathcal{L}^{2}_{A}\) be a two-sorted vocabulary.
         \]
         where:
         \begin{enumerate}
-            \item \(\vec{X}\) is a vector of string variables,
+            \item \(\vec{X}\) is a vector of string variables;
             % TODO: Def. 2.2.3 (ii) - "not involving variables from X" -
             % nasuwa się pytanie co by było, gdybyśmy dopuścili? Nic by się nie zmieniło.
             % Więc warto gdzieś tam dopisać, że to tylko założenie dla porządku, które nic nie zmienia.
-            \item \(\vec{t}\) is a vector of \(\mathcal{L}^{2}_{A}\)-terms not involving variables from \(\vec{X}\),
+            \item \(\vec{t}\) is a vector of \(\mathcal{L}^{2}_{A}\)-terms not involving variables from \(\vec{X}\);
             \item \(\varphi\) is a \(\Pi^{B}_{i}(\mathcal{L})\) formula  
                   (resp.\ a \(\Sigma^{B}_{i}(\mathcal{L})\) formula).
-        \end{enumerate}
+        \end{enumerate};
 
-  \item A \(\Sigma^{1}_{1}(\mathcal{L})\) formula is a formula of the form
+  \item a \(\Sigma^{1}_{1}(\mathcal{L})\) formula is a formula of the form
         \(
           \exists \vec{X}\ldotp \varphi,
         \)

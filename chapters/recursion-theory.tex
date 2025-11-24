@@ -23,22 +23,21 @@ that later became foundational for ICC\@. An important formal system studied the
 \label{def:primitive-recursive}
 \(\complexity{PR}\) is the smallest class of functions containing~\ref{itm:pra-const}--\ref{itm:pra-proj} and closed under~\ref{itm:pra-comp} and~\ref{itm:pra-rec}.
 \begin{enumerate}
-\item\label{itm:pra-const}\textbf{(Constants)} For every \(n\in\mathbb{N}\) and \(k\ge 0\), the \(k\)-ary constant function
-      \(c_{n}^{(k)}(\vec x)=n\).
-\item\label{itm:pra-succ} \textbf{(Successor)} \(S(x)=x+1\).
-\item\label{itm:pra-proj} \textbf{(Projections)} For \(k\ge 1\) and \(1\le i\le k\),
-      \(\pi_i^{(k)}(x_1,\dots,x_k)=x_i\).
-\item\label{itm:pra-comp} \textbf{(Composition)} If \(h:\mathbb{N}^m\to\mathbb{N}\) and
+\item\label{itm:pra-const}\textbf{(constants)} for every \(n\in\mathbb{N}\) and \(k\ge 0\), the \(k\)-ary constant function
+      \(c_{n}^{(k)}(\vec x)=n\);
+\item\label{itm:pra-succ} \textbf{(successor)} \(S(x)=x+1\);
+\item\label{itm:pra-proj} \textbf{(projections)} for \(k\ge 1\) and \(1\le i\le k\),
+      \(\pi_i^{(k)}(x_1,\dots,x_k)=x_i\);
+\item\label{itm:pra-comp} \textbf{(composition)} if \(h:\mathbb{N}^m\to\mathbb{N}\) and
       \(g_1,\dots,g_m:\mathbb{N}^k\to\mathbb{N}\) are in \(\complexity{PR}\), then
-      \(f(\vec x)=h\big(g_1(\vec x),\dots,g_m(\vec x)\big)\) is in \(\complexity{PR}\).
-\item\label{itm:pra-rec} \textbf{(Primitive recursion)} If \(g:\mathbb{N}^k\to\mathbb{N}\) and
+      \(f(\vec x)=h\big(g_1(\vec x),\dots,g_m(\vec x)\big)\) is in \(\complexity{PR}\);
+\item\label{itm:pra-rec} \textbf{(primitive recursion)} if \(g:\mathbb{N}^k\to\mathbb{N}\) and
       \(h:\mathbb{N}^{k+2}\to\mathbb{N}\) are in \(\complexity{PR}\), then the unique
       \(f:\mathbb{N}^{k+1}\to\mathbb{N}\) is in \(\complexity{PR}\) with:
       \[
       f(0,\vec x)=g(\vec x),\qquad
       f(S(y),\vec x)=h\big(y,\,f(y,\vec x),\,\vec x\big).
       \]
-
 \end{enumerate}
 \end{definition}
 
@@ -148,9 +147,12 @@ Here \(S_0(y)=2y\) and \(S_1(y)=2y+1\) append a binary digit to \(y\).
 \label{def:cobham}
 The class of polynomial-time computable functions is the smallest class \(\mathcal{C}\) of functions such that:
 \begin{enumerate}
-\item \(\mathcal{C}\) contains the initial functions (as in~\autoref{def:primitive-recursive}: constants, successor, projections), the~binary successor functions \(S_0(x)=2x\) and \(S_1(x)=2x+1\), and the weak exponential \((x,y)\mapsto x^{\lvert y\rvert}\).
-\item \(\mathcal{C}\) is closed under composition.
-\item \(\mathcal{C}\) is closed under bounded primitive recursion on binary notation as in Definition~\autoref{def:bounded-binary-primitive-recursion}.
+\item the class \(\mathcal{C}\) contains the initial functions
+(as in~\autoref{def:primitive-recursive}: constants, successor, projections), the~binary successor
+functions \(S_0(x)=2x\) and \(S_1(x)=2x+1\), and the weak exponential \((x,y)\mapsto x^{\lvert y\rvert}\);
+\item the class \(\mathcal{C}\) is closed under composition;
+\item the class \(\mathcal{C}\) is closed under bounded primitive recursion on binary notation as in
+      Definition~\autoref{def:bounded-binary-primitive-recursion}.
 \end{enumerate}
 \end{definition}
 
@@ -205,32 +207,32 @@ The class \(\mathcal{B}\) is the smallest class of functions on non-negative
 integers that contains \((\textup{i})\)--\((\textup{v})\) and is closed under
 \((\textup{vi})\)--\((\textup{vii})\).
 \begin{enumerate}
-  \item \textbf{(Constant)} \(0(;)=0\).
-  \item \textbf{(Projection)} for \(m,n\ge 0\) and \(1\le j\le m+n\),
+  \item \textbf{(constant)} \(0(;)=0\);
+  \item \textbf{(projection)} for \(m,n\ge 0\) and \(1\le j\le m+n\),
         \[
           \pi_j(x_1,\dots,x_m;\,a_1,\dots,a_n)=
           \begin{cases}
             x_j     & \text{if } j\le m,\\
             a_{j-m} & \text{otherwise.}
           \end{cases}
-        \]
-  \item \textbf{(Successors)} \(s_i(;a)=2a+i\) for \(i\in\{0,1\}\).
-  \item \textbf{(Predecessor)} \(p(;0)=0\) and \(p(;ai)=a\).
-  \item \textbf{(Conditional)}\[
+        \];
+  \item \textbf{(successors)} \(s_i(;a)=2a+i\) for \(i\in\{0,1\}\);
+  \item \textbf{(predecessor)} \(p(;0)=0\) and \(p(;ai)=a\);
+  \item \textbf{(conditional)}\[
         C(;a,b,c)=
         \begin{cases}
           b & \text{if } a\bmod 2 = 0,\\
           c & \text{otherwise.}
         \end{cases}
-        \]
-  \item \textbf{(Predicative recursion on notation)}\
+        \];
+  \item \textbf{(predicative recursion on notation)}\
         if \(g,h_0,h_1\in\mathcal{B}\), define the new \(f\) by
         \[
         f(0,\vec{x};\vec{a}) = g(\vec{x};\vec{a}),\qquad
         f(yi,\vec{x};\vec{a}) = h_i\bigl(y,\vec{x};\vec{a},f(y,\vec{x};\vec{a})\bigr),
         \]
         where \(i\in\{0,1\}\) and \(yi\) is \(y\) with bit \(i\) appended.
-  \item \textbf{(Safe composition)}\
+  \item \textbf{(safe composition)}\
         if \(h,\vec{r},\vec{t}\in\mathcal{B}\) with each component of
         \(\vec{r}\) taking only normal arguments and each component of
         \(\vec{t}\) taking both normal and safe arguments, put
@@ -238,7 +240,6 @@ integers that contains \((\textup{i})\)--\((\textup{v})\) and is closed under
           f(\vec{x};\vec{a}) =
           h\bigl(\vec{r}(\vec{x};\,);\ \vec{t}(\vec{x};\vec{a})\bigr).
         \]
-
 \end{enumerate}
 
 \paragraph{Intuition.}
@@ -274,8 +275,8 @@ The class \(BC_\varepsilon^{-}\) is the smallest class of functions that contain
 the following schemes of safe composition and safe recursion:
 \begin{enumerate}
   
-  \item \textbf{(Safe affine composition)}\
-      Let \((h_i)_{i=1}^M\), \((g_i)_{i=1}^N\), \(f\) be functions in \(BC_\varepsilon^{-}\) such that
+  \item \textbf{(safe affine composition)}\
+      let \((h_i)_{i=1}^M\), \((g_i)_{i=1}^N\), \(f\) be functions in \(BC_\varepsilon^{-}\) such that
       each of \(g_i\) has only normal arguments \big(\(g_i : \mathbb{N}_2^{m, 0}\) \big), and the arity of \(f\) is \(M\) normal arguments and \(N\) safe,
       i.e.\  \(f : \mathbb{N}_2^{M, N} \rightarrow \mathbb{N}_2\). Let also $n$ be the sum of safe arities of $h_i$.
 
@@ -287,9 +288,9 @@ the following schemes of safe composition and safe recursion:
         \]
         where \((\vec{y}_1,\dots,\vec{y}_N)\) partitions the safe inputs into
         disjoint subtuples; the concatenation \(\sum \vec{y}_i\) is equal to \(\vec{y}\).
-        \todo{fix this definition because now its like BC}
+        \todo{fix this definition because now its like BC};
       %   Def. 2.3.2 (ii) - W definicji rekurencji jakieś argumenty miały być chyba niewidoczne dla jakiejś funkcji - zdaje się, że h_b nie powinien widzieć y. Bo teraz definicja jest jak w Bellantoni-Cook (z dokładnością do obecności shift).
-  \item \textbf{(Safe affine course-of-value recursion)}\
+  \item \textbf{(safe affine course-of-value recursion)}\
         let \(g,h_0,h_1,d_0,d_1\in BC_\varepsilon^{-}\). Their course-of-value
         recursion produces \(f\) given by
         \[

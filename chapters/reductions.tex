@@ -68,13 +68,12 @@ then repeatedly decide if \(i\)-th bit of \(f(x)\) is 0 or 1. For example, let's
 A function \(f : \{0,1\}^{\ast} \to \{0,1\}^{\ast}\) is said to be
 \emph{logspace computable} if
 \begin{enumerate}
-  \item \(f\) is \emph{polynomially bounded}, meaning that there exists a
+\item the function \(f\) is \emph{polynomially bounded}, meaning that there exists a
         constant \(c > 0\) such that
         \[
           \len{f(x)} \le \len{x}^{\,c}
-          \qquad\text{for all } x \in \{0,1\}^{\ast},
+          \qquad\text{for all } x \in \{0,1\}^{\ast};
         \]
-        and
   \item the following two languages lie in \(\mathsf{L}\):
         \[
           L_{f}
