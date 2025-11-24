@@ -195,14 +195,14 @@ induction on $\varphi$:
     \mathcal{M} \models (P t_1 \dots t_n)[\sigma]
     \;\;\text{iff}\;\;
     \bigl\langle t_1^{\mathcal{M}}[\sigma],\dots,t_n^{\mathcal{M}}[\sigma]\bigr\rangle
-    \in P^{\mathcal{M}}.
-  \];
+    \in P^{\mathcal{M}};
+  \]
   \item if $\mathcal{L}$ contains $=$, then for terms $s,t$,
   \[
     \mathcal{M} \models (s = t)[\sigma]
     \;\;\text{iff}\;\;
-    s^{\mathcal{M}}[\sigma] = t^{\mathcal{M}}[\sigma].
-  \];
+    s^{\mathcal{M}}[\sigma] = t^{\mathcal{M}}[\sigma];
+  \]
   \item the structure satisfies $\neg \varphi[\sigma]$ iff $\mathcal{M} \not\models \varphi[\sigma]$;
   \item the structure satisfies $(\varphi \lor \psi)[\sigma]$ iff
         $\mathcal{M} \models \varphi[\sigma]$ or $\mathcal{M} \models \psi[\sigma]$;
