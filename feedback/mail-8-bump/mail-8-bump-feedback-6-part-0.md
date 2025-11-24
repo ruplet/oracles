@@ -119,4 +119,5 @@ Dopisałem taki remark:
 
 Dzięki! Przy okazji usunąłem todo ze wstępu do obwodów - zamiast todo napisałem że pomijam te definicje (to by wyszła
 jeszcze jedna strona pdfa...)
+
 ![alt text](image-14.png)
