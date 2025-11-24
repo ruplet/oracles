@@ -17,7 +17,7 @@ terms and formulas:
   \item an infinite set of \emph{variables}. We use $x,y,z,\dots$ and sometimes
         $a,b,c,\dots$ as meta-variables for variables;
   \item the connectives $\lnot$, $\land$, $\lor$ (not, and, or) and
-        logical constants $\bot$, $\top$ (false, true);\todo{consistency: semicolon in enumerate}
+        logical constants $\bot$, $\top$ (false, true);
   \item the quantifiers $\forall$, $\exists$ (for all, there exists);
   \item parentheses $(\, ,\,)$.
 \end{enumerate}
@@ -134,9 +134,9 @@ An \emph{$\mathcal{L}$-structure} $\mathcal{M}$ consists of:
     Note that to ``syntactical'' relations, we assign ``real'' relations defined on
     the underlying elements of the structure. We will want to treat some of these
     relations specially, e.g.\ to make sure that the ``\(=\)'' relation is
-    interpreted as the actual equality, or that a designated ``\(\text{PLUS}(x, y, z)\)''
+    interpreted as the actual equality, or that a designated ``\(\text{SUCC}(x, y)\)''
     relation holds only if the underlying objects are actual natural numbers,
-    for which we have $x + y = z$. \todo{add autoref to where we talk about that}
+    for which we have $x + 1 = y$; see e.g.~\autoref{def:fo-arith}.
 % Thus the predicate symbol $=$ receives special treatment: it must always be
 % interpreted as actual equality on the universe. We can also consider
 % logics where we don't take the $=$ symbol as granted. For our purposes, however,

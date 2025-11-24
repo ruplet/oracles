@@ -1,14 +1,4 @@
 \section{Two-sorted first-order logic}\label{sec:defs-two-sorted}
-% Sec. 2.2: Akapit 1 sugeruje, jakbyśmy nic nie mówili o logice 2-sortowej, a zaraz po nim miało nastąpić coś
-% innego. Przeformułuj, aby był jaśniejszy (w stylu "pomijamy rzeczy podobne, a wypiszemy tylko różnice").
-
-% Ponadto rozdziały 2.1 i 2.2 mają zupełnie inny charakter. W 2.1 jest logika nad dowolną sygnaturą, a w 2.2
-% konkretnie liczby i napisy. Pasuje coś powiedzieć na początku 2.2 - że choć logikę 2-sortową można ogólnie
-% definiować dla dowolnych sortów, to my piszemy tylko o tych konkretnych, liczby i napisy.
-
-% I też właśnie trzeba konkretnie napisać, że sorty to liczby i napisy, przed Def. 2.2.1 - bo teraz w środku
-% tej definicji nagle się pojawia coś o napisach i liczbach i nie wiadomo o co chodzi.
-
 
 
 Two-sorted first-order logic extends the single-sorted setting in a routine way. We will only record
@@ -47,10 +37,6 @@ We use \(f,g,h,\dots\) as metavariables for number-valued function symbols,
 symbols.
 \end{definition}
 
-% TODO: TUTAJ DOPISAC REMARK ZE TO BEDZIE JAKO AKSJOMAT!
-% Okolice Def. 2.2.2: Implicite zakładamy związek między \vec{X} oraz t\in X, więc nie dowolna struktura tylko
-% coś w stylu że nie zachodzi t\in X dla liczb >= \vec{X}.
-
 \begin{definition}[The language \(\mathcal{L}^{2}_{A}\)]\label{def:L2A}
 As an example, consider the following two-sorted extension of the
 arithmetical language \(\mathcal{L}_{A}\)~(\autoref{def:LA}):
@@ -74,7 +60,7 @@ For convenience, when \(t\) is a number term, we abbreviate
 \]
 Thus \(X(i)\) plays the role of the \(i\)-th bit of the binary string \(X\).
 \begin{remark}
-Note that \(X(i)\) and $\len{X}$ intuitively should be somehow related. 
+Note that \(X(i)\) and $\len{X}$ intuitively should be related in some way. 
 We don't set any implicit assumptions on the models
 we will consider. The necessary conditions will be fixed by the axiomatic system
 from~\autoref{def:two-basic}.
@@ -126,9 +112,6 @@ The same convention applies to \(\forall \vec{x} \le \vec{t}\), \(\exists \vec{X
 \begin{definition}[The \texorpdfstring{$\Sigma^1_{1}(\mathcal{L})$, $\Sigma^B_{i}(\mathcal{L})$,
   and $\Pi^B_{i}(\mathcal{L})$}{Σ¹₁(L), Σᵢᴮ(L), Πᵢᴮ(L)} formulas]\label{def:SigmaB-PiB-hierarchy}
 Let \(\mathcal{L} \supseteq \mathcal{L}^{2}_{A}\) be a two-sorted vocabulary.  
-% Druga potencjalna modyfikacja to dopuszczenie kwantyfikatorów po liczbach między tymi po napisach.
-% Obecnie w ogóle nie może być kwantyfikatora po napisie wewnątrz takiego po liczbie. To istotne?
-% Warto to napisać wprost jeszcze raz pod spodem.
 \begin{enumerate}
   \item the class \(\Sigma^{B}_{0}(\mathcal{L}) = \Pi^{B}_{0}(\mathcal{L})\) consists of all
         \(\mathcal{L}\)-formulas whose only quantifiers are \emph{bounded number quantifiers}
@@ -143,9 +126,6 @@ Let \(\mathcal{L} \supseteq \mathcal{L}^{2}_{A}\) be a two-sorted vocabulary.
         where:
         \begin{enumerate}
             \item \(\vec{X}\) is a vector of string variables;
-            % TODO: Def. 2.2.3 (ii) - "not involving variables from X" -
-            % nasuwa się pytanie co by było, gdybyśmy dopuścili? Nic by się nie zmieniło.
-            % Więc warto gdzieś tam dopisać, że to tylko założenie dla porządku, które nic nie zmienia.
             \item \(\vec{t}\) is a vector of \(\mathcal{L}^{2}_{A}\)-terms not involving variables from \(\vec{X}\);
             \item \(\varphi\) is a \(\Pi^{B}_{i}(\mathcal{L})\) formula  
                   (resp.\ a \(\Sigma^{B}_{i}(\mathcal{L})\) formula).
@@ -163,15 +143,25 @@ We usually write \(\Sigma^{B}_{i}\) for \(\Sigma^{B}_{i}(\mathcal{L}^{2}_{A})\) 
 \(\Pi^{B}_{i}\) for \(\Pi^{B}_{i}(\mathcal{L}^{2}_{A})\).
 \end{definition}
 
+\begin{remark}
+The above definition might seem excessively limiting, as it doesn't allow us
+to have a string quantifier under a number quantifier.
+An example of a formula which is in none of $\Sigma^B_i$ is $\forall x \ldotp \forall X \ldotp \exists Z \ldotp \varphi(x, Y, Z)$.
+The limitation of shape of formulas here is not a~limitation on all the two-sorted formulas
+we can study. Indeed, we will reason about such formulas~---~we~will just not say that they are in $\Sigma^B_i$.
+Details of one such reasoning are e.g.~in~\cites[Lemma~V.4.10]{Cook_Nguyen_2010}[Lemma~5.35]{CookNguyenDraft}.
+\end{remark}
 
 \begin{remark}
-The formalism described above coincides with the usual weak monadic second-order logic (WMSO) on
-words.  We phrase it as a two-sorted first-order system only to match the presentation
-in~\cite{CookNguyenDraft,Cook_Nguyen_2010}, but in practice we freely identify it with WMSO and use
-that terminology when convenient, following the convention in~\cite{COOK2003193}.
-% Ostatnie zdanie rozdziału, o MSO: w MSO na słowach skończonych też kwantyfikujemy po zbiorach skończonych.
-% Więc oprócz tego, że zbiory są skończone warto napisać, że "pomimo iż liczby są z nieskończonego zbioru
-% liczb naturalnych" (w sumie też nigdzie nie jest napisane, że to liczby naturalne, a nie całkowite,
-% wymierne, czy jeszcze jakieś inne).
-% W tym kontekście używa się często nazwy WMSO (weak MSO) - czy ona nie byłaby odpowiednia?
+The above definition also doesn't allow 
+using $X$ in the term $t$ used
+ to ``guard'' a~bounded quantifier $\exists X \le t$.
+Note that if you used $t := X$, such a bounded quantifier would expand to $\exists X \le X$,
+which is obviously equivalent to an unbounded quantifier $\exists X$.
+\end{remark}
+
+\begin{remark}
+The formalism described above is similar to the usual weak monadic second-order logic (WMSO) on
+words.  We phrase it as a two-sorted first-order system to match the presentation
+in~\cite{CookNguyenDraft,Cook_Nguyen_2010} and don't discuss the differences between the two formalisms here.
 \end{remark}
