@@ -3,7 +3,7 @@ One approach to certify complexity class of a program would be to simply
 accept an implementation of the algorithm in C++ accompanied by a proof
 that the number
 of ``steps'' of the algorithm when executed on a standard computer is bounded by a polynomial \(p\).
-For at least \todo{careful with three}three
+For at least three
 reasons, such a language would not be satisfactory for us. We explore them in this chapter.
 
 \paragraph{Informality of language semantics}
@@ -33,10 +33,13 @@ verify user-provided pre- and post-conditions of functions.
 Dafny~\cite{10.5555/1939141.1939161} (see:~\autoref{lst:dafny-example}) does it by utilizing \emph{SMT-solvers}, not allowing
 % \footnote{https://dafny.org/}
 the user to conduct a mathematical proof manually. Why3~\cite{boogie11why3} provides a comprehensive framework,
+% \footnote{https://www.why3.org/}
 combining the power of
 SMT-solvers for automation where possible, and allowing the user to conduct proofs manually
 where they fail.
-% \footnote{https://www.why3.org/}
+Similarly, Liquid Haskell extends Haskell with functionality allowing the user to
+specify correctness properties using liquid types~\cite{10.1145/1375581.1375602}.
+A recent work adapts the same liquid-type approach to Rust~\cite{10.1145/3591283}.
 
 
 \begin{rawlisting}

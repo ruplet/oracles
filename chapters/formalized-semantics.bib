@@ -215,3 +215,43 @@ author = {Andrej Bauer},
 keywords = {synthetic computability theory, constructive mathematics},
 abstract = {Computability theory, which investigates computable functions and computable sets, lies at the foundation of computer science. Its classical presentations usually involve a fair amount of Gödel encodings which sometime obscure ingenious arguments. Consequently, there have been a number of presentations of computability theory that aimed to present the subject in an abstract and conceptually pleasing way. We build on two such approaches, Hyland's effective topos and Richman's formulation in Bishop-style constructive mathematics, and develop basic computability theory, starting from a few simple axioms. Because we want a theory that resembles ordinary mathematics as much as possible, we never speak of Turing machines and Gödel encodings, but rather use familiar concepts from set theory and topology.}
 }
+
+@article{10.1145/3591283,
+author = {Lehmann, Nico and Geller, Adam T. and Vazou, Niki and Jhala, Ranjit},
+title = {Flux: Liquid Types for Rust},
+year = {2023},
+issue_date = {June 2023},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {7},
+number = {PLDI},
+url = {https://doi.org/10.1145/3591283},
+doi = {10.1145/3591283},
+abstract = {We introduce Flux, which shows how logical refinements can work hand in glove with Rust's ownership mechanisms to yield ergonomic type-based verification of low-level pointer manipulating programs. First, we design a novel refined type system for Rust that indexes mutable locations, with pure (immutable) values that can appear in refinements, and then exploits Rust's ownership mechanisms to abstract sub-structural reasoning about locations within Rust's polymorphic type constructors, while supporting strong updates. We formalize the crucial dependency upon Rust's strong aliasing guarantees by exploiting the Stacked Borrows aliasing model to prove that "well-borrowed evaluations of well-typed programs do not get stuck". Second, we implement our type system in Flux, a plug-in to the Rust compiler that exploits the factoring of complex invariants into types and refinements to efficiently synthesize loop annotations-including complex quantified invariants describing the contents of containers-via liquid inference. Third, we evaluate Flux with a benchmark suite of vector manipulating programs and parts of a previously verified secure sandboxing library to demonstrate the advantages of refinement types over program logics as implemented in the state-of-the-art Prusti verifier. While Prusti's more expressive program logic can, in general, verify deep functional correctness specifications, for the lightweight but ubiquitous and important verification use-cases covered by our benchmarks, liquid typing makes verification ergonomic by slashing specification lines by a factor of two, verification time by an order of magnitude, and annotation overhead from up to 24\% of code size (average 14\%), to nothing at all.},
+journal = {Proc. ACM Program. Lang.},
+month = jun,
+articleno = {169},
+numpages = {25},
+keywords = {Rust, heap-manipulating programs, liquid types}
+}
+
+@inproceedings{10.1145/1375581.1375602,
+author = {Rondon, Patrick M. and Kawaguci, Ming and Jhala, Ranjit},
+title = {Liquid types},
+year = {2008},
+isbn = {9781595938602},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/1375581.1375602},
+doi = {10.1145/1375581.1375602},
+abstract = {We present Logically Qualified Data Types, abbreviated to Liquid Types, a system that combines Hindley-Milner type inference with Predicate Abstraction to automatically infer dependent types precise enough to prove a variety of safety properties. Liquid types allow programmers to reap many of the benefits of dependent types, namely static verification of critical properties and the elimination of expensive run-time checks, without the heavy price of manual annotation. We have implemented liquid type inference in DSOLVE, which takes as input an OCAML program and a set of logical qualifiers and infers dependent types for the expressions in the OCAML program. To demonstrate the utility of our approach, we describe experiments using DSOLVE to statically verify the safety of array accesses on a set of OCAML benchmarks that were previously annotated with dependent types as part of the DML project. We show that when used in conjunction with a fixed set of array bounds checking qualifiers, DSOLVE reduces the amount of manual annotation required for proving safety from 31\% of program text to under 1\%.},
+booktitle = {Proceedings of the 29th ACM SIGPLAN Conference on Programming Language Design and Implementation},
+pages = {159-169},
+numpages = {11},
+keywords = {type inference, predicate abstraction, hindley-milner, dependent types},
+location = {Tucson, AZ, USA},
+series = {PLDI '08},
+url = {https://web.archive.org/web/20250723043647/https://goto.ucsd.edu/~rjhala/liquid/liquid_types.pdf},
+}
+
+

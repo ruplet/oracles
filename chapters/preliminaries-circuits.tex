@@ -9,7 +9,7 @@ these are discussed in detail e.g.\ in~\cite{10.5555/520668}.
 Fix \(i \ge 0\).  
 A language \(L \subseteq \{0,1\}^\ast\) belongs to one of the following
 circuit classes if there exists a family of circuits
-\(\{C_n\}_{n\in\mathbb{N}}\) such that \(C_n(x)=1\) iff \(x\in L\) and:
+\(\{C_n\}_{n\in\mathbb{N}}\) such that \(C_{\len{x}}(x)=1\) iff \(x\in L\) and:
 
 \begin{enumerate}
     \item\label{itm:circ-size} every circuit \(C_n\) has polynomially many gates w.r.t.\ \(n\);
@@ -30,7 +30,7 @@ circuit classes if there exists a family of circuits
 \end{enumerate}
 
 Note that the condition \(C_n(x)=1\) iff \(x\in L\) requires the circuits
-to have precisely one output node. We lift this requirement in~\autoref{def:aci-faci}.
+to have precisely one output node. We lift this requirement in~\autoref{def:faci-poly}.
 % The full hierarchies are:
 % \[
 %   \complexity{AC}_{/poly}
@@ -68,6 +68,9 @@ and additionally \(C_n\) satisfies the class condition~\ref{itm:circ-nc}
 
 % \todo{ostroznie z definiowaniem FAC tutaj. uwzglednic definicje uniform fac z bournez_et_al:LIPIcs.MFCS.2019.23}
 \begin{definition}[\NCi, \ACi, \TCi, \FNCi, \FACi, \FTCi]\label{def:aci-faci}
+      A function \(F: \{0, 1\}^\ast \rightarrow \{0, 1\}\) belongs to
+      \NCi (resp. \ACi, \TCi) iff there exists a \compL-uniform family of circuits satisfying the
+      conditions from~\autoref{def:ac-nc-tc-poly}.
       A function \(F : \{0, 1\}^\ast \rightarrow \{0, 1\}^\ast\) belongs to
 \FNCi (resp. \FACi, \FTCi) iff there exists a \compL-uniform family of circuits
 satisfying the conditions from~\autoref{def:faci-poly}.

@@ -17,40 +17,47 @@ alternative models of computation could be better suited
 to form the basis of languages that capture popular complexity classes. This is studied
 in much more detail
 in~\cites[Section~1.6.3]{10.5555/1540612}[Section~1.5.2]{DRAFT10.5555/1540612}, where also 
-complexity of random computation,
-quantum computation and computation on \emph{real} Turing machines is considered.
+complexity of randomized computation,
+quantum computation and computation on real numbers (as opposed to bits) is considered.
 
 We can foreshadow that the answer is (perhaps surprisingly) positive: even though the complexity 
 classes are defined on Turing machines,
 the characterizations studied in literature are rarely imperative. 
 
+\begin{remark}
+In most complexity discussions we speak about decision problems, but real programs usually return
+structured data rather than a single bit. To keep that practical viewpoint, we favour computational models
+that natively handle producing structured output such as a binary string. We will still mention purely decisional
+models whenever that is the natural formulation.
+\end{remark}
 
 \section{Finite automata and transducers}
-Finite-state transducers compute string-to-string functions and have simple descriptions.
+The existing research on finite-state automata has not been directly useful for our work.
+The expressiveness of this model is inherently limited to Boolean-valued functions,
+so for general functions it is strictly better for us to focus on transducers.
+Yet, we consider some characterization of \complexity{REG}
+in~\autoref{sec:descriptive-for-programming}.
+
+Transducers extend automata to binary string outputs and have elegant characterizations.
 In~\cite{bojańczyk2018polyregularfunctions},
-four characterizations are given for the class of \emph{polyregular} functions --- a~class of string-to-string
-functions computed by a particular kind of transducer. The definitions described there readily
+four characterizations are given for the class of so-called \emph{polyregular} functions. The~definitions described there readily
 constitute the basis of a programming language. Another programming
 language for transducers is studied in~\cite{DBLP:conf/fsmnlp/Schmid05}. A particular
 class of string-to-string functions defined using logic, \emph{MSO transductions},
 is characterized to be precisely the class of functions computable by two-way deterministic finite transducers (2DFT)
 in~\cite{engelfriet1999msodefinablestringtransductions}. All of these results
-provide basis for new programming languages and are therefore more than relevant to our work.
+provide basis for new programming languages.
 % good picture:
 % https://mimuw.edu.pl/~bojan/slides/slajdomat/teaching/2024transducers/MSO_transductions/?step=11
 
-Because transducer classes remain poorly understood, it is usually unclear whether an arbitrary problem 
-belongs to the class recognized by a given flavor of transducer. Since writing programs as transducers
+Because expressiveness of transducers remain poorly understood, it is usually unclear whether an arbitrary problem 
+belongs to the class recognized by a given flavor of transducer. Writing programs as transducers
 would rarely be useful for \todo{Ensure I'm consistent with this goal in the work}
-certifying an arbitrary program to be in the desired complexity class,
-for now we focused on other styles of characterization.
+certifying an arbitrary program to be in the desired complexity class, hence
+for now we focus on other styles of characterization.
 A~good overview of existing research on
 transducers can be found in~\cite{muscholl_et_al:LIPIcs.STACS.2019.2}.
 
-The existing research on finite-state automata has not been directly useful for our work ---
-perhaps because the expressiveness of this model is inherently limited to Boolean-valued functions.
-Yet, we consider some characterization of \complexity{REG}
-in~\autoref{sec:descriptive-for-programming}.
 
 \section{Turing machines}
 This model of computation underpins the imperative programming style.
@@ -68,23 +75,28 @@ we will have a chance to explore in~\autoref{chap:formalized-semantics}.
 Surprisingly few elegant, high-level imperative languages are known to characterize well-studied
 complexity classes beyond the trivial ones.
 This scarcity is precisely why much of the work surveyed in later chapters relies on non-imperative paradigms.
+For a thorough overview of the computational complexity of imperative programs, see~\cite{KRISTIANSEN2004139}.
 
 \subsection{Random-access Turing machines}
-Random-access Turing machines are Turing machines with a special ``pointer'' tape,
-of length logarithmic to the size of input, and a special state such that when the binary
-number on the pointer tape is \(n\), \(n\)-th digit of the input is written to the work tape.
-
-Reasoning about computation in complexity classes such as \(\complexity{L}\) or \(\complexity{P}\) is the same
+Random-access Turing machines are a version of Turing machines that allow to
+read from and write to a specific memory cell in one step, if only the
+address of the cell has been properly encoded on a special address tape.
+Reasoning about computation in complexity classes such as logarithmic space or polynomial time is the same
 for traditional Turing machines and random-access Turing machines. The choice of model starts to matter for
-notions of \emph{fine-grained} complexity classes such as \(\complexity{DTIME}(n)\)~\autoref{def:turing-dtime} or \(\complexity{DTIME}(n^2)\).
+\emph{fine-grained} complexity classes such as the class of problems solvable
+in linear or quadratic time --- since a standard Turing machine can only move its head one cell at a time,
+obviously there are problems that will take it more than linear time, while being solvable in linear time by a
+random-access machine.
 Due to insufficient existing research on implicit characterizations of
 fine-grained complexity classes, we will not consider them besides a brief discussion
-in~\autoref{subsec:fine-grained-reductions}.
+in~\autoref{subsec:fine-grained-reductions};
 % Computation on transducers is a promising way to obtain 
 % robust characterizations of these classes --- e.g.~\emph{polyregular} functions are
 % computable in linear time by a kind of a transducer~\cite{bojańczyk2018polyregularfunctions}.
-The notion of \(\complexity{DLOGTIME} = \complexity{DTIME}(\log n)\)-uniformity explored in~\autoref{subsec:dlogtime-uniformity} is also
+also, the notion of \(\complexity{DLOGTIME}\)-uniformity explored in~\autoref{sec:uniform-nc1} is
 only defined for random-access Turing machines.
+% Remark: Random-access Turing machines are the intuition behind two-sorted logics in descriptive complexity!
+
 
 \section{Circuits}
 Circuits as a model of computation are the theoretical foundation of parallel programming.
@@ -97,8 +109,9 @@ In this work, we will mostly use circuits to reason about very weak complexity.
 % We will mostly study characterizations of circuit families through characterizations
 % of the functions of classes used to \emph{generate} those families.
 
-A very rich \todo{there is nothing new for me
-in this paper; i have also a very good literature overview, but scattered around this PDF}
+A very rich
+% \todo{there is nothing new for me
+% in this paper; i have also a very good literature overview, but scattered around this PDF}
 overview of different characterizations of circuit complexity classes is
 in~\cite{antonelli2025characterizingsmallcircuitclasses}.
 A particular logical characterization of \(\complexity{AC}^0\)~(\autoref{def:aci-faci}) will be important for us in~\autoref{chap:bounded-arithmetic}.
@@ -107,7 +120,7 @@ A particular logical characterization of \(\complexity{AC}^0\)~(\autoref{def:aci
 An original point of view on computation is to describe functions
 as solutions to discrete differential equations. For example, in~\cite{bournez_et_al:LIPIcs.MFCS.2019.23},
 \(\complexity{FP}\)~(\autoref{def:fp}) and \(\complexity{FNP}\)~(\autoref{def:complexity-fnp}) are characterized.
-Characterizations of various circuit complexity classes from
+Characterizations based on differential equations of various circuit complexity classes from
 \(\complexity{FAC}^0\) to \(\complexity{FAC}^1\)~(\autoref{def:aci-faci}) 
 are described in~\cite{antonelli2025characterizingsmallcircuitclasses}.
 
@@ -116,7 +129,9 @@ Logic provides very deep complexity-theoretic connections,
 primarily through descriptive complexity theory, which we explore in more detail in~\autoref{chap:descriptive-complexity}.
 
 \section{Untyped recursion}\label{sec:untyped-lambda}
-Another classical paradigm is that of \todo{function algebras?}general recursive functions, or equivalently the untyped
+Another classical paradigm is that of
+% \todo{function algebras?}
+general recursive functions, or equivalently the untyped
 lambda calculus. Because these systems are Turing complete, the interesting question
 is how to constrain recursion so that the resulting language captures a specific class.
 We treat these ideas in~\autoref{chap:recursion-theory}.
@@ -186,13 +201,13 @@ to computation in our desired complexity class are provable, and
 the theorems that wouldn't be ``implementable'' are not.
 
 We will circle back
-to this intuition while considering the \problem{PIGEON} computational problem in~\ref{subsubsec:tfnp} and
-the unprovability of the related pigeonhole principle in the weak theories studied in~\ref{subsec:vac0-php}.
+to this intuition while considering the \problem{PIGEON} computational problem in~\autoref{subsubsec:tfnp} and
+the unprovability of the related pigeonhole principle in the weak theories studied in~\autoref{subsec:vac0-php}.
 Especially the last fact about unprovability is interesting for us in this section,
 as it resembles e.g.\ independence of continuum hypothesis from ZFC, but in a strictly computational setting
 of not being able to perform enough computation in a low complexity class.
-\todo[inline]{(optional) The forcing technique used originally by Cohen to prove the mentioned independence,
-turns out to also be useful for the theory of computation, as discussed in~\autoref{subsec:oracle-forcing}.}
+% \todo[inline]{(optional) The forcing technique used originally by Cohen to prove the mentioned independence,
+% turns out to also be useful for the theory of computation, as discussed in~\autoref{subsec:oracle-forcing}.}
 
 While this line of thought is very far from ``practical programming languages'', these considerations
 inspired\footnote{This line of study grew out of presenting the topic
