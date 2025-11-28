@@ -5,29 +5,32 @@ reductions in class $R$'' have been described in the literature. In this chapter
 we analyze when such reductions help capture complexity classes syntactically
 and when they fall short.
 
-\begin{definition}[Circuit Value Problem (\problem{CVP})]
-  Given a representation of a Boolean circuit on input, compute its output.
-  \todo[inline]{more formality}
-\end{definition}
+% \begin{definition}[Circuit Value Problem (\problem{CVP})]
+%   Given a representation of a Boolean circuit on input, compute its output.
+%   \todo[inline]{more formality}
+% \end{definition}
 
 \begin{theorem}[%
   {\cite{10.1145/990518.990519}}%
 ]\label{thm:cvp-pcomplete}
+  Define the circuit value problem (\problem{CVP}) as the problem of finding the output of a Boolean circuit,
+  given its representation as input.
   The circuit value problem is complete for \compP{} under \compL{} reductions.
   \begin{remark}
-    We define \compL-reductions formally in~\autoref{def:logspace-reductions}.
+    We define \compL-reductions formally in~\autoref{def:logspace-reductions}. For the details of
+    representation of Boolean circuits, see~\cite{10.1145/990518.990519}.
   \end{remark}
 \end{theorem}
 
 Knowing~\autoref{thm:cvp-pcomplete}, we could design a language for \compP{} in such a way:
 first, design a language for \compL{} which is (perhaps) simpler; then, as the compiler provider,
 include a standard library function \(P\), which
-the \compL-functions from the language could call like an oracle to get solution for \(P\).
+the \compL-functions from the language could call like an oracle to get a solution for \(P\).
 In this chapter we try to understand
 if such a language would truly have the full power of polynomial-time functions.
 The core of this chapter is~\autoref{thm:fl-is-l-red}, stating that this holds at least for the class
 of logspace-computable functions and a particular notion of weak reductions. But the heart
-of this intuition is not developed until~\autoref{thm:fc-is-fac0-closure}, where we get
+of this intuition is not developed until~\autoref{thm:theories-for-classes-from-reductions}, where we get
 such characterizations for most of the complexity classes that we consider in this thesis.
 
 \section{Decisional and functional complexity classes}\label{sec:decisional-and-functional-complexity-classes}
@@ -38,10 +41,11 @@ as we did for now e.g.\ in~\autoref{sec:preliminaries-turing} is
 not sufficient to reason about general functions with output.
 In this chapter we will introduce the still standard, but less talked about, 
 \emph{functional} complexity classes,
-that study general functions \(f : \{0,1\}^\ast \to \{0,1\}^\ast\). In complexity theory these are
+that study the complexity of computing general functions \(f : \{0,1\}^\ast \to \{0,1\}^\ast\)
+as introduced in~\autoref{sec:preliminaries-turing-functions}. In complexity theory these are
 usually implicitly used to define \emph{reductions}. The results
-about these classes  transfer much better to our interests than results about the decisional complexity
-classes. As we discuss  in~\autoref{chap:recursion-theory}, programming-language-like characterizations
+about these classes transfer much better to our interests than results about the decisional complexity
+classes. As we discuss in~\autoref{chap:recursion-theory}, programming-language-like characterizations
 of decisional complexity classes are far more abundant and predate the characterizations of
 functional complexity classes. It is the latter, however, that is viable for our purposes of
 designing a programming language.
@@ -52,7 +56,7 @@ A more thorough discussion of decision vs search is in~\cite{10.5555/889581}.
 \paragraph{Exponential-length output}
 The difference between \compP{} and \compFP{} is obvious when we look at the below example:
 \begin{example}
-    Running time of any Turing machine computing the function \(x \to 2^x\) for input and output in binary,
+    Running time of any Turing machine computing the function \(x \to 2^x\) for input and output in binary
     is exponential. At the same time, given an input \(x, y\), checking if \(y = 2^x\) is easily in polynomial time.
 \end{example}
 This problem is, however, usually artificially mitigated by requiring the length \(\len{f(x)}\)
@@ -60,7 +64,7 @@ of the function's output to be polynomially bounded as in~\autoref{def:logspace-
 
 
 \paragraph{Self-reducibility}
-A typical, and ubiquitous in the literature way of defining function problems is to require
+A common approach in the literature way of defining function problems is to require
 an external proof that \(|f(x)|\) is polynomially bounded,
 then repeatedly decide if \(i\)-th bit of \(f(x)\) is 0 or 1. For example, let's look at the below
 
@@ -107,12 +111,12 @@ However, some search problems are unlikely to be self-reducible.
 A good example is the problem of integer factorization, which
 is still, as of November 2025, conjectured to not be in \compP{} even despite
 the breakthrough result from 2002 in which \problem{PRIME} (decide if $n$ is prime) was proved to be in \compP~\cite{b68c33ca-3366-3b13-8901-69e76cc88da6}.
-A particularly important class of such problems is considered in~\ref{subsubsec:tfnp}.
+A particularly important class of such problems is considered in~\autoref{subsubsec:tfnp}.
 But first, let's define the classes \complexity{FP} and \complexity{FNP}.
 
 \section{Functional complexity classes}\label{sec:functional-complexity-classes}
 
-\todo{perhaps define poly-time computable functoins in preliminaries, and here just link to that}
+% \todo{perhaps define poly-time computable functoins in preliminaries, and here just link to that}
 \begin{definition}[{\cites[Section~17.2]{10.5555/1540612}[Section~9.1]{DRAFT10.5555/1540612}}~The class \complexity{FP} (Version 1)]\label{def:fp-ver1}
   \(\mathsf{FP}\)~consists of all functions
 \[
@@ -128,12 +132,13 @@ in \(\mathsf{FP}\) may produce outputs of arbitrary polynomial length.
 \end{remark}
 \end{definition}
 
-\todo[inline]{I have a definition of also poly-time reductions e.g. for NP in tex, but seems like i'm not using it anywhere}
+% \todo[inline]{I have a definition of also poly-time reductions e.g. for NP in tex, but seems like i'm not using it anywhere}
 \begin{definition}[{\cite[Section 28.10]{Rich2007Automata}}~\complexity{FP} (Version 2)]\label{def:fp}
 
-A binary relation \(P(x, y)\) is in \(\complexity{FP}\) iff there exists a polynomial-time Turing machine
+A binary relation \(P(x, y)\) is in \(\complexity{FP}\) iff there exists a polynomial-time Turing machine $M$
 that, given an arbitrary input \(x\):
 \begin{enumerate}
+    \item there is at most one \(y\) satisfying \(P(x, y)\) (functionality);
     \item outputs some \(y\) such that \(P(x, y)\) if any exists;
     \item signals that no such \(y\) exists otherwise.
 \end{enumerate}
@@ -152,21 +157,28 @@ that, given an arbitrary input \(x\):
 
 \begin{remark}[\complexity{P} vs \complexity{FP}]
 These two classes are often identified due to similar properties.
-The notion of completeness for both of them, despite being differently defined, practically is practically the same
-to the robustness of \(\complexity{P}\) computations under being repeated for every bit of the output.
-Indeed, even in Stephen Cook's 1982 ACM Turing Award lecture~\cite[Section 6]{10.1145/358141.358144},
-it is not clearly distinguished between
-\(\complexity{P}\)-completeness and \(\complexity{FP}\)-completeness: the 3 proofs cited in this lecture
-as proofs of \(\complexity{FP}\)-completeness of some functions \(f(x)\) only themselves prove the
-\(\complexity{P}\)-completeness of problems of the form ``decide if \(i\)-th bit of the result \(f(x)\) is zero''.
+The notion of completeness for both of them, despite being differently defined, is practically the same
+due to the \(\complexity{P}\) computations being closed under being repeated for every bit of the output.
+
+
+This conflation already appears in Stephen Cook's 1982 ACM Turing Award
+lecture~\cite[Section~6]{10.1145/358141.358144}, where the distinction between \complexity{P}-completeness
+and \complexity{FP}-completeness is not made explicit. The three examples cited there as establishing
+\complexity{FP}-completeness of certain functions $f(x)$ in fact only prove \complexity{P}-completeness of the
+associated decision problems of the form: given $x$ and $i$, decide whether the $i$-th bit of $f(x)$ is zero.
 
 The two classes, however, are not the same.
+Define $\complexity{FP}^{\complexity{NP}}[f(n)]$ to be the class of functions
+computable in polynomial time given access to call \emph{an oracle}
+for an $\complexity{NP}$-complete problem at most $f(n)$ times. For a formal definition of
+an \emph{Oracle Turing machine}, please refer to~\cites[Definition~3.4]{10.5555/1540612}[Definition~3.7]{DRAFT10.5555/1540612}.
+Define $\complexity{P}^{\complexity{NP}}[f(n)]$ analogously.
 In~\cite[Theorem 4.1]{KRENTEL1988490}, it is proved that
 if 
-\(\complexity{FP}^{\complexity{SAT}}[\bigO(\log{n})] = \complexity{FP}^{\complexity{SAT}}[n^{\bigO(1)}]\)
+\(\complexity{FP}^{\complexity{NP}}[\bigO(\log{n})] = \complexity{FP}^{\complexity{NP}}[n^{\bigO(1)}]\),
 then also \(\complexity{P}=\complexity{NP}\).
 In turn, as noted in~\cite[discussion after Theorem 8]{doi:10.1142/9789812794499_0029}, the corresponding result for
-\(\complexity{P}^\complexity{NP}\) versus \(\complexity{P}^\complexity{NP}[\bigO(\log{n})]\) is not known,
+\(\complexity{P}^\complexity{NP}[\bigO(\log{n})]\) versus \(\complexity{P}^\complexity{NP}[n^{\bigO(1)}]\) is not known,
 and indeed fails relative to some oracles.
 
 For a good discussion specifically on \complexity{FP}-completeness,
@@ -209,13 +221,13 @@ is \complexityi{NC}{i}-complete for \complexity{FP} in~\cite[Proposition~6.1]{CO
 The definition of \complexity{FNP} is tricky to get right.
 A very good discussion of the awkwardness of the definitions is present in~\cite{37813}.
 For extensive discussion on the different definitions, see~\cite{37812},~\cite{71617}.
-In Papadimitriou's book, it's defined in yet another way, as a class function problems for \complexity{NP},
+In Papadimitriou's book, it's defined in yet another way, as a class of function problems for \complexity{NP},
 not in terms of a specific computational model.
 
 \begin{definition}[The class \texorpdfstring{\complexity{FNP}}{FNP}]\label{def:complexity-fnp}
 A binary relation \(P(x, y)\) is in \(\complexity{FNP}\) if there exist:
 \begin{enumerate}
-  \item a polynomial \(p : \mathbb{N} \to \mathbb{N}\) such that if for a given \(x\) exists a solution \(y\) such
+  \item a polynomial \(p : \mathbb{N} \to \mathbb{N}\) such that if, for a given \(x\), there exists a solution \(y\) such
   that \(P(x, y)\), then there also exists a ``short'' solution \(y'\) such that
   \(P(x, y')\) and \(\len{y'} \leqslant p(\len{x})\);
   \item a deterministic polynomial-time Turing machine \(M\)
@@ -248,7 +260,7 @@ A binary relation \(P(x, y)\) is in \(\complexity{FNP}\) if there exist:
 \subsection{\complexity{NP} vs \complexity{FNP} and the total search problems}\label{subsubsec:tfnp}
 \begin{definition}[\complexity{TFNP}]\label{def:tfnp}
 A binary relation \(P(x, y)\) is in \(\complexity{TFNP}\) (total \(\complexity{FNP}\)) iff it is
-in \(\complexity{FNP}\) and for every \(x\) exists at least one \(y\) such that \(P(x, y)\).
+in \(\complexity{FNP}\) and for every \(x\) there exists at least one \(y\) such that \(P(x, y)\).
 \end{definition}
 
 An interesting example of a problem in \(\complexity{TFNP}\) is \problem{PIGEON} defined below,
@@ -305,8 +317,8 @@ The class \complexity{TFNP} is discussed in yet more detail in~\cite[Section 1.1
 % of Dlogtime-uniform $\complexityi{AC}{0}$-computable functions.
 
 
-\subsection{Language for FL}
-\todo[inline]{I really don't want to introduce circuit reductions... skipping it.}
+\subsection{Language for \complexity{FL}}
+% \todo[inline]{I really don't want to introduce circuit reductions... skipping it.}
 
 \begin{theorem}[{\cite[Proposition~4.1]{COOK19852}}]\label{thm:fl-is-l-red}
   We obtain precisely the class \complexity{FL} from the closure of \compL{} under \complexityi{NC}{1} circuit reductions,
@@ -322,8 +334,8 @@ The class \complexity{TFNP} is discussed in yet more detail in~\cite[Section 1.1
 An overview of problems complete for \compL{} is present in~\cite{COOK1987385}.
 
 \subsection{Language for \complexity{FP}}
-We can derive an analogous result to~\autoref{thm:fl-is-l-red} for the class \complexity{FP}.
-We are discussing it here, postponing the considerations to~\autoref{thm:fc-is-fac0-closure}.
+We can derive a similar result (but in a slightly different setting) to~\autoref{thm:fl-is-l-red} for the class \complexity{FP}.
+For now we are just mentioning it. We will discuss this in more detail in~\autoref{thm:theories-for-classes-from-reductions}.
 
 % # Circuit Value Problem
 % - For a given single-tape, polynomial-time Turing machine `M` and input `x`, in [@Kozen2006],
@@ -340,42 +352,44 @@ A very detailed description of one problem complete for \compP{} under \compL-re
 \subsection{Not-a-Language for \complexity{FNP}}
 There is a relatively agreed-upon notion of reductions between \complexity{FNP} problems:
 
-\begin{definition}[{~\cites{Goebel2011NashComplexity}{Goldberg2021SearchTotal}}~Polynomial-time reductions for \complexity{FNP}]
+\begin{definition}[{\cites{Goebel2011NashComplexity}{Goldberg2021SearchTotal}}~Polynomial-time reductions for \complexity{FNP}]
     Let \(\texttt{HardProblem}\), \(\texttt{NewProblem}\) be search problems in \(\complexity{FNP}\).
     We say that \(\texttt{HardProblem}\) (many-one) reduces to \(\texttt{NewProblem}\) if there exist
     \(f, g\) in \complexity{FP} such that:
-    \[\texttt{NewProblem}(f(x), y) \implies \texttt{HardProblem}(x, g(y))\]
+    \[\texttt{NewProblem}(f(x), y) \Longleftrightarrow \texttt{HardProblem}(x, g(y))\]
 
     For a given input \(x\) of \(\texttt{HardProblem}\), we can run \(\texttt{NewProblem}(f(x))\)
     to obtain some result \(y\), such that \(g(y)\) is the result of \(\texttt{HardProblem}(x)\).
 \end{definition}
 
-There is also plenty of \complexity{NP}-complete problems described in the literature.
+There are also plenty of \complexity{NP}-complete problems described in the literature.
 However, it is very unclear if we will get \complexity{FNP} this way. The class 
 \(\complexity{FP}^{\complexity{NP}}\) is well-studied and nothing suggests it to be equal to \complexity{FNP}.
 
 
 \subsection{Semantic and syntactic complexity classes}
-Some of the complexity classes remain notoriously difficult to be characterized implicitly,
-by e.g.\ showing a complete problem and reductions for it.
-However, as it turns out, not all complexity classes studied have known
-complete problems.
-The classes for which a complete problem exists are called ``syntactic'' complexity classes,
-as opposed to ``semantic'', e.g.~in~\cite{DBLP:conf/innovations/GoldbergP18}, the authors define a new complexity class
-\(\complexity{PTFNP} \subseteq \complexity{TFNP}\), for which
-they prove the existence of a complete problem, and then call this class ``syntactic''.
 
-An interesting discussion of this problem, centered around the class \complexity{inv-P}
-we discussed in~\autoref{subsec:unordered-structures}, is present in~\cite{dawar2012syntactic}.
-For the class \complexity{BPP}, some discussion is in~\cite{35236}.
-Despite that, a ``less implicit'' characterization of BPP was studied in~\cite{lago2012higherordercharacterizationprobabilisticpolynomial}.
+Some of the popular complexity classes are defined in such a way that it is notoriously difficult to
+exhibit natural complete problems for them. A complexity class is called \emph{syntactic}
+if it admits a natural notion of completeness, that is, if there exists a problem that is complete
+for the class under the chosen reductions. Classes for which no such complete problems are known are
+often called \emph{semantic}. For example, in~\cite{DBLP:conf/innovations/GoldbergP18} the authors introduce
+a new complexity
+class $\complexity{PTFNP} \subseteq \complexity{TFNP}$, prove that it has a complete problem,
+and therefore refer to $\complexity{PTFNP}$ as a syntactic subclass of $\complexity{TFNP}$.
 
-Interestingly, PP has been characterized implicitly by Ugo Dal Lago:~\cite{dallago_et_al:LIPIcs.MFCS.2021.35}.
-
+An interesting discussion of the absence of complete problems, centred around the class
+$\complexity{inv\text{-}P}$ introduced in~\autoref{subsec:unordered-structures}, is
+given in~\cite{dawar2012syntactic}. For the class $\complexity{BPP}$, related issues are
+discussed in~\cite{35236}. Despite $\complexity{BPP}$ being believed to be semantic,
+a characterization of it (not purely syntactic) was
+studied in~\cite{lago2012higherordercharacterizationprobabilisticpolynomial}.
+Interestingly, \complexity{PP} has been characterized implicitly
+(i.e.\ syntactically) by Ugo Dal Lago:~\cite{dallago_et_al:LIPIcs.MFCS.2021.35}.
 
 
 \begin{remark}[Bibliography]
-For probably the first published recognition of the widespread inconsistency of decisional vs functional
+For probably the first published recognition of the widespread inconsistency between decisional and functional
 complexity classes in the literature, with examples of inconsistent places see~\cite[Page~131]{10.5555/114872}
 (and our bibliographical~\autoref{remark:bibliography-david-s-johnson}).
 
@@ -386,74 +400,49 @@ complexity classes in the literature, with examples of inconsistent places see~\
 
 
 
-
-
-\section{Oracle-oriented programming}
-\todo[inline]{unfinished, but this should explain why this chapter is important; another style of programming}
-If you use reductions + a single oracle for a difficult problem, you can get
-a powerful programming language. This would be a new, nice paradigm that I aimed to
-realize.
-
-Due to possible quadratic blowup of output size (even for ac0 circuits i think? but maybe not if fo-uniform?),
-it is unsatisfactory for us to have a single complete problem solving e.g. sat in worst-time \(2^n\).
-Because then it gets \(2^{n^2}\) etc., which is bad. Transductions (or fine-grained time complexity classes
-such as dlintime) are a potential nice class for this.
-
 \subsection{Oracle Turing machines and the technique of forcing}\label{subsec:oracle-forcing}
-\todo[inline]{optional. Baker-Gill-Solovay proof uses forcing. }
-% Some discussion in~\cite{14091}.
+Notice that programming in this chapter we essentially try to introduce a new style of programming, where
+when we want to write a program in \complexity{P}, we write most of the functions in a (simpler) language
+for \compL-reductions, and sometimes pass their results to some special function implementing a \complexity{P}-complete
+algorithm. 
+In the literature, such a ``special function'' is sometimes called an \emph{oracle}.
+Please see~\cites[Definition~3.4]{10.5555/1540612}[Definition~3.7]{DRAFT10.5555/1540612} for a formal definition
+of Oracle Turing machines. 
+This would introduce a new programming paradigm, \emph{oracle-oriented} programming, utilizing
+the notion of \emph{oracle} from the literature. In this thesis we were not able to showcase this paradigm,
+it will, however, be the ultimate direction of our further works.
 
+Here we only want to hint that a strong technique called \emph{forcing} can be used in a similar manner
+in both set theory and computational complexity. For information on the technique of forcing in complexity theory, please see~\cite{14093} for
+discussion in context of the Baker-Gill-Solovay theorem\footnote{The Baker-Gill-Solovay theorem is studied e.g.\ in~\cites[Theorem~3.9]{DRAFT10.5555/1540612}[Theorem~3.7]{10.5555/1540612}.}; \cite{jaberhal-00685150}~for viewing forcing
+as a program transformation technique.
+For general information on the forcing technique, more focused on set theory, please see e.g.~\cite{chow2008beginnersguideforcing}.
 
 
 % ### Proving unprovability: Kripke semantics
 % - even though searching for a countermodel in Kripke semantics is completely infeasible computationally, we have a good tool for the job!
 % - i tested and it works, find countermodels and proofs of intuitionistic formulas. code: https://github.com/ferram/jtabwb_provers/tree/master
 
-% ### Proving unprovability: forcing
-% - Extending Type Theory with Forcing (INRIA, 2012)
-% > Implementation of forcing in Coq as a program transformation and show a proof of the negation of CH  
-% > https://hal.science/hal-00685150/document
-
-% - A beginner’s guide to forcing
-% > https://arxiv.org/pdf/0712.1320
-
-% - Forcing for dummies blogpost
-% > https://timothychow.net/mathstuff/forcingdum.txt
-
-% - Baker-Gill-Solovay theorem proof
-% > Forcing as a method to prove that something can or cannot be done using an oracle  
-% > https://math.stackexchange.com/questions/2616541/simple-applications-of-forcing-in-recursion-theory  
-% > https://en.wikipedia.org/wiki/Forcing_(computability)
-
-% forcing zeby badac jezyki programowania: to jak oracles w computational complexity!
-% https://cstheory.stackexchange.com/a/14093
-% see here for oracle A such that NEXP^A = P^{NP^{A}}
-% what it means in logic when you have P^A,B vs P^A^B?
-% https://link.springer.com/article/10.1007/s00037-001-8190-2
-
 
 
 
 \subsection{Fine-grained reductions}\label{subsec:fine-grained-reductions}
-% We will not realistically capture $\text{TIME}(\bigO(n))$ or anything of this kind,
-% as the field of fine-grained complexity is relatively modern and little or none interesting
-% characterizations of these classes have been found as of writing this work.
-% \begin{enumerate}
-% \item TODO: Review Neil D. Jones's ``Constant Time Factors Do Matter'' for its discussion of NLIN-complete problems (\url{https://dl.acm.org/doi/pdf/10.1145/167088.167244}).
-% \item TODO: Summarize the insights from Gurevich and Shelah's ``Nearly Linear Time'' concerning the definition of $\complexity{DTIME}(n)$ and nearly-linear-time-complete problems under QL reductions (\url{https://link.springer.com/content/pdf/10.1007/3-540-51237-3_10.pdf}).
-% \end{enumerate}
-\todo[inline]{just mention QL (quasilinear-time functions), NLT (robust complexity class for 
-    \( \complexity{DTIME} (n (\log{n})^{\bigO(1)}) \) 
-    on RAM machines~\cite{10.1007/3-540-51237-3_10})
-}
+Ideally, we would measure the time and space complexity of algorithms more precisely than
+up to a polynomial. In practice, we are the most interested in complexity bounds such
+as $\complexity{DTIME}(\bigO(n^2))$. However, the field of studying syntactical characterizations
+of such functions is still mostly undiscovered. In~\cite{10.1145/167088.167244}, some problems
+complete for nondeterministic linear time are studied. In~\cite{10.1007/3-540-51237-3_10},
+the notion of \complexity{QL} reductions is introduced to study complete problems for ``nearly linear time'',
+i.e.\ $\complexity{DTIME}(n (\log{n})^{\bigO(1)})$.
+
+
+
 
 
 
 
 % \item TODO: Example programming language characterizing \complexity{L}: finite number of variables each bounded by $n$.
 % \item TODO: Explore the alternative characterization using a finite number of input pointers, relating it to multi-head two-way automata~\cite{423885},~\cite{10.1007/BF00289513}.
-
-
 
 % \subsection{Related works on specifically the \complexity{FL} class}
 % Early function algebras for \complexity{FL} appeared in~\cite{10.1145/1008293.1008295} and~\cite{lind1974logspace},

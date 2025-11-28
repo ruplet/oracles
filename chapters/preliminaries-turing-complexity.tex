@@ -1,26 +1,28 @@
+\section{Functions computable by Turing machines}\label{sec:preliminaries-turing-functions}
+We introduce the notion of computing a general $\{0,1\}^{\ast} \to \{0,1\}^{\ast}$ function
+early, as this is the primary interest of this thesis. Most of the literature in computational complexity
+focuses solely
+on computing Boolean functions which we introduce in~\autoref{sec:preliminaries-turing}.
+To properly discuss this imbalance, we postpone introducing the \emph{functional}
+complexity classes until~\autoref{chap:reductions}.
+
+
+\begin{definition}[{\cites[Definition~1.3]{10.5555/1540612}[Definition~1.4]{DRAFT10.5555/1540612}}]
+Let~\(f : \{0,1\}^{\ast} \to \{0,1\}^{\ast}\) and \(T : \mathbb{N} \to \mathbb{N}\) be functions, and let
+\(M\) be a Turing machine.  We say that \(M\) \emph{computes} \(f\) if, for every input
+        \(x \in \{0,1\}^{\ast}\), when \(M\) is started in its initial configuration
+        on input \(x\), it eventually halts with the string \(f(x)\) written on its
+        output tape.
+\end{definition}
+
+
 \section{Decisional Turing machine complexity classes}\label{sec:preliminaries-turing}
 
 In this section we introduce standard complexity classes such as 
 \(\complexity{L}\), \(\complexity{P}\) and \(\complexity{NP}\). It is important to note that these 
 classes only contain \emph{decision} problems, i.e.\ only require
 computing a function \(f : \{0,1\}^\ast \to \{0,1\}\). Complexity classes for general
-functions will appear in~\autoref{chap:reductions}.
-
-
-% \begin{definition}[Computing a function~{\cites[Definition~1.3]{10.5555/1540612}[Definition~1.4]{DRAFT10.5555/1540612}}]
-% Let~\(f : \{0,1\}^{\ast} \to \{0,1\}^{\ast}\) and \(T : \mathbb{N} \to \mathbb{N}\) be functions, and let
-% \(M\) be a Turing machine.  
-% \begin{enumerate}
-%   \item We say that \(M\) \emph{computes} \(f\) if, for every input
-%         \(x \in \{0,1\}^{\ast}\), when \(M\) is started in its initial configuration
-%         on input \(x\), it eventually halts with the string \(f(x)\) written on its
-%         output tape.
-
-%   \item We say that \(M\) computes \(f\) in time \(T(n)\) if, for every
-%         input \(x\), the computation of \(M\) on input \(x\) halts within
-%         at most \(T(|x|)\) steps.
-% \end{enumerate}
-% \end{definition}
+functions will appear in.
 
 \begin{notation}
     We say that a machine \emph{decides} a language \(L \subseteq \{0, 1\}^\ast\) iff it computes
