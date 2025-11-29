@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
+\PY{n+nf}{constZero}\PY{+w}{ }\PY{o+ow}{::}\PY{+w}{ }\PY{k+kt}{Int}\PY{+w}{ }\PY{o+ow}{\PYZhy{}\PYZgt{}}\PY{+w}{ }\PY{k+kt}{Int}\PY{+w}{ }\PY{o+ow}{\PYZhy{}\PYZgt{}}\PY{+w}{ }\PY{k+kt}{Func}
+\PY{n+nf}{constZero}\PY{+w}{ }\PY{l+m+mi}{0}\PY{+w}{ }\PY{l+m+mi}{0}\PY{+w}{ }\PY{o+ow}{=}\PY{+w}{ }\PY{k+kt}{ZeroFunc}
+\PY{n+nf}{constZero}\PY{+w}{ }\PY{l+m+mi}{0}\PY{+w}{ }\PY{n}{nSafe}\PY{+w}{ }\PY{o+ow}{=}
+\PY{+w}{  }\PY{k+kt}{Composition}\PY{+w}{ }\PY{l+m+mi}{0}\PY{+w}{ }\PY{p}{(}\PY{n}{nSafe}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{l+m+mi}{1}\PY{p}{)}\PY{+w}{ }\PY{l+m+mi}{0}\PY{+w}{ }\PY{p}{[}\PY{n}{nSafe}\PY{p}{,}\PY{+w}{ }\PY{l+m+mi}{0}\PY{p}{]}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{Proj}\PY{+w}{ }\PY{l+m+mi}{0}\PY{+w}{ }\PY{l+m+mi}{2}\PY{+w}{ }\PY{l+m+mi}{2}\PY{p}{)}\PY{+w}{ }\PY{k+kt}{[]}\PY{+w}{ }\PY{p}{[}\PY{k+kt}{Proj}\PY{+w}{ }\PY{l+m+mi}{0}\PY{+w}{ }\PY{n}{nSafe}\PY{+w}{ }\PY{l+m+mi}{1}\PY{p}{,}\PY{+w}{ }\PY{k+kt}{ZeroFunc}\PY{p}{]}
+\PY{n+nf}{constZero}\PY{+w}{ }\PY{n}{nNormal}\PY{+w}{ }\PY{n}{nSafe}\PY{+w}{ }\PY{o+ow}{=}
+\PY{+w}{  }\PY{k+kr}{let}\PY{+w}{ }\PY{n}{g}\PY{+w}{ }\PY{o+ow}{=}\PY{+w}{ }\PY{n}{constZero}\PY{+w}{ }\PY{p}{(}\PY{n}{nNormal}\PY{+w}{ }\PY{o}{\PYZhy{}}\PY{+w}{ }\PY{l+m+mi}{1}\PY{p}{)}\PY{+w}{ }\PY{n}{nSafe}\PY{+w}{ }\PY{k+kr}{in}
+\PY{+w}{  }\PY{k+kr}{let}\PY{+w}{ }\PY{n}{h}\PY{+w}{ }\PY{o+ow}{=}\PY{+w}{ }\PY{k+kt}{Proj}\PY{+w}{ }\PY{n}{nNormal}\PY{+w}{ }\PY{l+m+mi}{1}\PY{+w}{ }\PY{p}{(}\PY{n}{nNormal}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{l+m+mi}{1}\PY{p}{)}\PY{+w}{ }\PY{k+kr}{in}
+\PY{+w}{  }\PY{k+kr}{let}\PY{+w}{ }\PY{n}{d}\PY{+w}{ }\PY{o+ow}{=}\PY{+w}{ }\PY{k+kt}{Proj}\PY{+w}{ }\PY{n}{nNormal}\PY{+w}{ }\PY{l+m+mi}{0}\PY{+w}{ }\PY{l+m+mi}{1}\PY{+w}{ }\PY{k+kr}{in}
+\PY{+w}{  }\PY{k+kt}{Recursion}\PY{+w}{ }\PY{p}{(}\PY{n}{nNormal}\PY{+w}{ }\PY{o}{\PYZhy{}}\PY{+w}{ }\PY{l+m+mi}{1}\PY{p}{)}\PY{+w}{ }\PY{n}{nSafe}\PY{+w}{ }\PY{n}{g}\PY{+w}{ }\PY{n}{h}\PY{+w}{ }\PY{n}{h}\PY{+w}{ }\PY{n}{d}\PY{+w}{ }\PY{n}{d}
+\end{Verbatim}

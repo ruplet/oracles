@@ -1,0 +1,42 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+cm}{\PYZob{}\PYZhy{}}\PY{c+cm}{\PYZsh{} LANGUAGE LinearTypes \PYZsh{}}\PY{c+cm}{\PYZhy{}\PYZcb{}}\PY{+w}{ }\PY{c+c1}{\PYZhy{}\PYZhy{} compilation: `ghc Linear.hs`, ghc \PYZgt{}= 9.0.1}
+\PY{k+kr}{module}\PY{+w}{ }\PY{n+nn}{Linear}\PY{+w}{ }\PY{k+kr}{where}
+\PY{k+kr}{import}\PY{+w}{ }\PY{n+nn}{Prelude}
+
+\PY{c+c1}{\PYZhy{}\PYZhy{} Define own bitstring type for ints, as operations from Prelude}
+\PY{c+c1}{\PYZhy{}\PYZhy{} on Int are *not* linear and will not typecheck.}
+\PY{k+kr}{data}\PY{+w}{ }\PY{k+kt}{Bit}\PY{+w}{  }\PY{o+ow}{=}\PY{+w}{ }\PY{k+kt}{Zero}\PY{+w}{ }\PY{o}{|}\PY{+w}{ }\PY{k+kt}{One}
+\PY{k+kr}{data}\PY{+w}{ }\PY{k+kt}{Bits}\PY{+w}{ }\PY{o+ow}{=}\PY{+w}{ }\PY{k+kt}{Nil}\PY{+w}{ }\PY{o}{|}\PY{+w}{ }\PY{k+kt}{B0}\PY{+w}{ }\PY{k+kt}{Bits}\PY{+w}{ }\PY{o}{|}\PY{+w}{ }\PY{k+kt}{B1}\PY{+w}{ }\PY{k+kt}{Bits}\PY{+w}{  }\PY{c+c1}{\PYZhy{}\PYZhy{} Prepend 0 or 1 as the LSB.}
+\PY{n+nf}{const\PYZus{}5}\PY{+w}{ }\PY{o+ow}{::}\PY{+w}{ }\PY{k+kt}{Bits}\PY{+w}{ }\PY{o+ow}{=}\PY{+w}{ }\PY{k+kt}{B1}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{B0}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{B1}\PY{+w}{ }\PY{k+kt}{Nil}\PY{p}{)}\PY{p}{)}
+\PY{n+nf}{const\PYZus{}6}\PY{+w}{ }\PY{o+ow}{::}\PY{+w}{ }\PY{k+kt}{Bits}\PY{+w}{ }\PY{o+ow}{=}\PY{+w}{ }\PY{k+kt}{B0}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{B1}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{B1}\PY{+w}{ }\PY{k+kt}{Nil}\PY{p}{)}\PY{p}{)}
+
+\PY{n+nf}{burn}\PY{+w}{ }\PY{o+ow}{::}\PY{+w}{ }\PY{k+kt}{Bits}\PY{+w}{ }\PY{o}{\PYZpc{}}\PY{l+m+mi}{1}\PY{o+ow}{\PYZhy{}\PYZgt{}}\PY{+w}{ }\PY{n+nb}{()}
+\PY{n+nf}{burn}\PY{+w}{ }\PY{k+kt}{Nil}\PY{+w}{      }\PY{o+ow}{=}\PY{+w}{ }\PY{n+nb}{()}
+\PY{n+nf}{burn}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{B0}\PY{+w}{ }\PY{n}{xs}\PY{p}{)}\PY{+w}{  }\PY{o+ow}{=}\PY{+w}{ }\PY{n}{burn}\PY{+w}{ }\PY{n}{xs}
+\PY{n+nf}{burn}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{B1}\PY{+w}{ }\PY{n}{xs}\PY{p}{)}\PY{+w}{  }\PY{o+ow}{=}\PY{+w}{ }\PY{n}{burn}\PY{+w}{ }\PY{n}{xs}
+
+\PY{n+nf}{evenBits}\PY{+w}{ }\PY{o+ow}{::}\PY{+w}{ }\PY{k+kt}{Bits}\PY{+w}{ }\PY{o}{\PYZpc{}}\PY{l+m+mi}{1}\PY{o+ow}{\PYZhy{}\PYZgt{}}\PY{+w}{ }\PY{k+kt}{Prelude}\PY{o}{.}\PY{k+kt}{Bool}
+\PY{n+nf}{evenBits}\PY{+w}{ }\PY{k+kt}{Nil}\PY{+w}{      }\PY{o+ow}{=}\PY{+w}{ }\PY{k+kt}{Prelude}\PY{o}{.}\PY{k+kt}{True}
+\PY{n+nf}{evenBits}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{B0}\PY{+w}{ }\PY{n}{xs}\PY{p}{)}\PY{+w}{  }\PY{o+ow}{=}\PY{+w}{ }\PY{k+kr}{case}\PY{+w}{ }\PY{n}{burn}\PY{+w}{ }\PY{n}{xs}\PY{+w}{ }\PY{k+kr}{of}\PY{+w}{ }\PY{n+nb}{()}\PY{+w}{ }\PY{o+ow}{\PYZhy{}\PYZgt{}}\PY{+w}{ }\PY{k+kt}{Prelude}\PY{o}{.}\PY{k+kt}{True}
+\PY{n+nf}{evenBits}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{B1}\PY{+w}{ }\PY{n}{xs}\PY{p}{)}\PY{+w}{  }\PY{o+ow}{=}\PY{+w}{ }\PY{k+kr}{case}\PY{+w}{ }\PY{n}{burn}\PY{+w}{ }\PY{n}{xs}\PY{+w}{ }\PY{k+kr}{of}\PY{+w}{ }\PY{n+nb}{()}\PY{+w}{ }\PY{o+ow}{\PYZhy{}\PYZgt{}}\PY{+w}{ }\PY{k+kt}{Prelude}\PY{o}{.}\PY{k+kt}{False}
+
+\PY{n+nf}{half}\PY{+w}{ }\PY{o+ow}{::}\PY{+w}{ }\PY{k+kt}{Bits}\PY{+w}{ }\PY{o}{\PYZpc{}}\PY{l+m+mi}{1}\PY{o+ow}{\PYZhy{}\PYZgt{}}\PY{+w}{ }\PY{k+kt}{Bits}
+\PY{n+nf}{half}\PY{+w}{ }\PY{k+kt}{Nil}\PY{+w}{      }\PY{o+ow}{=}\PY{+w}{ }\PY{k+kt}{Nil}
+\PY{n+nf}{half}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{B0}\PY{+w}{ }\PY{n}{xs}\PY{p}{)}\PY{+w}{  }\PY{o+ow}{=}\PY{+w}{ }\PY{n}{xs}
+\PY{n+nf}{half}\PY{+w}{ }\PY{p}{(}\PY{k+kt}{B1}\PY{+w}{ }\PY{n}{xs}\PY{p}{)}\PY{+w}{  }\PY{o+ow}{=}\PY{+w}{ }\PY{n}{xs}
+
+\PY{n+nf}{plus2x1}\PY{+w}{ }\PY{o+ow}{::}\PY{+w}{ }\PY{k+kt}{Bits}\PY{+w}{ }\PY{o}{\PYZpc{}}\PY{l+m+mi}{1}\PY{o+ow}{\PYZhy{}\PYZgt{}}\PY{+w}{ }\PY{k+kt}{Bits}
+\PY{n+nf}{plus2x1}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{o+ow}{=}\PY{+w}{ }\PY{k+kt}{B1}\PY{+w}{ }\PY{n}{x}
+
+\PY{n+nf}{branchConst}\PY{+w}{ }\PY{o+ow}{::}\PY{+w}{ }\PY{k+kt}{Bits}\PY{+w}{ }\PY{o}{\PYZpc{}}\PY{l+m+mi}{1}\PY{o+ow}{\PYZhy{}\PYZgt{}}\PY{+w}{ }\PY{k+kt}{Bits}
+\PY{n+nf}{branchConst}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{o+ow}{=}
+\PY{+w}{  }\PY{k+kr}{if}\PY{+w}{ }\PY{n}{evenBits}\PY{+w}{ }\PY{n}{x}
+\PY{+w}{    }\PY{k+kr}{then}\PY{+w}{ }\PY{n}{half}\PY{+w}{ }\PY{n}{const\PYZus{}5}
+\PY{+w}{    }\PY{k+kr}{else}\PY{+w}{ }\PY{n}{plus2x1}\PY{+w}{ }\PY{n}{const\PYZus{}6}
+
+\PY{c+c1}{\PYZhy{}\PYZhy{} collatzBad2 :: Bits \PYZpc{}1\PYZhy{}\PYZgt{} Bits}
+\PY{c+c1}{\PYZhy{}\PYZhy{} collatzBad2 x =}
+\PY{c+c1}{\PYZhy{}\PYZhy{}   if evenBits x}
+\PY{c+c1}{\PYZhy{}\PYZhy{}     then half x       \PYZhy{}\PYZhy{} ERROR: x already consumed by \PYZsq{}evenBits x\PYZsq{}}
+\PY{c+c1}{\PYZhy{}\PYZhy{}     else plus2x1 x    \PYZhy{}\PYZhy{} ERROR: x already consumed by \PYZsq{}evenBits x\PYZsq{}}
+\end{Verbatim}

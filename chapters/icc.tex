@@ -1,0 +1,136 @@
+\chapter{Implicit Computational Complexity}\label{chap:icc}
+Implicit computational complexity (ICC) studies how to guarantee resource bounds
+without appealing to external machine models.
+Instead of analysing running time or space after the fact, ICC designs
+languages and recursion schemes whose syntactic constraints ensure that every
+definable function belongs to a chosen complexity class.
+The aim is a principled foundation for programming languages that ``build in''
+complexity guarantees by construction.
+
+Our goals in this chapter are twofold.
+For one, we want to introduce
+the most promising ICC approaches we have found towards obtaining a language for
+\complexity{FL} or for \complexity{FP}. Indeed, the characterizations we will study
+resulted in the creation of two actual programming languages. They are purely of academic
+interest, but there are close to none alternative languages for complexity classes
+that reached the stage of being actually implemented.
+In the rest of this chapter we explain why the approach we studied most ---
+of using techniques from ICC --- did not lead to a practical programming language for our purposes,
+even though it initially seems very appealing.
+However, more importantly, we want to share \emph{negative} evidence of
+usefullness of the characterizations studied in ICC towards our ultimate goal
+of not just creating a programming language, but using it to \emph{certify}
+the complexity of known algorithms.
+
+We will begin by sharing our experience with ICC,
+then proceed to discuss the characterizations we have studied, most importantly:
+in~\autoref{def:bc-eps} we examine a programming language based on the first
+function algebra (untyped) for \complexity{FL} due to Neergaard; in~\autoref{sec:intml} we study
+Dal Lago and Schöpp's programming language \texttt{IntML} with the type system 
+guaranteeing the capturing of \complexity{FL} and \complexity{FNL} (nondeterministic version of \complexity{FL},
+which we don't introduce formally).
+
+\begin{remark}
+  Recall that, given a description of a Turing machine, the problem of deciding whether it halts
+  is undecidable. Hence, deciding whether an arbitrary computer program belongs to the complexity
+  class \compP{} is also undecidable. This is only a problem, however, if we take \emph{arbitrary}
+  programs as input. If we limit the scope to programs written in a special, limited programming
+  language, we can easily design the language so that it does not admit constructs such as
+  \texttt{while}-loops or general recursion, and therefore every program in it necessarily terminates.
+  Moreover, membership in the syntax of such a language can be easy to decide. In this way, the
+  undecidability problem is not resolved, but ``shifted'' to the difficulty of programming: given a
+  \texttt{C} program implementing an algorithm, it becomes undecidable whether there exists a
+  corresponding program in our restricted language.
+\end{remark}
+
+
+That was the approach that took us the most time to study and did not result in obtaining
+``practical programming languages''. We want to place ourselves in the program of ``we need a better way of
+communicating negative results (failed research)'', and signal why, despite the apparent
+usefulness of the results for our purpose, our goal failed. The reason is the difference between
+\emph{intenstional} and \emph{extensional} expressive power of characterizations of complexity classes.
+With type systems capturing low complexity classes, it becomes very apparent that these function
+classes are only \emph{extensionally} equivalent to their corresponding complexity classes.
+For an example of how easily we can lose \emph{intensional} expressive power in a language with
+linear types, please look at~\autoref{lst:haskell-linear-example}.
+They shift the problem of undecidability of deciding if a given Turing machine works in some complexity,
+to the problem if the algorithm implemented by it is transferrable to the particular programming language.
+
+\subsection{Extensional and intensional equality of sets of functions}\label{subsec:intensional}
+
+The field appear very fragmented and the approaches don't scale:~\cite{DalLagoMartini2006MuTutorial}.
+
+\begin{remark}
+    We don't introduce tiered recursion, ramified recursion and Leivant's works in general here:~\cite{LeivantRamyaa11}.
+    See also~\cite{3ffa7833-e2d2-3419-abb5-7f266190ba48} for discussion on tiering as recursion technique.
+\end{remark}
+
+
+
+Accessible introductions to ICC include the three-part presentation~\cite{martini2006implicit1,martini2006implicit2,martini2006implicit3},
+the talk~\cite{ronchi2019logic},
+and a short overview~\cite{DalLago2012}.
+
+
+\begin{remark}
+    We focused on the characterizations of \complexity{FL} and \complexity{FP}.
+\end{remark}
+
+% \subsection{Related works on specifically the \complexity{FL} class}
+% Early function algebras for \complexity{FL} appeared in~\cite{10.1145/1008293.1008295} and~\cite{lind1974logspace},
+% but these were explicit characterizations.
+
+% In~\cite{10.1007/978-3-662-46678-0_27}, an interesting approach using coinduction is utilized to capture \complexity{FL}.
+
+% In~\cite{hofmann2006logspace} a good overview of languages for \complexity{FL} is presented,
+% and in~\cite{schoepp2006spaceefficiency}, the history of \complexity{FL} characterizations is traced.
+
+Description of logspace, ptime (decisive):~\cite{Jones99}; logspace, linspace:~\cite{Kristiansen05}.~\cite{Bonfante06}
+For a broad literature survey, see~\cite{bloch1994function}.
+
+
+
+
+\subsection{Characterizations not easily adjustable for a programming language}
+Before the seminal works that founded the field of Implicit Complexity, many characterizations
+of complexity classes had been known already. All of them suffered at least one of the two problems:
+either it only characterized a class of relations in a given complexity (as opposed to functions),
+or the characterization wasn't purely syntactic. We will refer to the latter of being ``explicit''
+instead of ``implicit''.
+
+\subsection{Characterizations of classes of relations}
+Characterizations of classes of relations, such as \complexity{P} (as opposed to \complexity{FP}),
+are not of interest to us because they don't generalize at all to a programming language
+allowing to write functions with output. Nevertheless, we investigated the concepts used
+there and describe some of them briefly in this subsection.
+
+Polynomial-time relations have been characterized without explicit
+size bounds in~\cite{doi:10.1137/0216051}.
+In~\cite{COMPTON1990241}, uniform \(\complexityi{NC}{1}\) was characterized,
+and in~\cite{ALLEN19911} uniform \(\complexity{NC}\), though their definitions
+still concealed polynomial bounds and targeted relations instead of functions.
+
+In more modern works, decisive complexity classes have been successfully characterized in~\cite{JONES1999151} by a fragment of Lisp in~\(\complexity{L}\) and
+\(\complexity{P}\). The same concept has been extended to account for
+for nondeterminism in~\cite{10.1007/11784180_8}.
+The authors of~\cite{kristiansenvoda2005} investigated both imperative
+and functional programming languages whose fragments yield hierarchies containing \emph{decisional} \complexity{L},
+\complexity{LINSPACE}, \complexity{P}, and \complexity{PSPACE}.
+Related contributions include~\cite{kristiansen2005neat} and~\cite{Oitavem+2010+355+362}.
+
+
+
+The modern study of ICC begins with two breakthroughs:~\cite{151625}~and~\cite{10.1007/BF01201998}
+gave the first implicit characterisations of polynomial-time computable functions.
+
+However, the idea of Bellantoni and Cook seemed to best align with being the foundation
+of a practical programming language. Hence, we decided to solely focus on it and its successors.
+
+Since then (since BC, leivant), numerous classes have been captured implicitly; see, for
+example,~\cite{NIGGL201047}~and~\cite{10.1016/j.ic.2015.12.009}
+for overviews of \(\complexity{FP}\) and \(\complexity{FNC}\) characterisations.
+
+See~\cite{10.1007/s00153-022-00828-4} for implicit characterizations of counting classes such as $\complexity{\mathbin{\#}P}$ (not introduced here).
+
+\input{chapters/icc-recursion-theory.tex}
+\input{chapters/icc-linear-logic.tex}

@@ -1,0 +1,152 @@
+\chapter{Definition of Neergaard's safe affine recursion}\label{chap:appendix-neergaard}
+
+We continue to write functions as $f(\vec{x};\vec{y})$, with normal inputs
+$\vec{x}$ and safe inputs $\vec{y}$. For $\delta \in \mathbb{N}$, put
+$\texttt{shift}(y,\delta) = \lfloor y / 2^\delta \rfloor$, i.e.\ the number
+obtained from $y$ by dropping its $\delta$ least significant bits.
+Let $\mathbb{N}_2$ denote the natural numbers in binary notation.
+  For $m,n \ge 0$, we write $\mathbb{N}_2^{m,n}$ for the set of functions
+  with $m$ normal and $n$ safe arguments.
+
+\begin{definition}[{\cite{10.1007/978-3-540-30477-7_21}}~Neergaard's $\complexity{BC}_\varepsilon^{-}$ algebra]\label{def:bc-eps}
+  The class $\complexity{BC}_\varepsilon^{-}$ is the smallest class of functions over
+  $\mathbb{N}_2$ that contains the initial functions~\ref{itm:bc-eps-zero}--\ref{itm:bc-eps-cond}
+  and is closed under
+  \ref{itm:neergaard-composition} and~\ref{itm:neergaard-recursion} below:
+  \begin{enumerate}
+    \item\label{itm:bc-eps-zero}\textbf{(zero)}
+      \(
+        0(:) \;=\; \varepsilon;
+      \)
+      \item\label{itm:bc-eps-pred}\textbf{(predecessor)}
+      \(
+        p(:\varepsilon) \;=\; \varepsilon,\quad
+        p(: yb) \;=\; y \quad\text{for } b \in \{0,1\};
+      \)
+      \item\label{itm:bc-eps-proj}\textbf{(projections)}
+      for $m,n \ge 0$ and $1 \le j \le m+n$,
+      \(
+        \pi^{m,n}_j(x_1,\dots,x_m : x_{m+1},\dots,x_{m+n}) \;=\; x_j;
+      \)
+      \item\label{itm:bc-eps-succ}\textbf{(successors)}
+      \(
+        s_0(: y) \;=\; y0,\quad
+        s_1(: y) \;=\; y1;
+      \)
+      \item\label{itm:bc-eps-cond}\textbf{(conditional)}
+      \[
+        c(: y_1,y_2,y_3) \;=\;
+        \begin{cases}
+          y_2 & \text{if $y_1$ ends in $1$ (i.e.\ $y_1 = z1$ for some $z$)},\\
+          y_3 & \text{otherwise;}
+        \end{cases}
+      \]
+    \item\label{itm:neergaard-composition}
+      \textbf{(safe affine composition)}\
+      let $f\in \complexity{BC}_\varepsilon^{-}$ have arity $(M,N)$, let
+      $g_1,\dots,g_M \in \complexity{BC}_\varepsilon^{-}$ with
+      $g_i$~of~arity~$(m,0)$, and let
+      $h_1,\dots,h_N \in \complexity{BC}_\varepsilon^{-}$ with
+      $h_i$ of arity $(m, n_i)$.
+      Put $n := n_1 + \dots + n_N$.
+      The \emph{safe affine composition}
+      $f \circ \langle g_1,\dots,g_M ; h_1,\dots,h_N \rangle$
+      is the function $F$ of arity $(m, n)$ defined by
+      \[
+        F(\vec{x};\vec{y}) =
+        f\Bigl(g_1(\vec{x};\,),\dots,g_M(\vec{x};\,)\ ;\ 
+              h_1(\vec{x};\vec{y}_1),\dots,h_N(\vec{x};\vec{y}_N)\Bigr),
+      \]
+      where each $\vec{y}_j$ is a (possibly empty) subtuple of the safe inputs
+      $\vec{y}$ and every safe variable occurs in \emph{at most} one of the
+      tuples $\vec{y}_1,\dots,\vec{y}_N$. In particular, no safe input may be
+      duplicated, but some safe inputs may be unused.
+
+    \item\label{itm:neergaard-recursion}
+      \textbf{(safe affine course-of-value recursion)}\
+      let $g,h_0,h_1,d_0,d_1 \in \complexity{BC}_\varepsilon^{-}$ be such that
+      \[
+        g : \mathbb{N}_2^{m,n} \to \mathbb{N}_2,\quad
+        h_0,h_1 : \mathbb{N}_2^{m+1,1},\quad
+        d_0,d_1 : \mathbb{N}_2^{m+1,0}.
+      \]
+      Their \emph{safe affine course-of-value recursion} is the function
+      $f : \mathbb{N}_2^{m+1,n}$ given by
+      \[
+      \begin{aligned}
+        f(0,\vec{x};\vec{y}) &= g(\vec{x};\vec{y}),\\
+        f(yb,\vec{x};\vec{y}) &=
+          h_b \Bigl(y,\vec{x};\,f(\texttt{shift}(y,\delta_b),\vec{x};\vec{y})\Bigr)
+      \end{aligned}
+      \]
+      for $b \in \{0,1\}$, where
+      $\delta_b = \len{d_b(y,\vec{x};\,)}$ depends only on the normal
+      arguments $(y,\vec{x})$. Here the recursive value
+      $f(\texttt{shift}(y,\delta_b),\vec{x};\vec{y})$ is supplied to $h_b$ as
+      its unique safe argument and can therefore be used at most once.
+  \end{enumerate}
+\end{definition}
+
+\begin{theorem}[{\cite[Theorem~1]{10.1007/978-3-540-30477-7_21}}]\label{thm:neergaard-theorem}
+    For any function definable in $\complexity{BC}_\varepsilon^{-}$ there is a Turing machine evaluating
+    the function in \complexity{FL}. The Turing machine can be constructed from the function expression
+    in logarithmic space in the size of the $\complexity{BC}_\varepsilon^{-}$-expression.
+\end{theorem}
+
+
+
+\begin{remark}[Intuition]
+The recursive result is passed back in a safe
+  position and can be used only once.
+  Once a safe value is
+  ``measured'' by the conditional operator,
+    it must be recomputed; we \emph{cannot} duplicate it.
+Dropping the affinity constraint collapses back to the original
+\complexity{BC} algebra for \(\complexity{FP}\).
+\end{remark}
+
+
+\begin{remark}[Bibliography]
+      In~\cite{murawski2000can}, with further refinements in~\cite{MURAWSKI2004197},
+      \(\complexity{BC}^{-}\) (note the lack of $\varepsilon$ subscript) was introduced, an algebra that was contained in \complexity{FL},
+      but was not known (and unlikely) to be \complexity{FL}-complete.
+      In~\cite{10.1007/978-3-540-30477-7_21} this was improved to the result that
+      \(\complexity{BC}_\varepsilon^{-} = \complexity{FL}\),
+      with a short discussion that using course-of-value affine recursion instead of predicative affine recursion
+      seems to be the reason why \(\complexity{BC}_\varepsilon^{-}\) is \complexity{FL}-complete,
+      whereas \(\complexity{BC}^{-}\) is probably not.
+\end{remark}
+
+Writing programs in \(\complexity{BC}_\varepsilon^{-}\) is not reminiscent of any mainstream programming language.
+The types being linear make most of the standard programming techniques not usable.
+As part of our work, we have implemented an interpreter for the algebra in Haskell and tried to reproduce
+some of the propositions from~\cite{10.1007/978-3-540-30477-7_21}. We present two listings, just to give
+a hint of how the corresponding functions look like; these are Haskell representations of functions from the
+algebra, not a programming language directly for the algebra. We present the full source code as
+attachment to this thesis.\todo{How to add attachment to thesis?}
+
+\begin{rawlisting}
+\input{listings/neergaard-const-zero.tex}
+\caption{Constant zero function of arity $(M, N)$ }\label{lst:neergaard-const-zero}
+\end{rawlisting}
+\begin{remark}
+  Notice that the function depicted in~\autoref{lst:neergaard-const-zero} only returns 0,
+  but nevertheless we need to use recursion to introduce normal arguments.
+\end{remark}
+
+\begin{rawlisting}
+\input{listings/neergaard-shiftr.tex}
+\caption{Function \texttt{shiftR} from the original paper.}\label{lst:neergaard-shiftr}
+\end{rawlisting}
+\begin{remark}
+  The example in~\autoref{lst:neergaard-shiftr} shows the implementation of a function that
+  shifts bit to the right (dropping least-significant bits). The implementation is standard,
+  but it's worth to note that in the original paper, there is an error --- the function \texttt{shiftR} originally
+  has flipped safe and normal arguments, making it impossible to implement. We outline our proof by contradiction for this fact.
+  Consider a function $\mathtt{cond'(; x, y, z)}$ returning $y$ if $x$ is empty, $z$ otherwise.
+  We can prove directly that this function is not implementable in \(\complexity{BC}^{-}\) due to
+  the algebra not being able to differentiate between an empty string and a string beginning with a sufficiently
+  long prefix of zeros.
+  Assume the original \texttt{shiftR} is implementable. Then we can implement $\mathtt{cond'}$ using
+  \texttt{shiftR}, which is a contradiction.
+\end{remark}

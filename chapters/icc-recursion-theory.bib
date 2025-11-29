@@ -158,22 +158,6 @@ keywords = {Complexity, Read-only programs, Cons-free programs},
 abstract = {A programming approach to computability and complexity theory yields more natural definitions and proofs of central results than the classical approach. Further, some new results can be obtained using this viewpoint. This paper contains new intrinsic characterizations of the well-known complexity classes PTIME and LOGSPACE, with no externally imposed resource bounds on time or space. LOGSPACE is proven identical with the decision problems solvable by read-only imperative programs on Lisp-like lists; and PTIME is proven identical with the problems solvable by recursive read-only programs.}
 }
 
-@article{MURAWSKI2004197,
-title = {On an interpretation of safe recursion in light affine logic},
-journal = {Theoretical Computer Science},
-volume = {318},
-number = {1},
-pages = {197-223},
-year = {2004},
-note = {Implicit Computational Complexity},
-issn = {0304-3975},
-doi = {https://doi.org/10.1016/j.tcs.2003.10.017},
-url = {https://www.sciencedirect.com/science/article/pii/S030439750300522X},
-author = {A.S. Murawski and C.-H.L. Ong},
-keywords = {Computational complexity, Light affine logic, Polynomial-time computability},
-abstract = {We introduce a subalgebra BC− of Bellantoni and Cook's safe-recursion function algebra BC. Functions of the subalgebra have safe arguments that are non-contractible (i.e non-duplicable). We propose a definition of safe and normal variables in light affine logic (LAL), and show that BC− is the largest subalgebra that is interpretable in LAL, relative to that definition. Though BC− itself is not PF complete, there are extensions of it (by additional schemes for defining functions with safe arguments) that are, and are still interpretable in LAL and so preserve PF closure. We focus on one such which is BC− augmented by a definition-by-cases construct and a restricted form of definition-by-recursion scheme over safe arguments. As a corollary we obtain a new proof of the PF completeness of LAL.}
-}
-
 @article{NIGGL201047,
 title = {Implicit characterizations of FPTIME and NC revisited},
 journal = {The Journal of Logic and Algebraic Programming},
@@ -474,15 +458,18 @@ year = {1953},
   pages     = {XXVII+637}
 }
 
-@inproceedings{Neergaard04,
-  author    = {Peter M{\o}ller Neergaard},
-  title     = {A functional language for logarithmic space},
-  booktitle = {Asian Symposium on Programming Languages and Systems (APLAS 2004)},
-  series    = {LNCS},
-  volume    = {3302},
-  pages     = {311--326},
-  year      = {2004},
-  publisher = {Springer}
+@InProceedings{10.1007/978-3-540-30477-7_21,
+author="Neergaard, Peter M{\o}ller",
+editor="Chin, Wei-Ngan",
+title="A Functional Language for Logarithmic Space",
+booktitle="Programming Languages and Systems",
+year="2004",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="311--326",
+abstract="More than being just a tool for expressing algorithms, a well-designed programming language allows the user to express her ideas efficiently. The design choices however effect the efficiency of the algorithms written in the languages. It is therefore important to understand how such choices effect the expressibility of programming languages.",
+isbn="978-3-540-30477-7",
+url="https://doi.org/10.1007/978-3-540-30477-7_21"
 }
 
 @INPROCEEDINGS{4276584,
@@ -510,3 +497,108 @@ abstract="The vast power of iterated recurrence is tamed by data ramification: i
 isbn="978-3-662-46678-0"
 }
 
+@misc{DalLagoMartini2006MuTutorial,
+  author       = {Dal Lago, Ugo and Martini, Simone},
+  title        = {Implicit Computational Complexity: A $\mu$-Tutorial},
+  howpublished = {Tutorial talk at the FOLLIA meeting},
+  address      = {Universit{\`a} di Bologna, Dipartimento di Scienze dell'Informazione},
+  year         = {2006},
+  month        = 1,
+  note         = {FOLLIA meeting, January 19, 2006},
+  url          = {http://web.archive.org/web/20221225041239/http://www.cs.unibo.it/~martini/TALKS/follia2006.pdf}
+}
+
+
+
+@article{Jones99,
+  author    = {Neil D. Jones},
+  title     = {{LOGSPACE} and {PTIME} characterized by programming languages},
+  journal   = {Theoretical Computer Science},
+  volume    = {228},
+  number    = {1-2},
+  pages     = {151--174},
+  year      = {1999}
+}
+
+@article{Kristiansen05,
+  author    = {Lars Kristiansen},
+  title     = {Neat function algebraic characterizations of {LOGSPACE} and {LINSPACE}},
+  journal   = {Computational Complexity},
+  volume    = {14},
+  number    = {1},
+  pages     = {72--88},
+  year      = {2005}
+}
+
+@inproceedings{Bonfante06,
+  author    = {Guillaume Bonfante},
+  title     = {Some Programming Languages for {LOGSPACE} and {PTIME}},
+  booktitle = {Algebraic Methodology and Software Technology (AMAST 2006)},
+  series    = {LNCS},
+  volume    = {4019},
+  pages     = {66--80},
+  year      = {2006},
+  publisher = {Springer},
+  url={https://inria.hal.science/inria-00105744/PDF/bonfante.pdf},
+}
+
+
+@inproceedings{aubert:hal-01111737,
+  TITLE = {{An in-between ''implicit'' and ''explicit'' complexity: Automata}},
+  AUTHOR = {Aubert, Cl{\'e}ment},
+  URL = {https://hal.science/hal-01111737},
+  BOOKTITLE = {{DICE 2015 - Developments in Implicit Computational Complexity}},
+  ADDRESS = {Londres, United Kingdom},
+  YEAR = {2015},
+  MONTH = {4},
+  KEYWORDS = {Logspace ; Automata ; Implicit Computational Complexity ; Survey ; Pointer Machine ; Polynomial Time},
+  PDF = {https://hal.science/hal-01111737v2/file/standalone.pdf},
+  HAL_ID = {hal-01111737},
+  HAL_VERSION = {v2},
+}
+
+
+@techreport{Neergaard2004BCeps,
+  author      = {M{\o}ller Neergaard, Peter},
+  title       = {$\mathrm{BC}_\varepsilon^-:$ A recursion-theoretic characterization of LOGSPACE},
+  institution = {Brandeis University},
+  year        = {2004},
+  month       = {3},
+  type        = {Technical Report},
+  note        = {Preliminary version},
+  url = {http://web.archive.org/web/20250411114452/https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=d00d19870bb43abb4b0098e382ddc7f54d2ddf48}
+}
+
+% Unaccessible
+@inproceedings{MurawskiOng2000SafeRecursion,
+  author    = {Murawski, Andrzej S. and Ong, C.-H. Luke},
+  title     = {Can Safe Recursion Be Interpreted in Light Logic?},
+  booktitle = {2nd International Workshop on Implicit Computational Complexity},
+  year      = {2000},
+  month     = {6}
+}
+
+
+@unpublished{NeergaardMairson2003HowLight,
+  author = {M{\o}ller Neergaard, Peter and Mairson, Harry G.},
+  title  = {How Light Is Safe Recursion? Compositional Translations Between Languages of Polynomial Time},
+  year   = {2003},
+  note   = {Unpublished manuscript, Brandeis University, \url{https://www.researchgate.net/publication/239691888_How_Light_Is_Safe_Recursion_Compositional_Translations_Between_Languages_of_Polynomial_Time}},
+  url = {http://web.archive.org/web/20250411115047/https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=a1670570dbe8ff1f464a826db9b79e0054108c35}
+}
+
+@article{MURAWSKI2004197,
+title = {On an interpretation of safe recursion in light affine logic},
+journal = {Theoretical Computer Science},
+volume = {318},
+number = {1},
+pages = {197-223},
+year = {2004},
+note = {Implicit Computational Complexity},
+issn = {0304-3975},
+doi = {https://doi.org/10.1016/j.tcs.2003.10.017},
+url = {https://www.sciencedirect.com/science/article/pii/S030439750300522X},
+author = {A.S. Murawski and C.-H.L. Ong},
+keywords = {Computational complexity, Light affine logic, Polynomial-time computability},
+abstract = {We introduce a subalgebra BC- of Bellantoni and Cook's safe-recursion function algebra BC. Functions of the subalgebra have safe arguments that are non-contractible (i.e non-duplicable). We propose a definition of safe and normal variables in light affine logic (LAL), and show that BC− is the largest subalgebra that is interpretable in LAL, relative to that definition. Though BC− itself is not PF complete, there are extensions of it (by additional schemes for defining functions with safe arguments) that are, and are still interpretable in LAL and so preserve PF closure. We focus on one such which is BC− augmented by a definition-by-cases construct and a restricted form of definition-by-recursion scheme over safe arguments. As a corollary we obtain a new proof of the PF completeness of LAL.}
+}

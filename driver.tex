@@ -64,8 +64,10 @@
 
 \usepackage{xspace}
 
-% \usepackage{listings}
-% \usepackage{listingsutf8}
+% make references clickable, hide boxes around links
+\usepackage[hidelinks, pdfpagelabels]{hyperref}
+\usepackage{xurl}     % improves breaking points in URLs to avoid overfull
+
 \usepackage{xcolor}
 \usepackage{fancyvrb}
 \input{listings/pygments-default.tex}
@@ -101,8 +103,7 @@
   prepend={TODO:} % prefix inside note
 }
 
-% make references clickable, hide boxes around links
-\usepackage[hidelinks, pdfpagelabels]{hyperref}
+
 % https://tex.stackexchange.com/a/404990
 % https://mirror.aarnet.edu.au/pub/CTAN/macros/latex/contrib/hyperref/doc/hyperref-doc.html#x1-140004
 % Sectioning names (babel-aware)
@@ -158,18 +159,19 @@
 \apptocmd{\tableofcontents}{\clearpage\hypersetup{pageanchor=true}}{}{}
 \makeatother
 
-\addbibresource{chapters/uniformity.bib}
 \addbibresource{chapters/foundations.bib}
-\addbibresource{chapters/reductions.bib}
-\addbibresource{chapters/linear-logic.bib}
-\addbibresource{chapters/bounded-arithmetic.bib}
-\addbibresource{chapters/descriptive-complexity.bib}
-\addbibresource{chapters/formalized-semantics.bib}
-\addbibresource{chapters/recursion-theory.bib}
 \addbibresource{chapters/preliminaries-single-sorted-logic.bib}
 \addbibresource{chapters/preliminaries-two-sorted-logic.bib}
 \addbibresource{chapters/preliminaries-turing-complexity.bib}
 \addbibresource{chapters/preliminaries-circuits.bib}
+\addbibresource{chapters/formalized-semantics.bib}
+\addbibresource{chapters/descriptive-complexity.bib}
+\addbibresource{chapters/reductions.bib}
+\addbibresource{chapters/icc.bib}
+\addbibresource{chapters/icc-recursion-theory.bib}
+\addbibresource{chapters/icc-linear-logic.bib}
+\addbibresource{chapters/bounded-arithmetic.bib}
+\addbibresource{chapters/uniformity.bib}
 
 
 \newcommand{\llbracket}{\mathopen{[\![}}
@@ -519,12 +521,12 @@
 \include{chapters/formalized-semantics}
 \include{chapters/descriptive-complexity}
 \include{chapters/reductions}
-\include{chapters/recursion-theory}
-\include{chapters/linear-logic}
+\include{chapters/icc}
 \include{chapters/bounded-arithmetic}
 
 \appendix
 \include{chapters/uniformity}
+\include{chapters/appendix-neergaard-algebra}
 
 \printbibliography[heading=bibintoc]
 

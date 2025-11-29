@@ -36,7 +36,9 @@ The existing research on finite-state automata has not been directly useful for 
 The expressiveness of this model is inherently limited to Boolean-valued functions,
 so for general functions it is strictly better for us to focus on transducers.
 Yet, we consider some characterization of \complexity{REG}
-in~\autoref{sec:descriptive-for-programming}.
+in~\autoref{sec:descriptive-for-programming}. Please also see~\cite[Corollary~1 and Definition~in~section~2]{10.1145/321623.321625} for the characterization
+of \compP{} by two-way multi-head pushdown automata and~\cite[Lemma~2]{Sudborough1977} for proof that \compL{}
+languages are characterized by two-way multi-head finite automata.
 
 Transducers extend automata to binary string outputs and have elegant characterizations.
 In~\cite{bojańczyk2018polyregularfunctions},
@@ -134,7 +136,7 @@ Another classical paradigm is that of
 general recursive functions, or equivalently the untyped
 lambda calculus. Because these systems are Turing complete, the interesting question
 is how to constrain recursion so that the resulting language captures a specific class.
-We treat these ideas in~\autoref{chap:recursion-theory}.
+We treat these ideas in~\autoref{sec:recursion-theory}.
 
 \section{Typed lambda calculus}
 Typed lambda calculus underpins functional programming. In this section we focus on typed variants,
@@ -157,7 +159,7 @@ Recall that one of the reasons linear logic is studied is the potential
 to reason about resource creation and utilization.
 Concepts from linear logic have been implemented in the theory of type systems
 to transfer the resource interpretation.
-This will be discussed further in~\autoref{chap:linear-types}.
+This will be discussed further in~\autoref{sec:linear-types}.
 
 \clearpage
 \section{Set theory as inspiration for model of computation}
