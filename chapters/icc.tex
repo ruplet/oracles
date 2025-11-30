@@ -26,7 +26,7 @@ and the short overview~\cite{DalLago2012}.
 Recall that, given a description of a Turing machine, the problem of deciding whether it halts
 is undecidable. Hence, deciding whether an arbitrary computer program belongs to the complexity
 class \compP{} is also undecidable. This is only a problem, however, if we take \emph{arbitrary}
-programs as input. If we limit the scope to programs written in a special, limited programming
+programs as input. If we restrict attention to programs written in a special, limited programming
 language, we can easily design the language so that it does not admit constructs such as
 \texttt{while}-loops or general recursion, and therefore every program in it necessarily terminates.
 Moreover, membership in the syntax of such a language can be easy to decide. In this way, the
@@ -34,23 +34,26 @@ undecidability problem is not resolved, but shifted to the difficulty of program
 \texttt{C} program implementing an algorithm, it becomes undecidable whether there exists a
 corresponding program in our restricted language.
 
-This problem shows up as the difference between
-\emph{intenstional} and \emph{extensional} expressive power of characterizations of complexity classes.
-The only proofs of equivalence of them that we know are purely extensional --- that if a function
-exists in one class, then there has to exist a corresponding function in the other class.
-With low complexity classes, the equivalence being only extensional
+This phenomenon shows up as the difference between
+\emph{intensional} and \emph{extensional} expressive power of characterizations of complexity classes.
+The equivalence proofs between ICC characterizations and the usual machine-based classes are purely extensional:
+they show that if a function
+belongs to, say, \complexity{FL}, then there exists some term in the characterization language that
+computes the same function, and conversely.
+For low complexity classes, the equivalence being only extensional
 becomes very apparent. The characterizations are intricate and require a completely different
-style of programming. The natural and well-known algorithms \emph{don't} transfer to the currently
-known languages characterizing these classes and new algorithms would have to be invented.
-We will demonstrate an example of how easily we can lose \emph{intensional} expressive power
+style of programming. The natural and well-known algorithms \emph{do not} transfer to the currently
+known languages characterizing these classes; new algorithms would have to be invented in
+the ICC formalisms.
+We will demonstrate an example of how easily we can lose intensional expressive power
 in~\autoref{lst:haskell-linear-example} and~\autoref{remark:haskell-linear}.
 
 For a more authoritative argumentation, please refer to~\cite[Slide~31]{DalLagoMartini2006MuTutorial}.
 
 \subsection{Problem 2: every characterization is a new programming paradigm}
-As of 2025, the characterizations discovered are not uniform in style. They utilize
+As of 2025, the characterizations discovered are not uniform in style. They use
 completely different techniques and, in effect, would yield different programming
-languages for each of the complexity classes. There are characterizations able to
+languages for each of the complexity classes. There are characterizations that are able to
 capture multiple classes in a uniform way. In general, however, the field appears
 to be very fragmented with little overlap between the concepts.
 This is also pointed out in~\cite{DalLagoMartini2006MuTutorial}.
@@ -61,22 +64,22 @@ tiered recursion by Leivant in~\cite{151625} and the introduction of safe recurs
 Bellantoni and Cook in~\cite{10.1007/BF01201998}.
 We have focused on the safe-recursive approach in this work, and we will not discuss in detail here
 the developments stemming from Leivant's branch. For that, we refer to~\cite{LeivantRamyaa11}
-and to~\cite{3ffa7833-e2d2-3419-abb5-7f266190ba48} for discussion on tiering as recursion technique.
+and to~\cite{3ffa7833-e2d2-3419-abb5-7f266190ba48} for a discussion of tiering as a recursion technique.
 
 It is important to
 note that we are specifically interested in \emph{capturing} a complexity class by a programming language.
-This is a stronger property to just having the guarantee of functions of a programming language being
+This is a stronger property than just having the guarantee that all functions of a programming language are
 contained in a complexity class; an interesting work studying the latter is~\cite{chrzaszcz_et_al:LIPIcs.CSL.2012.198}.
 
 We primarily focused on the characterizations of \complexity{FL}, with a lot of attention
-also given to the \complexity{FP} class and significantly less to other classes.
+also given to the class \complexity{FP} and significantly less to other classes.
 In~\cite{hofmann2006logspace} a good overview of languages for \complexity{FL} is presented,
-and in~\cite{schoepp2006spaceefficiency}, the history of \complexity{FL} characterizations is traced.
+and in~\cite{schoepp2006spaceefficiency} the history of \complexity{FL} characterizations is traced.
 
-Before the seminal works that founded the field of Implicit Complexity, many characterizations
-of complexity classes had been known already. All of them suffered at least one of the two problems:
-either it only characterized a class of relations in a given complexity and not functions,
-or the characterization wasn't purely syntactic and required additional proofs.
+Before the seminal works that founded the field of implicit complexity, many characterizations
+of complexity classes were already known. All of them suffered from at least one of two problems:
+either they characterized only a class of relations in a given complexity and not functions,
+or the characterization was not purely syntactic and required additional proofs.
 We will refer to the latter as being ``explicit'' instead of ``implicit'', as discussed in~\autoref{subsec:explicit}.
 In this explicit manner, uniform decision \(\complexityi{NC}{1}\) was characterized
 in~\cite{COMPTON1990241} and uniform decision \(\complexity{NC}\) in~\cite{ALLEN19911}.
@@ -87,25 +90,26 @@ For the more historical works, there is a remarkably good literature
 review in~\cite[Section~1]{bloch1994function}, despite that
 paper introducing new, unrelated characterizations.
 
-These explicit characterizations formed the foundation on which the modern ICC was build.
+These explicit characterizations formed the foundation on which modern ICC was built.
 They already tied complexity classes to restricted programming languages, but parts of the
-proofs of computational complexity were still necessary in the form of proving the explicit
-bounds needed by the characterizations in one form or the other. Modern developments
-are almost always purely syntacic and thus can form a feasible basis of a programming language.
+complexity proofs still had to be given manually: that the explicit
+bounds required by the characterizations really hold.
+Modern developments
+are almost always purely syntactic and thus can form a feasible basis for a programming language.
 
 Indeed, in~\cite{JONES1999151}, decision \(\complexity{L}\) and \(\complexity{P}\) were characterized
 by a fragment of Lisp. The same concept has been extended to account for
-for nondeterminism in~\cite{10.1007/11784180_8}.
+nondeterminism in~\cite{10.1007/11784180_8}.
 The authors of~\cite{kristiansenvoda2005} investigated both imperative
 and functional programming languages whose fragments yield hierarchies containing \emph{decision} \complexity{L},
 \complexity{LINSPACE}, \complexity{P}, and \complexity{PSPACE}.
 Related contributions include~\cite{kristiansen2005neat} and~\cite{Oitavem+2010+355+362}.
-In~\cite{10.1007/978-3-662-46678-0_27}, an interesting original approach using coinduction is utilized
+In~\cite{10.1007/978-3-662-46678-0_27}, an interesting original approach using coinduction is used
 to capture \complexity{FL}. See~\cite{10.1007/s00153-022-00828-4} for implicit characterizations of
 counting classes such as $\complexity{\mathbin{\#}P}$ (not introduced here).
 
 Please refer to~\cite{NIGGL201047} for overviews of the different characterizations of
-\(\complexity{FP}\) and \(\complexity{FNC}\); to~\cite{10.1016/j.ic.2015.12.009} for \(complexityi{NC}{k}\).
+\(\complexity{FP}\) and \(\complexity{FNC}\), and to~\cite{10.1016/j.ic.2015.12.009} for \(\complexityi{NC}{k}\).
 
 \input{chapters/icc-recursion-theory.tex}
 \input{chapters/icc-linear-logic.tex}
