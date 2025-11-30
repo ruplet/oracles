@@ -1,83 +1,96 @@
 \section{Linear types}\label{sec:linear-types}
-Type systems in programming languages allow us to offload the burden of verifying semantic
-properties of programs by purely from their syntax. Most popular type systems
-such as in C or C++ allow for verifying the property that, given a function
-of type \texttt{\input{listings/example-c-proving.tex}}, if the input has a particular
-layout in memory, then the output memory will also be of particular shape.
-They don't provide direct support
+The type systems of most popular programming languages are fairly weak:
+they do not provide direct support
 for verifying high-level correctness or complexity properties.
-Functional programming languages with strong type systems exist, allowing to
-verify quite useful correctness properties --- one example is the language Haskell. Going yet
-stronger, Lean and Rocq are at the same time programming languages and proof assistants, i.e.\ 
-their type systems allow to prove very abstract mathematical properties of the functions they define.
-However, none of the mainstream languages allow to enforce useful computational complexity properties
+Functional programming languages with strong type systems exist, allowing us to
+verify quite useful correctness properties --- one example is the language Haskell.
+Going yet
+stronger, Lean and Rocq are at the same time programming languages and proof assistants, i.e.\
+their type systems allow us to prove even very abstract mathematical properties of the functions they define.
+However, none of the mainstream languages allows us to enforce useful computational complexity properties
 of programs.
 
 One of the properties that is notoriously difficult to enforce
-is preventing data from being copied\footnote{We can delete the copy constructor in C++, but it's of course bypassable.}
-or discarded without being used\footnote{Yes, we can use a linter to detect unused variables, but
-that again doesn't enforce anything.}.
-We will also refer to variables being non-copyable as \emph{affine} and reserve the term \emph{linear} for variables
-that must be used \emph{exactly} once, i.e.\ neither duplicated nor discarded. The affinity requirement
-can be enforced by the variable going out-of-scope after it was used anywhere.
-Affine variables are important in logspace computations in which such copying large enough data
+is preventing data from being copied\footnote{We can delete the copy constructor in C++, but this is of course bypassable.}
+or discarded without being used.\footnote{A linter can detect unused variables, but this does not enforce a guarantee.}
+We will call variables that are \emph{non-copyable} \emph{affine}, and reserve the term \emph{linear} for variables
+that must be used \emph{exactly once}, i.e.\ they may be neither duplicated nor discarded.
+The affine requirement can be enforced by making the variable go out of scope just after it was used.
+Affine variables are important in logspace computations, where copying large enough data
 is simply not implementable. Linear variables, on the other hand, are reminiscent of
-the requirement of class instance construction operation being always matched by a corresponding destruction operation.
-We will see an example of affinity exhibited by linear types in Haskell in~\autoref{lst:haskell-linear-example}.
-We have already been studying similar concepts for decades in the field of proof theory, where a proof system
-may or may not have the so-called \emph{structural} rules: weakening, contraction and exchange.
+the requirement that every class construction must be matched by a corresponding destruction operation
+on every execution path.
+We will see an example of affinity enforced by linear types in Haskell in~\autoref{lst:haskell-linear-example}.
+
+These ideas have been studied for decades in proof theory.
+There, a proof system may or may not allow the so-called \emph{structural} rules:
+weakening, contraction and exchange.
 Proof systems that lack one of these rules are studied in the field of linear logic,
 introduced in~\cite{GIRARD19871} with a clear intent to be used in computer science.
-The semantics of linear logic has a natural interpretation of logical variables modeling some \emph{resources}.
-The concepts from linear logic have been used almost directly for studying
-\emph{linear type systems},
-that in (typically functional) programming languages, can control the property of cloning and discarding data.
+The semantics of linear logic has a natural interpretation in terms of \emph{resources}:
+a proposition may be used exactly once, or at most once, rather than freely duplicated and discarded.
+The concepts from linear logic have been carried over almost directly to \emph{linear type systems},
+which, in (typically functional) programming languages, can control the ability to clone and discard data.
 
-As it turns out, this level of control is also enough to limit the computational complexity of functions implementable
-in the language. The class \complexity{FL} has been captured by a variant of affine logic in~\cite{4276584};
-it was also been studied in~\cite{10.1007/11874683_40},~\cite{DaLagoSchopp10} and~\cite{mazza:LIPIcs.CSL.2015.24}.
-The class \complexity{FP} was characterized in~\cite{Leivant93}. Most importantly for us, the programming
-language \texttt{IntML}
-was introduced in\cite{DALLAGO2016150}.
+As it turns out, this level of control is also enough to limit the computational complexity of definable functions.
+The class \complexity{FL} has been captured by a variant of affine logic in~\cite{4276584};
+it was also studied in~\cite{10.1007/11874683_40},~\cite{DaLagoSchopp10} and~\cite{mazza:LIPIcs.CSL.2015.24}.
+The class \complexity{FP} was characterized in~\cite{Leivant93}.
+Most importantly for us, the programming language \texttt{IntML}
+was introduced in~\cite{DALLAGO2016150}, which we will discuss in~\autoref{sec:intml}.
 
 \begin{remark}
-The formal bridge between the theories of linear types and the different kinds of linear logics is the
+The formal bridge between linear logics and linear type systems is the
 Curry-Howard correspondence,
-also known as ``propositions as types'', or ``proofs as programs''.
-The depth of connections between logic, type systems and complexity theory is astonishing
-and already well-explored in the literature, e.g.\ \cite{BenedettiPhd}. We will not repeat these definitions here.
-A good introduction to the Curry-Howard correspondence is the book by S\o{}rensen and Urzyczyn:~\cite{10.5555/1197021}.
+also known as ``propositions as types'' or ``proofs as programs''.
+The connections between logic, type systems and complexity theory are already well explored in the literature,
+e.g.\ \cite{BenedettiPhd}.
+We will not repeat these definitions here.
+A good introduction to the Curry-Howard correspondence is the book by S\o{}rensen and Urzyczyn~\cite{10.5555/1197021}.
 \end{remark}
 
-
 \begin{remark}
-Please note that controlling the computational complexity of programs through the complexity of their specification
-was discussed by us in~\autoref{chap:descriptive-complexity}. There, however, the control went through model theory.
-Here, the limitations are entirely in the world of proof theory, which is much better connected to
+Controlling the computational complexity of programs through the complexity of their specification
+was already discussed in~\autoref{chap:descriptive-complexity}, where the control went through model theory.
+Here, the restrictions are entirely in the world of proof theory, which is more directly connected to
 computation than model theory.
 \end{remark}
 
 \begin{remark}[Support for linear types in mainstream programming languages]
-Some of the mainstream programming languages have support for linear types. Haskell (GHC >= 9.0.1) supports
-a limited version of linear types. In Rust, linear reasoning can be performed with the mechanism of ownership and borrowing.
-Going less mainstream, Idris 2, F* and Q* (which is a quantum programming language)
-also support different versions of linear types.
+Some mainstream programming languages offer some support for linear  types.
+Haskell (GHC~$\ge 9.0.1$) supports a limited version of linear types.
+In Rust, affine reasoning can be expressed through the ownership and borrowing mechanism.
+Going less mainstream, Idris~2, F$^\star$ and Q$^\star$ (a quantum programming language)
+also support different variants of linear types.
 \end{remark}
-
 
 \begin{rawlisting}
 \input{listings/haskell-linear-example.tex}
 \caption{Example of linear types in Haskell}\label{lst:haskell-linear-example}
 \end{rawlisting}
 \begin{remark}\label{remark:haskell-linear}
-
-   As we see in~\autoref{lst:haskell-linear-example}, we really get lots.
+  In~\autoref{lst:haskell-linear-example}, the type system prevents us from using a linear argument
+  more than once. The function \texttt{collatzBad2} fails to type-check precisely because the
+  argument \texttt{x} would be consumed by \texttt{evenBits x} and then used again in the branches.
+This effect makes most of the standard algorithms not transferrable to this formalism.  
 \end{remark}
 
-
 \subsection{IntML}\label{sec:intml}
-An implementation of IntML is available on
-  GitHub\footnote{\url{https://github.com/uelis/IntML}. Following my private communication with the authors, 
-  a permissive license was added to the repository, as it was not included originally.}, and to the best of
-   my knowledge it remains the only language within the linear-logic branch of ICC that has both a working 
-   implementation and some potential for (academic) practical use.
+In 2013, Dal Lago and Sch\"opp introduced \texttt{IntML}, a functional language with a linear type
+system that characterizes \complexity{FL}~\cite{DALLAGO2016150}.
+An implementation of \texttt{IntML} is available on
+GitHub.\footnote{\url{https://github.com/uelis/IntML}. Following private communication with the authors, 
+a permissive license was added to the repository, as it was not included originally.}
+To the best of our knowledge, it remains the only language within the linear-logic branch of ICC that has both
+a working implementation and some potential for (academic) practical use.
+
+From the point of view of this thesis, however, linear-logic-based approaches --- including \texttt{IntML} ---
+run into the \emph{same} issue of intensional vs.\ extensional expressive power discussed in~\autoref{subsec:intensional}.
+These systems characterize classes such as \complexity{FL} and \complexity{FP} \emph{extensionally}.
+The characterizations capture the right functions, but not the usual \emph{algorithmic techniques}
+used to implement them. \texttt{IntML} looks like a very good starting point for
+a practical programming language. However, it would stil be very hard to use it
+to certify the complexity of standard algorithms.
+
+In this thesis, we will not pursue this line further as a practical basis for certifying
+the complexity.
