@@ -9,6 +9,7 @@ Strona 4 - wokół plusa w nazwach logik raczej nie powinno być spacji.
 Widzę że czasem jest L i P a czasem (zwykle) LOGSPACE i PTIME - należałoby ujednolicić.
 ```
 
+- UK vs US english (analysing, analyzed)
 
 - Watch out for separations between things
 ```
