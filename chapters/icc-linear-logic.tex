@@ -33,10 +33,36 @@ The concepts from linear logic have been used almost directly for studying
 \emph{linear type systems},
 that in (typically functional) programming languages, can control the property of cloning and discarding data.
 
+As it turns out, this level of control is also enough to limit the computational complexity of functions implementable
+in the language. The class \complexity{FL} has been captured by a variant of affine logic in~\cite{4276584};
+it was also been studied in~\cite{10.1007/11874683_40},~\cite{DaLagoSchopp10} and~\cite{mazza:LIPIcs.CSL.2015.24}.
+The class \complexity{FP} was characterized in~\cite{Leivant93}. Most importantly for us, the programming
+language \texttt{IntML}
+was introduced in\cite{DALLAGO2016150}.
+
+\begin{remark}
+The formal bridge between the theories of linear types and the different kinds of linear logics is the
+Curry-Howard correspondence,
+also known as ``propositions as types'', or ``proofs as programs''.
+The depth of connections between logic, type systems and complexity theory is astonishing
+and already well-explored in the literature, e.g.\ \cite{BenedettiPhd}. We will not repeat these definitions here.
+A good introduction to the Curry-Howard correspondence is the book by S\o{}rensen and Urzyczyn:~\cite{10.5555/1197021}.
+\end{remark}
+
+
+\begin{remark}
+Please note that controlling the computational complexity of programs through the complexity of their specification
+was discussed by us in~\autoref{chap:descriptive-complexity}. There, however, the control went through model theory.
+Here, the limitations are entirely in the world of proof theory, which is much better connected to
+computation than model theory.
+\end{remark}
+
+\begin{remark}[Support for linear types in mainstream programming languages]
 Some of the mainstream programming languages have support for linear types. Haskell (GHC >= 9.0.1) supports
 a limited version of linear types. In Rust, linear reasoning can be performed with the mechanism of ownership and borrowing.
 Going less mainstream, Idris 2, F* and Q* (which is a quantum programming language)
 also support different versions of linear types.
+\end{remark}
 
 
 \begin{rawlisting}
@@ -49,61 +75,9 @@ also support different versions of linear types.
 \end{remark}
 
 
-
-
-As it turns out, this level of control is also enough to limit the computational complexity of functions implementable
-in the language. Example in~\cite{Schopp07},~\cite{DaLagoSchopp10},~\cite{Leivant93},~\cite{10.1007/11874683_40}~\cite{mazza:LIPIcs.CSL.2015.24}.
-% In~\cite{4276584}, Stratified Bounded Affine Logic is introduced to capture \complexity{FL} computation.
-\begin{remark}
-Please note that controlling the computational complexity of programs through the complexity of their specification
-was discussed by us in~\autoref{chap:descriptive-complexity}. There, however, the control went through model theory.
-Here, the limitations are entirely in the world of proof theory, which is much better connected to
-computation than model theory.
-\end{remark}
-
-
-
-
-
-At the same time, the depth of connections between logic, type systems and complexity theory is astonishing
-and already well-explored in the literature, e.g.\ \cite{TODO}. We will not repeat these definitions here.
-The formal bridge between the theories of linear types and the different kinds of linear logics is the Curry--Howard correspondence,
-also known as ``propositions as types'', or ``proofs as programs''.
-
-
-A good introduction to it is the book by S\o{}rensen and Urzyczyn:~\cite{10.5555/1197021}.
-
-
-We can think of Curry howard ICC style as programming in ML.
-
-
-A good introduction to the linear logic / curry-howard approach to implicit complexity is~\cite{BenedettiPhd}.
-
 \subsection{IntML}\label{sec:intml}
-In 2013, Dal Lago and Sch\"opp introduced \textbf{IntML}, a functional programming language with a linear type
- system that characterizes \complexity{FLOGSPACE} \cite{DALLAGO2016150}. This marked a significant milestone for 
- Implicit Computational Complexity (ICC). An implementation of IntML is available on
+An implementation of IntML is available on
   GitHub\footnote{\url{https://github.com/uelis/IntML}. Following my private communication with the authors, 
   a permissive license was added to the repository, as it was not included originally.}, and to the best of
    my knowledge it remains the only language within the linear-logic branch of ICC that has both a working 
    implementation and some potential for (academic) practical use.
-
-
-
-
-
-
-% Programming languages often use type systems to aid the programmer in mechanical checking
-% of the most basic properties of programs. For some programmers, \emph{typing} their programs
-% is not helpful and they prefer to use languages such as Python that don't
-% enforce the types statically. For others, the burden of \emph{debugging} their programs after
-% they ceased to actually do what we thought they should is so high, that they turn to \emph{statically}
-% typed languages. Languages such as C and C++ offer type systems with very little expressive power,
-% in the means of properties of functions we can verify. They don't allow us to e.g\ declare
-% that a function, given $x: \mathbb{N}$, will return the prime factors of $x$ in such a way that
-% this specification will be enforcable by the compiler.
-% A prominent discovery in computer science was that if we take lambda calculus as the computational model
-% underlying a programming language, we can limit what can and cannot be written as a program by designing
-% an appropriate \emph{type system}. Some of the modern languages, mostly from the ML family (Standard ML,
-% OCaml, Haskell), have type systems that at the same time are strong enough to actually reduce the number of
-% errors in the code and fast enough to be useful on a daily basis.
