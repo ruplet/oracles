@@ -16,6 +16,7 @@ python -m pygments -x -l "lean.py:Lean4Lexer" -f latex -O encoding=utf8 -o lean-
 python -m pygments -l prolog -f latex -O encoding=utf8 -o prolog-example.tex prolog-example.pl
 python -m pygments -l haskell -f latex -O encoding=utf8,linenos=true -o haskell-linear-example.tex Linear.hs
 python -m pygments -l c -f latex -O encoding=utf8,nowrap -o example-c-proving.tex example-c-proving.c
+python -m pygments -x -l "lean.py:Lean4Lexer" -f latex -O encoding=utf8 -o lean-demo.tex lean-demo.lean
 ```
 
 Take a look at how do I then include the resulting `.tex` in my project.

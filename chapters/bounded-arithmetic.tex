@@ -16,10 +16,8 @@ we introduced in~\autoref{chap:reductions} (i.e.\ writing a program in a languag
 of the computation-heavy oracle are explicit), we would often ask ourselves the same question ---
 can we write the program without relying on that function, i.e.\ write the program in a lower complexity?
 It turns out the similarity is not a coincidence,
-and to explore this connection further we need to study the theories of \emph{bounded arithmetic}.
-
-We will start by looking at interesting theorems about one such theory, just after
-introducing the necessary definitions.
+and to explore this connection further we need to study \emph{bounded arithmetic},
+in particular the theory $\IDeltaZero$ and $\compVZero$.
 
 \section{Single-sorted logic and \IDeltaZero}
 
@@ -27,10 +25,9 @@ introducing the necessary definitions.
 A \emph{theory} over a vocabulary $\mathcal{L}$ is a set $\mathcal{T}$ of $\mathcal{L}$-formulas that is closed
 under logical consequence and under universal closure.
 
-Note that we have not defined ``logical consequence'', which refers to a particular \emph{proof system}
-(also named \emph{proof calculus}). We will not define proof systems for logic in this work.
-For those interested, we will just mention that
-all the results discussed in this chapter assume standard Gentzen-style proof calculus for classical logic,
+Note that we have not defined ``logical consequence''; it depends on the choice of a particular \emph{proof system}
+(also called \emph{proof calculus}). We will not define proof systems in detail here.
+All results in this chapter assume standard Gentzen-style proof calculus for classical logic,
 $\mathrm{LK}$~\cite[Section~II.2.3]{Cook_Nguyen_2010} for single-sorted logic
 and $\mathrm{LK}^2$~\cite[Section~IV.4]{Cook_Nguyen_2010} for two-sorted logic.
 \end{definition}
@@ -100,7 +97,7 @@ obtained by restricting the induction scheme so that $\Phi$ is $\mathrm{OPEN}$, 
 and $\Sigma_{1}$, respectively.
 \end{definition}
 
-\begin{lemma}[{\cite[Example~III.1.8]{Cook_Nguyen_2010}}]
+\begin{lemma}[{\cite[Example~III.1.8]{Cook_Nguyen_2010}}]\label{lemma:props-iopen}
 The following formulas (and their universal closures) are theorems of $\IOPEN$:
 \[
 \begin{array}{@{}l l@{}}
@@ -128,7 +125,7 @@ The following formulas (and their universal closures) are theorems of $\IOPEN$:
 \]
 \end{lemma}
 
-\begin{lemma}[{\cite[Example~III.1.9]{Cook_Nguyen_2010}}]
+\begin{lemma}[{\cite[Example~III.1.9]{Cook_Nguyen_2010}}]\label{lemma:props-idelta0}
 The following formulas (and their universal closures) are theorems of $\IDeltaZero$:
 \[
 \begin{array}{@{}l l@{}}
@@ -195,12 +192,12 @@ P(x)\;\leftrightarrow\;\varphi(x).
 \end{definition}
 
 
-In~\cite[Section~III.3]{Cook_Nguyen_2010} it is argued that: functions $\lfloor x/y \rfloor,\;\big \lfloor \sqrt{x} \big \rfloor,
+In~\cite[Section~III.3]{Cook_Nguyen_2010} it is argued that: the functions $\lfloor x/y \rfloor,\;\big \lfloor \sqrt{x} \big \rfloor,
 \;\max(0, x - y),\;x\!\!\mod y$ are definable in \IDeltaZero; relation $x \mid y$ is definable in \IDeltaZero{},
 and, interestingly, the relation $\;\exp(x, y)$ where $\exp(x, y)$ iff $y = 2^x$, is also definable in \IDeltaZero{}.
 We don't introduce the specific logical formula defining the relation $\exp(x, y)$, as it is complicated and discussed
 in~\cite[Section~III.3]{Cook_Nguyen_2010}.
-For a different point of view to these problems, e.g.\ in~\cite{Jumelet1995} it is shown
+For a different point of view on these problems, for example\ in~\cite{Jumelet1995} it is shown
 that Euler's $\varphi$ function is provably total in \IDeltaZero{}.
 However, the limits of expressive power of \IDeltaZero{} are low.
 
@@ -293,15 +290,15 @@ $\Phi$ is one of the classes $\Sigma^{B}_{i}$.
 % \end{equation}
 % \end{notation}
 
-\begin{definition}[$V^{i}$]\label{def:arith-vi}
-For $i\ge 0$, the theory $V^{i}$ has vocabulary $\mathcal{L}^{2}_{A}$ and is axiomatized by
+\begin{definition}[$\complexityi{V}{i}$]\label{def:arith-vi}
+For $i\ge 0$, the theory $\complexityi{V}{i}$ has vocabulary $\mathcal{L}^{2}_{A}$ and is axiomatized by
 2-BASIC together with $\Sigma^{B}_{i}\text{-}\mathrm{COMP}$.
 
-Note that there are no explicit induction axioms for $\mathrm{V}^{i}$.
+Note that there are no explicit induction axioms for $\complexityi{V}{i}$.
 \end{definition}
 
 \begin{theorem}[{\cite[Corollary~V.1.8]{Cook_Nguyen_2010}}]
-    Induction is provable in $\mathrm{V}^{i}$. Induction for $\Delta_0$ formulas
+    Induction is provable in $\complexityi{V}{i}$. Induction for $\Delta_0$ formulas
     is a theorem of \compVZero.
 
     Note that this implies that any theorem $\varphi$ provable in \IDeltaZero{} is also
@@ -324,9 +321,9 @@ Note that there are no explicit induction axioms for $\mathrm{V}^{i}$.
     \[\squarequotes[4]{S} = S(n)S(n - 1) \dots S(1)S(0)\]
     If $S$ is empty then $\squarequotes[4]{S}$ is the empty string.
     Note that $\len{\squarequotes[4]{S}}$ is the same as our
-    interpretation of $S$ inside of the theory: $\len{S} = \max(S) + 1$ or $0$ if $S$ empty.
+    interpretation of $S$ inside of the theory: $\len{S} = \max(S) + 1$ or $0$ if $S$ is empty.
     
-    We will write $\unary{x}$ to denote unary representation of $x$, i.e.\ $1^{\len{x}}$
+    We will write $\unary{x}$ to denote unary representation of $x$, i.e.\ $1^{x}$
     and $\binary{x}$ to denote binary representation.
     The ultimate input to the Turing machine deciding if $R(\vec{x}, \vec{X})$
     for $\len{\vec{x}}= n, \len{\vec{X}} = N, \len{X_i}=N_i$ is:
@@ -380,15 +377,15 @@ Recall the definition of $\Sigma_0^B$ formulas~(\autoref{def:SigmaB-PiB-hierarch
 \begin{definition}
     The theory \complexity{VC} for a complexity class $\complexity{C}$ has vocabulary $\mathcal{L}^2_A$
     and is axiomatized
-    by the axioms of \compVZero and one additional axiom depending on the choice of the class $\complexity{C}$.
+    by the axioms of \compVZero{} and one additional axiom depending on the choice of the class $\complexity{C}$.
     The additional axiom can be thought of adding an oracle for a $C$-complete problem to \compVZero.
     We skip the (lengthy) technicalities of~\cite[Definition~IX.2.1]{Cook_Nguyen_2010}.
 \end{definition}
 
-The below theorem is the central result of our interest in this thesis.
+The theorem below is the central result of our interest in this thesis.
 
 \begin{theorem}[{\cite[Theorem~IX.2.3]{Cook_Nguyen_2010}}]\label{thm:theories-for-classes-from-reductions}
-    A function is provably total in \complexity{VC} iff it is in \complexity{FC}.
+    A function is provably total (in the two-sorted sense) in \complexity{VC} iff it is in \complexity{FC}.
     \begin{remark}
     By adding a single axiom to the theory of \compVZero, we can obtain arithmetical hierarchies
     in which the functions that we can define and prove correct are precisely the functions
@@ -451,8 +448,7 @@ The first theory designed to capture polynomial time reasoning was the
 equational theory $\mathrm{PV}$ (as in: polynomially-verifiable [proofs])
 theory from~\cite{10.1145/800116.803756}.
 The two-sorted logic language for capturing complexity classes has been introduced by Zambella in~\cite{00d3b11b-ff1c-386f-a929-6943478c4a28}.
-Despite the theories being designed to reason about computation, they are theories of classical logic,
-which might come off as worrying given our considerations from \todo[inline]{sec: chapter icc, section intuit. logic}.
+
 Intuitionistic counterparts such as $\mathrm{IS}^1_2$ for $\mathrm{S}^1_2$ and $\mathrm{IPV}$ for $\mathrm{PV}$
 have also been studied. However, much less is known about their expressive power.
 For the relation of $\mathrm{IS}^1_2$ and $\mathrm{S}^1_2$, please see~\cite{10.1007/3-540-16486-3_91}. In
@@ -468,21 +464,194 @@ refer to~\cite{Ngu08}.
 \end{remark}
 
 
+\subsection{Programming language \texorpdfstring{$\mathrm{IMP}~(\complexity{PV})$}{IMP (PV)}}\label{sec:bounded-arith-imppv}
+An idea for a programming language based on bounded arithmetic was discussed
+in~\cite{Li2025FeasibleMathematics}. The language they discuss is $\mathrm{IMP}~(\complexity{PV})$,
+based on the equational theory $\complexity{PV}$, which is different from
+the theories we have discussed so far. They show how to design an imperative programming language
+with Hoare logic as the verification mechanism (i.e.\ as a type system). For this approach to be
+implementable in practice, a \emph{formalization} of $\complexity{PV}$ is necessary.
+Recall that, as noted in~\autoref{remark-cobham-imppv}, such a programming language would be
+very tightly coupled with the function algebra \complexity{Cob}. Given our considerations
+from~\autoref{subsec:intensional} about difficulty of writing in such a language,
+we would probably need to consider basing the arithmetic
+on another characterization before proceeding to implement such a programming language.
 
 
-\section{Programming language}\label{sec:bounded-arith-imppv}
-\todo[inline]{In progress}
-Now, we want to formalize these arithmetical theories so that a computer can check our programs and ensure we didn't
-go out of a given complexity at any point.
-With such a programming language (and a formalization of arithmetic in general),
-we will be able to readily transfer a huge amount of results from paper to computer.
+\section{Formalization of bounded arithmetic}
+We present a feasible way towards formalization of results from bounded arithmetic.
+A key benefit of the theories studied in bounded arithmetic, compared with systems from Implicit Computational
+Complexity, is that many difficult theorems from mainstream mathematics have already been reproven within them.
+That is, 
+the expressiveness problems we discussed in~\autoref{subsec:intensional} seem to affect bounded arithmetic
+less than the characterizations from ICC\@.
 
-We have two goals for formalization:
-\begin{enumerate}
-    \item for logicians to believe us the formalization is sound;
-    \item to be able to extract code with certified complexity from proofs.
-\end{enumerate}
 
+\paragraph{Our contribution}
+
+The showcase files of this thesis are $\texttt{BoundedArithmetic/IOPEN.lean}$
+and $\texttt{BoundedArithmetic/IDelta0.lean}$. These files contain the definitions of the \IOPEN{} and \IDeltaZero{}
+theories, respectively, and then prove their basic properties that we have introduced in~\autoref{lemma:props-iopen}
+and~\autoref{lemma:props-idelta0}. The most important property of these formalizations we aimed to achieve
+was for them to be of didactic value, i.e.\ to make it very explicit what axioms we rely on
+and how we conduct proofs inside the weak theories. We strived to conduct our proofs
+one-to-one as suggested in~\cite{Cook_Nguyen_2010}, the book that we hugely relied on, to make it
+clear that we can transfer this style of reasoning from paper to computer.
+
+In the file $\texttt{BoundedArithmetic/Algebra.lean}$ we demonstrate a huge benefit of the
+formalization style we have chosen --- the integration of natural numbers as defined in
+\IDeltaZero with the algebraic structures from the mainstream $\mathtt{Mathlib.Algebra}$.
+The effect of such integration is that we will \emph{not} have to re-prove all the
+theorems about number theory in bounded arithmetic; after proving the basic properties,
+we can derive that the natural numbers modeled by \IDeltaZero satisfy the properties of
+a semiring; of a commutative monoid; that the addition is right-cancellable, etc.,
+``unlocking'' more and more theorems from $\texttt{Mathlib}$.
+
+In the file $\texttt{BoundedArithmetic/AxiomSchemes.lean}$ we present two very short, but very difficult
+to design pieces of code: readable definitions of the axiom schemes of induction and comprehension,
+and the macros that \emph{reduce} them. Without these macros, this is \emph{very} difficult
+to go from the deeply embedded logical formula to a property of the Lean objects we are manipulating.
+In our experience, it was expected that it will take one hour to simplify (using tactics such as
+$\texttt{conv}, \texttt{simp}, \texttt{rw}$) one instance of an axiom scheme before we can start
+proving a theorem with it. The tree of the deeply embedded term even for the simple formulas
+we had been studying, easily grew so large that it required \emph{hundreds} of simplification operations
+executed in the right order. This part is very brittle and is the main part of the
+so-called $\texttt{simp}$-interface of our library, i.e.\ the transformations we can and cannot
+use by default in the tactic $\texttt{simp}$; if designed improperly, this tactic can use
+a lemma from our library that weakens one of the assumptions and makes the goal unprovable.
+
+
+In the file $\mathtt{BoundedArithmetic/V0.lean}$ we present\todo{Clean this file, now it's broken}
+a way \compVZero can be formalized despite the $\mathtt{Mathlib.ModelTheory}$ library for now only supporting
+single-sorted logic.\footnote{We have initially started with extending this library to support many sorts,
+but this was too much work for our time horizon.}. In the file $\mathtt{BoundedArithmetic/VTC0.lean}$,
+we sketch the proof of the two-sorted theory \complexityi{VTC}{0} proving the
+pigeonhole principle \problem{PHP} (note that in~\autoref{subsec:vac0-php} we discussed this theorem
+not being provable in \compVZero), without relying on any complicated deep-embedding for the axiom schemes
+(we introduce single instances of them as additional axioms instead). We strived to
+make the formalization go one-to-one with the
+original~\cites[Corollary~7.21]{CookNguyenDraft}[Corollary~VII.2.4]{Cook_Nguyen_2010}.
+
+In the file \todo{in oracles repo, not in bounded arithmetic}$\mathtt{code-snapshot/roq-fol-proof-mode.v}$ we present a short demonstration
+of how does a proof look like in the deeply-embedded logical framework of Coq Library for First-Order Logic.
+
+In the folder $\mathtt{syntax-metaprogramming}$, we present examples of how a simple proof theory
+can be deeply embedded in the logic of Lean. 
+
+\paragraph{Comparison: custom interpreter vs existing proof assistants}
+To reason about the provability of theorems, we need to formally define the logic considered
+and its proof system. Typically, the \emph{meta-language} in which we define logics is the natural language.
+Definitions, theorem statements and proofs have to be thoroughly verified by a specialist in the field.
+The situation would be similar if we were to implement the interpreter of our programming language in,
+say, C++ --- someone would have to review our code to make sure it's coherent and we can't prove false statements
+inside of our tool. However, in the past decade, another way became feasible --- we can define
+our logics inside of a proof assistant. Then, instead of asking someone to verify our proofs on paper,
+have computer verify them for us, utilizing the incredibly strong type-checker of the proof assistant.
+We decided to implement all of our code inside of a proof assistant,
+because without it we didn't believe anyone would ever dedicate time to verify correctness
+of our proofs conducted \emph{inside} of the bounded arithmetic systems (in particular --- that
+in no place have we accidentally used reasoning not permitted in the weak theory).
+
+\paragraph{Comparison: available proof assistants}
+Modern proof assistants are generally built on very strong underlying logics.
+Some systems, such as Metamath, Twelf, LF, or Isabelle, can be used as
+frameworks to formalize a variety of object logics and thus to reason
+\emph{about} logics themselves. Note we did not mention Isabelle/HOL here, since it is
+a particular (and very strong) logic implemented \emph{inside} of Isabelle.
+One could instead work in Isabelle/Pure, which only introduces the most basic axioms,
+but it requires expertise in Isabelle to ensure that an axiomatization of bounded arithmetic
+does not ``cheat'' by exploiting additional axioms of Isabelle/Pure to conduct
+reasoning stronger than those of the weak
+theory. The other metamathematical frameworks mentioned
+above did not seem to offer a clear advantage over the approach we ultimately adopted.
+We therefore chose to formalize in two powerful and well-supported systems,
+Rocq and Lean, both based on dependent type theory.
+
+\begin{remark}
+  The Rocq proof assistant used to be called \emph{Coq}. While the old name is now
+  deprecated, existing publications and code written before the name change still
+  use the name Coq, and this terminology remains common in the literature.
+\end{remark}
+
+
+\paragraph{Comparison: deep and shallow embeddings}
+To formalize a logic in a proof assistant, the most obvious way is to define the proof system from scratch
+inside of it, then prove properties about the proof system and design a good UI to make it usable
+for actual proving. This approach was chosen by the authors of Coq Library for First-Order
+Logic.\footnote{Available here: \url{https://github.com/uds-psl/coq-library-fol/}.}\footnote{Studying this approach was the topic of my research visit at INRIA in September 2025, funded by the ZSM IDUB program.}
+Going this way is a tremendous amount of work --- in fact, it cannot be much simpler than essentially
+rewriting Rocq from scratch.\todo{Moglbym tutaj pare zdan napisac o tym moim stazu w INRIA.}
+
+However, it is not obvious how to go around this problem. It is impossible to disable the axioms
+assumed by the foundations of Rocq and Lean. We certainly wouldn't like to mix $\IDeltaZero$
+induction with the axioms of dependent type theory and hope for the best. There is one
+very elegant approach we can use to formalize a \emph{finitely} axiomatizable theory. We discuss
+this in detail in~\autoref{lst:lean-demo}. We also cite two resources for more information on the notion of
+deep and shallow embeddings.
+Please see~\cite{10.1145/2914770.2837638} for formalization of
+type theory inside of type theory;~\cite{prinz_et_al:LIPIcs.ITP.2022.28} for discussion specifically on deep and shallow embeddings.
+
+\paragraph{Comparison: introducing axioms and axioms schemes to the formalization}
+Notice how we emphasized that the approach we outline in~\autoref{lst:lean-demo} is elegant for
+the theories that are \emph{finitely} axiomatizable. Indeed, it is not obvious how to extend this approach
+with an axiom \emph{scheme} --- and we surely need these to study \compVZero and \IDeltaZero.
+One intuitive way to achieve induction \emph{only} for some formulas would be to detect when
+a user-provided Lean term such as $\forall x, x \ge x$ is of shape e.g.\ $\Delta_0$. However,
+this way we encounter a huge limitation related to what the type $\texttt{Prop}$ is:
+any formula written in this way is \emph{just} a logical statement; we have no means
+of deconstructing it to the original formula.
+
+This turns out to be a difficult problem to solve, and it seems that the only way of resolving
+it is to use a deep embedding of the logical formulas. We made use of the fact that
+the independence of Continuum Hypothesis has been characterized a few years ago.\footnote{Lean code available here: \url{https://github.com/flypitch/flypitch}.}
+A part of the authors' code ended up in Lean4 Mathlib as the $\texttt{Mathlib.ModelTheory}$ library.
+It turned out that we could successfully use this library to formalize the (very complicated)
+operations on logical formulas we need to have to manipulate the formulas for the axiom schemes.
+
+
+\paragraph{Limitations}
+This style of formalization will fundamentally not be able to derive proofs about the proof system
+itself, as the proof system is Lean itself. However, this \emph{will} be possible in the formalization
+due to Forster et al. from Coq Library for First-Order Logic: since they deeply embed the whole
+proof system, we surely can prove properties about it in Rocq.
+
+\begin{remark}[Origins of this thesis]
+We have only started investigating
+bounded arithmetic for our problem in March of 2025 and it was then unclear if the
+results from this field will transfer to anything actually computational. 
+Only in
+July 2025 we have decided to implement the formalization and quickly obtained
+a formalization of a prototype finitely axiomatiable theory like in~\autoref{lst:lean-demo}.
+In August of 2025 we have obtained
+a working version of the full formalization of $\IDeltaZero$.
+In the first week of September 2025 we have presented our project at AITP2025 conference in
+Aussois, France: the main motivation behind the presentation was the importance of creating
+proof assistants with theories that are \emph{weaker} than Rocq and Lean's and admitting
+better proof-search or code-extraction procedures.
+Only later in September of 2025 as part of us visiting Yannick Forster at INRIA Paris,
+we have achieved a usable state of the formalization
+with a well-thought $\mathtt{simp}$-set for $\IDeltaZero$ and interesting
+properties proved for $\compVZero$ and $\complexityi{VTC}{0}$.
+The existence of the $\texttt{Mathlib.ModelTheory}$ library was the thing that enabled us to
+achieve our formalization in the scope of this thesis. 
+\end{remark}
+
+
+% \paragraph{Comparison: ways of code extraction}
+
+% \paragraph{Comparison: }
+
+
+\begin{rawlisting}
+\input{listings/lean-demo.tex}
+\caption{Core theory behind formalization of arithmetic in Lean.}\label{lst:lean-demo}
+\end{rawlisting}
+
+
+
+
+
+\begin{remark}[Related works]
 There is very little work available on the formalization of arithmetic.
 A formalization of consistency of Peano arithmetic in Coq was presented in~\cite{O_Connor_2005}.
 A formalization of the so-called \emph{Hydra battles} related to unprovability in Peano arithmetic
@@ -493,41 +662,12 @@ align with our goal of certifying complexity, as their focus is on other arithme
 significantly from what we need. Somehow related, some work on intuitionistic logic in Lean has also been done
 in~\cite{Trufa__2024} even though Lean is not a natural environment for intuitionistic thinking, as it
 assumes classical axioms very deeply in its standard libraries, unlike Rocq which is constructive by heart.
-
-
-An idea for a programming language based on bounded arithmetic was discussed
-in~\cite{Li2025FeasibleMathematics}. The language they discuss is $\mathrm{IMP}~(\complexity{PV})$,
-based on the equational theory $\complexity{PV}$ which is different from (and less interesting than)
-the theories we have discussed. There, the authors show how to design an imperative programming language
-with Hoare logic as the verification mechanism (a.k.a. a type system). Note that for their concept
-to be implementable in practice, a \emph{formalization} of $\complexity{PV}$ is necessary.
-
-\todo[inline]{Say how i use curry-howard correspondence to extract code from proofs as introduced in chapter linear logic}
-
-
-% design:
-% deep embedding of proof theory vs going with model theory: rocq internship
-% proof relevance/irrelevance vs "extension of a theory" / actually defining new functions in theory
-% for formalizing V0: go with single-sorted interpretation, or modify Mathlib
-% for formalizing anything: separate Ex and All vs set Ex phi = !All x !phi
-
-% This was presented at AITP2025. And was the topic of
-% my visit of Yannick Forster at INRIA. My source code is here:~\url{https://github.com/ruplet/formalization-of-bounded-arithmetic}.
-% The presentations PDFs are also there, and reviews of my abstract from aitp.
-
-% deep vs shallow embeddings:
-% https://people.cs.nott.ac.uk/psztxa/publ/tt-in-tt.pdf
-% https://research-information.bris.ac.uk/ws/portalfiles/portal/330955816/LIPIcs_ITP_2022_28.pdf
-% https://drops.dagstuhl.de/storage/00lipics/lipics-vol237-itp2022/LIPIcs.ITP.2022.28/LIPIcs.ITP.2022.28.pdf
-% https://cstheory.stackexchange.com/questions/1370/shallow-versus-deep-embeddings
-% My work on formalizing bounded arithmetic is here: [https://github.com/ruplet/formalization-of-bounded-arithmetic](https://github.com/ruplet/formalization-of-bounded-arithmetic) - in this repo there is also my presentation from AITP, the abstract and the reviews it received.
-% This is also the subject of my visit at INRIA, beginning 8th September 2025.
-
+\end{remark}
 
 
 
 
 \begin{rawlisting}
 \input{listings/lean-example.tex}
-\caption{Lean example}\label{lst:lean-example}
+\caption{One actual proof formalized in our system}\label{lst:lean-example}
 \end{rawlisting}

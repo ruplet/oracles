@@ -1,0 +1,43 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZhy{}\PYZhy{} `ArithModel` takes 6 arguments and returns a `Prop`: a logical statement.}
+\PY{c+c1}{\PYZhy{}\PYZhy{} The arguments are an object `num` of type `Type` and 5 proofs}
+\PY{c+c1}{\PYZhy{}\PYZhy{} of the required properties of `num` \PYZhy{} to have designated elements}
+\PY{c+c1}{\PYZhy{}\PYZhy{} `0`, `1` and to have well\PYZhy{}defined `+`, `*`, ... .}
+\PY{k+kn}{structure}\PY{+w}{ }\PY{n}{ArithModel}
+\PY{+w}{  }\PY{o}{(}\PY{n}{num}\PY{+w}{ }\PY{o}{:}\PY{+w}{ }\PY{k+kt}{Type}\PY{o}{)}\PY{+w}{ }\PY{o}{[}\PY{n}{Zero}\PY{+w}{ }\PY{n}{num}\PY{o}{]}\PY{+w}{ }\PY{o}{[}\PY{n}{One}\PY{+w}{ }\PY{n}{num}\PY{o}{]}\PY{+w}{ }\PY{o}{[}\PY{n}{Add}\PY{+w}{ }\PY{n}{num}\PY{o}{]}\PY{+w}{ }\PY{o}{[}\PY{n}{Mul}\PY{+w}{ }\PY{n}{num}\PY{o}{]}\PY{+w}{ }\PY{o}{[}\PY{n}{LE}\PY{+w}{ }\PY{n}{num}\PY{o}{]}
+\PY{k+kn}{where}
+\PY{+w}{  }\PY{n}{b1}\PY{+w}{  }\PY{o}{:}\PY{+w}{ }\PY{n+nb+bp}{∀}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{o}{:}\PY{+w}{ }\PY{n}{num}\PY{o}{,}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n+nb+bp}{+}\PY{+w}{ }\PY{o}{(}\PY{l+m+mi}{1}\PY{+w}{ }\PY{o}{:}\PY{+w}{ }\PY{n}{num}\PY{o}{)}\PY{+w}{ }\PY{n+nb+bp}{≠}\PY{+w}{ }\PY{l+m+mi}{0}
+\PY{+w}{  }\PY{n}{b2}\PY{+w}{  }\PY{o}{:}\PY{+w}{ }\PY{n+nb+bp}{∀}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n}{y}\PY{+w}{ }\PY{o}{:}\PY{+w}{ }\PY{n}{num}\PY{o}{,}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n+nb+bp}{+}\PY{+w}{ }\PY{l+m+mi}{1}\PY{+w}{ }\PY{n+nb+bp}{=}\PY{+w}{ }\PY{n}{y}\PY{+w}{ }\PY{n+nb+bp}{+}\PY{+w}{ }\PY{l+m+mi}{1}\PY{+w}{ }\PY{n+nb+bp}{→}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n+nb+bp}{=}\PY{+w}{ }\PY{n}{y}
+\PY{+w}{  }\PY{n}{b3}\PY{+w}{  }\PY{o}{:}\PY{+w}{ }\PY{n+nb+bp}{∀}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{o}{:}\PY{+w}{ }\PY{n}{num}\PY{o}{,}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n+nb+bp}{+}\PY{+w}{ }\PY{l+m+mi}{0}\PY{+w}{ }\PY{n+nb+bp}{=}\PY{+w}{ }\PY{n}{x}
+\PY{+w}{  }\PY{n}{b4}\PY{+w}{  }\PY{o}{:}\PY{+w}{ }\PY{n+nb+bp}{∀}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n}{y}\PY{+w}{ }\PY{o}{:}\PY{+w}{ }\PY{n}{num}\PY{o}{,}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n+nb+bp}{+}\PY{+w}{ }\PY{o}{(}\PY{n}{y}\PY{+w}{ }\PY{n+nb+bp}{+}\PY{+w}{ }\PY{l+m+mi}{1}\PY{o}{)}\PY{+w}{ }\PY{n+nb+bp}{=}\PY{+w}{ }\PY{o}{(}\PY{n}{x}\PY{+w}{ }\PY{n+nb+bp}{+}\PY{+w}{ }\PY{n}{y}\PY{o}{)}\PY{+w}{ }\PY{n+nb+bp}{+}\PY{+w}{ }\PY{l+m+mi}{1}
+\PY{+w}{  }\PY{n}{b5}\PY{+w}{  }\PY{o}{:}\PY{+w}{ }\PY{n+nb+bp}{∀}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{o}{:}\PY{+w}{ }\PY{n}{num}\PY{o}{,}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n+nb+bp}{*}\PY{+w}{ }\PY{l+m+mi}{0}\PY{+w}{ }\PY{n+nb+bp}{=}\PY{+w}{ }\PY{l+m+mi}{0}
+\PY{+w}{  }\PY{n}{b6}\PY{+w}{  }\PY{o}{:}\PY{+w}{ }\PY{n+nb+bp}{∀}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n}{y}\PY{+w}{ }\PY{o}{:}\PY{+w}{ }\PY{n}{num}\PY{o}{,}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n+nb+bp}{*}\PY{+w}{ }\PY{o}{(}\PY{n}{y}\PY{+w}{ }\PY{n+nb+bp}{+}\PY{+w}{ }\PY{l+m+mi}{1}\PY{o}{)}\PY{+w}{ }\PY{n+nb+bp}{=}\PY{+w}{ }\PY{o}{(}\PY{n}{x}\PY{+w}{ }\PY{n+nb+bp}{*}\PY{+w}{ }\PY{n}{y}\PY{o}{)}\PY{+w}{ }\PY{n+nb+bp}{+}\PY{+w}{ }\PY{n}{x}
+\PY{+w}{  }\PY{n}{b7}\PY{+w}{  }\PY{o}{:}\PY{+w}{ }\PY{n+nb+bp}{∀}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n}{y}\PY{+w}{ }\PY{o}{:}\PY{+w}{ }\PY{n}{num}\PY{o}{,}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n+nb+bp}{≤}\PY{+w}{ }\PY{n}{y}\PY{+w}{ }\PY{n+nb+bp}{∧}\PY{+w}{ }\PY{n}{y}\PY{+w}{ }\PY{n+nb+bp}{≤}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n+nb+bp}{→}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n+nb+bp}{=}\PY{+w}{ }\PY{n}{y}
+\PY{+w}{  }\PY{n}{b8}\PY{+w}{  }\PY{o}{:}\PY{+w}{ }\PY{n+nb+bp}{∀}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n}{y}\PY{+w}{ }\PY{o}{:}\PY{+w}{ }\PY{n}{num}\PY{o}{,}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n+nb+bp}{≤}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n+nb+bp}{+}\PY{+w}{ }\PY{n}{y}
+
+\PY{c+c1}{\PYZhy{}\PYZhy{} Introduce the 6 variables below to automatically take them as arguments}
+\PY{c+c1}{\PYZhy{}\PYZhy{} in the functions that use them.}
+\PY{k+kn}{variable}\PY{+w}{ }\PY{o}{(}\PY{n}{num}\PY{+w}{ }\PY{o}{:}\PY{+w}{ }\PY{k+kt}{Type}\PY{o}{)}\PY{+w}{ }\PY{o}{[}\PY{n}{Zero}\PY{+w}{ }\PY{n}{num}\PY{o}{]}\PY{+w}{ }\PY{o}{[}\PY{n}{One}\PY{+w}{ }\PY{n}{num}\PY{o}{]}\PY{+w}{ }\PY{o}{[}\PY{n}{Add}\PY{+w}{ }\PY{n}{num}\PY{o}{]}\PY{+w}{ }\PY{o}{[}\PY{n}{Mul}\PY{+w}{ }\PY{n}{num}\PY{o}{]}\PY{+w}{ }\PY{o}{[}\PY{n}{LE}\PY{+w}{ }\PY{n}{num}\PY{o}{]}
+
+\PY{c+c1}{\PYZhy{}\PYZhy{} The function `leq\PYZus{}refl` takes 8 arguments, but Lean is able to}
+\PY{c+c1}{\PYZhy{}\PYZhy{} automatically infer `[Zero]` etc., and we don\PYZsq{}t have to pass them explicitly.}
+\PY{c+c1}{\PYZhy{}\PYZhy{} It returns an object of type `x ≤ x`;}
+\PY{c+c1}{\PYZhy{}\PYZhy{} the type of the type `x ≤ x` itself is `Prop`.}
+\PY{c+c1}{\PYZhy{}\PYZhy{} Note that the return type *depends* on the value of `x` which is an argument.}
+\PY{k+kn}{theorem}\PY{+w}{ }\PY{n}{leq\PYZus{}refl}\PY{+w}{ }\PY{o}{(}\PY{n}{h}\PY{+w}{ }\PY{o}{:}\PY{+w}{ }\PY{n}{ArithModel}\PY{+w}{ }\PY{n}{num}\PY{o}{)}\PY{+w}{ }\PY{o}{:}\PY{+w}{ }\PY{n+nb+bp}{∀}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{o}{:}\PY{+w}{ }\PY{n}{num}\PY{o}{,}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n+nb+bp}{\PYZlt{}=}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{o}{:=}\PY{+w}{ }\PY{k}{by}
+\PY{+w}{  }\PY{n}{intro}\PY{+w}{ }\PY{n}{x}
+\PY{+w}{  }\PY{n}{conv}\PY{+w}{ }\PY{n+nb+bp}{=\PYZgt{}}\PY{+w}{ }\PY{n}{right}\PY{n+nb+bp}{;}\PY{+w}{ }\PY{n}{rw}\PY{+w}{ }\PY{o}{[}\PY{n+nb+bp}{\PYZlt{}\PYZhy{}}\PY{+w}{ }\PY{n}{h}\PY{n+nb+bp}{.}\PY{n}{b3}\PY{+w}{ }\PY{n}{x}\PY{o}{]}
+\PY{+w}{  }\PY{n}{apply}\PY{+w}{ }\PY{n}{h}\PY{n+nb+bp}{.}\PY{n}{b8}
+
+\PY{c+c1}{\PYZhy{}\PYZhy{} As `ArithModel num` is a `Prop`, it can be true; it also can be false.}
+\PY{c+c1}{\PYZhy{}\PYZhy{} We can prove that `ArithModel Nat` holds for a Lean built\PYZhy{}in}
+\PY{c+c1}{\PYZhy{}\PYZhy{} type `Nat` of natural numbers.}
+\PY{k+kn}{theorem}\PY{+w}{ }\PY{n}{NatModel}\PY{+w}{ }\PY{o}{:}\PY{+w}{ }\PY{n}{ArithModel}\PY{+w}{ }\PY{n}{Nat}\PY{+w}{ }\PY{o}{:=}
+\PY{k}{by}
+\PY{+w}{  }\PY{n}{refine}\PY{+w}{ }\PY{o}{\PYZob{}}\PY{n}{b1}\PY{+w}{ }\PY{o}{:=}\PY{+w}{ }\PY{n+nb+bp}{?}\PY{n}{b1}\PY{o}{,}\PY{+w}{ }\PY{n}{b2}\PY{+w}{ }\PY{o}{:=}\PY{+w}{ }\PY{n+nb+bp}{?}\PY{n}{b2}\PY{o}{,}\PY{+w}{ }\PY{n}{b3}\PY{+w}{ }\PY{o}{:=}\PY{+w}{ }\PY{n+nb+bp}{?}\PY{n}{b3}\PY{o}{,}\PY{+w}{ }\PY{n}{b4}\PY{+w}{ }\PY{o}{:=}\PY{+w}{ }\PY{n+nb+bp}{?}\PY{n}{b4}\PY{o}{,}
+\PY{+w}{          }\PY{n}{b5}\PY{+w}{ }\PY{o}{:=}\PY{+w}{ }\PY{n+nb+bp}{?}\PY{n}{b5}\PY{o}{,}\PY{+w}{ }\PY{n}{b6}\PY{+w}{ }\PY{o}{:=}\PY{+w}{ }\PY{n+nb+bp}{?}\PY{n}{b6}\PY{o}{,}\PY{+w}{ }\PY{n}{b7}\PY{+w}{ }\PY{o}{:=}\PY{+w}{ }\PY{n+nb+bp}{?}\PY{n}{b7}\PY{o}{,}\PY{+w}{ }\PY{n}{b8}\PY{+w}{ }\PY{o}{:=}\PY{+w}{ }\PY{n+nb+bp}{?}\PY{n}{b8}\PY{o}{\PYZcb{}}
+\PY{+w}{  }\PY{n+nb+bp}{·}\PY{+w}{ }\PY{n}{intro}\PY{+w}{ }\PY{n}{x}\PY{n+nb+bp}{;}\PY{+w}{ }\PY{n}{simp}\PY{+w}{ }\PY{c+c1}{\PYZhy{}\PYZhy{} this proves b1 for Nat}
+\PY{+w}{  }\PY{n+nb+bp}{·}\PY{+w}{ }\PY{n}{intro}\PY{+w}{ }\PY{n}{x}\PY{+w}{ }\PY{n}{y}\PY{+w}{ }\PY{n}{h}
+\PY{+w}{    }\PY{n}{exact}\PY{+w}{ }\PY{n}{Nat}\PY{n+nb+bp}{.}\PY{n}{add\PYZus{}right\PYZus{}cancel}\PY{+w}{ }\PY{n}{h}\PY{+w}{ }\PY{c+c1}{\PYZhy{}\PYZhy{} this proves b2 for Nat}
+\PY{+w}{  }\PY{n}{repeat}\PY{+w}{ }\PY{g+gr}{sorry}\PY{+w}{ }\PY{c+c1}{\PYZhy{}\PYZhy{} we skip the rest of proofs for the sake of demo}
+\end{Verbatim}
