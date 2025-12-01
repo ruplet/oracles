@@ -291,68 +291,68 @@
 
 \newcommand{\compVZero}{%
   \texorpdfstring{%
-    \ensuremath{\complexityi{V}{0}}\xspace%
+    \ensuremath{\complexityi{V}{0}}%
   }{V0}%
 }
 
 \newcommand{\logicFO}{%
   \texorpdfstring{%
-    \complexity{FO_{\mathrm{BIT}}}\xspace%
+    \complexity{FO_{\mathrm{BIT}}}%
   }{FO_BIT}%
 }
 
 \newcommand{\logicFOLFP}{%
   \texorpdfstring{%
-    \complexity{FO_{\mathrm{BIT}}[LFP]}\xspace%
+    \complexity{FO_{\mathrm{BIT}}[LFP]}%
   }{FO_BIT[LFP]}%
 }
 
 \newcommand{\logicFOLFPgraph}{%
   \texorpdfstring{%
-    \complexity{FO_{\text{graph}}[LFP]}\xspace%
+    \complexity{FO_{\text{graph}}[LFP]}%
   }{FO(wo BIT)[LFP]}%
 }
 
 \newcommand{\logicFOLFPgraphord}{%
   \texorpdfstring{%
-    \complexity{FO_{\text{graph}\leqslant}[LFP]}\xspace%
+    \complexity{FO_{\text{graph}\leqslant}[LFP]}%
   }{FO_BIT[LFP]}%
 }
 
 \newcommand{\IDeltaZero}{%
   \texorpdfstring{%
-    \ensuremath{\mathrm{I}\Delta_0}\xspace%
+    \ensuremath{\mathrm{I}\Delta_0}%
   }{IDelta0}%
 }
 
 \newcommand{\IOPEN}{%
   \texorpdfstring{%
-    \ensuremath{\mathrm{IOPEN}}\xspace%
+    \ensuremath{\mathrm{IOPEN}}%
   }{IOPEN}%
 }
 
 \newcommand{\ISigmaOne}{%
   \texorpdfstring{%
-    \ensuremath{\mathrm{I}\Sigma_1}\xspace%
+    \ensuremath{\mathrm{I}\Sigma_1}%
   }{ISigma1}%
 }
 
 \newcommand{\arithPA}{%
   \texorpdfstring{%
-    \ensuremath{\mathrm{PA}}\xspace%
+    \ensuremath{\mathrm{PA}}%
   }{PA}%
 }
 
 
 \newcommand{\complexity}[1]{%
   \texorpdfstring{%
-    \ensuremath{\mathsf{#1}}\xspace%
-  }{#1}%
+    \ensuremath{\mathsf{#1}}%
+  }{#1}\xspace%
 }
 \newcommand{\complexityi}[2]{%
   \texorpdfstring{%
-    \ensuremath{\mathsf{#1}^{#2}}\xspace%
-  }{#1#2}%
+    \ensuremath{\mathsf{#1}^{#2}}%
+  }{#1#2}\xspace%
 }
 
 
@@ -362,22 +362,9 @@
   }{#1}%
 }
 
-\newcommand{\compL}{%
-  \texorpdfstring{%
-    \complexity{L}%
-  }{LOGSPACE}%
-}
-\newcommand{\compP}{%
-  \texorpdfstring{%
-    \complexity{P}%
-  }{PTIME}%
-}
-\newcommand{\compFP}{%
-  \texorpdfstring{%
-    \complexity{FP}%
-  }{FPTIME}%
-}
-
+\newcommand{\compL}{\complexity{L}}
+\newcommand{\compP}{\complexity{P}}
+\newcommand{\compFP}{\complexity{FP}}
 \newcommand{\compUeAst}{%
   \texorpdfstring{%
     \ensuremath{\complexity{U}_{E^*}}%

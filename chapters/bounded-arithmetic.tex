@@ -17,9 +17,9 @@ of the computation-heavy oracle are explicit), we would often ask ourselves the 
 can we write the program without relying on that function, i.e.\ write the program in a lower complexity?
 It turns out the similarity is not a coincidence,
 and to explore this connection further we need to study \emph{bounded arithmetic},
-in particular the theory $\IDeltaZero$ and $\compVZero$.
+in particular the theory $\IDeltaZero{}$ and $\compVZero{}$.
 
-\section{Single-sorted logic and \IDeltaZero}
+\section{Single-sorted logic and \IDeltaZero{}}
 
 \begin{definition}[{\cite[Definition~III.1.1]{Cook_Nguyen_2010}}]
 A \emph{theory} over a vocabulary $\mathcal{L}$ is a set $\mathcal{T}$ of $\mathcal{L}$-formulas that is closed
@@ -78,27 +78,27 @@ variables other than~$x$.
 \end{definition}
 
 \begin{definition}[{\cite[Definition~III.1.5]{Cook_Nguyen_2010}} Peano Arithmetic]
-The theory $\arithPA$ has as axioms $\mathrm{B1},\ldots,\mathrm{B8}$, together with the $\Phi$-IND axioms,
+The theory $\arithPA{}$ has as axioms $\mathrm{B1},\ldots,\mathrm{B8}$, together with the $\Phi$-IND axioms,
 where $\Phi$ is the set of all $\mathcal{L}_A$-formulas.
 
 Peano Arithmetic is a powerful theory capable of formalizing the major theorems of
-number theory. We define subsystems of $\arithPA$ by restricting the induction axioms
+number theory. We define subsystems of $\arithPA{}$ by restricting the induction axioms
 to certain sets of formulas. 
 \end{definition}
 
-\begin{definition}[{\cite[Definition~III.1.7]{Cook_Nguyen_2010}} \IOPEN, \IDeltaZero, \ISigmaOne]
+\begin{definition}[{\cite[Definition~III.1.7]{Cook_Nguyen_2010}} \IOPEN{}, \IDeltaZero{}, \ISigmaOne{}]
 Let $\mathrm{OPEN}$ be the set of \emph{open} (i.e.\ quantifier-free) formulas, let $\Delta_{0}$
 be the set of \emph{bounded} formulas, and let $\Sigma_{1}$ be the set of formulas
 of the form $\exists \vec{x} \ldotp \varphi$, where $\varphi$ is bounded and $\vec{x}$ is a
 (possibly empty) tuple of variables.  
 
-The theories $\IOPEN$, $\IDeltaZero$, and $\ISigmaOne$ are the subsystems of $\arithPA$
+The theories $\IOPEN{}$, $\IDeltaZero{}$, and $\ISigmaOne{}$ are the subsystems of $\arithPA{}$
 obtained by restricting the induction scheme so that $\Phi$ is $\mathrm{OPEN}$, $\Delta_{0}$,
 and $\Sigma_{1}$, respectively.
 \end{definition}
 
 \begin{lemma}[{\cite[Example~III.1.8]{Cook_Nguyen_2010}}]\label{lemma:props-iopen}
-The following formulas (and their universal closures) are theorems of $\IOPEN$:
+The following formulas (and their universal closures) are theorems of $\IOPEN{}$:
 \[
 \begin{array}{@{}l l@{}}
 \mathrm{O1.}\; (x+y)+z = x+(y+z)
@@ -126,7 +126,7 @@ The following formulas (and their universal closures) are theorems of $\IOPEN$:
 \end{lemma}
 
 \begin{lemma}[{\cite[Example~III.1.9]{Cook_Nguyen_2010}}]\label{lemma:props-idelta0}
-The following formulas (and their universal closures) are theorems of $\IDeltaZero$:
+The following formulas (and their universal closures) are theorems of $\IDeltaZero{}$:
 \[
 \begin{array}{@{}l l@{}}
 \mathrm{D1.}\; x\neq 0 \rightarrow \exists y\le x \ldotp (x=y+1)
@@ -193,7 +193,7 @@ P(x)\;\leftrightarrow\;\varphi(x).
 
 
 In~\cite[Section~III.3]{Cook_Nguyen_2010} it is argued that: the functions $\lfloor x/y \rfloor,\;\big \lfloor \sqrt{x} \big \rfloor,
-\;\max(0, x - y),\;x\!\!\mod y$ are definable in \IDeltaZero; relation $x \mid y$ is definable in \IDeltaZero{},
+\;\max(0, x - y),\;x\!\!\mod y$ are definable in \IDeltaZero{}; relation $x \mid y$ is definable in \IDeltaZero{},
 and, interestingly, the relation $\;\exp(x, y)$ where $\exp(x, y)$ iff $y = 2^x$, is also definable in \IDeltaZero{}.
 We don't introduce the specific logical formula defining the relation $\exp(x, y)$, as it is complicated and discussed
 in~\cite[Section~III.3]{Cook_Nguyen_2010}.
@@ -203,16 +203,16 @@ However, the limits of expressive power of \IDeltaZero{} are low.
 
 \begin{theorem}[{\cite[Section~III.2]{Cook_Nguyen_2010}}]
 \[
-\IDeltaZero \nvdash \forall x\,\exists y \ldotp \exp(x,y).
+\IDeltaZero{} \nvdash \forall x\,\exists y \ldotp \exp(x,y).
 \]
-Note that $\arithPA$ easily proves $\forall  x \ldotp \exists y \ldotp \exp(x,y)$.
+Note that $\arithPA{}$ easily proves $\forall  x \ldotp \exists y \ldotp \exp(x,y)$.
 \end{theorem}
 
-It is interesting to study the theory $\IDeltaZero + \exp$ of $\IDeltaZero$ axioms with an additional axiom
+It is interesting to study the theory $\IDeltaZero{} + \exp$ of $\IDeltaZero{}$ axioms with an additional axiom
 stating that the exponential function is definable. As it turns out, this theory enables us to
 reason about syntactic constructs such as coding of sets and sequences or context-free
 grammar parsing~\cite[Chapter~V,~Section~3]{HajekPudlak1993Metamathematics}
-\footnote{Note that they use the name $\mathrm{I}\Sigma_0 + \Omega_1$ instead of $\IDeltaZero + \exp$ which is the same.}.
+\footnote{Note that they use the name $\mathrm{I}\Sigma_0 + \Omega_1$ instead of $\IDeltaZero{} + \exp$ which is the same.}.
 
 % In~\cite{Buchholz1987ProvablyCF} is is shown that a function to not be provably total in Peano
 % arithmetic requires it to be growing too fast. An intuition behind it for the sake of our
@@ -226,7 +226,7 @@ refer to~\cite[Section~III.4.1]{Cook_Nguyen_2010} --- as this complexity class i
 in this work, we don't introduce the details here. Instead, we will now introduce a theory with a good
 computational complexity characterization.
 
-\section{Two-sorted logic and \compVZero}\label{sec:theory-v0}
+\section{Two-sorted logic and \compVZero{}}\label{sec:theory-v0}
 
 \begin{definition}[Axioms of 2-BASIC]\label{def:two-basic}
 \[
@@ -299,16 +299,16 @@ Note that there are no explicit induction axioms for $\complexityi{V}{i}$.
 
 \begin{theorem}[{\cite[Corollary~V.1.8]{Cook_Nguyen_2010}}]
     Induction is provable in $\complexityi{V}{i}$. Induction for $\Delta_0$ formulas
-    is a theorem of \compVZero.
+    is a theorem of \compVZero{}.
 
     Note that this implies that any theorem $\varphi$ provable in \IDeltaZero{} is also
-    provable in \compVZero.
+    provable in \compVZero{}.
 \end{theorem}
 
 \begin{theorem}[{\cite[Theorem~V.1.9]{Cook_Nguyen_2010}}]
     For every formula $\varphi$ in the vocabulary $\mathcal{L}_A$ of single-sorted arithmetic,
-    if $\compVZero \vdash \varphi$, then also $\IDeltaZero \vdash \varphi$.
-    In other words, \compVZero{} is a \emph{conservative extension} of \IDeltaZero.
+    if $\compVZero{} \vdash \varphi$, then also $\IDeltaZero{} \vdash \varphi$.
+    In other words, \compVZero{} is a \emph{conservative extension} of \IDeltaZero{}.
 \end{theorem}
 
 \begin{remark}[{\cite[Section~IV.3]{Cook_Nguyen_2010}} Two-sorted complexity classes]
@@ -371,14 +371,14 @@ for the two-sorted case~\cite[Definition~V.4.1]{Cook_Nguyen_2010}.
 Recall the definition of $\Sigma_0^B$ formulas~(\autoref{def:SigmaB-PiB-hierarchy}).
 
 \begin{theorem}[{\cite[Corollary~V.5.3]{Cook_Nguyen_2010}}]
-    A function is in \FACZero{} iff it is $\Sigma_0^B$-definable in \compVZero.
+    A function is in \FACZero{} iff it is $\Sigma_0^B$-definable in \compVZero{}.
 \end{theorem}
 
 \begin{definition}
     The theory \complexity{VC} for a complexity class $\complexity{C}$ has vocabulary $\mathcal{L}^2_A$
     and is axiomatized
     by the axioms of \compVZero{} and one additional axiom depending on the choice of the class $\complexity{C}$.
-    The additional axiom can be thought of adding an oracle for a $C$-complete problem to \compVZero.
+    The additional axiom can be thought of adding an oracle for a $C$-complete problem to \compVZero{}.
     We skip the (lengthy) technicalities of~\cite[Definition~IX.2.1]{Cook_Nguyen_2010}.
 \end{definition}
 
@@ -387,7 +387,7 @@ The theorem below is the central result of our interest in this thesis.
 \begin{theorem}[{\cite[Theorem~IX.2.3]{Cook_Nguyen_2010}}]\label{thm:theories-for-classes-from-reductions}
     A function is provably total (in the two-sorted sense) in \complexity{VC} iff it is in \complexity{FC}.
     \begin{remark}
-    By adding a single axiom to the theory of \compVZero, we can obtain arithmetical hierarchies
+    By adding a single axiom to the theory of \compVZero{}, we can obtain arithmetical hierarchies
     in which the functions that we can define and prove correct are precisely the functions
     from a given complexity class $\complexity{C} = \complexityi{FTC}{0}, \complexityi{FNC}{1}, \complexity{FL}, \complexity{FP}$.
     \end{remark}
@@ -500,10 +500,10 @@ clear that we can transfer this style of reasoning from paper to computer.
 
 In the file $\texttt{BoundedArithmetic/Algebra.lean}$ we demonstrate a huge benefit of the
 formalization style we have chosen --- the integration of natural numbers as defined in
-\IDeltaZero with the algebraic structures from the mainstream $\mathtt{Mathlib.Algebra}$.
+\IDeltaZero{} with the algebraic structures from the mainstream $\mathtt{Mathlib.Algebra}$.
 The effect of such integration is that we will \emph{not} have to re-prove all the
 theorems about number theory in bounded arithmetic; after proving the basic properties,
-we can derive that the natural numbers modeled by \IDeltaZero satisfy the properties of
+we can derive that the natural numbers modeled by \IDeltaZero{} satisfy the properties of
 a semiring; of a commutative monoid; that the addition is right-cancellable, etc.,
 ``unlocking'' more and more theorems from $\texttt{Mathlib}$.
 
@@ -522,12 +522,12 @@ a lemma from our library that weakens one of the assumptions and makes the goal 
 
 
 In the file $\mathtt{BoundedArithmetic/V0.lean}$ we present\todo{Clean this file, now it's broken}
-a way \compVZero can be formalized despite the $\mathtt{Mathlib.ModelTheory}$ library for now only supporting
+a way \compVZero{} can be formalized despite the $\mathtt{Mathlib.ModelTheory}$ library for now only supporting
 single-sorted logic.\footnote{We have initially started with extending this library to support many sorts,
 but this was too much work for our time horizon.}. In the file $\mathtt{BoundedArithmetic/VTC0.lean}$,
 we sketch the proof of the two-sorted theory \complexityi{VTC}{0} proving the
 pigeonhole principle \problem{PHP} (note that in~\autoref{subsec:vac0-php} we discussed this theorem
-not being provable in \compVZero), without relying on any complicated deep-embedding for the axiom schemes
+not being provable in \compVZero{}), without relying on any complicated deep-embedding for the axiom schemes
 (we introduce single instances of them as additional axioms instead). We strived to
 make the formalization go one-to-one with the
 original~\cites[Corollary~7.21]{CookNguyenDraft}[Corollary~VII.2.4]{Cook_Nguyen_2010}.
@@ -583,7 +583,7 @@ Going this way is a tremendous amount of work --- in fact, it cannot be much sim
 rewriting Rocq from scratch.\todo{Moglbym tutaj pare zdan napisac o tym moim stazu w INRIA.}
 
 However, it is not obvious how to go around this problem. It is impossible to disable the axioms
-assumed by the foundations of Rocq and Lean. We certainly wouldn't like to mix $\IDeltaZero$
+assumed by the foundations of Rocq and Lean. We certainly wouldn't like to mix $\IDeltaZero{}$
 induction with the axioms of dependent type theory and hope for the best. There is one
 very elegant approach we can use to formalize a \emph{finitely} axiomatizable theory. We discuss
 this in detail in~\autoref{lst:lean-demo}. We also cite two resources for more information on the notion of
@@ -594,7 +594,7 @@ type theory inside of type theory;~\cite{prinz_et_al:LIPIcs.ITP.2022.28} for dis
 \paragraph{Comparison: introducing axioms and axioms schemes to the formalization}
 Notice how we emphasized that the approach we outline in~\autoref{lst:lean-demo} is elegant for
 the theories that are \emph{finitely} axiomatizable. Indeed, it is not obvious how to extend this approach
-with an axiom \emph{scheme} --- and we surely need these to study \compVZero and \IDeltaZero.
+with an axiom \emph{scheme} --- and we surely need these to study \compVZero{} and \IDeltaZero{}.
 One intuitive way to achieve induction \emph{only} for some formulas would be to detect when
 a user-provided Lean term such as $\forall x, x \ge x$ is of shape e.g.\ $\Delta_0$. However,
 this way we encounter a huge limitation related to what the type $\texttt{Prop}$ is:
@@ -623,15 +623,15 @@ Only in
 July 2025 we have decided to implement the formalization and quickly obtained
 a formalization of a prototype finitely axiomatiable theory like in~\autoref{lst:lean-demo}.
 In August of 2025 we have obtained
-a working version of the full formalization of $\IDeltaZero$.
+a working version of the full formalization of $\IDeltaZero{}$.
 In the first week of September 2025 we have presented our project at AITP2025 conference in
 Aussois, France: the main motivation behind the presentation was the importance of creating
 proof assistants with theories that are \emph{weaker} than Rocq and Lean's and admitting
 better proof-search or code-extraction procedures.
 Only later in September of 2025 as part of us visiting Yannick Forster at INRIA Paris,
 we have achieved a usable state of the formalization
-with a well-thought $\mathtt{simp}$-set for $\IDeltaZero$ and interesting
-properties proved for $\compVZero$ and $\complexityi{VTC}{0}$.
+with a well-thought $\mathtt{simp}$-set for $\IDeltaZero{}$ and interesting
+properties proved for $\compVZero{}$ and $\complexityi{VTC}{0}$.
 The existence of the $\texttt{Mathlib.ModelTheory}$ library was the thing that enabled us to
 achieve our formalization in the scope of this thesis. 
 \end{remark}
