@@ -86,10 +86,10 @@ in the \(\mathcal{L}\)-number term \(t\), we use the following abbreviations:
       \forall x\ldotp (x \le t \;\to\; \varphi), \\[2pt]
   \exists X \le t\ldotp \varphi
     &\;\;\text{stands for}\;\;
-      \exists X\ldotp (\,\vec{X} \le t \;\wedge\; \varphi), \\[2pt]
+      \exists X\ldotp (\,\len{X} \le t \;\wedge\; \varphi), \\[2pt]
   \forall X \le t\ldotp \varphi
     &\;\;\text{stands for}\;\;
-      \forall X\ldotp (\,\vec{X} \le t \;\to\; \varphi).
+      \forall X\ldotp (\,\len{X} \le t \;\to\; \varphi).
 \end{align*}
 
 A quantifier appearing in one of these forms is called \emph{bounded},
@@ -147,8 +147,10 @@ We usually write \(\Sigma^{B}_{i}\) for \(\Sigma^{B}_{i}(\mathcal{L}^{2}_{A})\) 
 The above definition might seem excessively limiting, as it doesn't allow us
 to have a string quantifier under a number quantifier.
 An example of a formula which is in none of $\Sigma^B_i$ is $\forall x \ldotp \forall X \ldotp \exists Z \ldotp \varphi(x, Y, Z)$.
-The limitation of shape of formulas here is not a~limitation on all the two-sorted formulas
-we can study. Indeed, we will reason about such formulas~---~we~will just not say that they are in $\Sigma^B_i$.
+We don't claim that every formula can be transformed into an equivalent formula in some $\Sigma^{B}_{i}$.
+% The limitation of shape of formulas here is not a~limitation on all the two-sorted formulas
+% we can study.
+In what follows, we will freely reason about arbitrary two-sorted formulas~---~we~will just not say that they are in $\Sigma^B_i$.
 Details of one such reasoning are e.g.~in~\cites[Lemma~V.4.10]{Cook_Nguyen_2010}[Lemma~5.35]{CookNguyenDraft}.
 \end{remark}
 
@@ -156,7 +158,7 @@ Details of one such reasoning are e.g.~in~\cites[Lemma~V.4.10]{Cook_Nguyen_2010}
 The above definition also doesn't allow 
 using $X$ in the term $t$ used
  to ``guard'' a~bounded quantifier $\exists X \le t$.
-Note that if you used $t := X$, such a bounded quantifier would expand to $\exists X \le X$,
+Note that if you used $t := \len{X}$, such a bounded quantifier would expand to $\exists X \le \len{X}$,
 which is obviously equivalent to an unbounded quantifier $\exists X$.
 \end{remark}
 

@@ -65,6 +65,7 @@ Now let's shift our focus to a more standard definition.
   Define the vocabulary $\tau_\leqslant$ to contain:
   \begin{enumerate}
   \item the constants $0, 1, \mathrm{max}$;
+  \item the unary relations $\mathrm{Zero}(x), \mathrm{One}(x)$;
   \item the binary relations $=, \leqslant$.
   \end{enumerate}
 
@@ -74,6 +75,9 @@ Now let's shift our focus to a more standard definition.
   the elements of the (finite) universe to be interpreted as actual natural numbers $0, 1, \dots$;
   the equality and order to be interpreted as the actual equality and order on the elements of the model;
   $0, 1, \mathrm{max}$ to be interpreted as the minimum, second, and maximum elements under $\leqslant$.
+  Additionally, we will use the unary relations $\mathrm{Zero}(x), \mathrm{One}(x)$ to
+  interpret the elements of the domain as positions of some input binary word to talk about
+  deciding if a formula holds in a given word.
 
   \begin{remark}[Bibliography]
     In literature, \(\complexity{FO_\leqslant}\) is called \complexity{FO (wo~BIT)}; see~\cite[Ordering~Proviso~1.14]{Immerman1999-IMMDC}.
@@ -406,9 +410,9 @@ and how fast we can do it. An illustrative example is infeasibility of using the
 to design a programming language for finite automata:
 
 \begin{theorem}[{\cite[Theorem~1.36]{Immerman1999-IMMDC}}~Büchi-Elgot-Trakhtenbrot theorem]
-  For the alphabet \(\Sigma := \{0, 1\}\),
-  the set of boolean queries expressible in second-order monadic logic (which we skip the definition of)
-  over the vocabulary \(\tau_\leqslant\) consists exactly of the regular languages. In other words, \(\complexity{MSO} = \complexity{REG}\).
+  The set of finite models of
+  boolean queries expressible in second-order monadic logic (which we skip the definition of)
+  over the vocabulary \(\tau_\leqslant\) is exactly the set of regular languages. In other words, \(\complexity{MSO} = \complexity{REG}\).
   \begin{remark}[Bibliography]
     The theorem was originally proved by Büchi in~\cite{Bchi1960WeakSA}, Elgot in~\cite{8cb177c1-4df9-3823-9c81-47f75da88fff}
     and Trakhtenbrot in~\cite{Trakhtenbrot1962}.
