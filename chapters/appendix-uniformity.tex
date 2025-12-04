@@ -1,10 +1,14 @@
 \chapter{Uniformity}\label{chap:uniformity}
 In this chapter, we focus on the descriptions of uniformity conditions used for
 families of circuits.
+There is a very thorough overview of uniformity conditions for
+complexity classes below \complexityi{NC}{1} in~\cite{MIXBARRINGTON1990274}.
 
 \section{\complexity{FO}-uniformity}\label{sec:uniformity-fo}
-We need \complexity{FO}-uniformity for~\autoref{thm:fo-eq-ac0}.
-This is defined in~\cite[Definition~5.16]{Immerman1999-IMMDC}.
+The definition of first-order uniformity is rather technical and is based on the notion of
+first-order queries, introduced in~\cite[Definition~5.16]{Immerman1999-IMMDC}.
+One of the results that we discussed which uses this notion is~\autoref{thm:fo-eq-ac0}.
+
 % immerman:
 % Definition 5.16 (Uniform) Let C be a sequence of circuits as in Equation (5.14).
 % Let l' E {l'eo l'thc} be the vocabulary of circuits or threshold circuits. Let / :
@@ -16,16 +20,38 @@ This is defined in~\cite[Definition~5.16]{Immerman1999-IMMDC}.
 
 
 \section{\compUeAst-uniformity}\label{sec:uniformity-ueast}
-A notion of \(U_E\) and \(U_{E^\ast}\)-uniformity was studied in the early works about uniformity.
-It is defined in terms of \emph{direct connection language}
-and \emph{extended connection language} in~\cites[Definition~2.24,~Definition~2.43~]{10.5555/520668}.
-There is a very thorough overview of uniformity conditions below \complexityi{NC}{1} in~\cite{MIXBARRINGTON1990274}.
-Since then, this notion has been widely displaced by \complexity{DLOGTIME}-uniformity.
+The notions of \(U_E\) and \(U_{E^\ast}\)-uniformity (sometimes also called $E^\ast$-uniformity) were studied in early work on circuit uniformity.
+These notions are defined in terms of the \emph{direct connection language}
+and the \emph{extended connection language} of a circuit family; see~\cites[Definitions~2.24 and~2.43]{10.5555/520668}.
+
+Since then, $U_E$- and $U_{E^\ast}$-uniformity have largely been displaced by \complexity{DLOGTIME}-uniformity.
 Interesting arguments about why \complexity{DLOGTIME} uniformity is the most reasonable to consider
-are presented in a breakthrogh paper proving that binary integer division is in 
+are presented in a breakthrough paper proving that binary integer division is in 
 (\complexity{DLOGTIME}-uniform) \TC{0}~\cite{HESSE2002695}.
 
 \section{\complexity{DLOGTIME}-uniformity}\label{sec:uniform-nc1}
+For very low complexity classes, the most commonly used notion of
+uniformity is \complexity{DLOGTIME}-uniformity, based on random-access
+Turing machines. Similarly as in~\autoref{sec:uniformity-ueast},
+this notion is also based on direct and extended connection language of a circuit family.
+A~circuit family is \complexity{DLOGTIME}-uniform when we can decide its
+direct connection language on a random-access Turing machine in logarithmic time.
+For the details, we refer to:~\cite[Section~6]{MIXBARRINGTON1990274}.
+
+\complexity{DLOGTIME}-uniformity has some very elegant properties.
+The strength of such Turing machines is well-studied.
+It's mentioned that \(\complexity{AC}^0_0 \subseteq \complexity{DLOGTIME} \subseteq \complexity{AC}^0_2\) in~\cite[Page~141]{10.5555/114872},
+where $\complexity{AC}^0_k$ denotes $\complexity{AC}^0$ circuits of depth $k$.
+It has also been shown that the class \complexity{DLOGTIME}-uniform \complexityi{NC}{1} is equal to \complexity{ALOGTIME} (alternating
+logarithmic time, which we don't introduce here)
+and also equal to \complexityi{NC}{1}-uniform \complexityi{NC}{1}:~\cite[Lemma~6.2]{MIXBARRINGTON1990274}.
+
+% Similarly to using this class of Turing machines to decide the connection languages,
+% functions can also be studied. This is the basis of the notion of \complexity{DLOGTIME}-reductions.
+% A very detailed example of a concrete \complexity{DLOGTIME}-reduction is presented in~\cite{694595},
+% showing that the tree isomorphism problem for string-represented trees is $\complexityi{NC}{1}$-complete.
+
+
 % barrington:
 %We define a log-time Turing machine to have a read-only input tape of length n,
 % a constant number of read-write work tapes of total length O(log n), and a read-
@@ -36,15 +62,9 @@ are presented in a breakthrogh paper proving that binary integer division is in
 % amount of time on inputs of a given length (this is because some of the work tape
 % can always used as a clock). The following lemma summarizes some useful
 % capabilities of such a machine.
-Source:~\cite[Section~6]{MIXBARRINGTON1990274}.
+
 % Important: tm can decide formula langugae: {<c, i, y>: |y|=n and ith char of nth formula is c}
 % very important:
-Important: The class \complexity{DLOGTIME}-uniform \complexityi{NC}{1} is equal to \complexity{ALOGTIME}
-and also equal to is \complexityi{NC}{1}-uniform \complexityi{NC}{1}:~\cite[Lemma~6.2]{MIXBARRINGTON1990274}.
-
-There is an example of a concrete \complexity{DLOGTIME}-reduction in~\cite{694595} (showing that tree isomorphism for string-represented trees is $\complexityi{NC}{1}$-complete).
-
-It's mentioned that \(complexity{AC}^0_0 \subseteq \complexity{DLOGTIME} \subseteq \complexity{AC}^0_2\)~\cite[Page~141]{10.5555/114872}
 
 \begin{remark}[Bibliography]\label{remark:bibliography-david-s-johnson}
 We refer to a source that is difficult to access (e.g.\ the above~\cite[Page~141]{10.5555/114872}): this is Chapter 2 ``A Catalog of Complexity Classes'' by
@@ -52,6 +72,11 @@ David S. Johnson~\cite{10.5555/114872.114874},
 which appeared in January 1991 in ``Handbook of theoretical computer science (vol. A): algorithms and complexity'',
 edited by Jan van Leeuwen~\cite{10.5555/114872}.
 \end{remark}
+
+
+% \section{p-projections}
+% In~\cite{10.1145/3149.3158}, the notion of p-projections are introduced. In~\cite{10.1007/BFb0028550},
+% a complete problem for \AC{0} of depth $k$ is discussed: complete for uniform~\AC{0} under 
 
 
 % REMOVE THIS? THIS IS FOR P-PROJECTIONS FOR AC0k
@@ -71,6 +96,7 @@ edited by Jan van Leeuwen~\cite{10.5555/114872}.
 % there exists a polynomial $t:\mathbb{N}\to\mathbb{N}$ such that
 % for every $i\in\mathbb{N}$ there is some $j\le t(i)$ with $P_i$ a projection of $Q_j$.
 % \end{definition}
+
 % \begin{remark}[Why the polynomial bound]
 % Unrestricted projection lets a simple $P_i$ be realized only by projecting
 % some $Q_j$ at an arbitrarily large index $j$, which makes the comparison vacuous.
@@ -78,8 +104,9 @@ edited by Jan van Leeuwen~\cite{10.5555/114872}.
 % yielding a robust, reduction-like notion. The relation $\preceq_p$ is a preorder;
 % modulo $\equiv_p$ it induces a partial order on equivalence classes of families.
 % \end{remark}
+
 % \section{Bibliographical remark}
-% The notions of~\autoref{def:boolean-proj} and~\autoref{def:boolean-p-proj} are from~\cite{10.1145/3149.3158}.
+% The notions of~\autoref{def:boolean-proj} and~\autoref{def:boolean-p-proj} are from~.
 % \begin{definition}[\texorpdfstring{\(\complexity{AC}^0_k\)}{AC0 depth k}]\label{def:complexity-ac0-k}
 %     This is \complexityi{AC}{0} of depth $k$.
 %     Complete problem:\cite{10.1007/BFb0028550}

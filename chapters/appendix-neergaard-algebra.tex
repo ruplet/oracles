@@ -6,7 +6,7 @@ $\texttt{shift}(y,\delta) = \lfloor y / 2^\delta \rfloor$, i.e.\ the number
 obtained from $y$ by dropping its $\delta$ least significant bits.
 Let $\mathbb{N}_2$ denote the natural numbers in binary notation.
   For $m,n \ge 0$, we write $\mathbb{N}_2^{m,n}$ for the set of functions
-  with $m$ normal and $n$ safe arguments.
+  with $m$ normal and $n$ safe arguments. All the arguments and the return value are in $\mathbb{N}_2$.
 
 \begin{definition}[{\cite{10.1007/978-3-540-30477-7_21}}~Neergaard's $\complexity{BC}_\varepsilon^{-}$ algebra]\label{def:bc-eps}
   The class $\complexity{BC}_\varepsilon^{-}$ is the smallest class of functions over
@@ -16,26 +16,26 @@ Let $\mathbb{N}_2$ denote the natural numbers in binary notation.
   \begin{enumerate}
     \item\label{itm:bc-eps-zero}\textbf{(zero)}
       \(
-        0(:) \;=\; \varepsilon;
+        0(;) \;=\; \varepsilon;
       \)
       \item\label{itm:bc-eps-pred}\textbf{(predecessor)}
       \(
-        p(:\varepsilon) \;=\; \varepsilon,\quad
-        p(: yb) \;=\; y \quad\text{for } b \in \{0,1\};
+        p(;\varepsilon) \;=\; \varepsilon,\quad
+        p(; yb) \;=\; y \quad\text{for } b \in \{0,1\};
       \)
       \item\label{itm:bc-eps-proj}\textbf{(projections)}
       for $m,n \ge 0$ and $1 \le j \le m+n$,
       \(
-        \pi^{m,n}_j(x_1,\dots,x_m : x_{m+1},\dots,x_{m+n}) \;=\; x_j;
+        \pi^{m,n}_j(x_1,\dots,x_m ; x_{m+1},\dots,x_{m+n}) \;=\; x_j;
       \)
       \item\label{itm:bc-eps-succ}\textbf{(successors)}
       \(
-        s_0(: y) \;=\; y0,\quad
-        s_1(: y) \;=\; y1;
+        s_0(; y) \;=\; y0,\quad
+        s_1(; y) \;=\; y1;
       \)
       \item\label{itm:bc-eps-cond}\textbf{(conditional)}
       \[
-        c(: y_1,y_2,y_3) \;=\;
+        c(; y_1,y_2,y_3) \;=\;
         \begin{cases}
           y_2 & \text{if $y_1$ ends in $1$ (i.e.\ $y_1 = z1$ for some $z$)},\\
           y_3 & \text{otherwise;}
@@ -70,19 +70,19 @@ Let $\mathbb{N}_2$ denote the natural numbers in binary notation.
         h_0,h_1 : \mathbb{N}_2^{m+1,1},\quad
         d_0,d_1 : \mathbb{N}_2^{m+1,0}.
       \]
-      Their \emph{safe affine course-of-value recursion} is the function
+      \emph{Safe affine course-of-value recursion} of them is the function
       $f : \mathbb{N}_2^{m+1,n}$ given by
       \[
       \begin{aligned}
         f(0,\vec{x};\vec{y}) &= g(\vec{x};\vec{y}),\\
-        f(yb,\vec{x};\vec{y}) &=
-          h_b \Bigl(y,\vec{x};\,f(\texttt{shift}(y,\delta_b),\vec{x};\vec{y})\Bigr)
+        f(tb,\vec{x};\vec{y}) &=
+          h_b \Bigl(t,\vec{x};\,f(\texttt{shift}(t,\delta_b),\vec{x};\vec{y})\Bigr)
       \end{aligned}
       \]
       for $b \in \{0,1\}$, where
-      $\delta_b = \len{d_b(y,\vec{x};\,)}$ depends only on the normal
+      $\delta_b = \len{d_b(t,\vec{x};\,)}$ depends only on the normal
       arguments $(y,\vec{x})$. Here the recursive value
-      $f(\texttt{shift}(y,\delta_b),\vec{x};\vec{y})$ is supplied to $h_b$ as
+      $f(\texttt{shift}(t,\delta_b),\vec{x};\vec{y})$ is supplied to $h_b$ as
       its unique safe argument and can therefore be used at most once.
   \end{enumerate}
 \end{definition}
@@ -120,19 +120,19 @@ Dropping the affinity constraint collapses back to the original
 Writing programs in \(\complexity{BC}_\varepsilon^{-}\) is not reminiscent of any mainstream programming language.
 The types being linear make most of the standard programming techniques not usable.
 As part of our work, we have implemented an interpreter for the algebra in Haskell and tried to reproduce
-some of the propositions from~\cite{10.1007/978-3-540-30477-7_21}. We present two listings, just to give
-a hint of how the corresponding functions look like; these are Haskell representations of functions from the
+some of the propositions from~\cite{10.1007/978-3-540-30477-7_21}. We present one listing, just to give
+a hint of how the corresponding function look like; this is a Haskell representation of a function from the
 algebra, not a programming language directly for the algebra. We present the full source code as
 attachment to this thesis.\todo{How to add attachment to thesis?}
 
-\begin{rawlisting}
-\input{listings/neergaard-const-zero.tex}
-\caption{Constant zero function of arity $(M, N)$ }\label{lst:neergaard-const-zero}
-\end{rawlisting}
-\begin{remark}
-  Notice that the function depicted in~\autoref{lst:neergaard-const-zero} only returns 0,
-  but nevertheless we need to use recursion to introduce normal arguments.
-\end{remark}
+  % \begin{rawlisting}
+  % \input{listings/neergaard-const-zero.tex}
+  % \caption{Constant zero function of arity $(M, N)$ }\label{lst:neergaard-const-zero}
+  % \end{rawlisting}
+  % \begin{remark}
+  %   Notice that the function depicted in~\autoref{lst:neergaard-const-zero} only returns 0,
+  %   but nevertheless we need to use recursion to introduce normal arguments.
+  % \end{remark}
 
 \begin{rawlisting}
 \input{listings/neergaard-shiftr.tex}

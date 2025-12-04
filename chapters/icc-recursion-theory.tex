@@ -55,7 +55,7 @@ We assume standard semantics, with a remark that \(\texttt{LOOP}~x_i~\texttt{DO}
 
 \begin{theorem}[{\cite{10.1145/800196.806014}}~\complexity{LOOP} captures precisely \complexity{PR}]\label{thm:loop-captures-pr}
       % TODO: make statement precise, perhaps based on https://www.cs.cornell.edu/courses/cs6110/2012sp/MeyerAndRitchie-67.pdf
-      The functions computable by \complexity{LOOP} programs are precisely the primitive recursive functions
+      The functions computable by \complexity{LOOP} programs are precisely the primitive recursive functions.
 \end{theorem}
 
 This simple connection actually satisfies our criteria of a ``programming language capturing a complexity class'', as
@@ -80,7 +80,8 @@ For a good overview of implicit versus explicit characterizations, refer to~\cit
 
 A famous example of an explicit characterization is Cobham's algebra
 for polynomial-time functions, using the recursion scheme defined below.
-We will use the notation \(S_0(y)=2y\) and \(S_1(y)=2y+1\) for appending a binary digit to \(y\).
+For appending a binary digit to \(y\), we will use the notation \(S_0(y)=2 \cdot y\) and \(S_1(y)=2 \cdot y+1\);
+$S_0(0)=0$.
 We will denote by $\len{x}$ the length of binary representation of $x$; in particular, $\len{0} = 1, \len{1}=1, \len{2}=2$.
 
 \begin{definition}[{\cite[Definition~VIII.2.14~(Page~174)]{Odifreddi1999CRT2}}]\label{def:bounded-binary-primitive-recursion}
@@ -89,10 +90,10 @@ if, for every \(\vec x\) and \(y\in\mathbb{N}\),
 \begin{align}
   f(\vec x, 0)      &= g(\vec x);\\
   f(\vec x, S_0(y)) &=
-    \begin{cases}
-      0 & \text{if } y = 0,\\
-      h_0\big(\vec x, y, f(\vec x, y)\big) & \text{otherwise;}
-    \end{cases}\\
+%     \begin{cases}
+      % g(\vec x) & \text{if } y = 0,\\
+      h_0\big(\vec x, y, f(\vec x, y)\big)\quad\text{if}\ y>0;\\
+%     \end{cases}\\
   f(\vec x, S_1(y)) &= h_1\big(\vec x, y, f(\vec x, y)\big);\\
   f(\vec x, y)      &\le s(\vec x, y)\label{eq:explicit-cobham}.
 \end{align}
@@ -182,7 +183,7 @@ We write \(f(\vec{x};\vec{a})\), with normal inputs \(\vec{x}\) to the left of
 the semicolon and safe inputs \(\vec{a}\) to the right.
 
 \begin{definition}[Bellantoni and Cook's algebra for \complexity{FP}]\label{def:bellantoni-cook}
-We will use the notation $a0$ for the binary representation of $2*a$. Similarily, we will use $a1$ for $2*a + 1$,
+We will use the notation $a0$ for the binary representation of $2 \cdot a$. Similarly, we will use $a1$ for $2 \cdot a + 1$,
 and the more general $ai$ when $i$ is known from the context to be equal to either $0$ or $1$.
 
       The class \(\complexity{BC}\) is the smallest class of functions on non-negative
@@ -194,8 +195,8 @@ integers that contains~\ref{itm:bc-constant}--\ref{itm:bc-cond} and is closed un
           \pi_j(x_1,\dots,x_m;\,a_1,\dots,a_n)=
           \begin{cases}
             x_j     & \text{if } j\le m,\\
-            a_{j-m} & \text{otherwise.}
-          \end{cases};
+            a_{j-m} & \text{otherwise;}
+          \end{cases}
         \]
   \item \textbf{(successors)} \(s_i(;a)=2a+i\) for \(i\in\{0,1\}\);
   \item \textbf{(predecessor)} \(p(;0)=0\) and \(p(;ai)=a\);
@@ -288,11 +289,8 @@ However, in practice we found it very difficult to program in this algebra.
 Neergaard's system can define every function in \complexity{FL}, but not every
 \emph{algorithmic technique} commonly used to implement \complexity{FL} Turing machines.
 In other words, it matches \complexity{FL} extensionally, but its intensional
-expressive power (cf.~\autoref{subsec:intensional}) is quite limited. For instance,
-even a function that always returns $0$ requires a non-trivial use of the recursion
-scheme, simply to introduce normal arguments.
-
-It seemed unlikely that we could add support for structures such as pairs and lists to this programming language.
+expressive power (cf.~\autoref{subsec:intensional}) is quite limited. It seemed unlikely that we could
+add support for structures such as pairs and lists to this programming language.
 In an unpublished technical report by the author, accessible at~\cite{Neergaard2004BCeps},
 it was discussed that the type of \emph{pairs} of numbers seems not to be implementable in this
 language. The property of the whole data structure \emph{disappearing}
@@ -312,10 +310,10 @@ permission.\footnote{The code is available at:~\url{https://github.com/ruplet/ne
       There are papers closely related to Neergaard's publication and necessary
       to also be studied while exploring Neergaard's work. Please also
       see~\cite{NeergaardMairson2003HowLight}. There is also~\cite{MurawskiOng2000SafeRecursion},
-      but it seems inaccessible online. Probably the contents of that work is similar to~\cite{MURAWSKI2004197}
+      but it seems inaccessible online. Probably the contents of that work are similar to~\cite{MURAWSKI2004197}
 \end{remark}
 
 \begin{remark}[Origins of this thesis]
-For insight into the timeline of this thesis, it's worth to note that we have first discovered
+For insight into the timeline of this thesis, it is worth noting that we have first discovered
 this paper ourselves around February 2023.
 \end{remark}

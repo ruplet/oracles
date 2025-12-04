@@ -27,7 +27,7 @@ of logspace-computable functions and a particular notion of weak reductions. But
 of this intuition is not developed until~\autoref{thm:theories-for-classes-from-reductions}, where we get
 such characterizations for most of the complexity classes that we consider in this thesis.
 
-\section{Decisional and functional complexity classes}\label{sec:decisional-and-functional-complexity-classes}
+\section{Decisional versus functional complexity classes}\label{sec:decisional-and-functional-complexity-classes}
 We can't answer the question of expressive power of \(\problem{CVP} + \compL \text{-reductions}\)
 by comparing it with any decisional class.
 Focusing solely on the complexity of Boolean functions
@@ -125,18 +125,29 @@ in \(\mathsf{FP}\) may produce outputs of arbitrary polynomial length.
 \end{remark}
 \end{definition}
 
-\begin{definition}[{\cite[Section 28.10]{Rich2007Automata}}~\complexity{FP} (Version 2)]\label{def:fp}
+\begin{definition}[\complexity{FP} (Version 2)]\label{def:fp}
 
 A binary relation \(P(x, y)\) is in \(\complexity{FP}\) iff there exists a polynomial-time Turing machine $M$
 that, given an arbitrary input \(x\):
 \begin{enumerate}
-    \item there is at most one \(y\) satisfying \(P(x, y)\) (functionality);
     \item outputs some \(y\) such that \(P(x, y)\) if any exists;
-    \item signals that no such \(y\) exists otherwise.
+    \item signals that no such \(y\) exists otherwise;
 \end{enumerate}
+\emph{and additionally} there exists a polynomial-time Turing machine (a ``verifier'') that, given an arbitrary
+input pair $(x, y)$, decides if $P(x, y)$.
+
 
 \begin{remark}
-  This version can make it more obvious to compare \(\complexity{FP}\) with \(\complexity{FNP}\) (defined later) ---
+  This definition is inspired by~\cite[Section 28.10]{Rich2007Automata}, where it is defined
+  without the verifier requirement. However, this requirement is crucial.
+  Let's consider two relations. Let it be undecidable if $H(x, y)$
+  for given $x, y$.
+  Let $R(x, y)$ be such that $R(x, y)~\iff~(H(x, y)\;\lor\;y=0)$. Notice that for every $x$, we can trivially
+  find \emph{some} $y$ such that $R(x, y)$. But it is undecidable to test if $R(x, y)$ given an arbitrary
+  input pair $(x, y)$. Such a complexity class would not be contained in $\complexity{FNP}$ for
+  a sensible definition of that class (which we'll study later).
+  
+  Our version makes it elegant to compare \(\complexity{FP}\) with \(\complexity{FNP}\) (defined later) ---
   but only assuming that \(\complexity{FNP}\) is defined using nondeterministic Turing machines,
   which is not true in our case; we will use the \emph{verifier}-style definition.
 \end{remark}
@@ -177,6 +188,18 @@ For a good discussion specifically on \complexity{FP}-completeness,
 which is relatively hard to find, there is an argument that finding the lexicographically
 first maximal clique in an undirected graph
 is \complexityi{NC}{i}-complete for \complexity{FP} in~\cite[Proposition~6.1]{COOK19852}.
+\end{remark}
+
+
+
+\begin{remark}[Fine-grained reductions]\label{remark:fine-grained-reductions}
+Ideally, we would measure the time and space complexity of algorithms more precisely than
+up to a polynomial. In practice, we are the most interested in complexity bounds such
+as $\complexity{DTIME}(\bigO(n^2))$. However, the field of studying syntactical characterizations
+of such functions is still mostly undiscovered. In~\cite{10.1145/167088.167244}, some problems
+complete for nondeterministic linear time are studied. In~\cite{10.1007/3-540-51237-3_10},
+the notion of \complexity{QL} reductions is introduced to study complete problems for ``nearly linear time'',
+i.e.\ $\complexity{DTIME}(n (\log{n})^{\bigO(1)})$.
 \end{remark}
 
 % POLYTIME-REDUCIBILITY
@@ -224,7 +247,7 @@ A binary relation \(P(x, y)\) is in \(\complexity{FNP}\) if there exist:
   \(P(x, y')\) and \(\len{y'} \leqslant p(\len{x})\);
   \item a deterministic polynomial-time Turing machine \(M\)
         (a \emph{verifier}), 
-        such that for every input pair \((x, y)\),\todo{consistency: iff vs Longleftrightarrow}
+        such that for every input pair \((x, y)\),
         \[
             P(x, y)
             \;\Longleftrightarrow\;
@@ -344,18 +367,25 @@ A very detailed description of one problem complete for \compP{} under \compL-re
 \subsection{Not-a-Language for \complexity{FNP}}
 There is a relatively agreed-upon notion of reductions between \complexity{FNP} problems:
 
-\begin{definition}[{\cites{Goebel2011NashComplexity}{Goldberg2021SearchTotal}}~Polynomial-time reductions for \complexity{FNP}]
+\begin{definition}[{\cites[Slide~4]{Goebel2011NashComplexity}[Slide~5]{Goldberg2021SearchTotal}}~Polynomial-time reductions for \complexity{FNP}]\label{def:reductions-for-fnp}
     Let \(\texttt{HardProblem}\), \(\texttt{NewProblem}\) be search problems in \(\complexity{FNP}\).
-    We say that \(\texttt{HardProblem}\) (many-one) reduces to \(\texttt{NewProblem}\) if there exist
+    We say that \(\texttt{HardProblem}\) (many-one)~reduces to \(\texttt{NewProblem}\) if there exist
     \(f, g\) in \complexity{FP} such that:
-    \[\texttt{NewProblem}(f(x), y) \Longleftrightarrow \texttt{HardProblem}(x, g(y))\]
+    \begin{enumerate}
+    \item for an arbitrary input $x$ for $\texttt{HardProblem}$,
+      if $\texttt{NewProblem}(f(x), y)$, \\ then also $\texttt{HardProblem}(x, g(y))$;
+    \item if, for a given input $x$, there exists $y_{\,\texttt{Hard}}$ such that
+    $\texttt{HardProblem}(x, y_{\,\texttt{Hard}})$, then there also exists a $y_{\,\texttt{New}}$
+    such that $\texttt{NewProblem}(f(x), y_{\,\texttt{New}})$.
+    \end{enumerate}
 
-    For a given input \(x\) of \(\texttt{HardProblem}\), we can run \(\texttt{NewProblem}(f(x))\)
-    to obtain some result \(y\), such that \(g(y)\) is the result of \(\texttt{HardProblem}(x)\).
+    % In other words, for a given input \(x\) of \(\texttt{HardProblem}\), we can run \(\texttt{NewProblem}(f(x))\)
+    % to obtain some result \(y\), such that \(g(y)\) is the result of \(\texttt{HardProblem}(x)\).
 \end{definition}
 
-There are also plenty of \complexity{NP}-complete problems described in the literature.
-However, it is very unclear if we will get \complexity{FNP} this way. The class 
+There are plenty of \complexity{NP}-complete problems described in the literature.
+However, it is unlikely that we will obtain \complexity{FNP} from taking the closure of an \complexity{NP}-complete problem
+under the just defined notion of reductions. The class 
 \(\complexity{FP}^{\complexity{NP}}\) is well-studied and nothing suggests it to be equal to \complexity{FNP}.
 
 
@@ -391,8 +421,7 @@ complexity classes in the literature, with examples of inconsistent places see~\
 
 
 
-
-\subsection{Oracle Turing machines and the technique of forcing}\label{subsec:oracle-forcing}
+\subsection*{Digression: Oracle Turing machines and the technique of forcing}\label{subsec:oracle-forcing}
 Notice that programming in this chapter we essentially try to introduce a new style of programming, where
 when we want to write a program in \complexity{P}, we write most of the functions in a (simpler) language
 for \compL-reductions, and sometimes pass their results to some special function implementing a \complexity{P}-complete
@@ -414,15 +443,3 @@ For general information on the forcing technique, more focused on set theory, pl
 % ### Proving unprovability: Kripke semantics
 % - even though searching for a countermodel in Kripke semantics is completely infeasible computationally, we have a good tool for the job!
 % - i tested and it works, find countermodels and proofs of intuitionistic formulas. code: https://github.com/ferram/jtabwb_provers/tree/master
-
-
-
-
-\subsection{Fine-grained reductions}\label{subsec:fine-grained-reductions}
-Ideally, we would measure the time and space complexity of algorithms more precisely than
-up to a polynomial. In practice, we are the most interested in complexity bounds such
-as $\complexity{DTIME}(\bigO(n^2))$. However, the field of studying syntactical characterizations
-of such functions is still mostly undiscovered. In~\cite{10.1145/167088.167244}, some problems
-complete for nondeterministic linear time are studied. In~\cite{10.1007/3-540-51237-3_10},
-the notion of \complexity{QL} reductions is introduced to study complete problems for ``nearly linear time'',
-i.e.\ $\complexity{DTIME}(n (\log{n})^{\bigO(1)})$.
