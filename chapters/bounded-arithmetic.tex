@@ -500,7 +500,7 @@ clear that we can transfer this style of reasoning from paper to computer.
 
 In the file $\texttt{BoundedArithmetic/Algebra.lean}$ we demonstrate a huge benefit of the
 formalization style we have chosen --- the integration of natural numbers as defined in
-\IDeltaZero{} with the algebraic structures from the mainstream $\mathtt{Mathlib.Algebra}$.
+\IDeltaZero{} with the algebraic structures from the mainstream $\texttt{Mathlib.Algebra}$.
 The effect of such integration is that we will \emph{not} have to re-prove all the
 theorems about number theory in bounded arithmetic; after proving the basic properties,
 we can derive that the natural numbers modeled by \IDeltaZero{} satisfy the properties of
@@ -521,10 +521,10 @@ use by default in the tactic $\texttt{simp}$; if designed improperly, this tacti
 a lemma from our library that weakens one of the assumptions and makes the goal unprovable.
 
 
-In the file $\mathtt{BoundedArithmetic/V0.lean}$ we present\todo{Clean this file, now it's broken}
-a way \compVZero{} can be formalized despite the $\mathtt{Mathlib.ModelTheory}$ library for now only supporting
+In the file $\texttt{BoundedArithmetic/V0.lean}$ we present\todo{Clean this file, now it's broken}
+a way \compVZero{} can be formalized despite the $\texttt{Mathlib.ModelTheory}$ library for now only supporting
 single-sorted logic.\footnote{We have initially started with extending this library to support many sorts,
-but this was too much work for our time horizon.}. In the file $\mathtt{BoundedArithmetic/VTC0.lean}$,
+but this was too much work for our time horizon.}. In the file $\texttt{BoundedArithmetic/VTC0.lean}$,
 we sketch the proof of the two-sorted theory \complexityi{VTC}{0} proving the
 pigeonhole principle \problem{PHP} (note that in~\autoref{subsec:vac0-php} we discussed this theorem
 not being provable in \compVZero{}), without relying on any complicated deep-embedding for the axiom schemes
@@ -532,10 +532,10 @@ not being provable in \compVZero{}), without relying on any complicated deep-emb
 make the formalization go one-to-one with the
 original~\cites[Corollary~7.21]{CookNguyenDraft}[Corollary~VII.2.4]{Cook_Nguyen_2010}.
 
-In the file \todo{in oracles repo, not in bounded arithmetic}$\mathtt{code-snapshot/roq-fol-proof-mode.v}$ we present a short demonstration
+In the file \todo{in oracles repo, not in bounded arithmetic}$\texttt{code-snapshot/roq-fol-proof-mode.v}$ we present a short demonstration
 of how does a proof look like in the deeply-embedded logical framework of Coq Library for First-Order Logic.
 
-In the folder $\mathtt{syntax-metaprogramming}$, we present examples of how a simple proof theory
+In the folder $\texttt{syntax-metaprogramming}$, we present examples of how a simple proof theory
 can be deeply embedded in the logic of Lean. 
 
 \paragraph{Comparison: custom interpreter vs existing proof assistants}
@@ -568,9 +568,15 @@ We therefore chose to formalize in two powerful and well-supported systems,
 Rocq and Lean, both based on dependent type theory.
 
 \begin{remark}
-  The Rocq proof assistant used to be called \emph{Coq}. While the old name is now
+  The Rocq proof assistant used to be called \emph{Coq} until March~2025.
+  While the old name is now
   deprecated, existing publications and code written before the name change still
-  use the name Coq, and this terminology remains common in the literature.
+  use the name Coq. The historical versions of the system have not been renamed:
+  for example, we install ``$\texttt{coq.8.20.1}$'' and not ``$\texttt{rocq}\dots$''.
+  Unfortunately, all results that we cite in this thesis
+  were obtained using versions released under the name Coq. We retain
+  the name Coq when referring to such prior work,
+  and use the name Rocq when discussing the proof assistant that we have actually used ourselves.
 \end{remark}
 
 
@@ -630,7 +636,7 @@ proof assistants with theories that are \emph{weaker} than Rocq and Lean's and a
 better proof-search or code-extraction procedures.
 Only later in September of 2025 as part of us visiting Yannick Forster at INRIA Paris,
 we have achieved a usable state of the formalization
-with a well-thought $\mathtt{simp}$-set for $\IDeltaZero{}$ and interesting
+with a well-thought $\texttt{simp}$-set for $\IDeltaZero{}$ and interesting
 properties proved for $\compVZero{}$ and $\complexityi{VTC}{0}$.
 The existence of the $\texttt{Mathlib.ModelTheory}$ library was the thing that enabled us to
 achieve our formalization in the scope of this thesis. 
