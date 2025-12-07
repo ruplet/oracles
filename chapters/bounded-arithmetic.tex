@@ -452,47 +452,46 @@ with a very thorough overview of arithmetical theories corresponding to complexi
 refer to~\cite{Ngu08}.
 \end{remark}
 
-
 \section{Programming in bounded arithmetic}
-This is not trivial how to turn the concepts from bounded arithmetic into a programming language.
+It is not trivial to turn concepts from bounded arithmetic into a programming language.
 
-One way is to design a programming language in such a way, that reasoning about its programs
+One way is to design a programming language in such a way that reasoning about its programs
 can be done conveniently in a given bounded arithmetical theory. This underpins the programming
 language $\mathrm{IMP}(\complexity{PV})$, introduced in~\cite{Li2025FeasibleMathematics}
 and discussed in slightly more detail in~\autoref{sec:bounded-arith-imppv}.
 
 Another way, which we base our considerations on in this chapter, is
-by the means of \emph{code extraction}: first, provide the user
-a proof assistant with strenght limited to an appropriate arithmetical theory.
+by means of \emph{code extraction}: first, provide the user
+with a proof assistant whose strength is limited to an appropriate arithmetical theory.
 Then, try to turn proofs of theorems
 of the form $\forall x \exists! y \ldotp \varphi(x, y)$, formalized in the proof assistant,
 into computational procedures to find the unique
 $y$, given $x$ as input. Such \emph{code extraction} from proofs in arithmetic is nothing new
 and has been studied for decades, e.g.\ under the name of \emph{Kleene realizability}. However,
-as of December 2025, no tool has been created that allow to extract code \emph{with complexity bounds}.
+as of December 2025, no tool has been created that allows one to extract code \emph{with complexity bounds}.
 Later in this chapter we will focus on restricting the power of a proof assistant to 
 the arithmetical theory of interest, with the intent to transform the representations of
-proofs in the theory into computational procedures that are both proven correct and have a strict
+proofs in that theory into computational procedures that are both proven correct and have a strict
 complexity bound, imposed by the proof being conducted in a bounded arithmetical theory.
 
-This approach is very closely related to the notion of Curry-Howard, or ``proofs-as-programs''
+This approach is very closely related to the notion of the Curry-Howard, or ``proofs-as-programs'',
 correspondence, which we briefly discussed in~\autoref{remark:curry-howard}. If the proof of the existence
 of $y$ is conducted using intuitionistic logical reasoning only, it should be easy to convert such a proof
-into a program. We briefly discuss the expressiveness of intuitionisic bounded arithmetical
+into a program. We briefly discuss the expressiveness of intuitionistic bounded arithmetical
 theories in~\autoref{remark:bounded-arith-biblio}. Note that for the purpose of code extraction,
-we don't have to limit the whole reasoning to the intuitionistic fragment of the theory --- 
+we do not have to limit the whole reasoning to the intuitionistic fragment of the theory --- 
 once we have intuitionistically proved \emph{the existence} of $y$ for a given $x$, 
 we already know how to \emph{compute} the $y$, and thus the proof
 that $\varphi(x, y)$ can be done using classical reasoning.
 
 In general, the computational problem of finding a concrete $y$ from a classical proof that $\exists y \ldotp\;\dots$
-is known as the \emph{witnessing} problem. The complexity of it depends entirely     on the proof system used.
+is known as the \emph{witnessing} problem. The complexity of it depends entirely on the proof system used.
 This is explored in more detail e.g.\ in~\cite[Section~X.3]{Cook_Nguyen_2010}.
 
 For the purpose of this thesis, we have implemented an example of code extraction from a proof tree
-in the Lean proof assistant, to a Lean function taking a binary string as input, and outputting another
+in the Lean proof assistant into a Lean function taking a binary string as input and outputting another
 one --- the output of the function corresponding to the proof. The procedure is not general;
-we discuss it in more detail as the file $\texttt{BoundedArithmetic/Extraction.lean}$ below.
+it is discussed with the file \texttt{BoundedArithmetic/Extraction.lean} below.
 
 \subsection{Programming language \texorpdfstring{$\mathrm{IMP}(\complexity{PV})$}{IMP(PV)}}\label{sec:bounded-arith-imppv}
 An idea for a programming language for \complexity{FP} based on bounded arithmetic was discussed
@@ -504,14 +503,14 @@ implementable in practice, a \emph{formalization} of $\complexity{PV}$ is necess
 Recall that, as noted in~\autoref{remark-cobham-imppv}, such a programming language would be
 very tightly coupled with the function algebra \complexity{Cob}. Given our considerations
 from~\autoref{subsec:intensional}, there is a significant risk that the convenience
-of such a language would be limited by the lack of intesional expressiveness of
+of such a language would be limited by the lack of intensional expressiveness of
 \complexity{Cob} and of characterizations from ICC\@. However, in~\cite{Li2025FeasibleMathematics}
-the authors show how to apply relatively advanced programming techniques inside of
+the authors show how to apply relatively advanced programming techniques inside
 $\mathrm{IMP}(\complexity{PV})$.
 
 \begin{remark}
     We will not introduce the definition of $\mathrm{IMP}(\complexity{PV})$ here, but will only note
-    that it fundamentally relies on the notion of provability of theorems inside of an arithmetical theory.
+    that it fundamentally relies on the notion of provability of theorems inside an arithmetical theory.
     In other words, this programming language characterizes \complexity{FP} in an \emph{explicit}
     way, in the sense of~\autoref{subsec:explicit}. Before implementing such a programming language,
     we would need to \emph{formalize} the arithmetical theory in a computer, which we study in~\autoref{sec:formalization}.
@@ -519,13 +518,13 @@ $\mathrm{IMP}(\complexity{PV})$.
 
 
 \subsection{Complexity of algorithm vs complexity of proof}\label{subsec:complexity-alg-proof}
-Even when an algorithm is simple, it seems to not always be trivial to ``feasibly'' prove
+Even when an algorithm is simple, it is not always trivial to ``feasibly'' prove
 that it computes the correct result. In our setting, this results in knowing that
-a problem can be solved in a complexity class $\complexity{C}$, but not knowing if the corresponding
+a problem can be solved in a complexity class $\complexity{C}$, but not knowing whether the corresponding
 function can be defined in the theory $\complexity{VC}$ (i.e.\ proved total and correct).
 See \cites[Section~IX.7.3]{Cook_Nguyen_2010}[Section~9G.3]{CookNguyenDraft} for
-an open problem whether the breakthrough result that binary integer division
-is in \complexity{DLOGTIME}-uniform \complexityi{TC}{0}~\cite{HESSE2002695},
+a discussion of the open problem whether the breakthrough result that binary integer division
+is in \complexity{DLOGTIME}-uniform \complexityi{TC}{0}~\cite{HESSE2002695}
 means that it can also be proved in the corresponding \complexityi{VTC}{0} theory.
 Note that this particular problem apparently has been solved (affirmatively) in~\cite{Jerabek2022}.
 
