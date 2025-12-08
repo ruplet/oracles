@@ -122,7 +122,13 @@
 
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[chapter]
-\newtheorem{lemma}[theorem]{Lemma}
+\providecommand*{\theoremautorefname}{Theorem}
+
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\providecommand*{\lemmaautorefname}{Lemma}
+
 % \theoremstyle{plain}
 % \newtheorem{proposition}[theorem]{Proposition}
 % \newtheorem{corollary}[theorem]{Corollary}
@@ -138,13 +144,13 @@
 \providecommand*{\definitionautorefname}{Definition}
 
 \theoremstyle{definition}
+\newtheorem*{definition*}{Definition}
+
+\theoremstyle{definition}
 \newaliascnt{example}{theorem}
 \newtheorem{example}[example]{Example}
 \aliascntresetthe{example}
 \providecommand*{\exampleautorefname}{Example}
-
-\theoremstyle{definition}
-\newtheorem*{definition*}{Definition}
 
 \theoremstyle{definition}
 \newtheorem{notation}{Notation}
