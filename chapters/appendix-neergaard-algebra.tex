@@ -123,7 +123,7 @@ As part of our work, we have implemented an interpreter for the algebra in Haske
 some of the propositions from~\cite{10.1007/978-3-540-30477-7_21}. We present one listing, just to give
 a hint of how the corresponding function look like; this is a Haskell representation of a function from the
 algebra, not a programming language directly for the algebra. We present the full source code as
-attachment to this thesis.\todo{How to add attachment to thesis?}
+attachment to this thesis.
 
   % \begin{rawlisting}
   % \input{listings/neergaard-const-zero.tex}
@@ -142,7 +142,7 @@ attachment to this thesis.\todo{How to add attachment to thesis?}
   The example in~\autoref{lst:neergaard-shiftr} shows the implementation of a function that
   shifts bit to the right (dropping least-significant bits). The implementation is standard,
   but it's worth to note that in the original paper, there is an error --- the function \texttt{shiftR} originally
-  has flipped safe and normal arguments, making it impossible to implement. We outline our proof by contradiction for this fact.
+  was given with flipped safe and normal arguments, making it impossible to implement. We outline our proof by contradiction for this fact.
   Consider a function $\mathtt{cond'(; x, y, z)}$ returning $y$ if $x$ is empty, $z$ otherwise.
   We can prove directly that this function is not implementable in \(\complexity{BC}^{-}\) due to
   the algebra not being able to differentiate between an empty string and a string beginning with a sufficiently
