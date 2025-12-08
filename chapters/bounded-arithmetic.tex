@@ -19,6 +19,11 @@ It turns out the similarity is not a coincidence,
 and to explore this connection further we need to study \emph{bounded arithmetic},
 in particular the theories $\IDeltaZero{}$ and $\compVZero{}$.
 
+In~\autoref{sec:formalization} we describe the main technical contribution of this thesis: (i) a Lean 4
+formalization of the theory $I\Delta_0$, defined below, which is compatible with existing code in Mathlib;
+and (ii) initial work on code extraction from proofs in two-sorted arithmetical theories that capture
+complexity classes, implemented by means of metaprogramming in Lean 4.
+
 \section{Single-sorted logic and \IDeltaZero{}}
 
 \begin{definition}[{\cite[Definition~III.1.1]{Cook_Nguyen_2010}}]
@@ -650,8 +655,8 @@ would be unreadable and tens of lines longer.
 
 All of our code is publicly available at \url{https://github.com/ruplet/formalization-of-bounded-arithmetic}
 and all file paths mentioned below refer to this repository.
-\paragraph{Our contribution}
 
+\subsection{Our contribution}
 The showcase files of this thesis are $\texttt{BoundedArithmetic/IOPEN.lean}$
 and $\texttt{BoundedArithmetic/IDelta0.lean}$. These files contain the definitions of the \IOPEN{} and \IDeltaZero{}
 theories, respectively, and then prove their basic properties that we have introduced in~\autoref{lemma:props-iopen}
