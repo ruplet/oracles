@@ -586,11 +586,13 @@ not being provable in \compVZero{}), without relying on any complicated deep-emb
 make the formalization go one-to-one with the
 original~\cites[Corollary~7.21]{CookNguyenDraft}[Corollary~VII.2.4]{Cook_Nguyen_2010}.
 
-In the file \todo{in oracles repo, not in bounded arithmetic}$\texttt{code-snapshot/roq-fol-proof-mode.v}$ we present a short demonstration
-of how does a proof look like in the deeply-embedded logical framework of Coq Library for First-Order Logic.
-
 In the folder $\texttt{syntax-metaprogramming}$, we present examples of how a simple proof theory
-can be deeply embedded in the logic of Lean. 
+can be deeply embedded in the logic of a proof assistant. In the file
+$\texttt{syntax-metaprogramming/roq-fol-proof-mode.v}$ we present a short demonstration
+of how does a proof look like in the deeply-embedded logical framework of Coq Library for First-Order Logic.
+In the other $\texttt{*.lean}$ files, we present how to deeply embed a simple Hilbert-style proof system
+on the meta-level of Lean --- i.e.\ how to use metaprogramming in Lean 4 to obtain syntactical abstraction
+for the embedded logic.
 
 \paragraph{Comparison: custom interpreter vs existing proof assistants}
 To reason about the provability of theorems, we need to formally define the logic considered
