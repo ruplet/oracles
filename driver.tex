@@ -495,13 +495,24 @@
 \maketitle
 
 \begin{abstract}
-    In this work, I study which features make sense to add to a programming language
-    from the computational complexity perspective. Specifically, 
-    I focus on how these features can be used to capture various complexity classes, 
-    such as LOGSPACE, PTIME, and PSPACE\@. By analyzing the expressiveness and limitations 
-    of these features, I aim to provide insights into the design of programming languages
-     that are both practical and theoretically sound.
+The aim of this thesis is to certify complexity bounds by construction: to design programming and specification
+formalisms whose syntax guarantees membership in a target complexity class, so that verifying a program's complexity
+reduces to checking that it is syntactically correct. We systematically examine several lines of work that
+appear to support this goal, including formal verification of semantics of standard programming languages,
+descriptive complexity,
+and programming languages from implicit computational complexity.
+Our conclusions are mostly negative: in their current form, these approaches do not scale to certifying
+the complexity of realistic algorithms.
+
+The positive outcome of this investigation is a shift of focus to bounded arithmetic,
+whose theories are known to capture a range of complexity classes.
+We argue that, when combined with modern proof assistants, bounded arithmetic offers a viabl
+basis for complexity-certified programming. Concretely, we implement in Lean~4 a
+formalization of bounded arithmetical theories and prototype mechanisms for extracting code from
+their proofs. This mechanization illustrates how proofs of totality of functions within such theories
+can serve as a foundation for certifying both correctness and resource bounds of programs.
 \end{abstract}
+
 
 \hypersetup{pageanchor=true}
 \tableofcontents
