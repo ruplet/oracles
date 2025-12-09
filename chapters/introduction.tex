@@ -1,128 +1,70 @@
 \chapter{Introduction}
 
-\todo[inline]{This will be refined. Now it's just essentials}
-The purpose of this thesis is to find a convenient way of certifying that a given program
-is in some complexity class. We want to do it by defining such a programming language,
-that by definition every program written in it has a given complexity.
+The aim of this thesis is to certify complexity bounds by construction:
+to design programming and specification formalisms whose syntax
+guarantees membership in a target complexity class, so that verifying a program's complexity
+reduces to checking that it is syntactically correct.
+The goal is not to make programming itself easier, but to make it easier for someone who receives
+a program to trust that it is correct and runs within the claimed resource bounds.
+Our conclusions are mostly \emph{negative}:
+we explore several very promising fields of research and conclude that, in their current form,
+they do not allow us to certify the complexity of programs at scale.
+In~\autoref{sec:formalization} we present the main technical contribution of this work:
+we explain how bounded arithmetic, combined with modern proof assistants, offers a viable
+way to approach this goal.
+Theories from bounded arithmetic generalize well to account for algorithms from higher and lower
+complexity classes, in contrast to many systems from Implicit Computational Complexity
+studied in~\autoref{chap:icc}, which are typically tailored to a single class.
 
+\paragraph{Structure of this work}
 
+In~\autoref{chap:foundations} we explore how different programming paradigms can help
+us reach this goal.
+We also consider the notion of complexity in other models of computation and whether it would make
+sense to capture them instead of the complexity of Turing machine-like (imperative) models.
 
-Writing programs as transducers
-would rarely be useful for
-certifying an arbitrary program to be in the desired complexity class, hence
-for now we focus on other styles of characterization.
+In~\autoref{chap:formalized-semantics} we examine the most obvious way of certifying complexity:
+directly proving on a computer that a given C++ program operates in, say, time~\(\bigO(n^2)\).
+Using an existing development in the Rocq proof assistant as a case study, we argue that this is not a viable solution
+for certifying the complexity of realistic programs.
 
+In~\autoref{chap:descriptive-complexity} we study logics that characterize computational complexity classes
+by the complexity of formulas needed to describe their problems.
+These characterizations are very well suited to decision problems, but less so to computing
+general functions with output, as we usually do in programming.
 
-\begin{enumerate}
-    \item first, we check if imperative programming is best for capturing complexity classes in~\autoref{chap:foundations}.
-        (E.g. think about language with only for i=1..n loops, i.e. primitive recursion)
-        It turns out it is not; we look for better paradigms (computation models) for our problem;
-    \item then, we check why can't we actually just certify complexity by proving
-    in Coq that a given C++ program operates in time \(\bigO(n^2)\):~\autoref{chap:formalized-semantics};
-    \item in~\autoref{chap:descriptive-complexity} we study logics (which are also a form of syntax) 
-        that characterize decisional complexity classes 
-        purely in terms of how complex is the specification of the problem. This gives us
-        some characterizations of decisive complexity classes, and we can also sometimes
-        define functions by asking "is k-th bit of output f(x) 0 or 1?" repeatedly;
-    \item the purpose of~\autoref{chap:reductions} is to check decisive complexity classes
-    are enouguh for us, or do we need to really distinguish e.g. NP and FNP. Turns out,
-    sometimes we have to! But: we can obtain e.g. FL from L and NC1 reductions. This
-    leads us to a new paradigm, that I named my Github repo after (on 16 November 2023!):
-    having a simpler languauge for reductions, and using an oracle for e.g. P-complete problem.
-    We can get FL, FP and most important circuit complexity classes like functional AC0 etc. this way.
-    But obtaining a language for these NC1 reductions is not that easy neither!
-    We leave the problem of circuit reductions/uniformity to appendix.    
-    We proceed to try find FL characterization right away in Linear Logic (Ugo Dal Lago IntML)
-    and in Recursion Theory (Neergaard functional language);
-    \item in~\autoref{sec:recursion-theory}, we study simple and cool function algebras
-        that capture FL, and FP. Neergaard implemented a programming language for FL.
-        I obtained his code from 20 years ago (he sent me zip on Linkedin), and refreshed it.
-        The author in one of his works declares that it doesn't look possible to add 'pair' type
-        to this language;
-    \item in~\autoref{sec:linear-types}, we study Ugo Dal Lago's linear-types programming
-        language that captures FL and FNL. Briefly! Because introducing linear types is too
-        much overhead;
-    \item in~\autoref{chap:bounded-arithmetic}, we study my contribution! I noticed
-    that it is feasible to extract computational content from proofs conducted
-    in bounded arithmetic (file Extraction.lean in my repo\footnote{\url{https://github.com/ruplet/formalization-of-bounded-arithmetic}})
-    And you get guarantees on the computational complexity of code exported
-    in this way. So, if you prove a theorem that a function is total (forall x, we can find y) in bounded arithmetic,
-    (and you didnt use proof by contradiction too heavily),
-    you can convert it to a program with certified complexity. Then, the most difficult part - 
-    I analyzed multiple tools(\footnote{\url{https://github.com/ruplet/formalization-of-bounded-arithmetic/blob/main/presentation-seminar-sliwowica/seminar-presentation.pdf}})
-    and found a way to define bounded arithmetic in lean in such a way that
-    it inter-operates with mathlib + is ``believable'' (not too much my own machinery).
-    I presented at aitp, and had a visit at inria where i tested their tool designed to 
-    formalize proof-theory in Rocq (difficult to use due, not enough engineering put in their system).
-\end{enumerate}
+In~\autoref{chap:reductions} we explore this idea further, examining how classes of decision and function
+problems relate and whether this distinction matters for certifying complexity.
+The answer is positive: it is not always trivial to reduce a general function problem to a decision problem.
+In the same chapter, we examine the feasibility of capturing complexity classes by first fixing a complete
+problem and then capturing the (weaker) programming language for reductions to that problem.
+We can obtain \complexity{FL}, \complexity{FP}, and several circuit complexity classes this way, but at the price
+of relying on characterizations of low circuit complexity classes that are not convenient to use either.
+We defer a detailed treatment of circuit reductions and uniformity to an appendix and proceed to explore
+direct characterizations of \complexity{FL} and \complexity{FP} in the next chapter.
 
-% - a program documented to perform some computation and return a result should not run into an
-%   infinite loop
-% - a program implementing an O(n)-time algorithm, and documented to execute in O(n) should not
-%   need O(n^2) time to run by an accident in the implementation.
-% - thoughtfully written (i.e. "clean") code should convince the user reading it that
-%   it does what it is documented to. One way this is typically done is including parts of proof
-%   of correctness in the documentation. Another way is declaring a function to have a particular type
-%   and ensuring the user can quickly verify the implementation type-checks.
+In~\autoref{chap:icc} we study actual programming languages (more or less purely academic)
+that capture complexity classes.
+We conclude this chapter with a critique of these approaches:
+they are fragmented (every complexity class would need a separate programming language), and
+even for a fixed class, the theories are often able to \emph{solve every problem} in the class
+but not \emph{express every algorithm} we naturally use to solve problems in that class.
+Despite their relevance, we were not able to certify the complexity of existing algorithms
+in these systems, and therefore we cannot use them as foundation for the kind of programming language we
+are interested in.
 
-
-
-
-% \section{The full picture}
-% States of the process of computation are dots. Computation is arrows between the dots.
-% Since computation is sequential (even parallel programs have some intertwine, which is sequential),
-% this is a linear graph. What programmer does is describe the arrows.
-% The whole graph has bilions of computational steps, which we can't create nor verify.
-% Yet, we want to reason about it.
-% We want to also be able to construct data, e.g. the input.
-% Verification checker has to confirm that if a precondition holds in state S before computation,
-% then it also holds for F(S), which is state after computation. F is the semantics
-% of some programming language function, so we need to have one functional symbol
-% for every possible state function describable.
-
-% The weaker the type system, and the more complicated the function, the less likely
-% it is that it will be able to solve the tautology (by automated theorem proving).
-
-% In functional languages, the syntax to describe data and functions is the same:
-% lambda terms. Verification has to be supplied by the user as types.
-
-% The interpreter is essentialy a proof that for every state, precisely one consecutive state
-% of computation exists.
-
-
-% # Introduction
-% This thesis investigates the problem of certifying computational complexity of standard computer algorithms. The most intuitive solution to it is to formalize a standard computational model (e.g. Turing machines or lambda calculus) and its notion of computational complexity in a proof assistant such as Rocq or Lean. Then, implement the algorithm in such a formalization and prove that it will e.g. execute in polynomial time. This, however, proves to be extremely difficult. The proofs from the area of computational complexity tend to be very "hand-wavy" and making them formal is orders of magnitude more involved than formalizing other areas of mathematics [forster:LIPIcs.CSL.2025.3].
-% As of September 2025, no feasible way of doing that on scale has been discovered.
-
-% A promising approach is to first give an “on-paper” proof that the functions in a complexity class are equivalent to the semantics of a specially designed programming language. Then, instead of repeatedly checking complexity proofs for each algorithm, we can just define the algorithms in this language. That way, we only need to manually verify the interpreter once, and afterwards we can let the interpreter automatically check whether any given program is valid.
-
-% This thesis investigates approaches to designing programming languages whose expressiveness is precisely aligned with a target computational complexity class. In such languages, every program would, by construction, operate within the given class, and conversely, any function or problem in that class would be expressible and implementable in the language.
+In~\autoref{chap:bounded-arithmetic} we study how to extract computational content from proofs conducted
+in bounded arithmetic, a field that studies mathematical theories that also capture computational complexity
+classes.\footnote{Our work is available
+at \url{https://github.com/ruplet/formalization-of-bounded-arithmetic}.}
+This chapter collects our main technical results and explains why bounded arithmetic,
+formalized in a proof assistant, appears to be a promising foundation for complexity-certified programming.
+Part of this work was presented at AITP 2025 conference; an abstract of
+our early developments is available at: \url{https://aitp-conference.org/2025/abstract/AITP_2025_paper_7.pdf}.\footnote{It was the
+basis for the acceptance of our short talk; for the reviews, please see \url{https://github.com/ruplet/formalization-of-bounded-arithmetic/blob/main/presentation-AITP2025/aitp-reviews.md}.}
+A significant part of the developments described in this chapter was conducted during the main author's 
+visit to INRIA Paris, made possible by a scholarship from ZSM IDUB program.
 
 % To illustrate the challenge we are addressing, consider the task of proving that binary multiplication belongs to LOGSPACE. 
 % A common way to do it is to first argue that if we show a program that does it using only a finite number of variables, each of which of linear size (e.g. a pointer to the input), then the computation obviously uses only logarithmic amount of memory.
 % However, this description is fragile: for instance, simply incrementing a variable in a `for` loop can exceed the LOGSPACE bound. In this work, we investigate more reliable characterizations.
-
-% The ultimate goal of this thesis is to design a practical hierarchy of programming languages that precisely captures resource-bounded computations - for example, languages that express exactly the class of algorithms running in $\mathcal{O}(n^2)$ time or $\mathcal{O}(n)$ space. In the chapters that follow, we explore which restrictions of this kind are feasible, and which are not.
-
-% The structure of this work is as follows:  
-% - Chapter 1 reviews open sub-directions that remain unexplored, including descriptive complexity
-% - Chapter 2 introduces Implicit Computational Complexity (ICC).  
-% - Chapter 3 presents the Curry–Howard approach to ICC, focusing on IntML.  
-% - Chapter 4 explores the recursion-theoretic approach, focusing on Neergaard's BC.  
-% - Chapter 5 discusses the logical approach, drawing on my work for AITP and at INRIA.  
-
-% Among these, only the logical approach has proven scalable. The others, after extensive investigation, appear unlikely to yield systems that are practical in use.
-
-% \section{Requirements on the product: relation between syntax, semantics, and the interpreter complexity}
-% ## Some obvious and obviously impractical approaches
-% - The obvious approach: LOOP language.  
-% problem: it is PRA. it is not practical.
-
-% - Another obvious approach is: python + polynomial expressing max  
-% number of steps. Problem: semantics impossible to reason about.
-
-% - another obvious approach: "natural number coding nth program of a language
-% having these properties". problem: syntax might be undecidable! won't write an
-% interpreter.
-
-% - another approach: only use Nat type and grzegorczyk hierarchy. problem: ?
